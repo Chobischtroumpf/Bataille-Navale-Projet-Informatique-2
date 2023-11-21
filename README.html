@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<title>Code fourni</title>
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9081 2022-06-19 20:23:12Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+</head>
+<body>
+<main id="code-fourni">
+<h1 class="title">Code fourni</h1>
+
+<p>Vous trouverez dans ce dossier un code pour vous aider à démarrer le projet.</p>
+<section id="qu-est-ce-qui-est-attendu-concernant-ce-code">
+<h2>Qu'est-ce qui est attendu concernant ce code?</h2>
+<p>Le code est fourni pour vous aider.
+Vous être libre de vous en servir ou non.
+Si vous vous en servez, il sera considéré de la même façon que le reste du code rendu: vous pouvez le modifier et vous devez l'intégrer proprement à votre projet, compléter la documentation…</p>
+</section>
+<section id="quel-est-l-interet-du-code-fourni">
+<h2>Quel est l'intérêt du code fourni?</h2>
+<p>Son principal intérêt est de vous donner un exemple de code bien structuré.
+Nous attendons une structure de cette qualité dans votre projet.
+Nous vous conseillons donc de commencer par étudier la structure du code: pour chaque classe:</p>
+<ol class="arabic simple">
+<li><p>comprenez son rôle,</p></li>
+<li><p>regardez le type de ses attributs, cela vous renseigne sur ce qu'elle connaît en dehors d'elle-même et avec qui elle communique,</p></li>
+<li><p>regardez ses méthodes et comprenez pourquoi elles sont implémentées dans cette classe.</p></li>
+</ol>
+<p>Avant de vous lancer dans ce travail, voyez la suite de ce document.</p>
+<p>Ce code vous permet aussi de commencer le projet rapidement.</p>
+</section>
+<section id="que-contient-le-code-fourni">
+<h2>Que contient le code fourni?</h2>
+<p>Le code fourni contient surtout l'affichage d'une partie en cours.</p>
+<ul class="simple">
+<li><p><span class="docutils literal">BoardDisplay</span> définit l'interface pour les classes d'affichages <em>(display)</em> d'une partie <em>(board)</em>.</p></li>
+<li><p><span class="docutils literal">BoardView</span> définit l'interface que les classes d'affichages attendent des classes leur fournissant les informations sur la partie en court <em>(board)</em>.</p></li>
+<li><p><span class="docutils literal">BoardControl</span> définit l'interface des classes auxquelles les classes d'affichage transmettent les actions effectuées par l'utilisateur.</p></li>
+<li><p><span class="docutils literal">ConsoleBoardDisplay</span> implémente un affichage console. Elle hérite de <span class="docutils literal">BoardDisplay</span> et attend un <span class="docutils literal">BoardView</span> et un <span class="docutils literal">BoardControl</span> en paramètre.</p></li>
+<li><p><span class="docutils literal">DummyBoard</span> implémente les interfaces <span class="docutils literal">BoardView</span> et <span class="docutils literal">BoardControl</span>, c.-à-d., les méthodes nécessaires pour tester un minimum la vue. C'est une classe bidon.</p></li>
+</ul>
+</section>
+<section id="que-fait-le-code-fourni">
+<h2>Que fait le code fourni?</h2>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p>L'affichage du jeu efface fréquemment la console.
+Nous vous conseillons donc de rediriger les messages d'erreurs vers un fichier ouvert dans une autre console. Par exemple:</p>
+<pre class="literal-block">./battleship 2&gt; /tmp/battleship-err # (1)
+# dans une autre console:
+tail -f /tmp/battleship-err # (2)</pre>
+<p><span class="docutils literal">tail <span class="pre">-f</span></span> affiche la fin du fichier puis affiche toute nouvelle ligne qui s'ajouterait.</p>
+<p><span class="docutils literal">make run</span> lance la commande (1), vous pouvez donc utiliser <span class="docutils literal">make &amp;&amp; make run</span> dans une console et garder une autre console ouverte avec la commande (2).</p>
+</aside>
+<p>Le jeu affiche une partie en cours où c'est <em>à votre tour</em>.
+Vous pouvez alors taper des coordonnées (au format &quot;a1&quot; ou &quot;A1&quot;).</p>
+<ol class="arabic simple">
+<li><p>Si vous n'entrez pas des coordonnées ou si elles sont en dehors du plateau, <span class="docutils literal">ConsoleBoardDisplay</span> efface votre choix et attend une nouvelle entrée.</p></li>
+<li><p>Si vous entrez les coordonnées d'une cellule déjà révélée, <span class="docutils literal">ConsoleBoardDisplay</span> transmet le tir au <span class="docutils literal">BoardControl</span> qui lui indique que le tir n'est pas valide.
+<span class="docutils literal">ConsoleBoardDisplay</span> efface donc aussi le choix et attend de nouveau.</p></li>
+<li><p>Si vous entrez le caractère de fin de fichier, <span class="docutils literal">ConsoleBoardDisplay</span> transmet au <span class="docutils literal">BoardControl</span> que le joueur quitte la partie.</p></li>
+<li><p>Si vous entrez des coordonnées, <span class="docutils literal">ConsoleBoardDisplay</span> transmet le tir au <span class="docutils literal">BoardControl</span> qui lui indique le tir est valide.
+Le <span class="docutils literal">BoardControl</span> devrait maintenant gérer le tir.
+Ici <span class="docutils literal">DummyBoard</span> ne fait qu'afficher un message sur stderr, change le joueur qui doit jouer et appelle <span class="docutils literal">update</span> sur le <span class="docutils literal">BoardDisplay</span>.</p></li>
+<li><p><span class="docutils literal">BoardDisplay</span> provoque alors une erreur <span class="docutils literal">NotImplementedError</span>.</p></li>
+</ol>
+</section>
+<section id="que-ne-fait-pas-le-code-fourni">
+<h2>Que NE fait PAS le code fourni?</h2>
+<p>Notez que le code ne vous fournit pas tout ce dont vous avez besoin pour l'affichage d'une partie locale en console.
+Vous devrez l'adapter selon vos préférences et ce qui vous semble le mieux pour bien s'intégrer dans l'ensemble du projet.
+Voici, pour expliquer de quoi on parle, trois choix concrets qui pourraient être faits (ceci ne signifie pas que ce sont des/les bons choix):</p>
+<ul class="simple">
+<li><p>Changer les notions de <span class="docutils literal">my_side</span> et <span class="docutils literal">their_side</span> par <span class="docutils literal">player_1</span> et <span class="docutils literal">player_2</span> et indiquer à l'affichage quel côté il faut afficher (notez que, idéalement, le jeu en réseau ne transmettra pas au client plus que ce qu'il ne peut savoir, afin d'éviter toute triche et alléger l'utilisation du réseau),</p></li>
+<li><p>Instancier deux <span class="docutils literal">BoardDisplay</span> et afficher celui du joueur en cours, avec un écran vide le temps de la confirmation du changement du joueur,</p></li>
+<li><p>Avoir deux processus et deux fenêtres, par exemple en demandant au joueur de lancer deux fois l'exécutable (potentiellement avec un launcher).</p></li>
+</ul>
+<p>Notez aussi que le code fourni ne fait que l'affichage d'une partie (<span class="docutils literal">board</span>) et ne s'occupe pas des autres écrans (création d'une partie…).</p>
+</section>
+<section id="glossaire">
+<h2>Glossaire</h2>
+<dl class="simple">
+<dt>Board</dt>
+<dd><p>Représente l'état d'une partie en cours. Un board a deux côtés, un par joueur. Le côté d'un joueur est celui qui contient ses navires.</p>
+</dd>
+<dt>Grid</dt>
+<dd><p>Dans l'affiche console, désigne la représentation d'un côté du board.</p>
+</dd>
+<dt>Display</dt>
+<dd><p>Affichage. C'est ce qui est appelée “Vue” dans le modèle MVC.</p>
+</dd>
+<dt>View</dt>
+<dd><p>Classe ou interface pour accéder à des informations (comme une std::string_view).
+Une classe / interface “View” n'aura en général que des méthodes constantes comme des getters.
+Une view peut, soit simplement retourner des informations qui ne doivent être accédées qu'en lecture, soit calculer des informations à la volée.</p>
+</dd>
+<dt>Dummy</dt>
+<dd><p>Une classe temporaire, qui n'est pas utilisée lors d'une exécution normale du programme, par exemple, une classe qui sert à en tester une autre.</p>
+</dd>
+</dl>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p>N'hésitez pas à renommer les classes et méthodes fournies pour correspondre à vos conventions.</p>
+</aside>
+</section>
+<section id="questions">
+<h2>Questions</h2>
+<section id="general">
+<h3>Général</h3>
+<section id="je-n-arrive-pas-a-compiler-pourquoi">
+<h4>Je n'arrive pas à compiler, pourquoi?</h4>
+<p>Quel est le message d'erreur?</p>
+<p>La compilation nécessite une prise en charge minimale de C++20.</p>
+<p>Avec g++, vous avez besoin de la version 10.
+Vous pouvez tester votre version avec <span class="docutils literal">g++ <span class="pre">-v</span> |&amp; grep version</span>.
+Si vous utilisez la version 9 par défaut, allez dans le Makefile et ajoutez tout en haut:</p>
+<pre class="literal-block">CXX=g++-10</pre>
+<p>Dans la famille Debian, vous pouvez l'installer avec <span class="docutils literal">apt install <span class="pre">g++-10</span></span>.</p>
+<p>Si vous n'utilisez pas <span class="docutils literal">g++</span> (comme sur Mac) ou si vous n'êtes pas sur Linux, vous aurez peut-être des erreurs de type « unrecognized command-line option ». Dans ce cas allez dans le Makefile, cherchez l'option en question et supprimez-la.</p>
+</section>
+<section id="que-signifient-les-extensions-des-fichiers">
+<h4>Que signifient les extensions des fichiers?</h4>
+<dl class="simple">
+<dt><span class="docutils literal">.cc</span></dt>
+<dd><p>Fichier source C++, équivalent à <span class="docutils literal">.cpp</span>, mais le Makefile est prévu pour <span class="docutils literal">.cc</span>.</p>
+</dd>
+<dt><span class="docutils literal">.hh</span></dt>
+<dd><p>Fichier d'entête C++, équivalent à <span class="docutils literal">.hpp</span>, mais le Makefile est prévu pour <span class="docutils literal">.hh</span>.</p>
+</dd>
+<dt><span class="docutils literal">.d</span></dt>
+<dd><p>Fichier de dépendances généré par le compilateur. C'est un sous-Makefile créé par le compilateur à l'exécution du Makefile principal et qui indique les fichiers dont dépend la compilation d'un fichier.</p>
+</dd>
+<dt><span class="docutils literal">.o</span></dt>
+<dd><p>Fichier « objet ». C'est du code compilé mais qui contient potentiellement des appels à des fonctions non définies: si le compilateur a la déclaration d'une fonction (contenu des <span class="docutils literal">.hh</span>), il peut écrire le code d'appel de la fonction. Une fois tous les fichiers <span class="docutils literal">.o</span> créés, ils sont fusionnés par le linker qui fait le lien entre l'appel des fonctions et le code (l'adresse) des fonctions typiquement définies dans un autre <span class="docutils literal">.o</span>.</p>
+</dd>
+</dl>
+<aside class="admonition attention">
+<p class="admonition-title">Attention!</p>
+<p>Le Makefile demande la génération des <span class="docutils literal">.d</span> seulement si les <span class="docutils literal">.o</span> n'existent pas.
+Si vous supprimez les <span class="docutils literal">.d</span>, supprimez aussi les <span class="docutils literal">.o</span>.</p>
+</aside>
+<p>Voyez plus bas pour d'autres remarques sur la compilation.</p>
+</section>
+<section id="qu-est-ce-que-le-pragma-once-ecrit-en-haut-des-hh">
+<h4>Qu'est-ce que le <span class="docutils literal">#pragma once</span> écrit en haut des <span class="docutils literal">.hh</span>?</h4>
+<p>En un mot, c'est une version raccourcie des gardes:</p>
+<pre class="literal-block">#ifndef _FICHIER_
+#define _FICHIER_
+...
+#endif</pre>
+<p>Comme expliqué plus haut, pour appeler une fonction, le compilateur a besoin de sa déclaration (signature et type de retour mais sans le code).
+Dans un fichier, on va donc inclure les fichiers headers contenant les fonctions utilisées.
+Cependant, <span class="docutils literal">#include</span> est une instruction donnée au précompilateur qui remplace l'instruction par le contenu du fichier inclut.
+Ceci peut poser problème si j'inclus dans un header un header qui m'inclut.
+Dans ce cas le compilateur risque de me dire que j'ai plusieurs définitions d'une même fonction ou d'une même classe, parce qu'il lira plusieurs fois le même fichier.
+Les gardes, et aujourd'hui la pragma once, permettent d'éviter d'inclure plusieurs fois le même fichier dans une même unité de compilation.</p>
+</section>
+</section>
+<section id="board-coordinates-hh">
+<h3><span class="docutils literal">board_coordinates.hh</span></h3>
+<section id="que-signifie-constexpr">
+<h4>Que signifie <span class="docutils literal">constexpr</span>?</h4>
+<p>Le mot clé <span class="docutils literal">constexpr</span> signifie que, dans certaines conditions, le compilateur doit, dès la compilation, remplacer l'appel de la fonction par la valeur retournée, et vous prévenir si quelque chose l'empêchera toujours de le faire quel que soit le contexte.</p>
+<p>Vous ne devez pas trop vous en inquiéter pour votre projet.</p>
+</section>
+<section id="que-signifie-nodiscard">
+<h4>Que signifie <span class="docutils literal">[[nodiscard]]</span>?</h4>
+<p>Vous ne devez pas trop vous en inquiéter non plus pour votre projet.</p>
+<p>L'annotation <span class="docutils literal">[[nodiscard]]</span> demande au compilateur d'émettre un warning si la valeur de retour est ignorée.
+Son utilisation est bien expliquée sur <a class="reference external" href="https://stackoverflow.com/a/76489653">Stackoverflow</a>.
+En résumé: supposons une méthode <span class="docutils literal">date.removeOneDay()</span>.
+Si cette méthode modifie l'objet date, alors il ne faut pas mettre <span class="docutils literal">[[nodiscard]]</span>.
+Une bonne utilisation serait:</p>
+<pre class="literal-block">Date date();
+date.removeOneDay(); // (*)
+cout &lt;&lt; &quot;Hier c'était le &quot; &lt;&lt; date;</pre>
+<p>Mais si <span class="docutils literal">date.removeOneDay()</span> ne modifie pas date mais retourne un nouvel objet, alors le code précédent n'aurait pas fonctionné.
+Il aurait fallu écrire:</p>
+<pre class="literal-block">Date date();
+cout &lt;&lt; &quot;Hier c'était le &quot; &lt;&lt; date.removeOneDay();</pre>
+<p>Pour éviter la confusion, dans ce deuxième cas, il aurait fallu déclarer <span class="docutils literal">removeOneDay</span> avec <span class="docutils literal">[[nodiscard]]</span>.
+Alors, un bon compilateur aurait émis un warning à la ligne notée <span class="docutils literal">(*)</span>.</p>
+</section>
+<section id="pourquoi-est-ce-indique-que-la-classe-boardcoordinates-ne-doit-pas-etre-utilisee-pour-stocker-les-coordonnees-d-un-pixel-pourquoi-ne-pas-faire-une-classe-point-ou-coordinates">
+<h4>Pourquoi est-ce indiqué que la classe <span class="docutils literal">BoardCoordinates</span> ne doit pas être utilisée pour stocker les coordonnées d'un pixel? Pourquoi ne pas faire une classe <span class="docutils literal">Point</span> ou <span class="docutils literal">Coordinates</span>?</h4>
+<p>C'est le but des types. Cela sera plus clair avec un exemple. Si je n'ai qu'une seule classe <span class="docutils literal">Point</span> et une fonction <span class="docutils literal">reactToUserClick(Point pos)</span>, la signature ne m'indique pas si <span class="docutils literal">pos</span> est en pixel (et relativement à l'écran? à la fenêtre?), ou une cellule sur un tableau, ou un autre point. En cas d'erreur le programme compile mais ne se comporte pas comme souhaité.</p>
+<p>Si j'ai des types différents, le compilateur me dira si ce n'est pas le bon type.</p>
+</section>
+</section>
+<section id="boardview">
+<h3><span class="docutils literal">BoardView</span></h3>
+<section id="comment-utiliser-boardview-celltype">
+<h4>Comment utiliser <span class="docutils literal"><span class="pre">BoardView::CellType</span></span></h4>
+<p>L'encodage de <span class="docutils literal"><span class="pre">BoardView::CellType</span></span> utilise une façon de faire habituelle en C et C++ pour encoder plusieurs informations sur les différents bits d'un octet. Il faut penser aux valeurs dans leur représentation binaire. On a:</p>
+<pre class="literal-block">WATER     = 000
+OCEAN     = 010 // Tir loupé
+UNDAMAGED = 001 // Navire
+HIT       = 011 // Navire touché
+SUNK      = 111 // Navire touché coulé</pre>
+<p>Les trois falgs définis <span class="docutils literal">IS_SHIP</span>, <span class="docutils literal">IS_KNOWN</span> et <span class="docutils literal">IS_SUNK</span> définissent un bit. Sachant que toute valeur autre que 0 vaut vrai, on peut tester si un bit est à 1 avec <span class="docutils literal">cell_type &amp; flag</span>. Par exemple <span class="docutils literal">SUNK &amp; IS_KNOWN</span> == <span class="docutils literal">0b010</span> == <span class="docutils literal">true</span>.</p>
+</section>
+<section id="pourquoi-definir-celltype-dans-boadview-j-ai-besoin-du-type-dans-ma-classe-stockant-l-etat-de-la-partie-pas-dans-l-interface">
+<h4>Pourquoi définir <span class="docutils literal">CellType</span> dans <span class="docutils literal">BoadView</span>? J'ai besoin du type dans ma classe stockant l'état de la partie, pas dans l'interface.</h4>
+<p>À priori, le modèle stockera les informations à sa façon, quelle que soit la façon dont la vue souhaite les recevoir. Il est possible qu'il faille définir une classe <span class="docutils literal"><span class="pre">Board::CellType</span></span> qui soit un peu ou beaucoup différente de <span class="docutils literal"><span class="pre">BoardView::CellType</span></span>. Peut-être que vous n'en déclarerez pas du tout. Le code fourni reste utilisable dans tous les cas.</p>
+<p>Si vous souhaitez utiliser la même structure dans d'autres classes, il peut être intéressant de placer l'enum <span class="docutils literal">CellType</span> ailleurs, peut-être dans son propre fichier.</p>
+</section>
+<section id="pourquoi-is-ship-et-les-autres-flags-font-partie-de-l-enumeration-celltype-n-est-ce-pas-autre-chose-et-ne-faut-il-pas-alors-un-autre-type">
+<h4>Pourquoi <span class="docutils literal">IS_SHIP</span> et les autres flags font partie de l'énumération <span class="docutils literal">CellType</span>? N'est-ce pas autre chose et ne faut-il pas alors un autre type?</h4>
+<p>C'est tout à fait vrai.
+Idéalement, on devrait définir une énumération <span class="docutils literal">CellTypeFlag</span>.
+Cependant, <span class="docutils literal">SUNK &amp; IS_KNOWN</span> est alors déprécié par défaut, puisque cela demande de convertir un <span class="docutils literal">CellTypeFlag</span> en un <span class="docutils literal">CellType</span>.
+On devrait contourner ce problème un implémentant l'opérateur <span class="docutils literal">bool <span class="pre">operator&amp;(const</span> CellType t, const CellTypeFlag f)</span>.
+Ce serait une bonne chose à faire et permettrait d'utiliser le warning <span class="docutils literal"><span class="pre">-Wswitch-enum</span></span>.</p>
+</section>
+</section>
+<section id="console-board-display-hh">
+<h3><span class="docutils literal">console_board_display.hh</span></h3>
+<section id="ce-fichier-est-long-dois-je-tout-comprendre">
+<h4>Ce fichier est long, dois-je tout comprendre?</h4>
+<p>Dans un premier temps, vous n'avez pas besoin de comprendre le corps des fonctions, juste ce qu'elles font.</p>
+</section>
+<section id="pourquoi-consoleboarddisplay-length-str-alors-qu-il-existe-str-length">
+<h4>Pourquoi <span class="docutils literal"><span class="pre">ConsoleBoardDisplay::length(str)</span></span> alors qu'il existe <span class="docutils literal">str.length()</span>?</h4>
+<p>En un mot, <span class="docutils literal">str.length()</span> et <span class="docutils literal">str.size()</span> donne le nombre d'octet (de <span class="docutils literal">char</span>) dans la chaîne alors que <span class="docutils literal"><span class="pre">ConsoleBoardDisplay::length(str)</span></span> donne le nombre de caractères de la chaîne quand on suppose que la chaîne est encodée en UTF8, comme c'est le cas des fichiers fournis.</p>
+</section>
+</section>
+<section id="not-implemented-error-hh">
+<h3><span class="docutils literal">not_implemented_error.hh</span></h3>
+<section id="quand-lancer-cette-exception">
+<h4>Quand lancer cette exception?</h4>
+<p>Dans deux cas:</p>
+<ul class="simple">
+<li><p>Vous n'avez pas encore implémenté quelque chose et vous ne souhaitez pas utiliser une valeur bidon en attendant, ou</p></li>
+<li><p>Votre fonction est complète pour l'état actuel (ou actuellement prévu) de votre programme, mais elle ne gère pas tous les cas qui pourraient se présenter à l'avenir / que sa signature accepte (par exemple: la fonction reçoit un <span class="docutils literal">int</span> mais ne fonctionne bien que jusqu'à 10 000).</p></li>
+</ul>
+<p>Assurez-vous de comprendre ce deuxième point: si nous avons une fonction <span class="docutils literal">foo(int i)</span> qui a du sens pour tous les <span class="docutils literal">i</span> mais qui ne sera appelé qu'avec des <span class="docutils literal">i</span> entre 1 et 10, quelles sont les possibilités?</p>
+<ol class="arabic simple">
+<li><p>Je code tous les cas possibles, je gère bien les <em>corner cases</em>, je passe trois jours dessus, alors que le code gérant les <span class="docutils literal">i</span> de 1 à 10 m'a pris deux minutes.</p></li>
+<li><p>Je mets un joli commentaire <span class="docutils literal">/* Précondition: 1 &lt;= i &lt;= 10 */</span> et, lorsqu'un collègue (ou moi dans 3 jours) appelle la méthode avec <span class="docutils literal">11</span>, le programme plante ou, pire, ne se comporte pas comme prévu sans qu'il ne voie d'où ça vienne.</p></li>
+<li><p>Je lance une <span class="docutils literal"><span class="pre">std::logic_error</span></span> indiquant que la valeur doit être entre 1 et 10. C'est presque bon, mais je risque de croire que le problème est sérieux et qu'il va falloir changer beaucoup de choses. Peut-être que je commencerai par essayer d'éviter d'utiliser 11.</p></li>
+<li><p>Je lance une <span class="docutils literal">NotImplementedError</span> disant que le code pour <span class="docutils literal">i</span> hors de [1, 10] n'est pas fait, ce qui signifie implicitement que, pour régler le problème, il suffit de gérer le 11 à l'endroit du <span class="docutils literal">throw</span> et de lancer l'erreur pour <span class="docutils literal">i</span> hors de [1, 11].</p></li>
+</ol>
+<p>Quand vous codez, si vous ne gérez pas un cas, indiquez-le à l'endroit exact où vous devriez le gérer.</p>
+</section>
+<section id="faut-il-retirer-tous-les-throw-notimplementederror-pour-le-projet-final">
+<h4>Faut-il retirer tous les <span class="docutils literal">throw NotImplementedError</span> pour le projet final?</h4>
+<p>Non, voyez la question précédente.</p>
+</section>
+</section>
+<section id="dummy-board-hh">
+<h3><span class="docutils literal">dummy_board.hh</span></h3>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p><span class="docutils literal">dummy_board.hh</span> étant du code temporaire, la qualité de code est un peu plus basse. Par exemple, il faudrait au moins avoir le corps des fonctions dans un fichier <span class="docutils literal">.cc</span>.</p>
+</aside>
+<section id="pourquoi-dummyboard-contient-un-weak-ptr-vers-un-boarddisplay-et-non-un-shared-ptr">
+<h4>Pourquoi <span class="docutils literal">DummyBoard</span> contient un <span class="docutils literal">weak_ptr</span> (vers un <span class="docutils literal">BoardDisplay</span>) et non un <span class="docutils literal">shared_ptr</span>?</h4>
+<p><span class="docutils literal">BoardDisplay</span> contient un <span class="docutils literal">shared_ptr</span> vers le <span class="docutils literal">DummyBoard</span> (même deux).
+Si <span class="docutils literal">DummyBoard</span> avait un <span class="docutils literal">shared_ptr</span> vers le <span class="docutils literal">BoardDisplay</span>, alors les destructeurs de ces deux objets ne seraient jamais appelés.</p>
+<p>Imaginons les pointeurs partagés suivants:</p>
+<pre class="literal-block">R --&gt; A --&gt; B --&gt; C
+      ^- E &lt;-- D &lt;+</pre>
+<p>Au moment où R est supprimé, on s'attend à ce que A, B, C, D et E soient supprimés.
+Cependant, le pointeur vers A ne détruit pas A puisqu'il y a encore une personne qui pointe vers lui.
+Donc B n'est pas supprimé.
+Donc C n'est pas supprimé…
+E n'étant pas supprimé, on ne supprime pas A.
+On a un « cycle orphelin ».
+Pour casser le cycle, on donne à E un pointeur faible vers A.</p>
+<p>Le pointeur faible est initialisé avec un pointeur partagé.
+La ressource pointée par le pointeur faible n'est pas directement accessible.
+Il faut d'abord reconvertir en pointeur partagé avec <span class="docutils literal">.lock()</span>.
+Si l'objet pointé existe toujours, le pointeur obtenu n'est pas nul et on peut s'en servir:</p>
+<pre class="literal-block">if (auto p = weak_p.lock()) {
+   p-&gt;foo();
+}</pre>
+</section>
+</section>
+<section id="compilation">
+<h3>Compilation</h3>
+<section id="que-contient-le-makefile-faut-il-l-adapter-au-projet">
+<h4>Que contient le Makefile? Faut-il l'adapter au projet?</h4>
+<p><span class="docutils literal">make</span>, <span class="docutils literal">make default</span> et <span class="docutils literal">make battleship</span> créer le programme <span class="docutils literal">battleship</span>.</p>
+<p><span class="docutils literal">make run</span> lance <span class="docutils literal">./battleship 2&gt; <span class="pre">/tmp/battleship-err</span></span>.
+Nous vous conseillons d'avoir une autre console avec <span class="docutils literal">tail <span class="pre">-f</span> <span class="pre">/tmp/battleship-err</span></span> qui tourne pour voir les messages d'erreurs.</p>
+<p><span class="docutils literal">make clean</span> supprime les fichiers <span class="docutils literal">.o</span> et <span class="docutils literal">.d</span>.</p>
+<p>Vous aurez aussi rapidement besoin de compiler un client et un serveur, ce qui nécessite de changer le Makefile</p>
+<p>Pour l'interface graphique, vous aurez sûrement des options <span class="docutils literal"><span class="pre">-l</span></span> à ajouter dans <span class="docutils literal">LDLIBS</span>.</p>
+</section>
+</section>
+</section>
+</main>
+</body>
+</html>
