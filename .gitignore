@@ -31,3 +31,8 @@
 *.out
 *.app
 battleship
+
+# TeXLive compilation files
+*.log
+*.aux
+*.toc
