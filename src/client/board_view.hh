@@ -15,6 +15,9 @@
  * the information it wants to have about the board. */
 class BoardView {
  protected:
+  // std::shared_ptr<Board> _board; 
+
+
   BoardView(const BoardView&)            = default;
   BoardView(BoardView&&)                 = default;
   BoardView& operator=(const BoardView&) = default;

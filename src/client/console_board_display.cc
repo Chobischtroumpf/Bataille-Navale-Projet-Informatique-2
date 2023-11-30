@@ -26,7 +26,7 @@ string ConsoleBoardDisplay::createHeader() const {
   //                   ╚════════════╝
 
   // 2de line:
-  string who  = _board->myTurn() ? "Your " : "Their";
+  string who  = _board->myTurn() ? "Player 1's " : "Player 2's";
   string turn = "║ " + who + " Turn ║";
 
   // margin:
@@ -47,8 +47,8 @@ string ConsoleBoardDisplay::createHeader() const {
 }
 
 string ConsoleBoardDisplay::createGridLabel(bool my_side) const {
-  string your        = "Your  Fleet";
-  string their       = "Their Fleet";
+  string your        = "Player 1";
+  string their       = "Player 2";
   size_t label_size  = std::max(length(your), length(their));
   size_t margin_size = label_size > _grid_width ? 0 : (_grid_width - label_size) / 2;
   string margin(margin_size, ' ');
@@ -78,6 +78,8 @@ vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
     for (unsigned j = 0; j < _board->width(); ++j) {
       string              border  = "│";
       BoardView::CellType content = _board->cellType(my_side, {j, i});
+// check is my_side == false et content == BoardView::UNDAMAGED alors on affiche BoardView::WATER
+
       if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
         BoardView::CellType previous = _board->cellType(my_side, {j - 1, i});
         border                       = toString(_board->best(content, previous));
@@ -145,9 +147,10 @@ void ConsoleBoardDisplay::clearBadInput() {
 }
 
 void ConsoleBoardDisplay::handleInput() {
-  if (!_board->myTurn()) {
-    throw NotImplementedError("handleInput() when not my turn.");
-  }
+  
+  // if (!_board->myTurn()) {
+  //   throw NotImplementedError("handleInput() when not my turn.");
+  // }
 
   for (bool fired = false; !fired; clearBadInput()) {
     BoardCoordinates coordinates{_board->width(), _board->height()};
@@ -160,11 +163,14 @@ void ConsoleBoardDisplay::handleInput() {
     }
     if (!(std::cin && coordinates.x() < _board->width() &&
                       coordinates.y() < _board->height())) {
+//peut etre afficher un message d'erreur
       continue;
     }
 
     fired = _control->fire(coordinates);
   }
+  //methode d'affichage d'ecran temporaire pour le changement de tour
+
 }
 
 void ConsoleBoardDisplay::update() {
