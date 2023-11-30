@@ -61,9 +61,9 @@ class DummyBoard final : public BoardView, public BoardControl {
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
   };
   vector<vector<Cell>> _their_side{
-      {{}, {}, {}, {}, {}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {}, {}, {}, {}},
+      {{UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {}, {UNDAMAGED, 1}, {}, {UNDAMAGED, 1}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {SUNK, 2}, {UNDAMAGED, 1}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {OCEAN, nullopt}, {}, {}, {}, {}, {}, {HIT, 3}, {HIT, 3}, {}},

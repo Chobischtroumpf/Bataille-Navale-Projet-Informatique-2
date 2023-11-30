@@ -79,12 +79,19 @@ vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
       string              border  = "│";
       BoardView::CellType content = _board->cellType(my_side, {j, i});
 // check is my_side == false et content == BoardView::UNDAMAGED alors on affiche BoardView::WATER
-
-      if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
-        BoardView::CellType previous = _board->cellType(my_side, {j - 1, i});
-        border                       = toString(_board->best(content, previous));
-      }
-      oss << border << toString(content);
+       
+      if (_board->myTurn() && !my_side && content == BoardView::UNDAMAGED){
+        oss << border << toString(BoardView::WATER);
+      }else if (!_board->myTurn() && my_side && content == BoardView::UNDAMAGED){
+        oss << border << toString(BoardView::WATER);
+      }else{
+        if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
+          BoardView::CellType previous = _board->cellType(my_side, {j - 1, i});
+          border                       = toString(_board->best(content, previous));
+        }
+        oss << border << toString(content);
+      }     
+      
     }
     oss << "│";
     grid.emplace_back(oss.str());
@@ -187,3 +194,4 @@ void ConsoleBoardDisplay::update() {
   }
   _out << std::flush;
 }
+
