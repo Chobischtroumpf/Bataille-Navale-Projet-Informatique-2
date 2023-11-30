@@ -153,34 +153,44 @@ void ConsoleBoardDisplay::clearBadInput() {
   update();
 }
 
-void ConsoleBoardDisplay::handleInput() {
+void ConsoleBoardDisplay::printChangeTurn() {
+  string your        = "Player 1";
+  string their       = "Player 2";
+  string tmp;
+
+  std::system("clear");
   
-  // if (!_board->myTurn()) {
-  //   throw NotImplementedError("handleInput() when not my turn.");
-  // }
+  string who = _board->myTurn() ? your : their;
+  std::cout << who << std::endl << "Please press enter to continue..." << std::flush;
+  std::cerr << "printChangeTurn" << std::endl;
+  // std::getline(std::cin, tmp);
+  std::cin >> tmp;
+  // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void ConsoleBoardDisplay::handleInput() {
 
   for (bool fired = false; !fired; clearBadInput()) {
     BoardCoordinates coordinates{_board->width(), _board->height()};
-    std::cin >> coordinates;
+    _in >> coordinates;
 
     if (std::cin.eof()) {
       _out << std::endl;
       _control->quit();
       return;
     }
-    if (!(std::cin && coordinates.x() < _board->width() &&
+    if (!(_in && coordinates.x() < _board->width() &&
                       coordinates.y() < _board->height())) {
-//peut etre afficher un message d'erreur
       continue;
     }
 
     fired = _control->fire(coordinates);
   }
-  //methode d'affichage d'ecran temporaire pour le changement de tour
 
 }
 
 void ConsoleBoardDisplay::update() {
+  //methode d'affichage d'ecran temporaire pour le changement de tour
   std::system("clear");  // Do not use std::system in other contexts
   _out << createHeader();
   printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
@@ -190,7 +200,8 @@ void ConsoleBoardDisplay::update() {
   if (_board->myTurn()) {
     printSideBySide(createMapKey(), createPrompt());
   } else {
-    print(createMapKey());
+    printSideBySide(createMapKey(), createPrompt());
+    // print(createMapKey());
   }
   _out << std::flush;
 }

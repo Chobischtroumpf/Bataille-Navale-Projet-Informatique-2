@@ -106,7 +106,6 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   void printSideBySide(vector<string> left, vector<string> right);
 
   // Input methods
-
   /** clear fail bits of _in, ignore until next '\n', redraw */
   void clearBadInput();
 
@@ -140,6 +139,9 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   ConsoleBoardDisplay(ConsoleBoardDisplay&&)                       = default;
   ConsoleBoardDisplay& operator=(const ConsoleBoardDisplay& other) = delete;
   ConsoleBoardDisplay& operator=(ConsoleBoardDisplay&&)            = delete;
+
+  /** prints a temporary screen when changing turns, until next '\n' (enter) */
+  void printChangeTurn() override;
 
   /** Produces a redraw */
   void update() override;

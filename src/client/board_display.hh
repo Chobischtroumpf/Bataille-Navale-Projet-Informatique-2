@@ -11,12 +11,17 @@ class BoardDisplay {
  public:
   BoardDisplay() = default;
 
+
+  /** To call before each new turn */
+  virtual void printChangeTurn()  = 0;
+
+
   /** To call when the display is to be updated. Can be called after an
    * event or at regular intervals. */
-  virtual void update()      = 0;
+  virtual void update()           = 0;
   /** To call when the BoardControl is ready to receive an input from the view. The exact
    * meaning have to be precised in the concrete classes. */
-  virtual void handleInput() = 0;
+  virtual void handleInput()      = 0;
 
   // Make destructor virtual
   virtual ~BoardDisplay() = default;

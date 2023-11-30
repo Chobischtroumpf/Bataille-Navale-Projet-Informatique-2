@@ -132,14 +132,16 @@ class DummyBoard final : public BoardView, public BoardControl {
     return shipId(my_side, first).has_value() &&
            shipId(my_side, first) == shipId(my_side, second);
   }
+
   [[nodiscard]] bool fire(const BoardCoordinates position) override {
-    if (cellType(false, position) & BoardView::IS_KNOWN) {
+    if (cellType(!_my_turn, position) & BoardView::IS_KNOWN) {
       std::cerr << "DummyBoard received an INvalid fire target: " << position << '\n';
       return false;  // Invalid target
     } else {
       std::cerr << "DummyBoard received a valid fire target: " << position << '\n';
-      _my_turn = false;
+      _my_turn = !_my_turn;
       if (auto p = _display.lock()) {
+        p->printChangeTurn();
         p->update();
       }
       return true;
