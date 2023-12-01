@@ -142,7 +142,7 @@ class DummyBoard final : public BoardView, public BoardControl {
       _my_turn = !_my_turn;
       if (auto p = _display.lock()) {
         p->printChangeTurn();
-        p->update();
+        //p->update();
       }
       return true;
     }
