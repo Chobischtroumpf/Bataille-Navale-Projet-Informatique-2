@@ -31,3 +31,9 @@
 *.out
 *.app
 battleship
+
+# Other
+Makefile
+test.cc
+gen_board.hh
+*.json
