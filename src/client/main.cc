@@ -8,7 +8,7 @@ int main() {
   // Create the fake game (for testing purposes)
   std::shared_ptr<DummyBoard>          board = std::make_shared<DummyBoard>();
 
-  // Create the display and conect it to the game
+  // Create the display and connect it to the game
   std::shared_ptr<ConsoleBoardDisplay> display =
       std::make_shared<ConsoleBoardDisplay>(std::cout, std::cin, board, board);
 
