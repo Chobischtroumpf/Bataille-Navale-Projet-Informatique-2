@@ -17,6 +17,9 @@ class BoardCoordinates final {
   size_t _y;
 
  public:
+  // Default constructor
+  constexpr BoardCoordinates() : _x{0}, _y{0} {}
+  
   constexpr BoardCoordinates(size_t x, size_t y) : _x{x}, _y{y} {}
 
   [[nodiscard]] constexpr inline size_t x() const { return _x; }
@@ -26,6 +29,11 @@ class BoardCoordinates final {
     _x = x;
     _y = y;
   }
+
+  //Supercharge the == operator
+  bool operator==(const BoardCoordinates& other) const {
+        return x() == other.x() && y() == other.y();
+    }
 
   /** Whether c is in [A-Za-z] */
   constexpr static bool isalpha(char c) {
@@ -89,3 +97,4 @@ std::ostream& operator<<(std::ostream& os, const BoardCoordinates& bc);
 
 /** Extract bc from os */
 std::istream& operator>>(std::istream& is, BoardCoordinates& bc);
+
