@@ -11,6 +11,14 @@
 namespace ranges = std::ranges;
 using std::string;
 
+string operator*(const string& lhs, size_t rhs) {
+  string result;
+  result.reserve(lhs.size() * rhs);
+  for (size_t i = 0; i < rhs; ++i) {
+    result += lhs;
+  }
+  return result;
+}
 
 string ConsoleBoardDisplay::createHeader() const {
   //                   ╔════════════╗
