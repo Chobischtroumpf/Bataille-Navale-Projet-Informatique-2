@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-// #include "test.hh"
 #include "board_control.hh"
 #include "board_display.hh"
 #include "board_view.hh"

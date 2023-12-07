@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "console_board_display.hh"
+#include "console_board_gen_display.hh"
 #include "dummy_board.hh"
 
 int main() {
@@ -9,8 +10,8 @@ int main() {
   std::shared_ptr<DummyBoard>          board = std::make_shared<DummyBoard>();
 
   // Create the display and connect it to the game
-  std::shared_ptr<ConsoleBoardDisplay> display =
-      std::make_shared<ConsoleBoardDisplay>(std::cout, std::cin, board, board);
+  std::shared_ptr<ConsoleBoardGenDisplay> display =
+      std::make_shared<ConsoleBoardGenDisplay>(std::cout, std::cin, board, board);
 
   // Connect the game to the display
   board->setDisplay(display);
