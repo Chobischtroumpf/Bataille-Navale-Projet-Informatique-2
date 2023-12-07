@@ -31,3 +31,14 @@
 *.out
 *.app
 battleship
+
+# Other
+Makefile
+test.cc
+gen_board.hh
+*.json
+
+# TeXLive compilation files
+*.log
+*.aux
+*.toc
