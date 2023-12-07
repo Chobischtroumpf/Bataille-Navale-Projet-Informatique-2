@@ -12,6 +12,7 @@
 #include "board_display.hh"
 #include "board_view.hh"
 #include "board_coordinates.hh"
+#include "ship_coordinates.hh"
 
 using std::nullopt;
 using std::vector;
@@ -43,16 +44,6 @@ class Board final : public BoardView {
             [[nodiscard]] constexpr inline std::optional<int> shipId() const { return _ship_id; }
     };
 
-    struct ShipCoordinates {
-        BoardCoordinates anchor;
-        int length;
-        bool vertical;
-
-        // Constructor for initialization
-        ShipCoordinates(const BoardCoordinates& anchor, int length, bool vertical)
-            : anchor(anchor), length(length), vertical(vertical) {}
-    };
-    
     class Ship {
         public:
             bool state{false}; // True for operational, false for sunk
@@ -229,6 +220,36 @@ class Board final : public BoardView {
            shipId(my_side, first) == shipId(my_side, second);
   }
 
+    [[nodiscard]] std::vector<Cell> getNeighbors(BoardCoordinates coord) {
+        std::vector<Cell> neighbors;
+        bool my_side = myTurn() ? true : false;
+        if (coord.x() > 0) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.y(), coord.x()-1)));
+        }
+        if (coord.x() < width()) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.y(), coord.x()+1)));
+        }
+        if (coord.y() > 0) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x())));
+            if (coord.x() > 0) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x()-1)));
+            }
+            if (coord.x() < width()) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x()+1)));
+            }
+        }
+        if (coord.y() < height()) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x())));
+            // Diagonale gauche
+            if (coord.x() > 0) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x()-1)));
+            }
+            if (coord.x() < width()) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x()+1)));
+            }
+        }
+        return neighbors;
+    }
   void changeTurn() {_my_turn = !_my_turn;}
   
   ~Board() override = default;

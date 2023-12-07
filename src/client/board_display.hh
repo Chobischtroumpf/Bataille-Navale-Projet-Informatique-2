@@ -18,6 +18,8 @@ class BoardDisplay {
    * meaning have to be precised in the concrete classes. */
   virtual void handleInput() = 0;
 
+  virtual void printChangeTurn() =0;
+
   // Make destructor virtual
   virtual ~BoardDisplay() = default;
 };

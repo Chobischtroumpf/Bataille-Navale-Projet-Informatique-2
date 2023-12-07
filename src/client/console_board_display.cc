@@ -144,6 +144,22 @@ void ConsoleBoardDisplay::clearBadInput() {
   update();
 }
 
+void ConsoleBoardDisplay::printChangeTurn() {
+    string your        = "Player 1";
+    string their       = "Player 2";
+    string tmp;
+
+    std::system("clear");
+
+    string who = _board->myTurn() ? your : their;
+    std::cout << who << std::endl << "Please press enter to continue..." << std::flush;
+    std::cerr << "printChangeTurn" << std::endl;
+    // std::getline(std::cin, tmp);
+    //std::cin >> tmp;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+
 void ConsoleBoardDisplay::handleInput() {
   if (!_board->myTurn()) {
     throw NotImplementedError("handleInput() when not my turn.");
@@ -163,7 +179,11 @@ void ConsoleBoardDisplay::handleInput() {
       continue;
     }
 
-    fired = _control->fire(coordinates);
+    ShipCoordinates coord;
+    coord.anchor = BoardCoordinates(coordinates.x, coordinates.y);
+    coord.vertical = true;
+    coord.length = 3;
+    fired = _control->placeShip();
   }
 }
 
@@ -177,7 +197,7 @@ void ConsoleBoardDisplay::update() {
   if (_board->myTurn()) {
     printSideBySide(createMapKey(), createPrompt());
   } else {
-    print(createMapKey());
+      printSideBySide(createMapKey(), createPrompt());
   }
   _out << std::flush;
 }

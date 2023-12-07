@@ -3,6 +3,7 @@
 #include "board_coordinates.hh"
 #include "board.hh"
 #include "board_display.hh"
+#include "ship_coordinates.hh"
 #include <memory>
 #include <utility>
 
@@ -11,6 +12,8 @@ class BoardControl {
 private:
     std::shared_ptr<Board> _board;
     std::shared_ptr<BoardDisplay> _display;
+
+    virtual bool checkShipPosition(ShipCoordinates coord);
 public:
   BoardControl(const BoardControl&)            = default;
   BoardControl(BoardControl&&)                 = default;
@@ -23,6 +26,9 @@ public:
   /** Inform that the player chose to fire on this cell.
    * Return true if the action is valid (this cell was not targeted previously). */
   virtual bool fire(BoardCoordinates coord);
+
+  virtual bool placeShip(ShipCoordinates coord);
+
   /** Inform that the player quit the game. */
   virtual void quit();
 
