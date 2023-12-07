@@ -12,15 +12,19 @@ using std::string;
  * {0, 0} is top-left.
  *
  * NOTE: This is not the coordinates of a pixel on the screen. */
-class BoardCoordinates final {
+class BoardCoordinates {
+ protected:
   size_t _x;
   size_t _y;
 
  public:
   // Default constructor
-  constexpr BoardCoordinates() : _x{0}, _y{0} {}
+  BoardCoordinates() : _x{0}, _y{0} {}
   
-  constexpr BoardCoordinates(size_t x, size_t y) : _x{x}, _y{y} {}
+  BoardCoordinates(size_t x, size_t y) : _x{x}, _y{y} {}
+
+  // Destructor
+  virtual ~BoardCoordinates() = default;
 
   [[nodiscard]] constexpr inline size_t x() const { return _x; }
   [[nodiscard]] constexpr inline size_t y() const { return _y; }
@@ -75,10 +79,10 @@ class BoardCoordinates final {
   }
 
   /** {0, 0} returns "A1" */
-  [[nodiscard]] inline string toString() const { return xToString() + yToString(); }
+  [[nodiscard]] virtual inline string toString() const { return xToString() + yToString(); }
 
   /** returns the x / letter part of toString() */
-  [[nodiscard]] inline string xToString() const {
+  [[nodiscard]] virtual inline string xToString() const {
     std::string result{};
     size_t      n = _x + 1;
     while (n > 0) {
@@ -89,7 +93,7 @@ class BoardCoordinates final {
   }
 
   /** returns the y / number part of toString() */
-  [[nodiscard]] inline string yToString() const { return std::to_string(_y + 1); }
+  [[nodiscard]] virtual inline string yToString() const { return std::to_string(_y + 1); }
 };
 
 /** Put bc.toString() on os */

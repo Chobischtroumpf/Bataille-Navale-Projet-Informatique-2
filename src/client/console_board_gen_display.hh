@@ -4,6 +4,7 @@
 #include <cmath>
 #include <memory>
 #include <ostream>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -21,8 +22,8 @@ using std::vector;
  *
  * A grid is a side of the board as represented on the screen.
  * Draw both sides of the board as two grids side by side. */
-class ConsoleBoardDisplay final : public BoardDisplay {
-  /** ConsoleBoardDisplay's methods must check they support this */
+class ConsoleBoardGenDisplay final : public BoardDisplay {
+  /** ConsoleBoardGenDisplay's methods must check they support this */
   std::ostream&                          _out;      //< Where to print
   std::istream&                          _in;       //< Where to read
   std::shared_ptr<BoardView const> const _board;    //< What to print
@@ -62,29 +63,38 @@ class ConsoleBoardDisplay final : public BoardDisplay {
       case BoardView::SUNK:
         return "░";
       default:
-        throw NotImplementedError("ConsoleBoardDisplay unknown CellType");
+        throw NotImplementedError("ConsoleBoardGenDisplay unknown CellType");
     }
   }
 
-  /** Create a header indicating who should play */
+  /** Create a header indicating who is setting the boats, and which boat they are setting */
   [[nodiscard]] string createHeader() const;
 
-  /** Create a grid label: Your / Their Fleet */
+  /** Create a grid label: Player 1 / Player 2 Fleet */
   [[nodiscard]] string createGridLabel(bool my_side) const;
 
   /** Create grid for a given side, each string is a line without ending '\n' */
   [[nodiscard]] vector<string> createGrid(bool my_side) const;
 
+  [[nodiscard]] static inline std::string repeat(int n) {
+    std::ostringstream os;
+    for(int i = 0; i < n; i++)
+        os << toString(BoardView::UNDAMAGED);
+    return os.str();
+  }
+
   /** Create map key, each string is a line without ending '\n'
    * Used by the constructor to init _map_key.
    * Outside constructor, use the attribute instead. */
-  [[nodiscard]] vector<string> createMapKey() {
-    vector<string> map_key;
-    map_key.emplace_back(" > " + toString(BoardView::OCEAN) + " Ocean          <");
-    map_key.emplace_back(" > " + toString(BoardView::UNDAMAGED) + " Undamaged ship <");
-    map_key.emplace_back(" > " + toString(BoardView::HIT) + " Hit ship       <");
-    map_key.emplace_back(" > " + toString(BoardView::SUNK) + " Sunk ship      <");
-    return map_key;
+  [[nodiscard]] vector<string> createBoatsKey() {
+    vector<string> boat_key;
+
+
+    boat_key.emplace_back(" > " + repeat(2) + (_board->nbrBoats()>0 ? " × 0": " × 1") + "      " );
+    boat_key.emplace_back(" > " + repeat(3) + (_board->nbrBoats()>1 ? (_board->nbrBoats()>2? " × 0": " × 1"): " × 2") + "     " );
+    boat_key.emplace_back(" > " + repeat(4) + (_board->nbrBoats()>3 ? " × 0": " × 1") + "      " );
+    boat_key.emplace_back(" > " + repeat(5) + (_board->nbrBoats()>4 ? " × 0": " × 1") + "      " );
+    return boat_key;
   }
 
   /** Create coordinates prompt, each string is a line without ending '\n'.
@@ -111,16 +121,16 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   void clearBadInput();
 
  public:
-  ConsoleBoardDisplay() = delete;
+  ConsoleBoardGenDisplay() = delete;
 
   /** @param out: where to print
    * @param in: from where to read
    * @param board: what to print, must inherit from BoardView
    * @param control: who to inform of user actions.
    *
-   * WARNING: ConsoleBoardDisplay does not support a change in board->height() or
+   * WARNING: ConsoleBoardGenDisplay does not support a change in board->height() or
    * board->width() after construction. */
-  ConsoleBoardDisplay(std::ostream& out, std::istream& in,
+  ConsoleBoardGenDisplay(std::ostream& out, std::istream& in,
                       std::shared_ptr<BoardView const> board,
                       std::shared_ptr<BoardControl>    control)
       : _out{out},
@@ -134,12 +144,12 @@ class ConsoleBoardDisplay final : public BoardDisplay {
         _gap{"   "},
         _grid_width{_number_width + 1 + (1 + _letter_width) * _board->width() + 1},
         _width{_grid_width * 2 + _gap.size()},
-        _map_key{createMapKey()} {}
+        _map_key{createBoatsKey()} {}
 
-  ConsoleBoardDisplay(const ConsoleBoardDisplay&)                  = default;
-  ConsoleBoardDisplay(ConsoleBoardDisplay&&)                       = default;
-  ConsoleBoardDisplay& operator=(const ConsoleBoardDisplay& other) = delete;
-  ConsoleBoardDisplay& operator=(ConsoleBoardDisplay&&)            = delete;
+  ConsoleBoardGenDisplay(const ConsoleBoardGenDisplay&)                  = default;
+  ConsoleBoardGenDisplay(ConsoleBoardGenDisplay&&)                       = default;
+  ConsoleBoardGenDisplay& operator=(const ConsoleBoardGenDisplay& other) = delete;
+  ConsoleBoardGenDisplay& operator=(ConsoleBoardGenDisplay&&)            = delete;
 
   /** prints a temporary screen when changing turns, until next '\n' (enter) */
   void printChangeTurn() override;
@@ -151,6 +161,5 @@ class ConsoleBoardDisplay final : public BoardDisplay {
    * BoardControl::fire. */
   void handleInput() override;
 
-  ~ConsoleBoardDisplay() override = default;
+  ~ConsoleBoardGenDisplay() override = default;
 };
-

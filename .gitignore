@@ -36,9 +36,10 @@ battleship
 Makefile
 test.cc
 gen_board.hh
-*.json
+*/*.json
 
 # TeXLive compilation files
 *.log
 *.aux
 *.toc
+.vscode/

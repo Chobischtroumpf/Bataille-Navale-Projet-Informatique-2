@@ -72,6 +72,8 @@ class BoardView {
    * the same ship if the two cells are not adjacent. */
   [[nodiscard]] virtual bool     isSameShip(bool my_side, BoardCoordinates first,
                                             BoardCoordinates second) const = 0;
+  [[nodiscard]] virtual uint8_t  nbrBoats() const = 0;
+
 
   // Make destructor virtual
   virtual ~BoardView() = default;

@@ -117,13 +117,13 @@ class DummyBoard final : public BoardView, public BoardControl {
       p->update();
     }
   }
-
-  [[nodiscard]] bool     myTurn() const override { return _my_turn; }
-  [[nodiscard]] bool     isFinished() const override { return _is_finished; }
-  [[nodiscard]] bool     isVictory() const override { return _is_victory; }
-  [[nodiscard]] size_t   width() const override { return _my_side.at(0).size(); }
-  [[nodiscard]] size_t   height() const override { return _my_side.size(); }
-  [[nodiscard]] CellType cellType(bool             my_side,
+  [[nodiscard]] uint8_t   nbrBoats() const override { return 2; }
+  [[nodiscard]] bool      myTurn() const override { return _my_turn; }
+  [[nodiscard]] bool      isFinished() const override { return _is_finished; }
+  [[nodiscard]] bool      isVictory() const override { return _is_victory; }
+  [[nodiscard]] size_t    width() const override { return _my_side.at(0).size(); }
+  [[nodiscard]] size_t    height() const override { return _my_side.size(); }
+  [[nodiscard]] CellType  cellType(bool             my_side,
                                   BoardCoordinates position) const override {
     return get(my_side, position).type();
   }

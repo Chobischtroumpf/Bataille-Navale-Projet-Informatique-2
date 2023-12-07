@@ -5,14 +5,22 @@
 #include <sstream>
 #include <string>
 
-#include "console_board_display.hh"
+#include "console_board_gen_display.hh"
 #include "not_implemented_error.hh"
 
 namespace ranges = std::ranges;
 using std::string;
 
+string operator*(const string& lhs, size_t rhs) {
+  string result;
+  result.reserve(lhs.size() * rhs);
+  for (size_t i = 0; i < rhs; ++i) {
+    result += lhs;
+  }
+  return result;
+}
 
-string ConsoleBoardDisplay::createHeader() const {
+string ConsoleBoardGenDisplay::createHeader() const {
   //                   ╔════════════╗
   //                   ║ Your  Turn ║
   //                   ╚════════════╝
@@ -38,7 +46,7 @@ string ConsoleBoardDisplay::createHeader() const {
   return oss.str();
 }
 
-string ConsoleBoardDisplay::createGridLabel(bool my_side) const {
+string ConsoleBoardGenDisplay::createGridLabel(bool my_side) const {
   string your        = "Player 1";
   string their       = "Player 2";
   size_t label_size  = std::max(length(your), length(their));
@@ -47,7 +55,7 @@ string ConsoleBoardDisplay::createGridLabel(bool my_side) const {
   return margin + (my_side ? your : their);
 }
 
-vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
+vector<string> ConsoleBoardGenDisplay::createGrid(bool my_side) const {
   vector<string>     grid;
   std::ostringstream oss("    ", std::ios_base::ate);
 
@@ -108,14 +116,14 @@ vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
   return grid;
 }
 
-vector<string> ConsoleBoardDisplay::createPrompt() const {
+vector<string> ConsoleBoardGenDisplay::createPrompt() const {
   vector<string> prompt(_map_key.size() - 2, "");  // Add padding
   prompt.emplace_back(">> SELECT TARGET <<");
   prompt.emplace_back(">> ");
   return prompt;
 }
 
-void ConsoleBoardDisplay::printSideBySide(vector<string> left, vector<string> right) {
+void ConsoleBoardGenDisplay::printSideBySide(vector<string> left, vector<string> right) {
   size_t left_width = std::max(
       _grid_width,
       ranges::max(left, {}, [](const string& s) noexcept { return length(s); }).size());
@@ -143,19 +151,19 @@ void ConsoleBoardDisplay::printSideBySide(vector<string> left, vector<string> ri
   }
 }
 
-void ConsoleBoardDisplay::print(const vector<string>& lines) {
+void ConsoleBoardGenDisplay::print(const vector<string>& lines) {
   for (const string& line : lines) {
     _out << line << '\n';
   }
 }
 
-void ConsoleBoardDisplay::clearBadInput() {
+void ConsoleBoardGenDisplay::clearBadInput() {
   std::cin.clear();
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   update();
 }
 
-void ConsoleBoardDisplay::printChangeTurn() {
+void ConsoleBoardGenDisplay::printChangeTurn() {
   string your        = "Player 1";
   string their       = "Player 2";
   string tmp;
@@ -170,7 +178,7 @@ void ConsoleBoardDisplay::printChangeTurn() {
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void ConsoleBoardDisplay::handleInput() {
+void ConsoleBoardGenDisplay::handleInput() {
 
   for (bool fired = false; !fired; clearBadInput()) {
     BoardCoordinates coordinates{_board->width(), _board->height()};
@@ -191,7 +199,7 @@ void ConsoleBoardDisplay::handleInput() {
 
 }
 
-void ConsoleBoardDisplay::update() {
+void ConsoleBoardGenDisplay::update() {
   //methode d'affichage d'ecran temporaire pour le changement de tour
   std::system("clear");  // Do not use std::system in other contexts
   _out << createHeader();
@@ -200,9 +208,9 @@ void ConsoleBoardDisplay::update() {
   printSideBySide(createGrid(true), createGrid(false));
   _out << '\n';
   if (_board->myTurn()) {
-    printSideBySide(createMapKey(), createPrompt());
+    printSideBySide(createBoatsKey(), createPrompt());
   } else {
-    printSideBySide(createMapKey(), createPrompt());
+    printSideBySide(createBoatsKey(), createPrompt());
     // print(createMapKey());
   }
   _out << std::flush;
