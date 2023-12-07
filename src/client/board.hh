@@ -78,7 +78,7 @@ class Board final : public BoardView {
         private:
             static constexpr size_t MAX_TILES = 10; // A limit to the maximum size of ships
             BoardCoordinates tiles[MAX_TILES];
-};
+    };
 
 
     
@@ -172,8 +172,8 @@ class Board final : public BoardView {
     }
 
     void fire(const BoardCoordinates& coords){
-        Cell& cell = _my_side[coords.y()][coords.x()];
-        if (cell.type() == UNDAMAGED) {
+        Cell& cell = myTurn() ? _their_side[coords.y()][coords.x()] : _my_side[coords.y()][coords.x()];
+        if (cell.type() == WATER) {
             cell.setType(HIT);
         }
     }
@@ -209,7 +209,8 @@ class Board final : public BoardView {
   void setDisplay(std::weak_ptr<BoardDisplay> display) {
     _display = std::forward<std::weak_ptr<BoardDisplay>>(display);
     if (auto p = _display.lock()) {
-      p->update();
+        p->printChangeTurn();
+        p->update();
     }
   }
 
@@ -227,6 +228,8 @@ class Board final : public BoardView {
     return shipId(my_side, first).has_value() &&
            shipId(my_side, first) == shipId(my_side, second);
   }
+
+  void changeTurn() {_my_turn = !_my_turn;}
   
   ~Board() override = default;
 };
