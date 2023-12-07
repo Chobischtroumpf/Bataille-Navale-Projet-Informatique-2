@@ -21,27 +21,45 @@ inline string operator*(const string& lhs, size_t rhs) {
 }
 
 string ConsoleBoardGenDisplay::createHeader() const {
-  //                   ╔════════════╗
-  //                   ║ Your  Turn ║
-  //                   ╚════════════╝
-
+  //                   ╔═══════════════╗
+  //                   ║ Ship to place ║
+  //                   ╚═══════════════╝
+  
+  string ship;
+  switch (_board->nbrBoats()){
+      case 0:
+         ship = repeat(2);
+         break;
+      case 1:
+      case 2:
+          ship = repeat(3);
+          break;
+      case 3:
+          ship = repeat(4);
+          break;
+      case 4:
+          ship = repeat(5);
+          break;
+      default:
+         break; 
+  }
+  
   // 2de line:
-  string who  = _board->myTurn() ? "Player 1's " : "Player 2's";
-  string turn = "║ " + who + " Turn ║";
+  string ship_to_place = "║ Ship to place : " + ship + " ║";
 
   // margin:
-  size_t margin_size = length(turn) > _width ? 0 : (_width - length(turn)) / 2;
+  size_t margin_size = length(ship_to_place) > _width ? 0 : (_width - length(ship_to_place)) / 2;
   string margin(margin_size, ' ');
 
   // 1st and 3rd line:
   std::ostringstream oss;
-  oss << (string("═") * (length(turn) - 2));
+  oss << (string("═") * (length(ship_to_place) - 2));
   string line = oss.str();
   oss.str("");  // clear oss
 
   // Result:
   oss << margin << "╔" << line << "╗\n"
-      << margin << turn << '\n'
+      << margin << ship_to_place << '\n'
       << margin << "╚" << line << "╝\n\n";
   return oss.str();
 }
