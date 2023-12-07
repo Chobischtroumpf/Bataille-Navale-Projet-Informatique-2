@@ -7,6 +7,7 @@
 
 #include "console_board_display.hh"
 #include "not_implemented_error.hh"
+#include "ship_coordinates.hh"
 
 namespace ranges = std::ranges;
 using std::string;
@@ -161,12 +162,8 @@ void ConsoleBoardDisplay::printChangeTurn() {
 
 
 void ConsoleBoardDisplay::handleInput() {
-  if (!_board->myTurn()) {
-    throw NotImplementedError("handleInput() when not my turn.");
-  }
-
   for (bool fired = false; !fired; clearBadInput()) {
-    BoardCoordinates coordinates{_board->width(), _board->height()};
+    ShipCoordinates coordinates{3};
     std::cin >> coordinates;
 
     if (std::cin.eof()) {
@@ -179,11 +176,7 @@ void ConsoleBoardDisplay::handleInput() {
       continue;
     }
 
-    ShipCoordinates coord;
-    coord.anchor = BoardCoordinates(coordinates.x, coordinates.y);
-    coord.vertical = true;
-    coord.length = 3;
-    fired = _control->placeShip();
+    fired = _control->placeShip(coordinates);
   }
 }
 

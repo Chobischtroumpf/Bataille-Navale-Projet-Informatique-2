@@ -59,9 +59,9 @@ class Board final : public BoardView {
             }
 
            Ship(const ShipCoordinates& coords) {
-            for (int i = 0; i < coords.length; i++) {
-                tiles[i] = BoardCoordinates{(coords.anchor.x() + (!coords.vertical ? i : 0)),
-                                            (coords.anchor.y() + (coords.vertical? i : 0))};
+            for (int i = 0; i < coords.getLength(); i++) {
+                tiles[i] = BoardCoordinates{(coords.x() + (!coords.getVertical() ? i : 0)),
+                                            (coords.y() + (coords.getVertical()? i : 0))};
             }
 
         }
@@ -156,10 +156,15 @@ class Board final : public BoardView {
 
     // Method to place a ship on the board
     void placeShip(ShipCoordinates& boatcoord) {
-        
-        for ( int i = 0; i < boatcoord.length; i++) {
-            _my_side[boatcoord.anchor.y() + ( boatcoord.vertical ? i  : 0 )][boatcoord.anchor.x() + ( !boatcoord.vertical ? i : 0 )].setType(UNDAMAGED);
-        }
+
+      if (myTurn()) {
+          for (int i = 0; i < boatcoord.getLength(); i++) {
+              _my_side[boatcoord.getAnchor().y() + (boatcoord.getVertical() ? i : 0)][boatcoord.getAnchor().x() +
+                                                                            (!boatcoord.getVertical() ? i : 0)].setType(
+                      UNDAMAGED);
+          }
+      }
+
     }
 
     void fire(const BoardCoordinates& coords){

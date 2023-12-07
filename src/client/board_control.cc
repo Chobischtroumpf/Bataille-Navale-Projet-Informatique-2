@@ -10,11 +10,11 @@ bool BoardControl::fire(BoardCoordinates coord) {
 
 bool BoardControl::checkShipPosition(ShipCoordinates coord) {
     bool isValid = true;
-    for (int i = 0; i < coord.length && isValid; i++) {
-        if (coord.vertical) {
-            if (coord.anchor.x() + i < _board->width() && _board->CellType(_board->myTurn(), BoardCoordinates(coord.anchor.x() + i, coord.anchor.y())) != BoardView::CellType::IS_SHIP) {
-                for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.anchor.x() + i, coord.anchor.y()))) {
-                    if (_board->CellType(_board->myTurn(), BoardCoordinates(coord.anchor.x() + i, coord.anchor.y())) == 0b001) {
+    for (int i = 0; i < coord.getLength() && isValid; i++) {
+        if (coord.getVertical()) {
+            if (coord.x() + i < _board->width() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) != BoardView::IS_SHIP) {
+                for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x() + i, coord.y()))) {
+                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) == BoardView::IS_SHIP) {
                         isValid = false;
                     }
                 }
@@ -22,9 +22,9 @@ bool BoardControl::checkShipPosition(ShipCoordinates coord) {
                 isValid = false;
             }
         } else {
-            if (coord.anchor.y() + i < _board->height() && _board->CellType(_board->myTurn(), BoardCoordinates(coord.anchor.x(), coord.anchor.y() + i)) != IS_SHIP) {
-                for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.anchor.x(), coord.anchor.y() + i))) {
-                    if (_board->CellType(_board->myTurn(), BoardCoordinates(coord.anchor.x(), coord.anchor.y() + i)) == 0b001) {
+            if (coord.y() + i < _board->height() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) != BoardView::IS_SHIP) {
+                for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x(), coord.y() + i))) {
+                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) == BoardView::IS_SHIP) {
                         isValid = false;
                     }
                 }
