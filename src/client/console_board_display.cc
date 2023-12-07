@@ -80,19 +80,29 @@ vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
       BoardView::CellType content = _board->cellType(my_side, {j, i});
 // check is my_side == false et content == BoardView::UNDAMAGED alors on affiche BoardView::WATER
        
-      if (_board->myTurn() && !my_side && content == BoardView::UNDAMAGED){
+      
+    if (_board->myTurn() && !my_side && content == BoardView::UNDAMAGED){
         oss << border << toString(BoardView::WATER);
       }else if (!_board->myTurn() && my_side && content == BoardView::UNDAMAGED){
         oss << border << toString(BoardView::WATER);
       }else{
         if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
           BoardView::CellType previous = _board->cellType(my_side, {j - 1, i});
-          border                       = toString(_board->best(content, previous));
+          
+          if ((previous == BoardView::UNDAMAGED) && ((_board->myTurn() && !my_side) || (!_board->myTurn() && my_side))) {
+            border  = "│";
+          }else{
+            border                       = toString(_board->best(content, previous));
+          }
+          
+          
         }
         oss << border << toString(content);
       }     
       
     }
+ 
+
     oss << "│";
     grid.emplace_back(oss.str());
   }
@@ -164,8 +174,8 @@ void ConsoleBoardDisplay::printChangeTurn() {
   std::cout << who << std::endl << "Please press enter to continue..." << std::flush;
   std::cerr << "printChangeTurn" << std::endl;
   // std::getline(std::cin, tmp);
-  std::cin >> tmp;
-  // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  //std::cin >> tmp;
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 void ConsoleBoardDisplay::handleInput() {
