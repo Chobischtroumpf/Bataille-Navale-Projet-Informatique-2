@@ -3,7 +3,7 @@
 
 #include "console_board_display.hh"
 #include "console_board_gen_display.hh"
-#include "dummy_board.hh"
+// #include "dummy_board.hh"
 #include "board_control.hh"
 #include "board.hh"
 
@@ -14,7 +14,7 @@ int main() {
 
   // Create the display and connect it to the game
   std::shared_ptr<ConsoleBoardDisplay> display =
-  std::make_shared<ConsoleBoardDisplay>(std::cout, std::cin, board, controller);
+            std::make_shared<ConsoleBoardDisplay>(std::cout, std::cin, board, controller);
 
   // Connect the game to the display
   board->setDisplay(display);
@@ -23,6 +23,5 @@ int main() {
   // Run the game
   while (!board->isFinished()) {
     display->handleInput();
-
   }
 }

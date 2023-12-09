@@ -50,17 +50,17 @@ class ConsoleBoardGenDisplay final : public BoardDisplay {
   // Pre-print methods
 
   /** Single character to represent a type of cell on the board */
-  static string toString(BoardView::CellType type) {
+  static string toString(CellType type) {
     switch (type) {
-      case BoardView::WATER:
+      case WATER:
         return " ";
-      case BoardView::OCEAN:
+      case OCEAN:
         return "╳";
-      case BoardView::UNDAMAGED:
+      case UNDAMAGED:
         return "█";
-      case BoardView::HIT:
+      case HIT:
         return "▒";
-      case BoardView::SUNK:
+      case SUNK:
         return "░";
       default:
         throw NotImplementedError("ConsoleBoardGenDisplay unknown CellType");
@@ -79,7 +79,7 @@ class ConsoleBoardGenDisplay final : public BoardDisplay {
   [[nodiscard]] static inline std::string repeat(int n) {
     std::ostringstream os;
     for(int i = 0; i < n; i++)
-        os << toString(BoardView::UNDAMAGED);
+        os << toString(UNDAMAGED);
     return os.str();
   }
 

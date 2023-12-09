@@ -1,6 +1,0 @@
-/usr/bin/ld: build/client/console_board_gen_display.o: in function `std::allocator<char>::~allocator()':
-/home/alessandro/Documents/BA2/INFO-F209/group-9/src/client/board_control.hh:26: multiple definition of `operator*(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long)'; build/client/console_board_display.o:/home/alessandro/Documents/BA2/INFO-F209/group-9/src/client/board_control.hh:26: first defined here
-/usr/bin/ld: build/client/main.o: in function `std::allocator<char>::~allocator()':
-/home/alessandro/Documents/BA2/INFO-F209/group-9/src/client/console_board_display.hh:81: multiple definition of `operator*(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long)'; build/client/console_board_display.o:/home/alessandro/Documents/BA2/INFO-F209/group-9/src/client/board_control.hh:26: first defined here
-collect2: error: ld returned 1 exit status
-make: *** [Makefile:20: battleship] Error 1

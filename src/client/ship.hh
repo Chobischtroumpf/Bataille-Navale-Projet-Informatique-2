@@ -1,8 +1,8 @@
 #pragma once
 
-
 #include <vector>
 #include "board_coordinates.hh"
+#include "ship_coordinates.hh"
 #include "board_view.hh"
 #include "cell.hh"
 
@@ -21,20 +21,18 @@ class Ship {
             for (const BoardCoordinates& tile : tiles) {
                 //std::cout << "Checking for tile X : " << tile.x() << " Y : " << tile.y() << std::endl;
                 
-                if ( _board[tile.y()][tile.x()].type() == BoardView::UNDAMAGED ) {
+                if ( _board[tile.y()][tile.x()].type() == UNDAMAGED ) {
                     _state = true;
                     return;
                 }
             }
         }
 
-        Ship(const ShipCoordinates& coords, const vector<vector<Cell>>& board ) : _board(board), _state(true) {
-
-        for (int i = 0; i < coords.length(); i++) {
-            tiles[i] = BoardCoordinates{(coords.x() + (!coords.orientation() ? i : 0)),
-                                        (coords.y() + (coords.orientation()? i : 0))};
-        }
-
+        Ship(const ShipCoordinates& coords, const vector<vector<Cell>>& board ) : _state{true}, _board{board} {
+            for (int i = 0; i < coords.ship_id(); i++) {
+                tiles[i] = BoardCoordinates{(coords.x() + (!coords.orientation() ? i : 0)),
+                                            (coords.y() + (coords.orientation()? i : 0))};
+            }
         }
 
         // Method to get the state of the ship (true if operational, false if sunk)

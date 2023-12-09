@@ -3,49 +3,68 @@
 #include <optional>
 #include <string>
 #include "board_coordinates.hh"
-
+#include "ship_types.hh"
 #include "not_implemented_error.hh"
-#define VERTICAL true
-#define HORIZONTAL false
-
 
 using std::string;
 
-/** A pair of 0-indexed board coordinates and a boolean indicating the orientation of the ship.
+typedef enum {
+  VERTICAL,
+  HORIZONTAL
+} Orientation;
+
+// class Ship;
+/** A pair of 0-indexed ship coordinates with an enum indicating the orientation of the ship and the .
  *
- * {0, 0} is top-left.
+ * {0, 0, } is top-left.
  *
  * NOTE: This is not the coordinates of a pixel on the screen. */
 class ShipCoordinates final: public BoardCoordinates {
-  bool _orientation;
-  int _length;
+  Orientation _orientation;
+  ShipType _ship_id;
  public:
   // Default constructor
-  ShipCoordinates() : BoardCoordinates{}, _orientation{HORIZONTAL}, _length(0) {}
+  ShipCoordinates() : BoardCoordinates{}, _orientation{HORIZONTAL}, _ship_id{NONE} {}
   
-  ShipCoordinates(size_t x, size_t y, bool orientation) : BoardCoordinates{x,y}, _orientation{orientation} {}
+  ShipCoordinates(size_t x, size_t y, Orientation orientation) : BoardCoordinates{x,y}, _orientation{orientation} {}
 
-  [[nodiscard]] constexpr inline bool orientation() const { return _orientation; }
-  [[nodiscard]] constexpr inline int length() const { return _length; }
+  [[nodiscard]] constexpr inline Orientation orientation() const { return _orientation; }
+  [[nodiscard]] constexpr inline ShipType ship_id() const { return _ship_id; }
 
-  void set(size_t x, size_t y, bool orientation, int length) {
+  void set(size_t x, size_t y, Orientation orientation, ShipType ship_id) {
     _x = x;
     _y = y;
     _orientation = orientation;
-    _length = length;
+    _ship_id = ship_id;
 
   }
 
   //Supercharge the == operator
   bool operator==(const ShipCoordinates& other) const {
-        return x() == other.x() && y() == other.y() && orientation() == other.orientation() && length() == other.length();
+        return x() == other.x() && y() == other.y() && orientation() == other.orientation() && ship_id() == other.ship_id();
     }
 
-  [[nodiscard]] static std::optional<bool> parseOrientation(const string& orientation_string) {
+  [[nodiscard]] static std::optional<ShipType> parseShipId(const string& ship_id_string) {
+    if (ship_id_string.empty()) {
+      return std::nullopt;
+    }
+    try {
+      int ship_id = std::stoi(ship_id_string);
+      if (ship_id < 0 || ship_id > 5) {
+        return std::nullopt;
+      }
+      return ShipType(ship_id);
+    } catch (std::invalid_argument&) {
+      return std::nullopt;
+    } catch (std::out_of_range&) {
+      return std::nullopt;
+    }
+  }
+
+  [[nodiscard]] static std::optional<Orientation> parseOrientation(const string& orientation_string) {
     if (orientation_string.empty() || orientation_string.length() > 1) {
       return std::nullopt;
     }
-    
     if (orientation_string == "H" || orientation_string == "h") {
       return HORIZONTAL;
     } else if (orientation_string == "V" || orientation_string == "v"){
@@ -57,7 +76,7 @@ class ShipCoordinates final: public BoardCoordinates {
   }
 
   /** {0, 0} returns "A1" */
-  [[nodiscard]] inline string toString() const override { return orientationToString() + xToString() + yToString(); }
+  [[nodiscard]] inline string toString() const override { return shipIdToString() + orientationToString() + xToString() + yToString(); }
 
   //Returns the orientation as a string
   [[nodiscard]] inline string orientationToString() const {
@@ -67,6 +86,25 @@ class ShipCoordinates final: public BoardCoordinates {
       return "V";
     }
   }
+
+  //Returns the ship id as a string
+  [[nodiscard]] inline string shipIdToString() const {
+    switch (_ship_id)
+    {
+    case CARRIER:
+      return "Carrier";
+    case BATTLESHIP:
+      return "BattleShip";
+    case CRUISER:
+      return "Cruiser";
+    case SUBMARINE:
+      return "Submarine";
+
+    case NONE:
+    default:
+      return "0";
+    }
+  }
 };
 
 /** Put bc.toString() on os */
@@ -74,4 +112,3 @@ std::ostream& operator<<(std::ostream& os, const ShipCoordinates& bc);
 
 /** Extract bc from os */
 std::istream& operator>>(std::istream& is, ShipCoordinates& bc);
-

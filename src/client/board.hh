@@ -25,7 +25,7 @@ class Board final : public BoardView {
     class Fleet {
         public:
             // Constructor to initialize the Fleet with ships
-            Fleet(vector<vector<Cell>>& board) : _board(board),  _state(true) {}
+            Fleet(vector<vector<Cell>>& board) : _board{board},  _state{true} {}
 
             // Method to notify the Fleet that a Ship has sunk
             void notify(const BoardCoordinates& coords) {
@@ -65,9 +65,6 @@ class Board final : public BoardView {
             bool _state;
     };
 
-
-    
-
   std::weak_ptr<BoardDisplay> _display{};
   bool                        _my_turn{true};
   bool                        _is_finished{false};
@@ -91,13 +88,13 @@ class Board final : public BoardView {
   vector<vector<Cell>> _their_side{
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {OCEAN, nullopt}, {}, {}, {}, {}, {}, {HIT, 3}, {HIT, 3}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {OCEAN, nullopt}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
@@ -132,9 +129,7 @@ class Board final : public BoardView {
 
  public:
 
-
     Board() {
-       
         //testBoard(); // Call the method to test the board methods
 
     }
@@ -142,7 +137,7 @@ class Board final : public BoardView {
     // Method to test the board
     void testBoard() {
     
-        ShipCoordinates boat{BoardCoordinates{2, 3}, 3, false};
+        ShipCoordinates boat{2,3, VERTICAL};
 
         placeShip(boat);
 
@@ -164,8 +159,8 @@ class Board final : public BoardView {
     // Method to place a ship on the board
     void placeShip(ShipCoordinates& shipCoords, bool isA = true )  {
         
-        for ( int i = 0; i < shipCoords.length; i++) {
-            _my_side[shipCoords.anchor.y() + ( shipCoords.vertical ? i  : 0 )][shipCoords.anchor.x() + ( !shipCoords.vertical ? i : 0 )].setType(UNDAMAGED);
+        for ( int i = 0; i < shipCoords.ship_id(); i++) {
+            _my_side[shipCoords.y() + ( shipCoords.orientation() ? i  : -1 )][shipCoords.x() + ( !shipCoords.orientation() ? i : 0 )].setType(UNDAMAGED);
         }
 
         isA ? _fleetA.addShip(shipCoords) :  _fleetB.addShip(shipCoords) ;
@@ -263,6 +258,10 @@ class Board final : public BoardView {
         return neighbors;
     }
   void changeTurn() {_my_turn = !_my_turn;}
+  
+  [[nodiscard]] virtual uint8_t  nbrBoats() const override {
+    return _fleetA.getNumShips();
+  }
   
   ~Board() override = default;
 };

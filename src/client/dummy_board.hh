@@ -134,7 +134,7 @@ class DummyBoard final : public BoardView, public BoardControl {
   }
 
   [[nodiscard]] bool fire(const BoardCoordinates position) override {
-    if (cellType(!_my_turn, position) & BoardView::IS_KNOWN) {
+    if (cellType(!_my_turn, position) & IS_KNOWN) {
       std::cerr << "DummyBoard received an INvalid fire target: " << position << '\n';
       return false;  // Invalid target
     } else {

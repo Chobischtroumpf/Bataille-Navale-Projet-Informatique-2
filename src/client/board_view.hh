@@ -7,6 +7,22 @@
 
 #include "board_coordinates.hh"
 
+typedef enum {
+  // Flags:
+  IS_SHIP  = 0b001,
+  IS_KNOWN = 0b010,  //< was a target
+  IS_SUNK  = 0b100,
+
+  // Non-ship types:
+  WATER = 0,         //< water (my side) or unknown (assumed water, their side)
+  OCEAN = IS_KNOWN,  //< was empty target
+
+  // Ship states:
+  UNDAMAGED = IS_SHIP,                       //< undamaged ship, used for my side
+  HIT       = IS_SHIP | IS_KNOWN,            //< hit ship
+  SUNK      = IS_SHIP | IS_KNOWN | IS_SUNK,  //< sunk ship
+} CellType;
+
 /** The board data seen by the display.
  * This should provide (known) information about both sides of the board, and whose turn
  * is.
@@ -25,21 +41,7 @@ class BoardView {
 
  public:
   /** The type of a board cell */
-  enum CellType : uint8_t {
-    // Flags:
-    IS_SHIP  = 0b001,
-    IS_KNOWN = 0b010,  //< was a target
-    IS_SUNK  = 0b100,
 
-    // Non-ship types:
-    WATER = 0,         //< water (my side) or unknown (assumed water, their side)
-    OCEAN = IS_KNOWN,  //< was empty target
-
-    // Ship states:
-    UNDAMAGED = IS_SHIP,                       //< undamaged ship, used for my side
-    HIT       = IS_SHIP | IS_KNOWN,            //< hit ship
-    SUNK      = IS_SHIP | IS_KNOWN | IS_SUNK,  //< sunk ship
-  };
 
   /** Given two ship states, return the best one */
   static constexpr inline CellType best(CellType lhs, CellType rhs) {

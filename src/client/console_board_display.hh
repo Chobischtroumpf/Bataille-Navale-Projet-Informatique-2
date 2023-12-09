@@ -48,17 +48,17 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   // Pre-print methods
 
   /** Single character to represent a type of cell on the board */
-  static string toString(BoardView::CellType type) {
+  static string toString(CellType type) {
     switch (type) {
-      case BoardView::WATER:
+      case WATER:
         return " ";
-      case BoardView::OCEAN:
+      case OCEAN:
         return "╳";
-      case BoardView::UNDAMAGED:
+      case UNDAMAGED:
         return "█";
-      case BoardView::HIT:
+      case HIT:
         return "▒";
-      case BoardView::SUNK:
+      case SUNK:
         return "░";
       default:
         throw NotImplementedError("ConsoleBoardDisplay unknown CellType");
@@ -79,10 +79,10 @@ class ConsoleBoardDisplay final : public BoardDisplay {
    * Outside constructor, use the attribute instead. */
   [[nodiscard]] vector<string> createMapKey() {
     vector<string> map_key;
-    map_key.emplace_back(" > " + toString(BoardView::OCEAN) + " Ocean          <");
-    map_key.emplace_back(" > " + toString(BoardView::UNDAMAGED) + " Undamaged ship <");
-    map_key.emplace_back(" > " + toString(BoardView::HIT) + " Hit ship       <");
-    map_key.emplace_back(" > " + toString(BoardView::SUNK) + " Sunk ship      <");
+    map_key.emplace_back(" > " + toString(OCEAN) + " Ocean          <");
+    map_key.emplace_back(" > " + toString(UNDAMAGED) + " Undamaged ship <");
+    map_key.emplace_back(" > " + toString(HIT) + " Hit ship       <");
+    map_key.emplace_back(" > " + toString(SUNK) + " Sunk ship      <");
     return map_key;
   }
 
@@ -145,8 +145,6 @@ class ConsoleBoardDisplay final : public BoardDisplay {
 
   /** Produces a redraw */
   void update() override;
-
-  void printChangeTurn() override;
 
   /** Parse coordinates provided by user, check boundaries and call
    * BoardControl::fire. */

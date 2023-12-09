@@ -78,19 +78,19 @@ vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
     oss << std::setw(_number_width) << i + 1 << " ";
     for (unsigned j = 0; j < _board->width(); ++j) {
       string              border  = "│";
-      BoardView::CellType content = _board->cellType(my_side, {j, i});
+      CellType content = _board->cellType(my_side, {j, i});
 // check is my_side == false et content == BoardView::UNDAMAGED alors on affiche BoardView::WATER
        
       
-    if (_board->myTurn() && !my_side && content == BoardView::UNDAMAGED){
-        oss << border << toString(BoardView::WATER);
-      }else if (!_board->myTurn() && my_side && content == BoardView::UNDAMAGED){
-        oss << border << toString(BoardView::WATER);
+    if (_board->myTurn() && !my_side && content == UNDAMAGED){
+        oss << border << toString(WATER);
+      }else if (!_board->myTurn() && my_side && content == UNDAMAGED){
+        oss << border << toString(WATER);
       }else{
         if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
-          BoardView::CellType previous = _board->cellType(my_side, {j - 1, i});
+          CellType previous = _board->cellType(my_side, {j - 1, i});
           
-          if ((previous == BoardView::UNDAMAGED) && ((_board->myTurn() && !my_side) || (!_board->myTurn() && my_side))) {
+          if ((previous == UNDAMAGED) && ((_board->myTurn() && !my_side) || (!_board->myTurn() && my_side))) {
             border  = "│";
           }else{
             border = toString(_board->best(content, previous));
