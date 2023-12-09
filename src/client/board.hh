@@ -45,30 +45,86 @@ class Board final : public BoardView {
     };
 
     class Ship {
-        public:
-            bool state{false}; // True for operational, false for sunk
 
+        public:
+
+            //Notifies the Ship that a tile has been hit, allowing it to check if it is sunk
             void notify(const BoardCoordinates& coords) {
-                // Check if coords is one of the ship's tiles
+
+                _state = false;
+
+                // Check if ship is sunk
                 for (const BoardCoordinates& tile : tiles) {
-                    if (tile == coords) {
-                        std::cout << "Ship hit at coordinates (" << coords.x() << ", " << coords.y() << ")!\n";
+                    //std::cout << "Checking for tile X : " << tile.x() << " Y : " << tile.y() << std::endl;
+                   
+                    if ( _board[tile.y()][tile.x()].type() == UNDAMAGED ) {
+                        _state = true;
                         return;
                     }
                 }
             }
 
-           Ship(const ShipCoordinates& coords) {
-            for (int i = 0; i < coords.getLength(); i++) {
-                tiles[i] = BoardCoordinates{(coords.x() + (!coords.getVertical() ? i : 0)),
-                                            (coords.y() + (coords.getVertical()? i : 0))};
+           Ship(const ShipCoordinates& coords, const vector<vector<Cell>>& board ) : _board(board), _state(true) {
+
+            for (int i = 0; i < coords.length; i++) {
+                tiles[i] = BoardCoordinates{(coords.anchor.x() + (!coords.vertical ? i : 0)),
+                                            (coords.anchor.y() + (coords.vertical? i : 0))};
             }
 
-        }
+            }
+
+            // Method to get the state of the ship (true if operational, false if sunk)
+            bool getState() const {
+                return _state;
+            }
 
         private:
+            bool _state;
+            const vector<vector<Cell>>& _board;
             static constexpr size_t MAX_TILES = 10; // A limit to the maximum size of ships
             BoardCoordinates tiles[MAX_TILES];
+    };
+    class Fleet {
+        public:
+            // Constructor to initialize the Fleet with ships
+            Fleet(vector<vector<Cell>>& board) : _board(board),  _state(true) {}
+
+            // Method to notify the Fleet that a Ship has sunk
+            void notify(const BoardCoordinates& coords) {
+                // Check if any ship in the fleet is operational
+                _state = false;
+
+                for (Ship& ship : _ships) {
+                    ship.notify(coords);
+                }
+
+                for (const Ship& ship : _ships) {
+                    //std::cout << "Here's the ship state : " << ship.getState() << std::endl;
+                    if ( ship.getState() ) {
+                        _state = true;
+                        return;
+                    }
+                }
+            }
+            // Method to get the number of ships in the fleet
+            size_t getNumShips() const {
+                return _ships.size();
+            }
+
+            // Method to get the state of the fleet (true if operational, false if sunk)
+            bool getState() const {
+                return _state;
+            }
+
+            // Method to add a ship to the fleet
+            void addShip(const ShipCoordinates shipCoord) {
+                _ships.push_back(Ship{shipCoord, _board});
+            }
+
+        private:
+            const vector<vector<Cell>>& _board;
+            std::vector<Ship> _ships;
+            bool _state;
     };
 
 
@@ -133,38 +189,48 @@ class Board final : public BoardView {
     return true;
   }
 
+    Fleet _fleetA{_my_side}; // First fleet
+    Fleet _fleetB{_their_side};  // Second fleet
+
  public:
+
+
     Board() {
        
         //testBoard(); // Call the method to test the board methods
 
     }
 
-    // method to generate the board
+    // Method to test the board
     void testBoard() {
     
         ShipCoordinates boat{BoardCoordinates{2, 3}, 3, false};
 
         placeShip(boat);
 
+        std::cout << _fleetA.getState() << std::endl;
+
         simplePrint(_my_side);
 
         fire(BoardCoordinates{2, 3});
 
         simplePrint(_my_side);
+
+        std::cout << _fleetA.getState() << std::endl;
+    }
+
+    size_t countShips(bool isA) {
+        return isA ? _fleetA.getNumShips() : _fleetB.getNumShips();
     }
 
     // Method to place a ship on the board
-    void placeShip(ShipCoordinates& boatcoord) {
+    void placeShip(ShipCoordinates& shipCoords, bool isA = true )  {
+        
+        for ( int i = 0; i < shipCoords.length; i++) {
+            _my_side[shipCoords.anchor.y() + ( shipCoords.vertical ? i  : 0 )][shipCoords.anchor.x() + ( !shipCoords.vertical ? i : 0 )].setType(UNDAMAGED);
+        }
 
-      if (myTurn()) {
-          for (int i = 0; i < boatcoord.getLength(); i++) {
-              _my_side[boatcoord.getAnchor().y() + (boatcoord.getVertical() ? i : 0)][boatcoord.getAnchor().x() +
-                                                                            (!boatcoord.getVertical() ? i : 0)].setType(
-                      UNDAMAGED);
-          }
-      }
-
+        isA ? _fleetA.addShip(shipCoords) :  _fleetB.addShip(shipCoords) ;
     }
 
     void fire(const BoardCoordinates& coords){
@@ -172,6 +238,9 @@ class Board final : public BoardView {
         if (cell.type() == WATER) {
             cell.setType(HIT);
         }
+
+        _fleetA.notify(coords);
+        _fleetB.notify(coords);
     }
     
     void simplePrint(vector<vector<Cell>> board) {
