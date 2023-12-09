@@ -15,7 +15,6 @@ class BoardDisplay {
   /** To call before each new turn */
   virtual void printChangeTurn()  = 0;
 
-
   /** To call when the display is to be updated. Can be called after an
    * event or at regular intervals. */
   virtual void update()           = 0;

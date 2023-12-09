@@ -146,6 +146,8 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   /** Produces a redraw */
   void update() override;
 
+  void printChangeTurn() override;
+
   /** Parse coordinates provided by user, check boundaries and call
    * BoardControl::fire. */
   void handleInput() override;

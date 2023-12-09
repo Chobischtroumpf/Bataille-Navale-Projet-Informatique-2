@@ -33,8 +33,8 @@ class BoardCoordinates {
     _x = x;
     _y = y;
   }
-
   //Supercharge the == operator
+
   bool operator==(const BoardCoordinates& other) const {
         return x() == other.x() && y() == other.y();
     }

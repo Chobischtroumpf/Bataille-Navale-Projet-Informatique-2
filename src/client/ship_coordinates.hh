@@ -11,30 +11,34 @@
 
 using std::string;
 
-/** A pair of 0-indexed board coordinates.
+/** A pair of 0-indexed board coordinates and a boolean indicating the orientation of the ship.
  *
  * {0, 0} is top-left.
  *
  * NOTE: This is not the coordinates of a pixel on the screen. */
 class ShipCoordinates final: public BoardCoordinates {
   bool _orientation;
+  int _length;
  public:
   // Default constructor
-  ShipCoordinates() : BoardCoordinates{}, _orientation{HORIZONTAL} {}
+  ShipCoordinates() : BoardCoordinates{}, _orientation{HORIZONTAL}, _length(0) {}
   
   ShipCoordinates(size_t x, size_t y, bool orientation) : BoardCoordinates{x,y}, _orientation{orientation} {}
 
   [[nodiscard]] constexpr inline bool orientation() const { return _orientation; }
+  [[nodiscard]] constexpr inline int length() const { return _length; }
 
-  void set(size_t x, size_t y, bool orientation) {
+  void set(size_t x, size_t y, bool orientation, int length) {
     _x = x;
     _y = y;
     _orientation = orientation;
+    _length = length;
+
   }
 
   //Supercharge the == operator
   bool operator==(const ShipCoordinates& other) const {
-        return x() == other.x() && y() == other.y() && orientation() == other.orientation();
+        return x() == other.x() && y() == other.y() && orientation() == other.orientation() && length() == other.length();
     }
 
   [[nodiscard]] static std::optional<bool> parseOrientation(const string& orientation_string) {

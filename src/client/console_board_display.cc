@@ -7,6 +7,7 @@
 
 #include "console_board_display.hh"
 #include "not_implemented_error.hh"
+#include "ship_coordinates.hh"
 
 namespace ranges = std::ranges;
 using std::string;
@@ -179,7 +180,6 @@ void ConsoleBoardDisplay::printChangeTurn() {
 }
 
 void ConsoleBoardDisplay::handleInput() {
-
   for (bool fired = false; !fired; clearBadInput()) {
     BoardCoordinates coordinates{_board->width(), _board->height()};
     _in >> coordinates;
