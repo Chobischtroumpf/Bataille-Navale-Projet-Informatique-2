@@ -11,7 +11,7 @@ bool BoardControl::fire(BoardCoordinates coord) {
 bool BoardControl::checkShipPosition(ShipCoordinates coord) {
     bool isValid = true;
     for (int i = 0; i < coord.getLength() && isValid; i++) {
-        if (coord.getVertical()) {
+        if (!coord.getVertical()) {
             if (coord.x() + i < _board->width() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) != BoardView::IS_SHIP) {
                 for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x() + i, coord.y()))) {
                     if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) == BoardView::IS_SHIP) {

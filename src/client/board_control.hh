@@ -12,7 +12,6 @@ class BoardControl {
 private:
     std::shared_ptr<Board> _board;
     std::shared_ptr<BoardDisplay> _display;
-    bool _shipVertical {true};
 
     virtual bool checkShipPosition(ShipCoordinates coord);
 public:
@@ -23,7 +22,6 @@ public:
   BoardControl(std::shared_ptr<Board> board) : _board{std::move(board)} {}
 
   virtual void setDisplay(std::shared_ptr<BoardDisplay> display) {_display = std::move(display);}
-  virtual void changeVertical() {_shipVertical = !_shipVertical;}
 
   /** Inform that the player chose to fire on this cell.
    * Return true if the action is valid (this cell was not targeted previously). */
