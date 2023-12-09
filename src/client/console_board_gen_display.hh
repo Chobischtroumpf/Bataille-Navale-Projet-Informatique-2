@@ -88,12 +88,11 @@ class ConsoleBoardGenDisplay final : public BoardDisplay {
    * Outside constructor, use the attribute instead. */
   [[nodiscard]] vector<string> createBoatsKey() {
     vector<string> boat_key;
-
-
-    boat_key.emplace_back(" > " + repeat(2) + (_board->nbrBoats()>0 ? " × 0": " × 1") + "      " );
-    boat_key.emplace_back(" > " + repeat(3) + (_board->nbrBoats()>1 ? (_board->nbrBoats()>2? " × 0": " × 1"): " × 2") + "     " );
-    boat_key.emplace_back(" > " + repeat(4) + (_board->nbrBoats()>3 ? " × 0": " × 1") + "      " );
-    boat_key.emplace_back(" > " + repeat(5) + (_board->nbrBoats()>4 ? " × 0": " × 1") + "      " );
+    boat_key.emplace_back("");
+    boat_key.emplace_back(" > " + repeat(3) + (_board->nbrBoats()>0 ? " × 0": " × 1") + "        <" );
+    boat_key.emplace_back(" > " + repeat(5) + (_board->nbrBoats()>1 ? (_board->nbrBoats()>2? " × 0": " × 1"): " × 2") + "      <" );
+    boat_key.emplace_back(" > " + repeat(7) + (_board->nbrBoats()>3 ? " × 0": " × 1") + "    <" );
+    boat_key.emplace_back(" > " + repeat(9) + (_board->nbrBoats()>4 ? " × 0": " × 1") + "  <" );
     return boat_key;
   }
 

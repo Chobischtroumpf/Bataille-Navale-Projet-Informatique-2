@@ -28,28 +28,31 @@ string ConsoleBoardGenDisplay::createHeader() const {
   string ship;
   switch (_board->nbrBoats()){
       case 0:
-         ship = repeat(2);
+         ship = repeat(3);
          break;
       case 1:
       case 2:
-          ship = repeat(3);
+          ship = repeat(5);
           break;
       case 3:
-          ship = repeat(4);
+          ship = repeat(7);
           break;
       case 4:
-          ship = repeat(5);
+          ship = repeat(9);
           break;
       default:
          break; 
   }
   
   // 2de line:
+  string who = _board->myTurn() ? "Player 1:" : "Player 2:";
   string ship_to_place = "║ Ship to place : " + ship + " ║";
 
   // margin:
-  size_t margin_size = length(ship_to_place) > _width ? 0 : (_width - length(ship_to_place)) / 2;
-  string margin(margin_size, ' ');
+  size_t margin = length(ship_to_place) > _width ? 0 : (_width - length(ship_to_place)) / 2;
+  size_t margin_size_who  = ((length(ship_to_place)) - length(who)) > 0 ? (length(ship_to_place)-1 - length(who)) / 2 : 0;
+  string margin_ship(margin, ' ');
+  string margin_who(margin_size_who, ' ');
 
   // 1st and 3rd line:
   std::ostringstream oss;
@@ -58,9 +61,10 @@ string ConsoleBoardGenDisplay::createHeader() const {
   oss.str("");  // clear oss
 
   // Result:
-  oss << margin << "╔" << line << "╗\n"
-      << margin << ship_to_place << '\n'
-      << margin << "╚" << line << "╝\n\n";
+  oss << margin_ship << "╔" << line << "╗\n"
+      << margin_ship << "║" << margin_who << who << margin_who << "║\n" 
+      << margin_ship << ship_to_place << '\n'
+      << margin_ship << "╚" << line << "╝\n\n";
   return oss.str();
 }
 
@@ -119,7 +123,6 @@ vector<string> ConsoleBoardGenDisplay::createGrid(bool my_side) const {
       }     
       
     }
- 
 
     oss << "│";
     grid.emplace_back(oss.str());
@@ -135,8 +138,10 @@ vector<string> ConsoleBoardGenDisplay::createGrid(bool my_side) const {
 }
 
 vector<string> ConsoleBoardGenDisplay::createPrompt() const {
-  vector<string> prompt(_map_key.size() - 2, "");  // Add padding
-  prompt.emplace_back(">> SELECT TARGET <<");
+  vector<string> prompt(_map_key.size()-4, "");  // Add padding
+  prompt.emplace_back("H or V, then X and Y coordinates (e.g. HB2):");
+  prompt.emplace_back("");
+  prompt.emplace_back(">> PLACE SHIP <<");
   prompt.emplace_back(">> ");
   return prompt;
 }
@@ -197,7 +202,6 @@ void ConsoleBoardGenDisplay::printChangeTurn() {
 }
 
 void ConsoleBoardGenDisplay::handleInput() {
-
   for (bool fired = false; !fired; clearBadInput()) {
     BoardCoordinates coordinates{_board->width(), _board->height()};
     _in >> coordinates;
