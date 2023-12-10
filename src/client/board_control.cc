@@ -5,7 +5,6 @@
 bool BoardControl::fire(BoardCoordinates coord) {
     _board->fire(coord);
     _board->changeTurn();
-    _display->printChangeTurn();
     return true;
 }
 
@@ -42,7 +41,6 @@ bool BoardControl::placeShip(ShipCoordinates coord) {
     if (checkShipPosition(coord)) {
         _board->placeShip(coord);
         _board->changeTurn();
-        _display->printChangeTurn();
         return true;
     } else {
         return false;

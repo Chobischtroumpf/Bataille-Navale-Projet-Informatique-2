@@ -148,7 +148,9 @@ class ConsoleBoardDisplay final : public BoardDisplay {
 
   /** Parse coordinates provided by user, check boundaries and call
    * BoardControl::fire. */
-  void handleInput() override;
+  void handleFire() override;
+
+  void handlePlaceShip() override;
 
   ~ConsoleBoardDisplay() override = default;
 };

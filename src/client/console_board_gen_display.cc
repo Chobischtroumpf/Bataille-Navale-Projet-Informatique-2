@@ -201,7 +201,7 @@ void ConsoleBoardGenDisplay::printChangeTurn() {
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void ConsoleBoardGenDisplay::handleInput() {
+void ConsoleBoardGenDisplay::handleFire() {
   for (bool fired = false; !fired; clearBadInput()) {
     BoardCoordinates coordinates{_board->width(), _board->height()};
     _in >> coordinates;
@@ -218,8 +218,8 @@ void ConsoleBoardGenDisplay::handleInput() {
 
     fired = _control->fire(coordinates);
   }
-
 }
+
 
 void ConsoleBoardGenDisplay::update() {
   //methode d'affichage d'ecran temporaire pour le changement de tour

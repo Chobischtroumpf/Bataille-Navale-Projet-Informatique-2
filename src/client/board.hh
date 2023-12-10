@@ -158,9 +158,21 @@ class Board final : public BoardView {
 
     // Method to place a ship on the board
     void placeShip(ShipCoordinates& shipCoords, bool isA = true )  {
-        
-        for ( int i = 0; i < shipCoords.ship_id(); i++) {
-            _my_side[shipCoords.y() + ( shipCoords.orientation() ? i  : -1 )][shipCoords.x() + ( !shipCoords.orientation() ? i : 0 )].setType(UNDAMAGED);
+        if (myTurn()) {
+            for (int i = 0; i < shipCoords.ship_id(); i++) {
+                _my_side[shipCoords.y() + (shipCoords.orientation() ? i : -1)][shipCoords.x() +
+                                                                               (!shipCoords.orientation() ? i
+                                                                                                          : 0)].setType(
+                        UNDAMAGED);
+            }
+        } else {
+            for (int i = 0; i < shipCoords.ship_id(); i++) {
+                _their_side[shipCoords.y() + (shipCoords.orientation() ? i : -1)][shipCoords.x() +
+                                                                               (!shipCoords.orientation() ? i
+                                                                                                          : 0)].setType(
+                        UNDAMAGED);
+            }
+
         }
 
         isA ? _fleetA.addShip(shipCoords) :  _fleetB.addShip(shipCoords) ;

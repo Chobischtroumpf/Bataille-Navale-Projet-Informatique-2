@@ -179,7 +179,7 @@ void ConsoleBoardDisplay::printChangeTurn() {
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void ConsoleBoardDisplay::handleInput() {
+void ConsoleBoardDisplay::handleFire() {
   for (bool fired = false; !fired; clearBadInput()) {
     BoardCoordinates coordinates{_board->width(), _board->height()};
     _in >> coordinates;
@@ -196,7 +196,26 @@ void ConsoleBoardDisplay::handleInput() {
 
     fired = _control->fire(coordinates);
   }
+}
 
+
+void ConsoleBoardDisplay::handlePlaceShip() {
+    for (bool fired = false; !fired; clearBadInput()) {
+        ShipCoordinates coordinates{};
+        _in >> coordinates;
+
+        if (std::cin.eof()) {
+            _out << std::endl;
+            _control->quit();
+            return;
+        }
+        if (!(_in && coordinates.x() < _board->width() &&
+              coordinates.y() < _board->height())) {
+            continue;
+        }
+
+        fired = _control->placeShip(coordinates);
+    }
 }
 
 void ConsoleBoardDisplay::update() {
@@ -207,12 +226,13 @@ void ConsoleBoardDisplay::update() {
   _out << '\n';
   printSideBySide(createGrid(true), createGrid(false));
   _out << '\n';
-  if (_board->myTurn()) {
-    printSideBySide(createMapKey(), createPrompt());
-  } else {
-    printSideBySide(createMapKey(), createPrompt());
-    // print(createMapKey());
-  }
+    if (_board->myTurn()) {
+        printSideBySide(createMapKey(), createPrompt());
+    } else {
+        printSideBySide(createMapKey(), createPrompt());
+        // Pour le moment est un print by side car la variable my turn est fixe pour les deux joueurs, mais devrait etre une print create map key une fois bien implémenté
+        // print(createMapKey());
+    }
   _out << std::flush;
 }
 
