@@ -20,7 +20,9 @@ class BoardDisplay {
   virtual void update()           = 0;
   /** To call when the BoardControl is ready to receive an input from the view. The exact
    * meaning have to be precised in the concrete classes. */
-  virtual void handleInput()      = 0;
+  virtual void handleFire()      = 0;
+
+  virtual void handlePlaceShip() = 0;
 
   // Make destructor virtual
   virtual ~BoardDisplay() = default;
