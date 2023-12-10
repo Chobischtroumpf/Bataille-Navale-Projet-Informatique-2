@@ -5,9 +5,8 @@
 #include <sstream>
 #include <string>
 
-#include "console_board_display.hh"
+#include "console_board_gen_display.hh"
 #include "not_implemented_error.hh"
-#include "ship_coordinates.hh"
 
 namespace ranges = std::ranges;
 using std::string;
@@ -21,33 +20,55 @@ inline string operator*(const string& lhs, size_t rhs) {
   return result;
 }
 
-string ConsoleBoardDisplay::createHeader() const {
-  //                   ╔════════════╗
-  //                   ║ Your  Turn ║
-  //                   ╚════════════╝
-
+string ConsoleBoardGenDisplay::createHeader() const {
+  //                   ╔═══════════════╗
+  //                   ║ Ship to place ║
+  //                   ╚═══════════════╝
+  
+  string ship;
+  switch (_board->nbrBoats()){
+      case 0:
+         ship = repeat(3);
+         break;
+      case 1:
+      case 2:
+          ship = repeat(5);
+          break;
+      case 3:
+          ship = repeat(7);
+          break;
+      case 4:
+          ship = repeat(9);
+          break;
+      default:
+         break; 
+  }
+  
   // 2de line:
-  string who  = _board->myTurn() ? "Player 1's " : "Player 2's";
-  string turn = "║ " + who + " Turn ║";
+  string who = _board->myTurn() ? "Player 1:" : "Player 2:";
+  string ship_to_place = "║ Ship to place : " + ship + " ║";
 
   // margin:
-  size_t margin_size = length(turn) > _width ? 0 : (_width - length(turn)) / 2;
-  string margin(margin_size, ' ');
+  size_t margin = length(ship_to_place) > _width ? 0 : (_width - length(ship_to_place)) / 2;
+  size_t margin_size_who  = ((length(ship_to_place)) - length(who)) > 0 ? (length(ship_to_place)-1 - length(who)) / 2 : 0;
+  string margin_ship(margin, ' ');
+  string margin_who(margin_size_who, ' ');
 
   // 1st and 3rd line:
   std::ostringstream oss;
-  oss << (string("═") * (length(turn) - 2));
+  oss << (string("═") * (length(ship_to_place) - 2));
   string line = oss.str();
   oss.str("");  // clear oss
 
   // Result:
-  oss << margin << "╔" << line << "╗\n"
-      << margin << turn << '\n'
-      << margin << "╚" << line << "╝\n\n";
+  oss << margin_ship << "╔" << line << "╗\n"
+      << margin_ship << "║" << margin_who << who << margin_who << "║\n" 
+      << margin_ship << ship_to_place << '\n'
+      << margin_ship << "╚" << line << "╝\n\n";
   return oss.str();
 }
 
-string ConsoleBoardDisplay::createGridLabel(bool my_side) const {
+string ConsoleBoardGenDisplay::createGridLabel(bool my_side) const {
   string your        = "Player 1";
   string their       = "Player 2";
   size_t label_size  = std::max(length(your), length(their));
@@ -56,7 +77,7 @@ string ConsoleBoardDisplay::createGridLabel(bool my_side) const {
   return margin + (my_side ? your : their);
 }
 
-vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
+vector<string> ConsoleBoardGenDisplay::createGrid(bool my_side) const {
   vector<string>     grid;
   std::ostringstream oss("    ", std::ios_base::ate);
 
@@ -79,7 +100,7 @@ vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
     for (unsigned j = 0; j < _board->width(); ++j) {
       string              border  = "│";
       CellType content = _board->cellType(my_side, {j, i});
-// check is my_side == false et content == BoardView::UNDAMAGED alors on affiche BoardView::WATER
+// check is my_side == false et content == UNDAMAGED alors on affiche WATER
        
       
     if (_board->myTurn() && !my_side && content == UNDAMAGED){
@@ -102,7 +123,6 @@ vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
       }     
       
     }
- 
 
     oss << "│";
     grid.emplace_back(oss.str());
@@ -117,14 +137,16 @@ vector<string> ConsoleBoardDisplay::createGrid(bool my_side) const {
   return grid;
 }
 
-vector<string> ConsoleBoardDisplay::createPrompt() const {
-  vector<string> prompt(_map_key.size() - 2, "");  // Add padding
-  prompt.emplace_back(">> SELECT TARGET <<");
+vector<string> ConsoleBoardGenDisplay::createPrompt() const {
+  vector<string> prompt(_map_key.size()-4, "");  // Add padding
+  prompt.emplace_back("H or V, then X and Y coordinates (e.g. HB2):");
+  prompt.emplace_back("");
+  prompt.emplace_back(">> PLACE SHIP <<");
   prompt.emplace_back(">> ");
   return prompt;
 }
 
-void ConsoleBoardDisplay::printSideBySide(vector<string> left, vector<string> right) {
+void ConsoleBoardGenDisplay::printSideBySide(vector<string> left, vector<string> right) {
   size_t left_width = std::max(
       _grid_width,
       ranges::max(left, {}, [](const string& s) noexcept { return length(s); }).size());
@@ -152,19 +174,19 @@ void ConsoleBoardDisplay::printSideBySide(vector<string> left, vector<string> ri
   }
 }
 
-void ConsoleBoardDisplay::print(const vector<string>& lines) {
+void ConsoleBoardGenDisplay::print(const vector<string>& lines) {
   for (const string& line : lines) {
     _out << line << '\n';
   }
 }
 
-void ConsoleBoardDisplay::clearBadInput() {
+void ConsoleBoardGenDisplay::clearBadInput() {
   std::cin.clear();
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   update();
 }
 
-void ConsoleBoardDisplay::printChangeTurn() {
+void ConsoleBoardGenDisplay::printChangeTurn() {
   string your        = "Player 1";
   string their       = "Player 2";
   string tmp;
@@ -179,7 +201,7 @@ void ConsoleBoardDisplay::printChangeTurn() {
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void ConsoleBoardDisplay::handleInput() {
+void ConsoleBoardGenDisplay::handleInput() {
   for (bool fired = false; !fired; clearBadInput()) {
     BoardCoordinates coordinates{_board->width(), _board->height()};
     _in >> coordinates;
@@ -199,7 +221,7 @@ void ConsoleBoardDisplay::handleInput() {
 
 }
 
-void ConsoleBoardDisplay::update() {
+void ConsoleBoardGenDisplay::update() {
   //methode d'affichage d'ecran temporaire pour le changement de tour
   std::system("clear");  // Do not use std::system in other contexts
   _out << createHeader();
@@ -208,9 +230,9 @@ void ConsoleBoardDisplay::update() {
   printSideBySide(createGrid(true), createGrid(false));
   _out << '\n';
   if (_board->myTurn()) {
-    printSideBySide(createMapKey(), createPrompt());
+    printSideBySide(createBoatsKey(), createPrompt());
   } else {
-    printSideBySide(createMapKey(), createPrompt());
+    printSideBySide(createBoatsKey(), createPrompt());
     // print(createMapKey());
   }
   _out << std::flush;

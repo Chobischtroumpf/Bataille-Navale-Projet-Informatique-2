@@ -12,6 +12,8 @@
 #include "board_display.hh"
 #include "board_view.hh"
 #include "board_coordinates.hh"
+#include "ship_coordinates.hh"
+#include "ship.hh"
 
 using std::nullopt;
 using std::vector;
@@ -20,84 +22,10 @@ using std::vector;
 class Board final : public BoardView {
 
     /** The cell type and an optional ship identifier */
-    class Cell {
-        CellType           _type{WATER};
-        std::optional<int> _ship_id{nullopt};
-
-        public:
-            /** Default constructor: creates an unkown/Water cell */
-            constexpr Cell() = default;
-            constexpr Cell(CellType type, std::optional<int> ship_id)
-                : _type{type}, _ship_id{std::forward<std::optional<int>>(ship_id)} {
-            if (type & IS_SHIP && !_ship_id) {
-                throw std::logic_error("Cell with ship but no ship_id");
-            } else if (!(type & IS_SHIP) && _ship_id) {
-                throw std::logic_error("Cell without ship but with ship_id");
-            }
-            }
-            // Public method to set the type of the cell
-            void setType(CellType newType) {
-                _type = newType;
-            }
-            [[nodiscard]] constexpr inline CellType           type() const { return _type; }
-            [[nodiscard]] constexpr inline std::optional<int> shipId() const { return _ship_id; }
-    };
-
-    struct ShipCoordinates {
-        BoardCoordinates anchor;
-        int length;
-        bool vertical;
-
-        // Constructor for initialization
-        ShipCoordinates(const BoardCoordinates& anchor, int length, bool vertical)
-            : anchor(anchor), length(length), vertical(vertical) {}
-    };
-    
-    class Ship {
-
-        public:
-
-            //Notifies the Ship that a tile has been hit, allowing it to check if it is sunk
-            void notify(const BoardCoordinates& coords) {
-
-                _state = false;
-
-                // Check if ship is sunk
-                for (const BoardCoordinates& tile : tiles) {
-                    //std::cout << "Checking for tile X : " << tile.x() << " Y : " << tile.y() << std::endl;
-                   
-                    if ( _board[tile.y()][tile.x()].type() == UNDAMAGED ) {
-                        _state = true;
-                        return;
-                    }
-                }
-            }
-
-           Ship(const ShipCoordinates& coords, const vector<vector<Cell>>& board ) : _board(board), _state(true) {
-
-            for (int i = 0; i < coords.length; i++) {
-                tiles[i] = BoardCoordinates{(coords.anchor.x() + (!coords.vertical ? i : 0)),
-                                            (coords.anchor.y() + (coords.vertical? i : 0))};
-            }
-
-            }
-
-            // Method to get the state of the ship (true if operational, false if sunk)
-            bool getState() const {
-                return _state;
-            }
-
-        private:
-            bool _state;
-            const vector<vector<Cell>>& _board;
-            static constexpr size_t MAX_TILES = 10; // A limit to the maximum size of ships
-            BoardCoordinates tiles[MAX_TILES];
-    };
-
     class Fleet {
         public:
             // Constructor to initialize the Fleet with ships
-            Fleet(vector<vector<Cell>>& board) : _board(board),  _state(true) {}
+            Fleet(vector<vector<Cell>>& board) : _board{board},  _state{true} {}
 
             // Method to notify the Fleet that a Ship has sunk
             void notify(const BoardCoordinates& coords) {
@@ -137,9 +65,6 @@ class Board final : public BoardView {
             bool _state;
     };
 
-
-    
-
   std::weak_ptr<BoardDisplay> _display{};
   bool                        _my_turn{true};
   bool                        _is_finished{false};
@@ -163,13 +88,13 @@ class Board final : public BoardView {
   vector<vector<Cell>> _their_side{
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {OCEAN, nullopt}, {}, {}, {}, {}, {}, {HIT, 3}, {HIT, 3}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {OCEAN, nullopt}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
@@ -204,9 +129,7 @@ class Board final : public BoardView {
 
  public:
 
-
     Board() {
-       
         //testBoard(); // Call the method to test the board methods
 
     }
@@ -214,7 +137,7 @@ class Board final : public BoardView {
     // Method to test the board
     void testBoard() {
     
-        ShipCoordinates boat{BoardCoordinates{2, 3}, 3, false};
+        ShipCoordinates boat{2,3, VERTICAL};
 
         placeShip(boat);
 
@@ -236,16 +159,16 @@ class Board final : public BoardView {
     // Method to place a ship on the board
     void placeShip(ShipCoordinates& shipCoords, bool isA = true )  {
         
-        for ( int i = 0; i < shipCoords.length; i++) {
-            _my_side[shipCoords.anchor.y() + ( shipCoords.vertical ? i  : 0 )][shipCoords.anchor.x() + ( !shipCoords.vertical ? i : 0 )].setType(UNDAMAGED);
+        for ( int i = 0; i < shipCoords.ship_id(); i++) {
+            _my_side[shipCoords.y() + ( shipCoords.orientation() ? i  : -1 )][shipCoords.x() + ( !shipCoords.orientation() ? i : 0 )].setType(UNDAMAGED);
         }
 
         isA ? _fleetA.addShip(shipCoords) :  _fleetB.addShip(shipCoords) ;
     }
 
     void fire(const BoardCoordinates& coords){
-        Cell& cell = _my_side[coords.y()][coords.x()];
-        if (cell.type() == UNDAMAGED) {
+        Cell& cell = myTurn() ? _their_side[coords.y()][coords.x()] : _my_side[coords.y()][coords.x()];
+        if (cell.type() == WATER) {
             cell.setType(HIT);
         }
 
@@ -284,7 +207,8 @@ class Board final : public BoardView {
   void setDisplay(std::weak_ptr<BoardDisplay> display) {
     _display = std::forward<std::weak_ptr<BoardDisplay>>(display);
     if (auto p = _display.lock()) {
-      p->update();
+        p->printChangeTurn();
+        p->update();
     }
   }
 
@@ -301,6 +225,42 @@ class Board final : public BoardView {
                                 BoardCoordinates second) const override {
     return shipId(my_side, first).has_value() &&
            shipId(my_side, first) == shipId(my_side, second);
+  }
+
+    [[nodiscard]] std::vector<Cell> getNeighbors(BoardCoordinates coord) {
+        std::vector<Cell> neighbors;
+        bool my_side = myTurn() ? true : false;
+        if (coord.x() > 0) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.y(), coord.x()-1)));
+        }
+        if (coord.x() < width()) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.y(), coord.x()+1)));
+        }
+        if (coord.y() > 0) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x())));
+            if (coord.x() > 0) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x()-1)));
+            }
+            if (coord.x() < width()) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x()+1)));
+            }
+        }
+        if (coord.y() < height()) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x())));
+            // Diagonale gauche
+            if (coord.x() > 0) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x()-1)));
+            }
+            if (coord.x() < width()) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x()+1)));
+            }
+        }
+        return neighbors;
+    }
+  void changeTurn() {_my_turn = !_my_turn;}
+  
+  [[nodiscard]] virtual uint8_t  nbrBoats() const override {
+    return _fleetA.getNumShips();
   }
   
   ~Board() override = default;

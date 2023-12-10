@@ -61,9 +61,9 @@ class DummyBoard final : public BoardView, public BoardControl {
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
   };
   vector<vector<Cell>> _their_side{
+      {{UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {UNDAMAGED, 1}, {}, {UNDAMAGED, 1}, {}, {UNDAMAGED, 1}},
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {SUNK, 2}, {UNDAMAGED, 1}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {SUNK, 2}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
       {{}, {}, {OCEAN, nullopt}, {}, {}, {}, {}, {}, {HIT, 3}, {HIT, 3}, {}},
@@ -117,13 +117,13 @@ class DummyBoard final : public BoardView, public BoardControl {
       p->update();
     }
   }
-
-  [[nodiscard]] bool     myTurn() const override { return _my_turn; }
-  [[nodiscard]] bool     isFinished() const override { return _is_finished; }
-  [[nodiscard]] bool     isVictory() const override { return _is_victory; }
-  [[nodiscard]] size_t   width() const override { return _my_side.at(0).size(); }
-  [[nodiscard]] size_t   height() const override { return _my_side.size(); }
-  [[nodiscard]] CellType cellType(bool             my_side,
+  [[nodiscard]] uint8_t   nbrBoats() const override { return 2; }
+  [[nodiscard]] bool      myTurn() const override { return _my_turn; }
+  [[nodiscard]] bool      isFinished() const override { return _is_finished; }
+  [[nodiscard]] bool      isVictory() const override { return _is_victory; }
+  [[nodiscard]] size_t    width() const override { return _my_side.at(0).size(); }
+  [[nodiscard]] size_t    height() const override { return _my_side.size(); }
+  [[nodiscard]] CellType  cellType(bool             my_side,
                                   BoardCoordinates position) const override {
     return get(my_side, position).type();
   }
@@ -132,15 +132,17 @@ class DummyBoard final : public BoardView, public BoardControl {
     return shipId(my_side, first).has_value() &&
            shipId(my_side, first) == shipId(my_side, second);
   }
+
   [[nodiscard]] bool fire(const BoardCoordinates position) override {
-    if (cellType(false, position) & BoardView::IS_KNOWN) {
+    if (cellType(!_my_turn, position) & IS_KNOWN) {
       std::cerr << "DummyBoard received an INvalid fire target: " << position << '\n';
       return false;  // Invalid target
     } else {
       std::cerr << "DummyBoard received a valid fire target: " << position << '\n';
-      _my_turn = false;
+      _my_turn = !_my_turn;
       if (auto p = _display.lock()) {
-        p->update();
+        p->printChangeTurn();
+        //p->update();
       }
       return true;
     }
