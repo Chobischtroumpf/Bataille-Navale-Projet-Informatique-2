@@ -34,7 +34,7 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   size_t const   _grid_width;  //< The number of character in a line of a grid
   size_t const   _width;    //< The number of character in a line with two grids and a gap
   vector<string> _map_key;  //< The map key, each string is a line without the ending '\n'
-
+  Turn const     _turn;     //< The current turn
   // Utility methods
 
   /** Count number of unicode characters in a UTF-8 encoded string (assume linux platform)
@@ -66,7 +66,11 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   }
 
   /** Create a header indicating who should play */
-  [[nodiscard]] string createHeader() const;
+  [[nodiscard]] string createGameHeader() const;
+
+  /** Create a header indicating who is setting the boat */
+  [[nodiscard]] string createPlaceShipHeader() const;
+
 
   /** Create a grid label: Your / Their Fleet */
   [[nodiscard]] string createGridLabel(bool my_side) const;
@@ -77,19 +81,15 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   /** Create map key, each string is a line without ending '\n'
    * Used by the constructor to init _map_key.
    * Outside constructor, use the attribute instead. */
-  [[nodiscard]] vector<string> createMapKey() {
-    vector<string> map_key;
-    map_key.emplace_back(" > " + toString(OCEAN) + " Ocean          <");
-    map_key.emplace_back(" > " + toString(UNDAMAGED) + " Undamaged ship <");
-    map_key.emplace_back(" > " + toString(HIT) + " Hit ship       <");
-    map_key.emplace_back(" > " + toString(SUNK) + " Sunk ship      <");
-    return map_key;
-  }
+  [[nodiscard]] vector<string> createMapKey() const;
+
+  [[nodiscard]] vector<string> createBoatsKey() const;
 
   /** Create coordinates prompt, each string is a line without ending '\n'.
    * Empty lines are added in the beginning of the prompt so it can be printed next to the
    * map key. */
-  [[nodiscard]] vector<string> createPrompt() const;
+  [[nodiscard]] vector<string> createGamePrompt() const;
+  [[nodiscard]] vector<string> createPlaceShipPrompt() const;
 
   // Print methods
 
@@ -107,7 +107,10 @@ class ConsoleBoardDisplay final : public BoardDisplay {
 
   // Input methods
   /** clear fail bits of _in, ignore until next '\n', redraw */
-  void clearBadInput();
+  void clearBadGameInput();
+
+  /** clear fail bits of _in, ignore until next '\n', redraw */
+  void clearBadPlaceShipInput();
 
  public:
   ConsoleBoardDisplay() = delete;
@@ -144,7 +147,8 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   void printChangeTurn() override;
 
   /** Produces a redraw */
-  void update() override;
+  void updatePlaceShip() override;
+  void updateGame() override;
 
   /** Parse coordinates provided by user, check boundaries and call
    * BoardControl::fire. */

@@ -17,9 +17,15 @@ class BoardDisplay {
 
   /** To call when the display is to be updated. Can be called after an
    * event or at regular intervals. */
-  virtual void update()           = 0;
+  virtual void updateGame()           = 0;
+
+  /** To call when the display is to be updated. Can be called after an
+   * event or at regular intervals. */
+  
+  virtual void updatePlaceShip()           = 0;
   /** To call when the BoardControl is ready to receive an input from the view. The exact
    * meaning have to be precised in the concrete classes. */
+  
   virtual void handleFire()      = 0;
 
   virtual void handlePlaceShip() = 0;
