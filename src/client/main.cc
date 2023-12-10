@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "console_board_display.hh"
-#include "console_board_gen_display.hh"
 // #include "dummy_board.hh"
 #include "board_control.hh"
 #include "board.hh"

@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "board_coordinates.hh"
+#include "turn.hh"
 
 typedef enum {
   // Flags:
@@ -75,6 +76,8 @@ class BoardView {
   [[nodiscard]] virtual bool     isSameShip(bool my_side, BoardCoordinates first,
                                             BoardCoordinates second) const = 0;
   [[nodiscard]] virtual uint8_t  nbrBoats() const = 0;
+
+  virtual Turn whoseTurn() const =0;
 
 
   // Make destructor virtual

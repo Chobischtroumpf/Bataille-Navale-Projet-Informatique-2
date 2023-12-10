@@ -11,13 +11,14 @@
 #include "board_control.hh"
 #include "board_display.hh"
 #include "board_view.hh"
+#include "board.hh"
 #include "board_coordinates.hh"
 #include "ship_coordinates.hh"
 #include "ship.hh"
+#include "turn.hh"
 
 using std::nullopt;
 using std::vector;
-
 
 class Board final : public BoardView {
 
@@ -220,7 +221,7 @@ class Board final : public BoardView {
     _display = std::forward<std::weak_ptr<BoardDisplay>>(display);
     if (auto p = _display.lock()) {
         p->printChangeTurn();
-        p->update();
+        p->updateGame();
     }
   }
 
@@ -273,6 +274,14 @@ class Board final : public BoardView {
   
   [[nodiscard]] virtual uint8_t  nbrBoats() const override {
     return _fleetA.getNumShips();
+  }
+
+  Turn whoseTurn() const override {
+      if (myTurn()) {
+          return PLAYERONE;
+      } else {
+          return PLAYERTWO;
+      }
   }
   
   ~Board() override = default;

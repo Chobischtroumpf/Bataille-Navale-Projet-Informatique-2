@@ -124,11 +124,13 @@ class ConsoleBoardDisplay final : public BoardDisplay {
    * board->width() after construction. */
   ConsoleBoardDisplay(std::ostream& out, std::istream& in,
                       std::shared_ptr<BoardView const> board,
-                      std::shared_ptr<BoardControl>    control)
+                      std::shared_ptr<BoardControl>    control,
+                      Turn turn)
       : _out{out},
         _in{in},
         _board{std::move(board)},
         _control{std::move(control)},
+        _turn{turn},
         _letter_width{static_cast<uint8_t>(length(
             BoardCoordinates(_board->width() - 1, _board->height() - 1).xToString()))},
         _number_width{static_cast<uint8_t>(length(
