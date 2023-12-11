@@ -12,9 +12,9 @@ bool BoardControl::checkShipPosition(ShipCoordinates coord) {
     bool isValid = true;
     for (int i = 0; i < coord.ship_id() && isValid; i++) {
         if (coord.orientation() == HORIZONTAL) {
-            if (coord.x() + i < _board->width() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) != IS_SHIP) {
+            if (coord.x() + i < _board->width() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) != UNDAMAGED) {
                 for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x() + i, coord.y()))) {
-                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) == IS_SHIP) {
+                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) == UNDAMAGED) {
                         isValid = false;
                     }
                 }
@@ -22,9 +22,9 @@ bool BoardControl::checkShipPosition(ShipCoordinates coord) {
                 isValid = false;
             }
         } else {
-            if (coord.y() + i < _board->height() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) != IS_SHIP) {
+            if (coord.y() + i < _board->height() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) != UNDAMAGED) {
                 for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x(), coord.y() + i))) {
-                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) == IS_SHIP) {
+                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) == UNDAMAGED) {
                         isValid = false;
                     }
                 }

@@ -161,14 +161,14 @@ class Board final : public BoardView {
     void placeShip(ShipCoordinates& shipCoords, bool isA = true )  {
         if (myTurn()) {
             for (int i = 0; i < shipCoords.ship_id(); i++) {
-                _my_side[shipCoords.y() + (!shipCoords.orientation() ? i : -1)][shipCoords.x() +
+                _my_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)][shipCoords.x() +
                                                                                (shipCoords.orientation() ? i
                                                                                                           : 0)].setType(
                         UNDAMAGED);
             }
         } else {
             for (int i = 0; i < shipCoords.ship_id(); i++) {
-                _their_side[shipCoords.y() + (!shipCoords.orientation() ? i : -1)][shipCoords.x() +
+                _their_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)][shipCoords.x() +
                                                                                (shipCoords.orientation() ? i
                                                                                                           : 0)].setType(
                         UNDAMAGED);
