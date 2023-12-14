@@ -39,7 +39,7 @@ bool BoardControl::checkShipPosition(ShipCoordinates coord) {
 bool BoardControl::placeShip(ShipCoordinates coord) {
     // Verifier qu'on peut poser le bateau la
     if (checkShipPosition(coord)) {
-        _board->placeShip(coord);
+        _board->placeShip(coord, _board->myTurn());
         _board->changeTurn();
         return true;
     } else {
