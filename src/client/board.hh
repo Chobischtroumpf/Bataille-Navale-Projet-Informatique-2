@@ -181,8 +181,10 @@ class Board final : public BoardView {
 
     void fire(const BoardCoordinates& coords){
         Cell& cell = myTurn() ? _their_side[coords.y()][coords.x()] : _my_side[coords.y()][coords.x()];
-        if (cell.type() == WATER) {
+        if (cell.type() == UNDAMAGED) {
             cell.setType(HIT);
+        } else if ( cell.type() == WATER) {
+            cell.setType(OCEAN);
         }
 
         _fleetA.notify(coords);
