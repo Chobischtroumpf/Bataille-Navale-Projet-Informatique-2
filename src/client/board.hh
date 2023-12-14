@@ -16,6 +16,7 @@
 #include "ship_coordinates.hh"
 #include "ship.hh"
 #include "turn.hh"
+#include "ship_types.hh"
 
 using std::nullopt;
 using std::vector;
@@ -228,8 +229,16 @@ class Board final : public BoardView {
   }
 
   [[nodiscard]] bool     myTurn() const override { return _my_turn; }
-  [[nodiscard]] bool     isFinished() const override { return _is_finished; }
-  [[nodiscard]] bool     isVictory() const override { return _is_victory; }
+
+  //To call ater each turn to know if the game is over.
+  [[nodiscard]] bool     isFinished() const override { 
+    return _fleetA.getState() and _fleetB.getState();
+    }
+    //To call after the game is over to know who won.
+  [[nodiscard]] bool     isVictory() const override { 
+    return _fleetA.getState(); 
+    }
+    
   [[nodiscard]] size_t   width() const override { return _my_side.at(0).size(); }
   [[nodiscard]] size_t   height() const override { return _my_side.size(); }
   [[nodiscard]] CellType cellType(bool             my_side,
