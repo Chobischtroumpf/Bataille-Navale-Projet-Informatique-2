@@ -23,6 +23,9 @@ class Cell {
         void setType(CellType newType) {
             _type = newType;
         }
+        void setId(int id) {
+            _ship_id = id;
+        }
         [[nodiscard]] constexpr inline CellType           type() const { return _type; }
         [[nodiscard]] constexpr inline std::optional<int> shipId() const { return _ship_id; }
 };

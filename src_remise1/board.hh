@@ -109,6 +109,8 @@ class Board final : public BoardView {
   };
 
   [[nodiscard]] Cell get(bool my_side, BoardCoordinates position) const {
+    //std::cout << "Called get : " << position.y() << " " << position.x() << std::endl;
+    //std::cout << "Called get : " << (bool) _my_side.at(position.y()).at(position.x()).shipId() << std::endl;
     if (my_side) {
       return _my_side.at(position.y()).at(position.x());
     } else {
@@ -154,6 +156,9 @@ class Board final : public BoardView {
                                                                                (shipCoords.orientation() ? i
                                                                                                           : 0)].setType(
                         UNDAMAGED);
+                _my_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)][shipCoords.x() +
+                                                                               (shipCoords.orientation() ? i
+                                                                                                          : 0)].setId((int) shipCoords.ship_id());
             }
         } else {
             for (int i = 0; i < shipCoords.ship_id(); i++) {
@@ -161,6 +166,9 @@ class Board final : public BoardView {
                                                                                (shipCoords.orientation() ? i
                                                                                                           : 0)].setType(
                         UNDAMAGED);
+                _their_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)][shipCoords.x() +
+                                                                               (shipCoords.orientation() ? i
+                                                                                                          : 0)].setId((int) shipCoords.ship_id());       
             }
 
         }
