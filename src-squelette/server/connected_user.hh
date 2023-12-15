@@ -1,5 +1,8 @@
 #pragma once
 
+/*
+ * Représente un utilisateur connecté
+ */
 class ConnectedUser {
 public:
 private:

@@ -2,7 +2,7 @@
 
 #include "string"
 /* 
- * Class that fetch the datas from the database
+ * Collecte des données de la base de donnée
 */
 class AccountServer {
 public:

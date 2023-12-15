@@ -11,6 +11,9 @@
 
 using std::vector;
 
+/*
+ * Copie local du board afin de pouvoir l'afficher en jeu
+ */
 class LocalBoard : public GameView {
 public:
   LocalBoard()

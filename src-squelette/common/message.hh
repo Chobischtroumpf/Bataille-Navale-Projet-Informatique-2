@@ -2,6 +2,9 @@
 
 #include <string>
 
+/*
+ * Représentation d'un message
+ */
 class Message {
 public:
 private:

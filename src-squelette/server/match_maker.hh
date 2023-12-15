@@ -1,8 +1,11 @@
 #pragma once
 
-#include <vector>
 #include "pending_match.hh"
+#include <vector>
 
+/*
+ * Classe qui créer et manage les parties en cours de creation
+ */
 class MatchMaker {
 public:
   void getNewPlayer();
