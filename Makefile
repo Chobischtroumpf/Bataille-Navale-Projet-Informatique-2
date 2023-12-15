@@ -5,7 +5,7 @@ CXX = g++
 
 # Compile project
 
-SRC_DIR = src/
+SRC_DIR = src_remise1/
 BUILD_DIR = build/
 
 HEADERS = $(wildcard ${SRC_DIR}**/*.hh)

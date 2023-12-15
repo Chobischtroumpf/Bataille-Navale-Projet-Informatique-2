@@ -150,11 +150,13 @@ vector<string> ConsoleBoardDisplay::createMapKey() const {
 
 vector<string> ConsoleBoardDisplay::createBoatsKey() const {
     vector<string> boat_key;
+    std::map<ShipType, int> shipCounts = _board->countShips(_board->myTurn());
+    //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
-    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 3 + "        Carrier (×1)    <");
-    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 5 + "      Battleship (×2)  <");
-    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 7 + "    Cruiser    (×1) <");
-    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 9 + "  Submarine (×2)   <");
+    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 3 + "        Carrier (×"+std::to_string(1-shipCounts[CARRIER])+")    <");
+    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 5 + "      Battleship (×"+std::to_string(2-shipCounts[BATTLESHIP])+")  <");
+    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 7 + "    Cruiser    (×"+std::to_string(1-shipCounts[CRUISER])+") <");
+    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 9 + "  Submarine (×"+std::to_string(1-shipCounts[SUBMARINE])+")   <");
     return boat_key;
   }
 
