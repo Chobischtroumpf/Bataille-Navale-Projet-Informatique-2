@@ -2,7 +2,11 @@
 
 # The name of your executable
 CLIENT	= battleship
+<<<<<<< HEAD
+SERVER = 
+=======
 # SERVER = 
+>>>>>>> master
 # Compiler and compiling flags
 CXX			= g++
 CXXFLAGS	=	-Wall -Werror -Wextra -std='c++20' -pedantic -g \
@@ -21,8 +25,11 @@ SRCDIR_CLIENT	= src/client
 INCDIR_CLIENT	= $(SRCDIR_CLIENT)/includes/
 OBJDIR	= build/
 
+<<<<<<< HEAD
+=======
 SRCDIR_SERVER	= src/server
 
+>>>>>>> master
 # Add include folder
 CXXFLAGS	+= -I $(INCDIR_CLIENT)
 
