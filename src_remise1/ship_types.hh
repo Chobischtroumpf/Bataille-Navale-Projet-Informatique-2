@@ -1,6 +1,6 @@
 #pragma once
 typedef enum {
-    NONE = 0,
+    NONE = 1,
     CARRIER = 2,
     BATTLESHIP = 3,
     CRUISER = 4,

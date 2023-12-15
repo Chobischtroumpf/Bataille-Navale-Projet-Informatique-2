@@ -153,10 +153,10 @@ vector<string> ConsoleBoardDisplay::createBoatsKey() const {
     std::map<ShipType, int> shipCounts = _board->countShips(_board->myTurn());
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
-    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 3 + "        Carrier (×"+std::to_string(1-shipCounts[CARRIER])+")    <");
-    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 5 + "      Battleship (×"+std::to_string(2-shipCounts[BATTLESHIP])+")  <");
-    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 7 + "    Cruiser    (×"+std::to_string(1-shipCounts[CRUISER])+") <");
-    boat_key.emplace_back(" > " + toString(UNDAMAGED) * 9 + "  Submarine (×"+std::to_string(1-shipCounts[SUBMARINE])+")   <");
+    boat_key.emplace_back(" > id: 2 " + toString(UNDAMAGED) * 3 + "        Carrier (×"+std::to_string(1-shipCounts[CARRIER])+")    <");
+    boat_key.emplace_back(" > id: 3 " + toString(UNDAMAGED) * 5 + "      Battleship (×"+std::to_string(2-shipCounts[BATTLESHIP])+") <");
+    boat_key.emplace_back(" > id: 4 " + toString(UNDAMAGED) * 7 + "    Cruiser    (×"+std::to_string(1-shipCounts[CRUISER])+") <");
+    boat_key.emplace_back(" > id: 5 " + toString(UNDAMAGED) * 9 + "  Submarine (×"+std::to_string(1-shipCounts[SUBMARINE])+")  <");
     return boat_key;
   }
 

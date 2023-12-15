@@ -61,7 +61,7 @@ bool BoardControl::_checkShipPosition(ShipCoordinates coord) {
 
 bool BoardControl::placeShip(ShipCoordinates coord) {
     // Verifier qu'on peut poser le bateau la
-    if ( _checkShipsInBoard(coord) && _checkShipPosition(coord)) {
+    if (coord.ship_id() != ShipType::NONE && _checkShipsInBoard(coord) && _checkShipPosition(coord)) {
         _board->placeShip(coord, _board->myTurn());
         _board->changeTurn();
         return true;
