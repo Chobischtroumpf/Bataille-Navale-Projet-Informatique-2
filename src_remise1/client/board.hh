@@ -6,6 +6,7 @@
 #include <optional>
 #include <utility>
 #include <vector>
+#include <map>
 #include <random>
 
 #include "board_control.hh"
@@ -20,6 +21,7 @@
 
 using std::nullopt;
 using std::vector;
+using std::map;
 
 class Board final : public BoardView {
 
@@ -47,8 +49,12 @@ class Board final : public BoardView {
                 }
             }
             // Method to get the number of ships in the fleet
-            size_t getNumShips() const {
-                return _ships.size();
+            map<ShipType, int> getNumShips() const {
+                map<ShipType, int> numShips;
+                for (const Ship& ship : _ships) {
+                    numShips[ship.getType()]++;
+                }
+                return numShips;
             }
 
             // Method to get the state of the fleet (true if operational, false if sunk)
@@ -136,25 +142,7 @@ class Board final : public BoardView {
 
     }
 
-    // Method to test the board
-    void testBoard() {
-    
-        ShipCoordinates boat{2,3, VERTICAL};
-
-        placeShip(boat);
-
-        std::cout << _fleetA.getState() << std::endl;
-
-        simplePrint(_my_side);
-
-        fire(BoardCoordinates{2, 3});
-
-        simplePrint(_my_side);
-
-        std::cout << _fleetA.getState() << std::endl;
-    }
-
-    size_t countShips(bool isA) {
+    map<ShipType, int> countShips(bool isA) {
         return isA ? _fleetA.getNumShips() : _fleetB.getNumShips();
     }
 
