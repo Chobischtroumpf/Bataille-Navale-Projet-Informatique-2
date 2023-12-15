@@ -4,7 +4,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
+#include <map>
 
+#include "ship_types.hh"
 #include "board_coordinates.hh"
 #include "turn.hh"
 
