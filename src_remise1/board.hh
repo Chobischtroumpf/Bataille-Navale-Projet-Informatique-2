@@ -142,7 +142,7 @@ class Board final : public BoardView {
 
     }
 
-    map<ShipType, int> countShips(bool isA) const override {
+    map<ShipType, int> countShips(bool isA) const override{
         return isA ? _fleetA.getNumShips() : _fleetB.getNumShips();
     }
 
@@ -271,10 +271,6 @@ class Board final : public BoardView {
     }
   void changeTurn() {_my_turn = !_my_turn;}
   
-  /*[[nodiscard]] virtual uint8_t  nbrBoats() const override {
-    return _fleetA.getNumShips();
-  }*/
-
   Turn whoseTurn() const override {
       if (myTurn()) {
           return PLAYERONE;

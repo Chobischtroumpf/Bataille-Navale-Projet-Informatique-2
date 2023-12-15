@@ -8,8 +8,8 @@ CXX = g++
 SRC_DIR = src_remise1/
 BUILD_DIR = build/
 
-HEADERS = $(wildcard ${SRC_DIR}**/*.hh)
-SOURCES = $(wildcard ${SRC_DIR}**/*.cc)
+HEADERS = $(wildcard ${SRC_DIR)*.hh)
+SOURCES = $(wildcard ${SRC_DIR}*.cc)
 OBJECTS = $(patsubst ${SRC_DIR}%.cc,${BUILD_DIR}%.o,${SOURCES})
 DEPENDS = $(patsubst ${SRC_DIR}%.cc,${BUILD_DIR}%.d,$(SOURCES))
 

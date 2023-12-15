@@ -8,7 +8,30 @@ bool BoardControl::fire(BoardCoordinates coord) {
     return true;
 }
 
-bool BoardControl::checkShipPosition(ShipCoordinates coord) {
+bool BoardControl::_checkShipsInBoard(ShipCoordinates coord) {
+    map<ShipType, int> ships = _board->countShips(_board->myTurn());
+    switch (ships[coord.ship_id()])
+    {
+    case 0:
+        return true;
+    case 1:
+        if (coord.ship_id() == CARRIER || coord.ship_id() == SUBMARINE || coord.ship_id() == CRUISER) {
+            return false;
+        } else {
+            return true;
+        }
+    case 2:
+        if (coord.ship_id() == CARRIER) {
+            return false;
+        } else {
+            return true;
+        }
+    default:
+        return false;
+    }
+}
+
+bool BoardControl::_checkShipPosition(ShipCoordinates coord) {
     bool isValid = true;
     for (int i = 0; i < coord.ship_id() && isValid; i++) {
         if (coord.orientation() == HORIZONTAL) {
@@ -38,7 +61,7 @@ bool BoardControl::checkShipPosition(ShipCoordinates coord) {
 
 bool BoardControl::placeShip(ShipCoordinates coord) {
     // Verifier qu'on peut poser le bateau la
-    if (checkShipPosition(coord)) {
+    if ( _checkShipsInBoard(coord) && _checkShipPosition(coord)) {
         _board->placeShip(coord, _board->myTurn());
         _board->changeTurn();
         return true;

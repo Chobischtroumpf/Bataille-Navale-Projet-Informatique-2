@@ -282,7 +282,7 @@ void ConsoleBoardDisplay::handlePlaceShip() {
   }
 }
 
-void ConsoleBoardDisplay::updateGame() {
+void ConsoleBoardDisplay::  updateGame() {
   //methode d'affichage d'ecran temporaire pour le changement de tour
   std::system("clear");  // Do not use std::system in other contexts
   _out << createGameHeader();

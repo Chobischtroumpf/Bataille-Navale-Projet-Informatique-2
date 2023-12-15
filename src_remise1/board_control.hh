@@ -13,7 +13,8 @@ private:
     std::shared_ptr<Board> _board;
     std::shared_ptr<BoardDisplay> _display;
 
-    virtual bool checkShipPosition(ShipCoordinates coord);
+    virtual bool _checkShipsInBoard(ShipCoordinates coord);  
+    virtual bool _checkShipPosition(ShipCoordinates coord);
 public:
   BoardControl(const BoardControl&)            = default;
   BoardControl(BoardControl&&)                 = default;

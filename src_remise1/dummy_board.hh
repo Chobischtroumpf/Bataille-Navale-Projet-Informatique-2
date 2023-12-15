@@ -112,10 +112,11 @@ class DummyBoard final : public BoardView, public BoardControl {
   DummyBoard& operator=(DummyBoard&&)      = delete;
 
   void setDisplay(std::weak_ptr<BoardDisplay> display) {
-    _display = std::forward<std::weak_ptr<BoardDisplay>>(display);
-    if (auto p = _display.lock()) {
-      p->update();
-    }
+    // _display = std::forward<std::weak_ptr<BoardDisplay>>(display);
+    // if (auto p = _display.lock()) {
+      // p->update();
+    // }
+    throw NotImplementedError("DummyBoard::setDisplay");
   }
   [[nodiscard]] uint8_t   nbrBoats() const override { return 2; }
   [[nodiscard]] bool      myTurn() const override { return _my_turn; }
