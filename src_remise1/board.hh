@@ -25,7 +25,7 @@ using std::map;
 
 class Board final : public BoardView {
 
-    /** The cell type and an optional ship identifier */
+    //Class representing a player's fleet
     class Fleet {
         public:
             // Constructor to initialize the Fleet with ships
@@ -104,20 +104,20 @@ class Board final : public BoardView {
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}}
   };
 
+    //Returns a value copy of a Cell of the board
   [[nodiscard]] Cell get(bool my_side, BoardCoordinates position) const {
-    //std::cout << "Called get : " << position.y() << " " << position.x() << std::endl;
-    //std::cout << "Called get : " << (bool) _my_side.at(position.y()).at(position.x()).shipId() << std::endl;
     if (my_side) {
       return _my_side.at(position.y()).at(position.x());
     } else {
       return _their_side.at(position.y()).at(position.x());
     }
   }
-
+    //Returns the ship id of the cell at given coordinates
   [[nodiscard]] std::optional<int> shipId(bool my_side, BoardCoordinates position) const {
     return get(my_side, position).shipId();
   }
 
+    //Checks if the dimensions of the board are correct
   [[nodiscard]] bool check() const {
     if (_my_side.size() != _their_side.size()) {
       return false;
@@ -141,7 +141,7 @@ class Board final : public BoardView {
         return isA ? _fleetA.getNumShips() : _fleetB.getNumShips();
     }
 
-    // Method to place a ship on the board
+    //Places a ship on the board
     void placeShip(ShipCoordinates& shipCoords, bool isA = true )  {
         try {
         if (myTurn()) {
@@ -169,6 +169,7 @@ class Board final : public BoardView {
         isA ? _fleetA.addShip(shipCoords) :  _fleetB.addShip(shipCoords) ;
     }
 
+    //"Fires" at the given position on the board
     void fire(const BoardCoordinates& coords){
         Cell& cell = myTurn() ? _their_side[coords.y()][coords.x()] : _my_side[coords.y()][coords.x()];
         if (cell.type() == UNDAMAGED) {
@@ -180,30 +181,7 @@ class Board final : public BoardView {
         _fleetA.notify(coords);
         _fleetB.notify(coords);
     }
-    
-    void simplePrint(vector<vector<Cell>> board) {
-        for (const auto& row : board) {
-            for (const auto& cell : row) {
-                switch (cell.type()) {
-                    case UNDAMAGED:
-                        std::cout << "U ";
-                        break;
-                    case HIT:
-                        std::cout << "H ";
-                        break;
-                    case OCEAN:
-                        std::cout << "O ";
-                        break;
-                    default:
-                        std::cout << "? ";
-                        break;
-                }
-            }
-            std::cout << std::endl;
-        }
-    }
         
-
   Board(const Board&)            = delete;
   Board(Board&&)                 = delete;
   Board& operator=(const Board&) = delete;
@@ -230,16 +208,18 @@ class Board final : public BoardView {
     
   [[nodiscard]] size_t   width() const override { return _my_side.at(0).size(); }
   [[nodiscard]] size_t   height() const override { return _my_side.size(); }
+  //Getter method to access a cell of the board
   [[nodiscard]] CellType cellType(bool             my_side,
                                   BoardCoordinates position) const override {
     return get(my_side, position).type();
   }
+  //Checks if two board coordinates belong to the same ship
   [[nodiscard]] bool isSameShip(bool my_side, BoardCoordinates first,
                                 BoardCoordinates second) const override {
     return shipId(my_side, first).has_value() &&
            shipId(my_side, first) == shipId(my_side, second);
   }
-
+    //Returns a vector of all the cells adjacent to the given coordinates ( diagonals too )
     [[nodiscard]] std::vector<Cell> getNeighbors(BoardCoordinates coord) {
         std::vector<Cell> neighbors;
         bool my_side = myTurn() ? true : false;
