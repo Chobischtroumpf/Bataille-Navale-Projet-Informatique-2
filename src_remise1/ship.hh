@@ -8,6 +8,7 @@
 
 using std::vector;
 
+//Class representing a Ship in a player's fleet
 class Ship {
 
     public:
