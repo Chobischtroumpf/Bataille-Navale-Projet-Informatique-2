@@ -16,16 +16,8 @@ std::istream& operator>>(std::istream& is, ShipCoordinates& bc) {
     is.get(c);
     ship_id_string += c;
   }
-  is.ignore(1);
-
-  std::string orientation_string;
-  while (is.good() && !is.eof() &&
-         !std::isspace(static_cast<char>(is.peek()))) {
-    char c{'?'}; //aucune idee de ce que ca fait, mais ca marche
-    is.get(c);
-    orientation_string += c;
-  }
-  is.ignore(1);
+  if (is.peek() == ' ')
+    is.ignore(1);
 
   std::string x_string;
   while (is.good() && !is.eof() &&
@@ -40,6 +32,17 @@ std::istream& operator>>(std::istream& is, ShipCoordinates& bc) {
     char c{'?'};
     is.get(c);
     y_string += c;
+  }
+
+  std::string orientation_string;
+  if (is.peek() == ' ') {
+    is.ignore(1);
+    while (is.good() && !is.eof() &&
+          !std::isspace(static_cast<char>(is.peek()))) {
+      char c{'?'}; //aucune idee de ce que ca fait, mais ca marche
+      is.get(c);
+      orientation_string += c;
+    }
   }
 
   std::optional<ShipType> ship_id{ShipCoordinates::parseShipId(ship_id_string)};

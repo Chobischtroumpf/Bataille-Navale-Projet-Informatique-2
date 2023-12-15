@@ -170,9 +170,9 @@ vector<string> ConsoleBoardDisplay::createGamePrompt() const {
 vector<string> ConsoleBoardDisplay::createPlaceShipPrompt() const {
   vector<string> prompt(_map_key.size()-4, "");  // Add padding
   prompt.emplace_back("");
-  prompt.emplace_back("Enter the Ship ID, the H or V for horizontal or vertical, then X and Y coordinates (e.g. 4 V C4):");
   prompt.emplace_back("");
   prompt.emplace_back(">> PLACE SHIP <<");
+  prompt.emplace_back("");
   prompt.emplace_back(">> ");
   return prompt;
 }
@@ -260,7 +260,6 @@ void ConsoleBoardDisplay::handleFire() {
   }
 }
 
-
 void ConsoleBoardDisplay::handlePlaceShip() {
   if (_board->whoseTurn() == _turn) {
     for (bool placed = false; !placed; clearBadPlaceShipInput()) {
@@ -306,6 +305,7 @@ void ConsoleBoardDisplay::updatePlaceShip() {
   _out << '\n';
   printSideBySide(createGrid(true), createGrid(false));
   _out << '\n';
+  _out << "Enter the Ship ID, X and Y coordinates and an optional\n H or V for orientation (defaults to H) (e.g. 4 C4 V):";
   if (_board->whoseTurn() == _turn) {
     printSideBySide(createBoatsKey(), createPlaceShipPrompt());
   } else {

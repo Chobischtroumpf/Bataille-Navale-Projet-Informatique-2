@@ -33,28 +33,38 @@ bool BoardControl::_checkShipsInBoard(ShipCoordinates coord) {
 
 bool BoardControl::_checkShipPosition(ShipCoordinates coord) {
     bool isValid = true;
+    try {
     for (int i = 0; i < coord.ship_id() && isValid; i++) {
         if (coord.orientation() == HORIZONTAL) {
             if (coord.x() + i < _board->width() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) != UNDAMAGED) {
-                for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x() + i, coord.y()))) {
-                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) == UNDAMAGED) {
+                vector<Cell> neighbors = _board->getNeighbors(BoardCoordinates(coord.x() + i, coord.y()));
+                for (auto &neighbor: neighbors) {
+                    if (neighbor.type() == UNDAMAGED) {
+                        std::cerr << "Invalid horizontal position" << std::endl;
                         isValid = false;
                     }
                 }
             } else {
+                std::cerr << "Invalid horizontal position2" << std::endl;
                 isValid = false;
             }
         } else {
             if (coord.y() + i < _board->height() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) != UNDAMAGED) {
-                for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x(), coord.y() + i))) {
-                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) == UNDAMAGED) {
+                vector<Cell> neighbors = _board->getNeighbors(BoardCoordinates(coord.x(), coord.y() + i));
+                for (auto &neighbor: neighbors) {
+                    if (neighbor.type() == UNDAMAGED) {
+                        std::cerr << "Invalid vertical position" << std::endl;
                         isValid = false;
                     }
                 }
             } else {
+                std::cerr << "Invalid vertical position2" << std::endl;
                 isValid = false;
             }
         }
+    }
+    } catch (const std::exception& e) {
+        isValid = false;
     }
     return isValid;
 }

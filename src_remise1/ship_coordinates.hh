@@ -28,7 +28,7 @@ class ShipCoordinates final: public BoardCoordinates {
   
   ShipCoordinates(size_t x, size_t y, Orientation orientation) : BoardCoordinates{x,y}, _orientation{orientation} {}
 
-  [[nodiscard]] constexpr inline Orientation orientation() const { return _orientation; }
+  [[nodiscard]] constexpr inline Orientation orientation() const { return _orientation;}
   [[nodiscard]] constexpr inline ShipType ship_id() const { return _ship_id; }
 
   void set(size_t x, size_t y, Orientation orientation, ShipType ship_id) {
@@ -62,10 +62,7 @@ class ShipCoordinates final: public BoardCoordinates {
   }
 
   [[nodiscard]] static std::optional<Orientation> parseOrientation(const string& orientation_string) {
-    if (orientation_string.empty() || orientation_string.length() > 1) {
-      return std::nullopt;
-    }
-    if (orientation_string == "H" || orientation_string == "h") {
+    if (orientation_string.empty() || orientation_string  == "H" || orientation_string == "h") {
       return HORIZONTAL;
     } else if (orientation_string == "V" || orientation_string == "v"){
       return VERTICAL;

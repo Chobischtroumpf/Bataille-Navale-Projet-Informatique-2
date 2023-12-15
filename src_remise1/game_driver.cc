@@ -12,7 +12,7 @@ bool GameDriver::isFinished() {
 }
 
 void GameDriver::placeShips() {
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
         if (_board->whoseTurn() == PLAYERONE) {
             _displayPlayer1->updatePlaceShip();
             _displayPlayer1->handlePlaceShip();

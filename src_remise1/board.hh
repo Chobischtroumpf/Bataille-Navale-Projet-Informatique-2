@@ -80,32 +80,28 @@ class Board final : public BoardView {
 
   vector<vector<Cell>> _my_side{
       {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-  };
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}}
+    };
 
   vector<vector<Cell>> _their_side{
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
-      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+      {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}}
   };
 
   [[nodiscard]] Cell get(bool my_side, BoardCoordinates position) const {
@@ -139,10 +135,7 @@ class Board final : public BoardView {
 
  public:
 
-    Board() {
-        //testBoard(); // Call the method to test the board methods
-
-    }
+    Board() {}
 
     map<ShipType, int> countShips(bool isA) const override{
         return isA ? _fleetA.getNumShips() : _fleetB.getNumShips();
@@ -150,27 +143,27 @@ class Board final : public BoardView {
 
     // Method to place a ship on the board
     void placeShip(ShipCoordinates& shipCoords, bool isA = true )  {
+        try {
         if (myTurn()) {
             for (int i = 0; i < shipCoords.ship_id(); i++) {
-                _my_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)][shipCoords.x() +
-                                                                               (shipCoords.orientation() ? i
-                                                                                                          : 0)].setType(
-                        UNDAMAGED);
-                _my_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)][shipCoords.x() +
-                                                                               (shipCoords.orientation() ? i
-                                                                                                          : 0)].setId((int) shipCoords.ship_id());
+                _my_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)]
+                        [shipCoords.x() + (shipCoords.orientation() ? i : 0)].setType(UNDAMAGED);
+
+                _my_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)]
+                        [shipCoords.x() + (shipCoords.orientation() ? i : 0)].setId(static_cast<int>(shipCoords.ship_id()));
             }
         } else {
             for (int i = 0; i < shipCoords.ship_id(); i++) {
-                _their_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)][shipCoords.x() +
-                                                                               (shipCoords.orientation() ? i
-                                                                                                          : 0)].setType(
-                        UNDAMAGED);
-                _their_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)][shipCoords.x() +
-                                                                               (shipCoords.orientation() ? i
-                                                                                                          : 0)].setId((int) shipCoords.ship_id());       
-            }
+                _their_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)]
+                            [shipCoords.x() + (shipCoords.orientation() ? i : 0)].setType(UNDAMAGED);
 
+                _their_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)]
+                            [shipCoords.x() + (shipCoords.orientation() ? i : 0)].setId(static_cast<int>(shipCoords.ship_id()));       
+            }
+        }
+        } catch (std::exception& e) {
+            std::cout << "Exception caught : " << e.what() << std::endl;
+            exit(1);
         }
 
         isA ? _fleetA.addShip(shipCoords) :  _fleetB.addShip(shipCoords) ;
@@ -251,32 +244,33 @@ class Board final : public BoardView {
         std::vector<Cell> neighbors;
         bool my_side = myTurn() ? true : false;
         if (coord.x() > 0) {
-            neighbors.push_back(get(my_side, BoardCoordinates(coord.y(), coord.x()-1)));
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.x()-1, coord.y())));
         }
-        if (coord.x() < width()) {
-            neighbors.push_back(get(my_side, BoardCoordinates(coord.y(), coord.x()+1)));
+        if (coord.x()+1 < width()) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.x()+1, coord.y())));
         }
         if (coord.y() > 0) {
-            neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x())));
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.x(), coord.y()-1)));
             if (coord.x() > 0) {
-                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x()-1)));
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.x()-1, coord.y()-1)));
             }
-            if (coord.x() < width()) {
-                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()-1, coord.x()+1)));
+            if (coord.x()+1 < width()) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.x()+1, coord.y()-1)));
             }
         }
-        if (coord.y() < height()) {
-            neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x())));
+        if (coord.y()+1 < height()) {
+            neighbors.push_back(get(my_side, BoardCoordinates(coord.x(), coord.y()+1)));
             // Diagonale gauche
             if (coord.x() > 0) {
-                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x()-1)));
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.x()-1, coord.y()+1)));
             }
-            if (coord.x() < width()) {
-                neighbors.push_back(get(my_side, BoardCoordinates(coord.y()+1, coord.x()+1)));
+            if (coord.x()+1 < width()) {
+                neighbors.push_back(get(my_side, BoardCoordinates(coord.x()+1, coord.y()+1)));
             }
         }
         return neighbors;
     }
+
   void changeTurn() {_my_turn = !_my_turn;}
   
   Turn whoseTurn() const override {
