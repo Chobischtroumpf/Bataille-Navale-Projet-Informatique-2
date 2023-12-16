@@ -34,6 +34,7 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   size_t const   _grid_width;  //< The number of character in a line of a grid
   size_t const   _width;    //< The number of character in a line with two grids and a gap
   vector<string> _map_key;  //< The map key, each string is a line without the ending '\n'
+  vector<string> _boat_key;  //< The boats key, each string is a line without the ending '\n'
   Turn const     _turn;     //< The current turn
   // Utility methods
 
@@ -83,12 +84,19 @@ class ConsoleBoardDisplay final : public BoardDisplay {
    * Outside constructor, use the attribute instead. */
   [[nodiscard]] vector<string> createMapKey() const;
 
+  /** Create boats key, each string is a line without ending '\n'
+   * Used by the constructor to init _boat_key. 
+   * Outside constructor, use the attribute instead. */
   [[nodiscard]] vector<string> createBoatsKey() const;
 
   /** Create coordinates prompt, each string is a line without ending '\n'.
    * Empty lines are added in the beginning of the prompt so it can be printed next to the
    * map key. */
   [[nodiscard]] vector<string> createGamePrompt() const;
+
+  /** Create coordinates prompt, each string is a line without ending '\n'.
+   * Empty lines are added in the beginning of the prompt so it can be printed next to the
+   * map key. */
   [[nodiscard]] vector<string> createPlaceShipPrompt() const;
 
   // Print methods
@@ -138,7 +146,8 @@ class ConsoleBoardDisplay final : public BoardDisplay {
         _gap{"   "},
         _grid_width{_number_width + 1 + (1 + _letter_width) * _board->width() + 1},
         _width{_grid_width * 2 + _gap.size()},
-        _map_key{createMapKey()} {}
+        _map_key{createMapKey()},
+        _boat_key{createBoatsKey()} {}
 
   ConsoleBoardDisplay(const ConsoleBoardDisplay&)                  = default;
   ConsoleBoardDisplay(ConsoleBoardDisplay&&)                       = default;
@@ -155,7 +164,8 @@ class ConsoleBoardDisplay final : public BoardDisplay {
   /** Parse coordinates provided by user, check boundaries and call
    * BoardControl::fire. */
   void handleFire() override;
-
+  /** Parse coordinates provided by user, check boundaries and call
+   * BoardControl::placeShip. */
   void handlePlaceShip() override;
 
   ~ConsoleBoardDisplay() override = default;

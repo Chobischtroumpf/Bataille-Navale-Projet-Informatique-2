@@ -1,7 +1,6 @@
 #include "board_control.hh"
 #include "board_view.hh"
 
-
 bool BoardControl::fire(BoardCoordinates coord) {
     _board->fire(coord);
     _board->changeTurn();
@@ -70,7 +69,6 @@ bool BoardControl::_checkShipPosition(ShipCoordinates coord) {
 }
 
 bool BoardControl::placeShip(ShipCoordinates coord) {
-    // Verifier qu'on peut poser le bateau la
     if (coord.ship_id() != ShipType::NONE && _checkShipsInBoard(coord) && _checkShipPosition(coord)) {
         _board->placeShip(coord, _board->myTurn());
         _board->changeTurn();

@@ -78,9 +78,13 @@ class BoardView {
   [[nodiscard]] virtual bool     isSameShip(bool my_side, BoardCoordinates first,
                                             BoardCoordinates second) const = 0;
 
-  virtual std::map<ShipType, int> countShips(bool isA) const = 0;
+  /** Return the number of ships of each type that are still alive.
+   * The returned map should contain all ShipType, even if the number of ships of
+   * this type is 0. */
+  [[nodiscard]] virtual std::map<ShipType, int> countShips(bool isA) const = 0;
 
-  virtual Turn whoseTurn() const =0;
+  /** Return whose turn it is */
+  [[nodiscard]] virtual Turn whoseTurn() const =0;
 
 
   // Make destructor virtual

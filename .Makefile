@@ -2,17 +2,14 @@
 
 # The name of your executable
 CLIENT	= battleship
-<<<<<<< HEAD
-SERVER = 
-=======
 # SERVER = 
->>>>>>> master
 # Compiler and compiling flags
 CXX			= g++
 CXXFLAGS	=	-Wall -Werror -Wextra -std='c++20' -pedantic -g \
 				-Wall -Wextra -Wsign-compare -fmax-errors=2 \
 
-ifeq ($(shell uname),Darwin)
+ifeq ($(shell uname),Linux)
+endif
 
 
 # Debug, use with`make DEBUG=1`
@@ -25,11 +22,8 @@ SRCDIR_CLIENT	= src/client
 INCDIR_CLIENT	= $(SRCDIR_CLIENT)/includes/
 OBJDIR	= build/
 
-<<<<<<< HEAD
-=======
 SRCDIR_SERVER	= src/server
 
->>>>>>> master
 # Add include folder
 CXXFLAGS	+= -I $(INCDIR_CLIENT)
 

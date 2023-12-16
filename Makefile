@@ -43,7 +43,7 @@ run:
 # make clean supprime les fichiers objets et dépendances
 .PHONY: clean
 clean:
-	-rm ${BUILD_DIR}**/*.o ${BUILD_DIR}**/*.d
+	-rm ${BUILD_DIR}*.o ${BUILD_DIR}*.d
 
 # make mrclean supprime les fichiers objets et les exécutables
 .PHONY: mrclean

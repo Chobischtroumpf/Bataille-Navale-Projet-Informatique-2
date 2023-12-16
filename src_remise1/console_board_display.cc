@@ -290,7 +290,7 @@ void ConsoleBoardDisplay::  updateGame() {
   printSideBySide(createGrid(true), createGrid(false));
   _out << '\n';
   if (_board->whoseTurn() == _turn) {
-    printSideBySide(createMapKey(), createGamePrompt());
+    printSideBySide(_map_key, createGamePrompt());
   } else {
     print(createMapKey());
   }
@@ -307,7 +307,7 @@ void ConsoleBoardDisplay::updatePlaceShip() {
   _out << '\n';
   _out << "Enter the Ship ID, X and Y coordinates and an optional\n H or V for orientation (defaults to H) (e.g. 4 C4 V):";
   if (_board->whoseTurn() == _turn) {
-    printSideBySide(createBoatsKey(), createPlaceShipPrompt());
+    printSideBySide(_boat_key, createPlaceShipPrompt());
   } else {
     print(createBoatsKey());
   }

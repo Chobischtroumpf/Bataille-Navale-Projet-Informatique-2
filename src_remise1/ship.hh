@@ -16,7 +16,6 @@ class Ship {
         //Notifies the Ship that a tile has been hit, allowing it to check if it is sunk
         void notify(const BoardCoordinates& coords) {
 
-            _state = false;
 
             // Check if ship is sunk
             for (const BoardCoordinates& tile : tiles) {
@@ -27,6 +26,7 @@ class Ship {
                     return;
                 }
             }
+            _state = false;
         }
 
         Ship(const ShipCoordinates& coords, const vector<vector<Cell>>& board ) : _state{true}, _board{board} {
