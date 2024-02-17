@@ -5,11 +5,14 @@ CXX = g++
 
 # Compile project
 
-SRC_DIR = src_remise1/
-BUILD_DIR = build/
+SRC_DIR := src-squelette/
+BUILD_DIR := build/
 
-HEADERS = $(wildcard ${SRC_DIR)*.hh)
-SOURCES = $(wildcard ${SRC_DIR}*.cc)
+# OLD COMMANDS (not recusive)
+# HEADERS = $(wildcard ${SRC_DIR}*.hh)
+# SOURCES = $(wildcard ${SRC_DIR}*.cc)
+SOURCES := $(shell find $(SRC_DIR) -type f -name '*.cc')
+HEADERS := $(shell find $(SRC_DIR) -type f -name '*.hh')
 OBJECTS = $(patsubst ${SRC_DIR}%.cc,${BUILD_DIR}%.o,${SOURCES})
 DEPENDS = $(patsubst ${SRC_DIR}%.cc,${BUILD_DIR}%.d,$(SOURCES))
 
@@ -43,7 +46,7 @@ run:
 # make clean supprime les fichiers objets et dépendances
 .PHONY: clean
 clean:
-	-rm ${BUILD_DIR}*.o ${BUILD_DIR}*.d
+	-rm -r ${BUILD_DIR}*.o ${BUILD_DIR}*.d
 
 # make mrclean supprime les fichiers objets et les exécutables
 .PHONY: mrclean
