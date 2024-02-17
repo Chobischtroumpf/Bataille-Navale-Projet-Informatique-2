@@ -46,7 +46,9 @@ run:
 # make clean supprime les fichiers objets et dépendances
 .PHONY: clean
 clean:
-	-rm -r ${BUILD_DIR}*.o ${BUILD_DIR}*.d
+	-rm -rf ${BUILD_DIR}client
+	-rm -rf ${BUILD_DIR}server
+	-rm -rf ${BUILD_DIR}common
 
 # make mrclean supprime les fichiers objets et les exécutables
 .PHONY: mrclean
