@@ -7,7 +7,5 @@
 // #include "dummy_board.hh"
 
 int main() {
-    std::shared_ptr<LocalBoard> local_board = std::make_shared<LocalBoard>();
-    std::shared_ptr<GameController> controller = std::make_shared<GameController>(local_board);
-    std::shared_ptr<GameConsole> console = std::make_shared<GameConsole>(std::cout, std::cin, local_board, controller);
+    return 1;
 }
