@@ -2,18 +2,19 @@
 #include "../../common/cell_type.hh"
 #include "../../common/board_coordinates.hh"
 #include "../../common/ship_coordinates.hh"
+#include <memory>
+#include <map>
 
+
+GameController::GameController(std::shared_ptr<LocalBoard> board) : _board{std::move(board)} {}
 
 bool GameController::fire(BoardCoordinates coord) const {
     // Sends a request to fire to the gameServer
     return true;
 }
 
-<<<<<<<< HEAD:src-squelette/client/Controllers/game_controller.cc
-bool GameController::checkShipPosition(ShipCoordinates coord) const {
-========
-bool BoardControl::_checkShipsInBoard(ShipCoordinates coord) {
-    map<ShipType, int> ships = _board->countShips(_board->myTurn());
+bool GameController::checkShipsInBoard(ShipCoordinates coord) const {
+    std::map<ShipType, uint8_t> ships = _board->countShips(_board->myTurn());
     switch (ships[coord.ship_id()])
     {
     case 0:
@@ -35,8 +36,7 @@ bool BoardControl::_checkShipsInBoard(ShipCoordinates coord) {
     }
 }
 
-bool BoardControl::_checkShipPosition(ShipCoordinates coord) {
->>>>>>>> master:src_remise1/board_control.cc
+bool GameController::checkShipPosition(ShipCoordinates coord) const {
     bool isValid = true;
     for (int i = 0; i < coord.ship_id() && isValid; i++) {
         if (coord.orientation() == HORIZONTAL) {
@@ -66,14 +66,8 @@ bool BoardControl::_checkShipPosition(ShipCoordinates coord) {
 
 bool GameController::placeShip(ShipCoordinates coord) const {
     // Verifier qu'on peut poser le bateau la
-<<<<<<<< HEAD:src-squelette/client/Controllers/game_controller.cc
-    if (checkShipPosition(coord)) {
-        // send ship position to the server
-========
-    if ( _checkShipsInBoard(coord) && _checkShipPosition(coord)) {
-        _board->placeShip(coord, _board->myTurn());
-        _board->changeTurn();
->>>>>>>> master:src_remise1/board_control.cc
+    if ( checkShipsInBoard(coord) && checkShipPosition(coord)) {
+        // Sends a request to place the ship to the gameServer
         return true;
     } else {
         return false;
@@ -81,3 +75,8 @@ bool GameController::placeShip(ShipCoordinates coord) const {
 }
 
 void GameController::quit() {}
+
+void GameController::connectServer() {}
+
+bool GameController::sendRequest(ShipCoordinates coord) {}
+bool GameController::sendRequest(BoardCoordinates coord) {}

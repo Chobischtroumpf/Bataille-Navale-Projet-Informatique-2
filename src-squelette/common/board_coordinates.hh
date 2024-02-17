@@ -5,8 +5,6 @@
 
 #include "not_implemented_error.hh"
 
-using std::string;
-
 /*
  * Représente un coordonnées dans le plateau
  */

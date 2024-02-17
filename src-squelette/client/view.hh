@@ -5,4 +5,8 @@
 /*
  * Interface de la vue (ce qui est représenté à l'écran)
  */
-class View : public Observer {};
+class View : public Observer {
+public:
+  virtual ~View() override {}
+
+};
