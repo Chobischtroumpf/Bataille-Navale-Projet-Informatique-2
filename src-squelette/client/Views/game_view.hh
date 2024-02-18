@@ -4,19 +4,16 @@
 #include "../../common/cell_type.hh"
 #include "../../common/board_coordinates.hh"
 
-#include <memory>
-
-
 
 class GameView : public View {
 public:
-    virtual ~GameView() override {};
+    virtual ~GameView() override {}
 
-    virtual bool myTurn() =0;
-    virtual bool isFinished() =0;
-    virtual bool isVictory() =0;
-    virtual std::size_t width() =0;
-    virtual std::size_t height() =0;
-    virtual CellType cellType(bool, BoardCoordinates) = 0;
-    virtual bool isSameShip(bool, BoardCoordinates, BoardCoordinates) =0;
+    virtual bool myTurn() const =0;
+    virtual bool isFinished() const =0;
+    virtual bool isVictory() const =0;
+    virtual std::size_t width() const =0;
+    virtual std::size_t height() const =0;
+    virtual CellType cellType(bool, BoardCoordinates) const = 0;
+    virtual bool isSameShip(bool, BoardCoordinates, BoardCoordinates) const =0;
 };

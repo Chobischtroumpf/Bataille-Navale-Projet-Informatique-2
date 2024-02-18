@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <vector>
+#include <array>
 #include <map>
 #include <iostream>
 
@@ -13,27 +14,46 @@
 
 
 /*
- * Copie local du board afin de pouvoir l'afficher en jeu
+ * Local board view
  */
 class LocalBoard : public GameView {
 public:
-  LocalBoard()
-      : _is_finished{false}, _is_victory{false}, _my_turn{true},
-        _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))} {}
+  LocalBoard();
   
   virtual ~LocalBoard() override = default;
 
-  bool myTurn() override { return _my_turn; }
-  bool isFinished() override { return _is_finished; }
-  bool isVictory() override { return _is_victory; }
-  std::size_t width() override { return _my_board.at(0).size(); }
-  std::size_t height() override { return _my_board.size(); }
-  CellType cellType(bool my_side, BoardCoordinates coordinates) override {
-    return get(my_side, coordinates).type();
-  }
+  // Getters
+  bool myTurn() const override ;
+  bool isFinished() const override;
+  bool isVictory() const override;
+  std::size_t width() const override;
+  std::size_t height() const override;
+
+  /*
+   * Get the cell type at the given coordinates
+    * @param coordinates : coordinates of the cell
+    * @return le cell type
+  */
+  CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
+
   bool isSameShip(bool my_side, BoardCoordinates first,
-                  BoardCoordinates second) override;
+                  BoardCoordinates second) const override;
+
   std::vector<Cell> getNeighbors(BoardCoordinates coord) const;
+
+  /* Returns the ships that needs can be placed */
+  std::array<std::pair<ShipType, uint8_t>, 4> shipsToPlace() const;
+
+  /* Returns true if all boats are placed */
+  bool allBoatsPlaced() const;
+
+  bool isRemainingShip(ShipType ship_type) const;
+
+  std::vector<ShipCoordinates> getPlacedShips() const;
+
+  void addPlacedShip(ShipCoordinates coord);
+
+  void waitGame();
 
   void update() override { throw NotImplementedError("Update"); }
 
@@ -46,15 +66,19 @@ public:
     return lhs <= rhs ? lhs : rhs;
   }
 
-  std::map<ShipType, uint8_t> countShips(bool my_side) const;
 
 private:
   std::vector<std::vector<Cell>> _my_board;
+  std::vector<ShipCoordinates> _placed_ships;
+  std::vector<std::vector<Cell>> _their_board;
+  std::array<std::pair<ShipType, uint8_t>,4> _ships_to_place = {
+      std::make_pair(DESTROYER, 1), std::make_pair(SUBMARINE, 2),
+      std::make_pair(BATTLESHIP, 1), std::make_pair(CARRIER, 1)};
   bool _my_turn;
   bool _is_finished;
   bool _is_victory;
 
-  Cell get(bool my_side, BoardCoordinates position);
+  Cell get(bool my_side, BoardCoordinates position) const;
   int shipId(bool my_side, BoardCoordinates position);
   bool check();
   void placeShip(ShipCoordinates coordinates, bool my_fleet);

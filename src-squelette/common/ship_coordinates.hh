@@ -96,11 +96,11 @@ public:
     case CARRIER:
       return "Carrier";
     case BATTLESHIP:
-      return "BattleShip";
-    case CRUISER:
-      return "Cruiser";
+      return "Battleship";
     case SUBMARINE:
       return "Submarine";
+    case DESTROYER:
+      return "Destroyer";
 
     case NONE:
     default:

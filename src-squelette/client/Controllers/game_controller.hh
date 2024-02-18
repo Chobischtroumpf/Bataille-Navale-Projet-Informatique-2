@@ -15,18 +15,20 @@ public:
   GameController &operator=(const GameController &) = default;
   GameController &operator=(GameController &&) = default;
 
-  virtual void setDisplay(std::shared_ptr<Display> display) override {
+  virtual void setDisplay(std::shared_ptr<Display> display) {
     _display = std::move(display);
   }
 
   /** Inform that the player chose to fire on this cell.
    * Return true if the action is valid (this cell was not targeted previously).
    */
-  virtual bool fire(BoardCoordinates coord) const override;
+  virtual bool fire(BoardCoordinates coord) const;
 
-  virtual bool placeShip(ShipCoordinates coord) const override;
+  virtual bool placeShip(ShipCoordinates coord) const;
 
-  virtual void connectServer() override;
+  virtual void sendShips(std::vector<ShipCoordinates> boats);
+
+  virtual void connectServer();
 
 
   /** Inform that the player quit the game. */

@@ -3,12 +3,15 @@
 #include <memory>
 #include <ostream>
 #include <vector>
-#include <ranges>
-#include <algorithm>
 
 #include "../../Controllers/game_controller.hh"
 #include "../../../common/not_implemented_error.hh"
 #include "../console.hh"
+
+enum InputStatus {
+  OK,
+  ERR
+};
 
 /** BoardDisplay using text.
  *
@@ -36,15 +39,20 @@ class GameConsole : public Console {
 
   /** prints a temporary screen when changing turns, until next '\n' (enter) */
   void printChangeTurn();
+  void printSideBySide(std::vector<string> left, std::vector<string> right);
+  void printCenter(const std::vector<string>& board);
 
   /** Produces a redraw */
-  void updatePlaceShip();
-  void updateGame();
+  void updatePlaceShip(InputStatus status);
+  void updateGame(InputStatus);
+  void waitGame();
 
   /** Parse coordinates provided by user, check boundaries and call
    * BoardControl::fire. */
   void handleFire();
   void handlePlaceShip();
+
+  // Console methods
   void display() override;
   void display_error() override;
   void update() override;
@@ -116,8 +124,8 @@ private:
   /** Create coordinates prompt, each string is a line without ending '\n'.
    * Empty lines are added in the beginning of the prompt so it can be printed next to the
    * map key. */
-  [[nodiscard]] std::vector<string> createGamePrompt() const;
-  [[nodiscard]] std::vector<string> createPlaceShipPrompt() const;
+  [[nodiscard]] std::vector<string> createGamePrompt(InputStatus status) const;
+  [[nodiscard]] std::vector<string> createPlaceShipPrompt(InputStatus status) const;
 
   // Print methods
 
@@ -125,10 +133,10 @@ private:
   void print(const std::vector<string>& lines);
 
   // Input methods
-  /** clear fail bits of _in, ignore until next '\n', redraw */
-  void clearBadGameInput();
+  /** clear fail bits of _in, ignore until next '\n', redraw  with the code status*/
+  void clearBadGameInput(bool placed);
 
-  /** clear fail bits of _in, ignore until next '\n', redraw */
-  void clearBadPlaceShipInput();
+  /** clear fail bits of _in, ignore until next '\n', redraw with the code status*/
+  void clearBadPlaceShipInput(bool placed);
 };
 

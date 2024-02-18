@@ -2,8 +2,11 @@
 #include "../../common/cell_type.hh"
 #include "../../common/board_coordinates.hh"
 #include "../../common/ship_coordinates.hh"
+#include <array>
+#include <cstdint>
 #include <memory>
 #include <map>
+#include <utility>
 
 
 GameController::GameController(std::shared_ptr<LocalBoard> board) : _board{std::move(board)} {}
@@ -14,64 +17,50 @@ bool GameController::fire(BoardCoordinates coord) const {
 }
 
 bool GameController::checkShipsInBoard(ShipCoordinates coord) const {
-    std::map<ShipType, uint8_t> ships = _board->countShips(_board->myTurn());
-    switch (ships[coord.ship_id()])
-    {
-    case 0:
-        return true;
-    case 1:
-        if (coord.ship_id() == CARRIER || coord.ship_id() == SUBMARINE || coord.ship_id() == CRUISER) {
-            return false;
-        } else {
-            return true;
-        }
-    case 2:
-        if (coord.ship_id() == CARRIER) {
-            return false;
-        } else {
-            return true;
-        }
-    default:
-        return false;
-    }
+    std::array<std::pair<ShipType, uint8_t>, 4> ships = _board->shipsToPlace();
+    return ships.at(coord.ship_id() - 2).second > 0;
 }
 
 bool GameController::checkShipPosition(ShipCoordinates coord) const {
-    bool isValid = true;
-    for (int i = 0; i < coord.ship_id() && isValid; i++) {
+    for (int i = 0; i < coord.ship_id(); i++) {
         if (coord.orientation() == HORIZONTAL) {
-            if (coord.x() + i < _board->width() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) != UNDAMAGED) {
+            if (coord.x() + i < _board->width() && _board->cellType(true, BoardCoordinates(coord.x() + i, coord.y())) != UNDAMAGED) {
                 for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x() + i, coord.y()))) {
-                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x() + i, coord.y())) == UNDAMAGED) {
-                        isValid = false;
+                    if (neighbor.type() == IS_SHIP) {
+                        return false;
                     }
                 }
             } else {
-                isValid = false;
+                return false;
             }
         } else {
-            if (coord.y() + i < _board->height() && _board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) != UNDAMAGED) {
+            if (coord.y() + i < _board->height() && _board->cellType(true, BoardCoordinates(coord.x(), coord.y() + i)) != UNDAMAGED) {
                 for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x(), coord.y() + i))) {
-                    if (_board->cellType(_board->myTurn(), BoardCoordinates(coord.x(), coord.y() + i)) == UNDAMAGED) {
-                        isValid = false;
+                    if (neighbor.type() == IS_SHIP) {
+                        return false;
                     }
                 }
             } else {
-                isValid = false;
+                return false;
             }
         }
     }
-    return isValid;
+    return true;
 }
 
 bool GameController::placeShip(ShipCoordinates coord) const {
     // Verifier qu'on peut poser le bateau la
     if ( checkShipsInBoard(coord) && checkShipPosition(coord)) {
         // Sends a request to place the ship to the gameServer
+        _board->addPlacedShip(coord);
         return true;
     } else {
         return false;
     }
+}
+
+void GameController::sendShips(std::vector<ShipCoordinates> boats) {
+    // Sends a request to place the ships to the gameServer
 }
 
 void GameController::quit() {}
