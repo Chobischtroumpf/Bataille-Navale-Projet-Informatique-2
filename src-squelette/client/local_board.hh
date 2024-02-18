@@ -36,9 +36,12 @@ public:
   */
   CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
 
+  /* WARNING : NOT FULLY IMPLEMENTED 
+   * Check if two cells are part of the same ship*/
   bool isSameShip(bool my_side, BoardCoordinates first,
                   BoardCoordinates second) const override;
 
+  /* Get the neighbors of a cell */
   std::vector<Cell> getNeighbors(BoardCoordinates coord) const;
 
   /* Returns the ships that needs can be placed */
@@ -47,12 +50,16 @@ public:
   /* Returns true if all boats are placed */
   bool allBoatsPlaced() const;
 
+  /* Returns true if the ship is remaining */
   bool isRemainingShip(ShipType ship_type) const;
 
+  /* Returns the ships that needs can be placed */
   std::vector<ShipCoordinates> getPlacedShips() const;
 
+  /* Add a place a ship (locally) */
   void addPlacedShip(ShipCoordinates coord);
 
+  /* Wait for the server to launch the game */
   void waitGame();
 
   void update() override { throw NotImplementedError("Update"); }
@@ -78,7 +85,9 @@ private:
   bool _is_finished;
   bool _is_victory;
 
+  /* Get the cell in one of the board*/
   Cell get(bool my_side, BoardCoordinates position) const;
+
   int shipId(bool my_side, BoardCoordinates position);
   bool check();
   void placeShip(ShipCoordinates coordinates, bool my_fleet);

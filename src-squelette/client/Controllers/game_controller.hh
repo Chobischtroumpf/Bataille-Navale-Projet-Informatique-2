@@ -24,8 +24,10 @@ public:
    */
   virtual bool fire(BoardCoordinates coord) const;
 
+  /* Handle the placement of a ship */
   virtual bool placeShip(ShipCoordinates coord) const;
 
+  /* Send the ships to the server */
   virtual void sendShips(std::vector<ShipCoordinates> boats);
 
   virtual void connectServer();
