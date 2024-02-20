@@ -12,7 +12,7 @@
 GameController::GameController(std::shared_ptr<LocalBoard> board) : _board{std::move(board)} {}
 
 bool GameController::fire(BoardCoordinates coord) const {
-    // Sends a request to fire to the gameServer
+    // Sends POST request to fire to the gameServer
     return true;
 }
 
@@ -60,7 +60,7 @@ bool GameController::placeShip(ShipCoordinates coord) const {
 }
 
 void GameController::sendShips(std::vector<ShipCoordinates> boats) {
-    // Sends a request to place the ships to the gameServer
+    // POST request to the server to place the boats on the board
 }
 
 void GameController::quit() {}

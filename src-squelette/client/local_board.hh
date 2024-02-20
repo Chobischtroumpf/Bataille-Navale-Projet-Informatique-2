@@ -59,19 +59,15 @@ public:
   /* Add a place a ship (locally) */
   void addPlacedShip(ShipCoordinates coord);
 
-  /* Wait for the server to launch the game */
+  /* Polls the server to wait the beggining of the game */
   void waitGame();
+
+  /* Polls the server to wait the turn */
+  void waitTurn();
 
   void update() override { throw NotImplementedError("Update"); }
 
-  static constexpr inline CellType best(CellType lhs, CellType rhs) {
-    if (!(lhs & IS_SHIP) || !(rhs & IS_SHIP)) {
-      std::cerr << "BoardView::best(" << static_cast<unsigned>(lhs) << ", "
-                << static_cast<unsigned>(rhs) << ")" << std::endl;
-      throw std::logic_error("BoardView::best called with non-ship types");
-    }
-    return lhs <= rhs ? lhs : rhs;
-  }
+  static constexpr inline CellType best(CellType lhs, CellType rhs);
 
 
 private:

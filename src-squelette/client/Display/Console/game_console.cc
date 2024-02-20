@@ -342,6 +342,7 @@ void GameConsole::updateGame(InputStatus status) {
     handleFire();
   } else {
     print(createMapKey());
+    _board->waitGame(); // Wait for the other player to play
   }
   _out << std::flush;
 }
