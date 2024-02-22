@@ -376,10 +376,14 @@ void GameConsole::waitGame() {
   _board->waitGame();
 }
 
-void GameConsole::display() {}
+void GameConsole::display() {
+  updatePlaceShip(OK);
+}
 void GameConsole::display_error() {}
 void GameConsole::update() {}
-void GameConsole::handle_input() {}
+ReturnInput GameConsole::handle_input() {
+  handlePlaceShip();
+}
 
 constexpr size_t GameConsole::length(const string& s) {
     // In UTF-8, continuation bytes begin with 0b10, so, does not count these bytes.
