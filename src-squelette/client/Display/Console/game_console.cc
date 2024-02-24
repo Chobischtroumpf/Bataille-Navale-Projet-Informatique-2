@@ -308,7 +308,6 @@ void GameConsole::handleFire() {
 
 void GameConsole::handlePlaceShip() {
   if (_board->myTurn()) {
-    for (bool placed = true; !_board->allBoatsPlaced(); clearBadPlaceShipInput(placed)) {
         ShipCoordinates coordinates{};
         _out << "\x1b[32;49;1m";
         _in >> coordinates;
@@ -319,13 +318,14 @@ void GameConsole::handlePlaceShip() {
             _control->quit();
             return;
         }
-        if (!(_in && coordinates.x() < _board->width() &&
-              coordinates.y() < _board->height())) {
-            continue;
+        if (_in && coordinates.x() < _board->width() &&
+              coordinates.y() < _board->height()) {
+          _control->placeShip(coordinates);
+          _valid_last_input = true;
+        } else {
+          _valid_last_input = false;
         }
 
-        placed = _control->placeShip(coordinates);
-    }
   }
 }
 
@@ -377,7 +377,7 @@ void GameConsole::waitGame() {
 }
 
 void GameConsole::display() {
-  updatePlaceShip(OK);
+updatePlaceShip(_valid_last_input ? OK : ERR);
 }
 void GameConsole::display_error() {}
 void GameConsole::update() {}

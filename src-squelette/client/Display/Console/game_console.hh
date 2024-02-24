@@ -75,6 +75,7 @@ private:
   size_t const   _width;    //< The number of character in a line with two grids and a gap
   std::vector<string> _map_key;  //< The map key, each string is a line without the ending '\n'
   bool _my_turn;  //< True if it's the player's turn
+  bool _valid_last_input = true;  //< True if the last input was valid
   // Utility methods
 
   /** Count number of unicode characters in a UTF-8 encoded string (assume linux platform)
