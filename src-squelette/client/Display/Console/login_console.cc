@@ -8,42 +8,40 @@ Attention il n y a pas encore de fichier.cpp pour LoginController
 */
 
 void LoginConsole::afficherMenuPrincipal() {
-    LoginController loginController; 
+    LoginController loginController;
     int choix;
-    std::cout << "1. Se connecter\n";
-    std::cout << "2. S'enregistrer\n";
-    std::cout << "Entrez votre choix: ";
-    std::cin >> choix;
-	while (!validCin(choix))
-		std::cin >> choix;
+    bool continuer = true;
 
-// Pas utiliser switch faire tout en boucle while(correcte) if 1 2
-    switch(choix) {
-        case 1:
+    while (continuer) {
+        std::cout << "1. Se connecter\n";
+        std::cout << "2. S'enregistrer\n";
+        std::cout << "Entrez votre choix: ";
+        std::cin >> choix;
+
+        while (!validCin(choix)) {
+            std::cout << "Entrez votre choix: ";
+            std::cin >> choix;
+            //system("clear");
+        }
+
+        if (choix == 1) {
             if (seConnecter(loginController)) {
                 std::cout << "Connexion réussie!\n";
-				// Fonction pour déplacer vers la prochaine fenêtre, MenuPrincipal
+                // Fonction pour déplacer vers la prochaine fenêtre, MenuPrincipal
+                continuer = false;
             } else {
                 std::cout << "Échec de la connexion. Veuillez réessayer.\n";
-				LoginConsole::afficherMenuPrincipal();
-				return;
             }
-            break;
-        case 2:
+        } else if (choix == 2) {
             if (sEnregistrer(loginController)) {
                 std::cout << "Enregistrement réussi. Veuillez vous connecter.\n";
-				seConnecter();
-				return;
+                continuer = !seConnecter(loginController);
             } else {
                 std::cout << "Échec de l'enregistrement. Veuillez réessayer.\n";
-				LoginConsole::afficherMenuPrincipal();
-				return;
             }
-            break;
-        default:
+        } else {
             std::cout << "Choix invalide. Veuillez réessayer.\n";
-            afficherMenuPrincipal();
-            break;
+        }
     }
 }
 
@@ -55,7 +53,7 @@ bool LoginConsole::seConnecter(LoginController& loginController) {
 
 bool LoginConsole::sEnregistrer(LoginController& loginController) {
     std::string nomUtilisateur = demanderNomUtilisateur();
-    std::string motDePasse = demanderMotDePasse();
+    std::string motDePasse = demanderMotDePasseEnregistrement();
     return loginController.checkValidity(nomUtilisateur, motDePasse); // LC IMPLEMENTER checkValidity
 }
 
@@ -75,6 +73,26 @@ std::string LoginConsole::demanderMotDePasse() { // Ajouter des conditions sur l
     return motDePasse;
 }
 
+std::string LoginConsole::demanderMotDePasseEnregistrement() {
+    std::string motDePasse;
+    bool isValid = false;
+
+    while (!isValid) {
+        std::cout << "Mot de passe (minimum 6 caractères, incluant une majuscule): ";
+        if (std::cin.peek() == '\n') std::cin.ignore();
+        std::getline(std::cin, motDePasse);
+        //system("clear");
+
+        if (motDePasse.length() >= 6 && contientMajuscule(motDePasse)) {
+            isValid = true;
+        } else {
+            std::cout << "Mot de passe invalide. Assurez-vous qu'il contient au moins 6 caractères et une majuscule.\n";
+        }
+    }
+
+    return motDePasse;
+}
+
 bool LoginConsole::validCin(int choix){
 	if(std::cin.fail()) {
         std::cin.clear(); // Efface l'état d'erreur de cin
@@ -89,4 +107,13 @@ bool LoginConsole::validCin(int choix){
     }
 	else
 		return true;
+}
+
+bool LoginConsole::contientMajuscule(const std::string& str) {
+    for (char c : str) {
+        if (std::isupper(c)) {
+            return true;
+        }
+    }
+    return false;
 }

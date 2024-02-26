@@ -1,5 +1,13 @@
 #pragma once
 
-#include "../view.hh"
+#include <vector>
+#include <string>
 
-class ChatView : public View {};
+#include "../view.hh"
+#include "../../common/message.hh"
+
+
+class ChatView {
+public:
+void displayMessage(const std::vector<Message>& messages, std::string selectedUser);
+};

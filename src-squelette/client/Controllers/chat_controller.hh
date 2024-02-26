@@ -2,13 +2,14 @@
 
 #include "../controller.hh"
 #include "../../common/message.hh"
+#include <vector>
+#include <string>
 
-class ChatController : public Controller {
+class ChatController {
 public:
-    NotImplementedError get_messages();
-    void send_msg_to_server(Message message);
-    std::string get_msg_from_server();
+    void send_msg_to_server(const Message& message);
+    std::vector<Message> get_messages();
 
 private:
-
+    std::vector<Message> messages;
 };

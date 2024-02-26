@@ -17,5 +17,7 @@ private:
   LoginController loginController;
   std::string demanderNomUtilisateur();
   std::string demanderMotDePasse();
+  std::string demanderMotDePasseEnregistrement();
   bool validCin(int choix);
+  bool contientMajuscule(const std::string& str);
 };
