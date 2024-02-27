@@ -1,11 +1,10 @@
 #include "../../../include/client/Controllers/game_controller.hh"
-#include "../../common/cell_type.hh"
-#include "../../common/board_coordinates.hh"
-#include "../../common/ship_coordinates.hh"
+#include "../../../include/common/cell_type.hh"
+#include "../../../include/common/board_coordinates.hh"
+#include "../../../include/common/ship_coordinates.hh"
 #include <array>
 #include <cstdint>
 #include <memory>
-#include <map>
 #include <utility>
 
 

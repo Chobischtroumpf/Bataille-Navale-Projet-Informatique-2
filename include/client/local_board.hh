@@ -6,10 +6,10 @@
 #include <map>
 #include <iostream>
 
-#include "../include/common/board_coordinates.hh"
-#include "../include/common/cell.hh"
-#include "../include/common/not_implemented_error.hh"
-#include "../include/common/ship_coordinates.hh"
+#include "../common/board_coordinates.hh"
+#include "../common/cell.hh"
+#include "../common/not_implemented_error.hh"
+#include "../common/ship_coordinates.hh"
 #include "Views/game_view.hh"
 
 

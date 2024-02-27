@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
 #include <memory>
-#include <string>
 #include "../../Views/main_menu_view.hh"
 #include "../console.hh"
 #include "../../Controllers/main_menu_controller.hh"

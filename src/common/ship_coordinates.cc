@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "ship_coordinates.hh"
+#include "../../include/common/ship_coordinates.hh"
 
 std::ostream &operator<<(std::ostream &os, const ShipCoordinates &bc) {
   os << bc.toString();

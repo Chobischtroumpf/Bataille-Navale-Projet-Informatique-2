@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "board_coordinates.hh"
+#include "../../include/common/board_coordinates.hh"
 
 std::ostream& operator<<(std::ostream& os, const BoardCoordinates& bc) {
   os << bc.toString();

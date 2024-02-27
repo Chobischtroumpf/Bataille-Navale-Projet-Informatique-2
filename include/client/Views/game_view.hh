@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../view.hh"
-#include "../../include/common/cell_type.hh"
-#include "../../include/common/board_coordinates.hh"
+#include "../../common/cell_type.hh"
+#include "../../common/board_coordinates.hh"
 
 
 class GameView : public View {

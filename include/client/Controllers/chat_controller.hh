@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../controller.hh"
-#include "../../include/common/message.hh"
+#include "../../common/message.hh"
 #include <vector>
 #include <string>
 
