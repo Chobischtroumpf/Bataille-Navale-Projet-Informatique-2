@@ -7,7 +7,7 @@ Faut il donc une autre méthode pour Ajouter le compte nouvellememnt créé à l
 Attention il n y a pas encore de fichier.cpp pour LoginController
 */
 
-void LoginConsole::afficherMenuPrincipal() {
+ReturnInput LoginConsole::afficherMenuPrincipal() {
     LoginController loginController;
     int choix;
     bool continuer = true;
@@ -29,6 +29,7 @@ void LoginConsole::afficherMenuPrincipal() {
                 std::cout << "Connexion réussie!\n";
                 // Fonction pour déplacer vers la prochaine fenêtre, MenuPrincipal
                 continuer = false;
+                return {ReturnInput::MAIN_MENU,""};
             } else {
                 std::cout << "Échec de la connexion. Veuillez réessayer.\n";
             }

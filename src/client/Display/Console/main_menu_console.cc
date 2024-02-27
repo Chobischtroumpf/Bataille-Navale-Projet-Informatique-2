@@ -87,7 +87,7 @@ void MainMenuConsole::update() {
 
 }
 
-void MainMenuConsole::handle_input() {
+ReturnInput MainMenuConsole::handle_input() {
     int input;
     std::cin >> input;
     switch (input) {

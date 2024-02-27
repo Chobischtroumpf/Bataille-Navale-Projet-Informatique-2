@@ -6,10 +6,11 @@
 #include <string>
 #include <limits>
 #include "../../Controllers/login_controller.hh"
+#include "../../display.hh"
 
 class LoginConsole : public Console {
 public:
-  void afficherMenuPrincipal();                       
+  ReturnInput afficherMenuPrincipal();                       
   bool seConnecter(LoginController& loginController);
   bool sEnregistrer(LoginController& loginController);
 private:

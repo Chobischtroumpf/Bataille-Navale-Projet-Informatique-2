@@ -6,6 +6,7 @@
 #include "../../Views/main_menu_view.hh"
 #include "../console.hh"
 #include "../../Controllers/main_menu_controller.hh"
+#include "../../display.hh"
 
 
 
@@ -15,7 +16,7 @@ public:
     void display() override;
     void display_error() override;
     void update() override;
-    void handle_input() override;
+    ReturnInput handle_input() override;
 private:
     std::shared_ptr<MainMenuView> _view;
     std::shared_ptr<MainMenuController> _controller;

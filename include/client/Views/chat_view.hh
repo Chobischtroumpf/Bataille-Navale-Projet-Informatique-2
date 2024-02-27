@@ -7,7 +7,9 @@
 #include "../../include/common/message.hh"
 
 
-class ChatView {
+class ChatView : public View {
 public:
-void displayMessage(const std::vector<Message>& messages, std::string selectedUser);
+	 std::vector<Message> get_messages(const std::vector<Message>& messages);
+private:
+    std::vector<Message> messages;
 };
