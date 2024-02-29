@@ -5,11 +5,14 @@
 #include <iostream>
 #include <map>
 #include <stdexcept>
+#include <nlohmann/json.hpp>
 
 #include "../common/board_coordinates.hh"
 #include "../common/cell_type.hh"
 #include "../common/ship_types.hh"
 #include "../common/turn.hh"
+
+using json = nlohmann::json;
 
 /*
  * Ce qui est affiché à l'écran
@@ -59,6 +62,10 @@ public:
   virtual std::map<ShipType, int> countShips(bool isA) const = 0;
 
   virtual Turn whoseTurn() const = 0;
+
+  [[nodiscard]] virtual json toJson(Turn turn) const = 0;
+
+  [[nodiscard]] virtual json toJsonSpectator() const = 0;
 
   // Make destructor virtual
   virtual ~BoardView() = default;
