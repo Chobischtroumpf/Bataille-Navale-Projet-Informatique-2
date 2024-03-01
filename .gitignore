@@ -37,6 +37,9 @@ Makefile
 test.cc
 gen_board.hh
 */*.json
+vcpkg
+build
+
 
 # TeXLive compilation files
 *.log

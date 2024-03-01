@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 3.10) # minimum version of CMake
+
+project(TestReseau) # Name the project
+
+# Define an executable target built from `client.cpp`
+add_executable(client client.cpp GameClient.cpp)
+
+# Define an executable target built from `server.cpp`
+add_executable(server server.cpp GameServer.cpp)
+
+# using libraries like cpprestsdk, link with both executables
+find_package(cpprestsdk REQUIRED)
+target_link_libraries(server PRIVATE cpprestsdk::cpprest)
+target_link_libraries(client PRIVATE cpprestsdk::cpprest)
