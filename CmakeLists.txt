@@ -37,5 +37,10 @@ target_link_libraries(client PRIVATE nlohmann_json::nlohmann_json)
 
 # using libraries like cpprestsdk, link with both executables
 find_package(cpprestsdk REQUIRED)
+
+if(NOT cpprestsdk_FOUND)
+  message(WARNING "Cpprestsdk not found. Please run the script provided under linux/installCppRestSDK.sh to install cpprestsdk. Admin privileges are likely required")
+endif()
+
 target_link_libraries(server PRIVATE cpprestsdk::cpprest)
 target_link_libraries(client PRIVATE cpprestsdk::cpprest)
