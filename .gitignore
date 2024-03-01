@@ -39,7 +39,8 @@ gen_board.hh
 */*.json
 vcpkg
 build
-
+*.bat
+windows
 
 # TeXLive compilation files
 *.log
