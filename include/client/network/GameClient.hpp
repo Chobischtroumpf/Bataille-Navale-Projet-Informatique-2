@@ -16,9 +16,7 @@ class GameClient {
 public:
     explicit GameClient(const std::string& baseUri);
     
-    void TestRequest();
-    std::future<void> TestRequest2();
-    std::future<void> TestRequest3();
+    
     std::future<std::string> CreateGame(const njson& gameDetails);
     std::future<njson> JoinGame(const std::string& sessionId);
     std::future<bool> MakeMove(const std::string& sessionId, const std::string& move);
@@ -26,11 +24,17 @@ public:
     std::future<std::string> GetUserId(const std::string& username);
     std::future<std::string> GetGames();
     std::future<njson> QueryGameState(const std::string& gameId);
+    std::future<bool> SendMessage(const std::string& senderId, const std::string& targetId, const std::string& message);
 
 private:
     // Use unique_ptr for automatic resource management of http_client
     // Makes it possible to "initialize" the http client in the constructor, allowing easier debugging
     std::unique_ptr<web::http::client::http_client> client;
+    
+    // Test requests to be deleted later
+    void TestRequest();
+    std::future<void> TestRequest2();
+    std::future<void> TestRequest3();
 
     pplx::task<njson> PostRequest(const std::string& path, const njson& data);
     pplx::task<njson> GetRequest(const std::string& path);

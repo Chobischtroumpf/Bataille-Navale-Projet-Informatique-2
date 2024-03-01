@@ -99,18 +99,6 @@ void GameServer::handleGet(http_request request) {
             response["error"] = "Missing userId parameter";
             request.reply(status_codes::BadRequest, response.dump(), "application/json");
         }
-
-        // Extract session ID and user ID from the path or query parameters
-        // Placeholder logic for demonstration
-        std::string sessionId = "extracted_session_id"; 
-        std::string userId = "extracted_user_id"; 
-        
-        // Placeholder for querying the game state with sessionId and userId
-        response["sessionId"] = sessionId;
-        response["userId"] = userId;
-        response["gameState"] = "Placeholder game state";
-        
-        request.reply(status_codes::OK, response.dump(), "application/json");
     }
 
     // Handle unmatched paths

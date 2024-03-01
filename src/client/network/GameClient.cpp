@@ -350,6 +350,42 @@ future<string> GameClient::GetUserId(const string& username) {
     return resultFuture;
 }
 
+// Method to make a move in a game session, returning a future<bool> indicating success
+future<bool> GameClient::SendMessage(const string& senderId, const string& recipientId, const string& message) {
+    cout << "Sending message to user " << recipientId << " ..." << endl;
+
+    // Use a promise to return the result asynchronously
+    auto promise = std::make_shared<std::promise<bool>>();
+    auto resultFuture = promise->get_future();
+
+    // Prepare the JSON object with data 
+    njson moveData;
+    moveData["recipientId"] = recipientId;
+    moveData["message"] = message;
+
+    // Serialize nlohmann::json object to string for the POST request
+    string serializedData = moveData.dump();
+
+    // Send the POST request to the game move endpoint
+    PostRequest("/api/chat/send", serializedData)
+    .then([promise](bool success) {
+        // Directly use the boolean result of the PostRequest to fulfill the promise
+        promise->set_value(success);
+    }).then([promise](pplx::task<void> errorHandler) {
+        try {
+            // Attempt to catch exceptions if any
+            errorHandler.get();
+        } catch (const exception& e) {
+            // In case of exception, indicate failure
+            cerr << "Exception caught while sending message: " << e.what() << endl;
+            promise->set_value(false); // Indicate failure due to exception
+        }
+    });
+
+    cout << "Move request sent." << endl;
+    return resultFuture;
+}
+
 // General-purpose POST request handler
 pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data) {
     cout << "Preparing to send POST request to path: " << path << endl;

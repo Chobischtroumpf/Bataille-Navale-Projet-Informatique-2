@@ -2,6 +2,8 @@
 #include <string>
 #include <random>
 #include <sstream>
+#include <nlohmann/json.hpp>
+using njson = nlohmann::json;
 
 SessionManager& SessionManager::getInstance() {
     static SessionManager instance; // Guaranteed to be destroyed and instantiated on first use
@@ -12,7 +14,7 @@ SessionManager::SessionManager() {
     // Constructor body, if needed
 }
 
-string SessionManager::createSession() {
+string SessionManager::createSession(const string& userId, const njson& gameDetails) {
     lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
 
     // Generate a unique session ID
@@ -25,7 +27,7 @@ string SessionManager::createSession() {
     string sessionId = ss.str();
 
     // Create and store the new session
-    sessions[sessionId] = make_shared<GameSession>();
+    sessions[sessionId] = make_shared<GameSession>(userId, gameDetails);
 
     return sessionId;
 }
@@ -47,8 +49,8 @@ void SessionManager::endSession(const string& sessionId) {
 
     auto it = sessions.find(sessionId);
     if (it != sessions.end()) {
-        // Assuming GameSession has a method to properly close or end the session
-        // it->second->end(); // Uncomment if GameSession has such a method
+        // Properly end the session
+        it->second->endSession(); 
         sessions.erase(it);
     }
 }

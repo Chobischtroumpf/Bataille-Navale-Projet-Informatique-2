@@ -38,9 +38,6 @@ private:
 
     // Current state of the game
     nlohmann::json currentState;
-
-    // Internal methods for handling game logic
-    void updateState();
 };
 
 #endif // GAMESTATE_H

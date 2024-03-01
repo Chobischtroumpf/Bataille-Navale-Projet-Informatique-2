@@ -5,6 +5,8 @@
 #include <mutex>
 #include <memory>
 #include "GameSession.hpp" // Ensure you have a GameSession class defined
+#include <nlohmann/json.hpp>
+using njson = nlohmann::json;
 
 using namespace std;
 
@@ -18,7 +20,7 @@ public:
     static SessionManager& getInstance();
 
     // Method to create a new game session, returns the session ID
-    string createSession();
+    string createSession( const string& userId, const njson& gameDetails);
 
     // Method to retrieve a session by its ID
     shared_ptr<GameSession> getSession(const string& sessionId);
