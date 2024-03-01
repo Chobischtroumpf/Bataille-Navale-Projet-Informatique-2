@@ -12,7 +12,7 @@ This is all the endpoints used for the communication between the client & the se
 
 > | name      |  type     | data type               | description                                                           |
 > |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | None      |  required | object (JSON or YAML)   | N/A  |
+> | Test      |  required | object (JSON or YAML)   | N/A  |
 
 
 ##### Responses
