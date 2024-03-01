@@ -10,12 +10,12 @@ using std::map;
 using namespace std::chrono;
 
 /*
- * 
+ * TimePoint is a time_point with a steady_clock and a duration of seconds
 */
 typedef time_point<steady_clock, seconds> TimePoint;
 
 /*
- * class handles the user's authentication tokens, keeps them  
+ * class handles the user's authentication tokens, keeps them in a map
 */
 
 class TokenHandler{
