@@ -8,7 +8,7 @@ string TokenHandler::findToken(int user_id){
     return "";
 }
 
-string TokenHandler::generateToken(int user_id){
+string TokenHandler::generateToken(string user_id){
     static string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     string token;
 
@@ -56,7 +56,7 @@ bool TokenHandler::updateTokenValidity(string token, int update_validity) {
     }
 }
 
-int TokenHandler::getUserID(string token){
+string TokenHandler::getUserID(string token){
     if (!token.empty()){
         return this->valid_tokens[token].first;
     }
