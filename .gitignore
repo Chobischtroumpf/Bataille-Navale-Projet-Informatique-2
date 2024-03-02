@@ -46,6 +46,11 @@ CMakeCache.txt
 *.bat
 windows
 
+# Build folder
+build/*
+!build/linux
+
+
 # TeXLive compilation files
 # *.log
 *.aux
