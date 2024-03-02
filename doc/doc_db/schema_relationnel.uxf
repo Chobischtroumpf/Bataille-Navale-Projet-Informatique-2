@@ -1,0 +1,17 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLUseCase</id><coordinates><x>280</x><y>200</y><w>120</w><h>40</h></coordinates><panel_attributes>possède</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>760</x><y>200</y><w>120</w><h>40</h></coordinates><panel_attributes>a</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>160</y><w>210</w><h>120</h></coordinates><panel_attributes>Messages
+--
+id_msg PRIMARY KEY
+id_sender
+id_receiver
+msg
+time_date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>960</x><y>180</y><w>210</w><h>90</h></coordinates><panel_attributes>Relations
+--
+id_relation PRIMARY KEY
+id_user_r
+id_friend
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>470</x><y>180</y><w>210</w><h>90</h></coordinates><panel_attributes>Users
+--
+id_user PRIMAREY KEY
+username
+hash_pwd
+salt</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>200</y><w>100</w><h>40</h></coordinates><panel_attributes>(1,1)</panel_attributes><additional_attributes>10;20;80;20</additional_attributes></element><element><id>Relation</id><coordinates><x>390</x><y>200</y><w>100</w><h>40</h></coordinates><panel_attributes>(0,n)</panel_attributes><additional_attributes>10;20;80;20</additional_attributes></element><element><id>Relation</id><coordinates><x>670</x><y>200</y><w>110</w><h>40</h></coordinates><panel_attributes>(0,n)</panel_attributes><additional_attributes>10;20;90;20</additional_attributes></element><element><id>Relation</id><coordinates><x>870</x><y>200</y><w>110</w><h>40</h></coordinates><panel_attributes>(1,1)</panel_attributes><additional_attributes>10;20;90;20</additional_attributes></element></diagram>
