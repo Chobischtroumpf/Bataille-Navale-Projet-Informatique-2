@@ -1,4 +1,4 @@
-#include "GameClient.hpp" // Header file for GameClient
+#include "../../include/client/network/GameClient.hpp" // Header file for GameClient
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <future> // For std::async and std::future

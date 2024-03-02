@@ -4,7 +4,7 @@
 #include <string>
 
 #include "../view.hh"
-#include "../../../src/common/message.hh"
+#include "../../common/message.hh"
 
 
 class ChatView {
