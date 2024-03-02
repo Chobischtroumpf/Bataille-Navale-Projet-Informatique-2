@@ -46,4 +46,4 @@ windows
 *.log
 *.aux
 *.toc
-.vscode/
+.vscode
