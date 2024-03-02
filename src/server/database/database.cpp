@@ -1,0 +1,189 @@
+#include "database.hh"
+
+#include <iostream>
+#include <sqlite3.h>
+#include <fstream>
+#include <sstream>
+#include <ctime>
+
+
+std::ostream& operator<<(std::ostream& os, const DbError& dberror){
+    switch(dberror) {
+        case DbError::OK:
+            os << "No issues.";
+            break;
+        case DbError::EXECUTION_ERROR:
+            os << "Unknow error.";
+            break;
+        case DbError::NON_EXISTENT_USER_NAME:
+            os << "The username do not exists.";
+            break;
+        case DbError::WRONG_PWD_FAILED:
+            os << "Wrong password.";
+            break;
+        case DbError::UNIQUE_CONSTRAINT_FAILED:
+            os << "Entry already exists.";
+            break;
+        case DbError::CHECK_USERNAME_CONSTRAINT_FAILED:
+            os << "Empty username.";
+            break;
+        case DbError::CHECK_RELATION_CONSTRAINT_FAILED:
+            os << "User can not be friend with himself.";
+            break;
+        case DbError::CHECK_MSG_CONSTRAINT_FAILED:
+            os << "Message can not be empty.";
+            break;
+        case DbError::CANNOT_UPDATE_ID_COLUMN:
+            os << "Can not update an id column.";
+            break;
+        case DbError::CHECK_SENDER_CONSTRAINT_FAILED:
+            os << "User can not send a message to himself.";
+            break;
+        case DbError::FOREIGN_KEY_CONSTRAINT_FAILED:
+            os << "ID do not exists.";
+            break;             
+        default:
+            os << "Unrecognized error.";
+            break;
+    }
+    return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const QueryResult& result){
+    os << "QueryResult: { ";
+    os << "Data: [ ";
+    for(const auto& row : result.data) {
+        for(const auto& item : row) {
+            os << item << " ";
+        }
+    }
+    os << "], Error: " << result.error;
+    os << " }";
+    return os;
+}
+
+
+DbError DataBase::createDb() {
+    int rc = sqlite3_open("users.db", &this->db);
+    if (rc) {
+        this->db = nullptr;
+        closeConnection();
+        std::cout << "create_db failed" << std::endl;
+        return DbError::DB_CONNECTION_ERROR;
+    }
+    // Enable foreign key constraint
+    sqlite3_exec(db, "PRAGMA foreign_keys = ON;", NULL, NULL, NULL);
+    return DbError::OK;
+}
+
+
+DbError DataBase::createTables(){
+    // Read DDL file
+    std::ifstream file("DDL_user_db.sql");
+    if (!file.is_open()) {
+        std::cout << "open ddl failed" << std::endl;
+        return DbError::DDL_FILE_OPENING_ERROR;
+    }
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string sql = buffer.str();
+
+    // Execute DDL file
+    int rc = sqlite3_exec(this->db, sql.c_str(), NULL, 0, NULL);
+    if (rc != SQLITE_OK) {
+        sqlite3_close(this->db);
+        std::cout << "execute ddl failed" << std::endl;
+        return DbError::DDL_FILE_EXECUTION_ERROR;
+    }
+    return DbError::OK;
+}
+
+
+int DataBase::callback(void *data, int argc, char **argv, char **az_col_name){
+    QueryResult *query_result = static_cast<QueryResult*>(data);
+    std::vector<std::string> row;
+    for (int i = 0; i < argc; i++) {
+        row.push_back(argv[i] ? argv[i] : "NULL");
+    }
+    query_result->data.push_back(row);
+    return 0;
+}
+
+
+QueryResult DataBase::executeQuery(std::string& sql_query) {
+    QueryResult result;
+    int rc = sqlite3_exec(this->db, sql_query.c_str(), callback, &result, NULL);
+    if (rc != SQLITE_OK) {
+        result.error = parseError(sqlite3_errmsg(this->db));
+    }
+    else{
+        result.error = DbError::OK;
+    }
+    return result;
+}
+
+
+DbError DataBase::parseError(const std::string& errorMsg) {
+    if (errorMsg.find("UNIQUE constraint failed") != std::string::npos) {
+        return DbError::UNIQUE_CONSTRAINT_FAILED;
+    } 
+    else if (errorMsg.find("FOREIGN KEY") != std::string::npos) {
+        return DbError::FOREIGN_KEY_CONSTRAINT_FAILED;
+    }
+    else if (errorMsg.find("username <> ") != std::string::npos) {
+        return DbError::CHECK_USERNAME_CONSTRAINT_FAILED;
+    } 
+    else if (errorMsg.find("id_user_r <> id_friend") != std::string::npos) {
+        return DbError::CHECK_RELATION_CONSTRAINT_FAILED;
+    } 
+    else if (errorMsg.find("sender <> receiver") != std::string::npos) {
+        return DbError::CHECK_SENDER_CONSTRAINT_FAILED;
+    }
+    else if (errorMsg.find("msg <> ''") != std::string::npos) {
+        return DbError::CHECK_MSG_CONSTRAINT_FAILED;
+    }    
+    else if (errorMsg.find("Cannot update id column") != std::string::npos) {
+        return DbError::CANNOT_UPDATE_ID_COLUMN;
+    }
+    return DbError::EXECUTION_ERROR;  // default case
+}
+
+
+QueryResult DataBase::insertEntry(const std::string &table_name, const std::string& columns, const std::string& values){
+    std::string sql = "INSERT INTO " + table_name + " (" + columns + ") VALUES (" + values + ");";
+    return executeQuery(sql);
+}
+
+
+QueryResult DataBase::deleteEntry(const std::string &table_name, const std::string& condition) {
+    std::string sql = "DELETE FROM " + table_name + " WHERE " + condition + ";";
+    QueryResult result = executeQuery(sql);
+    //int num_del_rows = sqlite3_changes(db);
+    return executeQuery(sql);
+}
+
+
+QueryResult DataBase::updateEntry(const std::string& table_name, const std::string& columns, const std::string& condition) {
+    std::string sql = "UPDATE " + table_name + " SET " + columns + " WHERE " + condition + ";";
+    return executeQuery(sql);
+}
+
+
+QueryResult DataBase::selectFromTable(const std::string& table_name, const std::string& columns, const std::string& condition) {
+    std::string sql = "SELECT " + columns + " FROM " + table_name;
+    if (!condition.empty()) {
+        sql += " WHERE " + condition;
+    }
+    return executeQuery(sql);
+}
+
+
+void DataBase::rollBack(){
+    sqlite3_exec(this->db, "ROLLBACK", NULL, NULL, NULL);
+}
+
+
+void DataBase::closeConnection(){
+        sqlite3_close(this->db);    
+}
