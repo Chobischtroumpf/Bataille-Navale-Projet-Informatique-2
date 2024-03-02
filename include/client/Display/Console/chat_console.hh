@@ -10,17 +10,17 @@
 
 class ChatConsole : public Console {
 public:
-    ChatConsole(const std::string& ser);
+    ChatConsole(const std::string& sender, const std::string& destination);
     virtual void display() override {}
     virtual void display_error() override {}
     virtual void update() override {}
-    virtual ReturnInput handle_input() override { return ReturnInput(); }
-    ReturnInput run();
+    ReturnInput handle_input() override;
 
 private:
     std::shared_ptr<ChatView> _view;
     std::shared_ptr<ChatController> _controller;
-    std::string user; // L'ami
+    std::string sender; 
+    std::string destination;
     void displayMessage(const std::vector<Message>& messages, std::string selectedUser);
     void diviserEnLignes(std::string& text, std::size_t maxLineLength, std::size_t senderNameLength);
 };

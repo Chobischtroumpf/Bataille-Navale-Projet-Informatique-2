@@ -8,7 +8,7 @@ Faut il donc une autre méthode pour Ajouter le compte nouvellememnt créé à l
 Attention il n y a pas encore de fichier.cpp pour LoginController
 */
 
-ReturnInput LoginConsole::afficherMenuPrincipal() {
+ReturnInput LoginConsole::handle_input() {
     LoginController loginController;
     int choix;
     bool continuer = true;
@@ -34,18 +34,20 @@ ReturnInput LoginConsole::afficherMenuPrincipal() {
             } else {
                 std::cout << "Échec de la connexion. Veuillez réessayer.\n";
             }
-        } else if (choix == 2) {
+        } 
+        else if (choix == 2) {
             if (sEnregistrer(loginController)) {
                 std::cout << "Enregistrement réussi. Veuillez vous connecter.\n";
                 continuer = !seConnecter(loginController);
             } else {
                 std::cout << "Échec de l'enregistrement. Veuillez réessayer.\n";
             }
-        } else {
+        } 
+        else {
             std::cout << "Choix invalide. Veuillez réessayer.\n";
         }
     }
-    return {ReturnInput::Screen::LOGIN,""};
+    return {ReturnInput::Screen::MAIN_MENU,""};
 }
 
 bool LoginConsole::seConnecter(LoginController& loginController) {

@@ -1,7 +1,7 @@
 #include "../../include/common/message.hh"
 
-Message::Message(const std::string& text, const std::string& user)
-    : _text(text), _destination(user) {
+Message::Message(const std::string& text, const std::string& sender, const std::string& destination)
+    : _text(text), _sender(sender), _destination(destination) {
 }
 
 const std::string& Message::getText() const {

@@ -9,11 +9,10 @@
 
 class LoginConsole : public Console {
 public:
-  ReturnInput afficherMenuPrincipal();                       
+  ReturnInput handle_input() override;                       
   virtual void display() override {}
   virtual void display_error() override {}
   virtual void update() override {}
-  virtual ReturnInput handle_input() override { return ReturnInput(); }
   bool seConnecter(LoginController& loginController);
   bool sEnregistrer(LoginController& loginController);
 private:

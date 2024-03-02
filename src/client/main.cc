@@ -6,6 +6,13 @@
 
 // #include "dummy_board.hh"
 
+#include "../../include/client/driver.hh" 
+
 int main() {
-    return 1;
+    Driver app(DisplayType::CONSOLE); 
+
+    // Lancement de l'application
+    app.launchApp();
+
+    return 0;
 }

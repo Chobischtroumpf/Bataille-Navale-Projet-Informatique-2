@@ -28,6 +28,8 @@ Driver::Driver(DisplayType display_type) : _display_type{display_type} {}
 Driver::~Driver() {}
 
 void Driver::launchApp() {
+  //std::string user = "slectedUser";
+  displayLoginScreen();
   run(ReturnInput::Screen::LOGIN);
 }
 
@@ -75,6 +77,7 @@ void Driver::displayGameScreen() {
 void Driver::displayLoginScreen() {
   if (_display_type == CONSOLE) {
     _display = std::make_shared<LoginConsole>();
+    _current_screen = ReturnInput::Screen::LOGIN;
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }
@@ -99,7 +102,8 @@ void Driver::displayMainMenuScreen() {
 
 void Driver::displayChatScreen(std::string username) {
   if (_display_type == CONSOLE) {
-    _display = std::make_shared<ChatConsole>(username);
+    _display = std::make_shared<ChatConsole>("me",username);
+    _current_screen = ReturnInput::Screen::CHAT;
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }

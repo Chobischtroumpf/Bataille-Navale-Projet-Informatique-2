@@ -3,13 +3,13 @@
 #include "../../../../include/client/Controllers/chat_controller.hh"
 
 
-ChatConsole::ChatConsole(const std::string& user)
-    : user(user) {
+ChatConsole::ChatConsole(const std::string& sender, const std::string& destination)
+    : sender(sender), destination(destination) {
     _view = std::make_shared<ChatView>();
     _controller = std::make_shared<ChatController>();
 }
 
-ReturnInput ChatConsole::run() {
+ReturnInput ChatConsole::handle_input() {
     std::string input;
     std::cout <<"Type './exit' to end chat session\n";
 	std::cout<<"Type your message : ";
@@ -20,10 +20,10 @@ ReturnInput ChatConsole::run() {
             return {ReturnInput::MAIN_MENU,""};
         }
 
-		_controller->send_msg_to_server(Message(input, user));// IMPLEMENTATION POUR TEST le driver, il faudra enlever le lien entre controller et view!
+		_controller->send_msg_to_server(Message(input, sender,destination));// IMPLEMENTATION POUR TEST le driver, il faudra enlever le lien entre controller et view!
         auto messages = _view->get_messages(_controller->get_messages()); 
 		system("clear");
-        displayMessage(messages,user);
+        displayMessage(messages,destination);
     }
 }
 
