@@ -76,30 +76,59 @@ void GameServer::handleGet(http_request request) {
     }
 
 
-    // Handle the case for "/api/games/{id}/query" - Query game state by session ID
-    else if (path.find(U("/api/games/")) == 0 && path.find(U("/query")) != std::string::npos) {
+    // Handle the case for "/api/games/query" - Query game state by session ID ( and user ID )
+    else if (path.find(U("/api/games/query")) == 0 ) {
 
         // Parsing query parameters
         auto queryParams = uri::split_query(request.request_uri().query());
+         // Extracting sessionId and userId from query parameters
+        auto sessionIdIt = queryParams.find(U("sessionid"));
         auto userIdIt = queryParams.find(U("userid"));
-        auto sessionId = "placeholder"; // Placeholder session ID shoudl be retrieved from the url
 
-        //Verifying userId Iterator
-        if (userIdIt != queryParams.end()) {
+        // Verifying both sessionId and userId are provided
+        if (sessionIdIt != queryParams.end() && userIdIt != queryParams.end()) {
+            auto sessionId = sessionIdIt->second;
             auto userId = userIdIt->second;
-            // Use userId to query the game state
 
-            auto& gameSession = sessionManager.getSession(sessionId);
+            // Use sessionId and userId to query the game state
+            auto& gameSession = sessionManager.getSession(to_utf8(sessionId));
             njson gameState = gameSession->getGameState(to_utf8(userId));
             response["gameState"] = gameState;
             request.reply(status_codes::OK, response.dump(), "application/json");
-
         } else {
-            // Handle missing userId parameter
-            response["error"] = "Missing userId parameter";
+            // Handle missing parameters
+            response["error"] = "Missing sessionId or userId parameter";
             request.reply(status_codes::BadRequest, response.dump(), "application/json");
         }
     }
+
+    // Handle the case for "/api/games/join" - Join game by session ID ( and user ID )
+    else if (path.find(U("/api/games/join")) == 0 ) {
+
+        // Parsing query parameters
+        auto queryParams = uri::split_query(request.request_uri().query());
+         // Extracting sessionId and userId from query parameters
+        auto sessionIdIt = queryParams.find(U("sessionid"));
+        auto userIdIt = queryParams.find(U("userid"));
+
+        // Verifying both sessionId and userId are provided
+        if (sessionIdIt != queryParams.end() && userIdIt != queryParams.end()) {
+            auto sessionId = sessionIdIt->second;
+            auto userId = userIdIt->second;
+
+            // Use sessionId and userId to add player to the game 
+            auto& gameSession = sessionManager.getSession(to_utf8(sessionId));
+            gameSession->addParticipant(to_utf8(userId));
+
+            response["gameDetails"] = {}; // Not implemented
+            request.reply(status_codes::OK, response.dump(), "application/json");
+        } else {
+            // Handle missing parameters
+            response["error"] = "Missing sessionId or userId parameter";
+            request.reply(status_codes::BadRequest, response.dump(), "application/json");
+        }
+    }
+
 
     // Handle unmatched paths
     else {
