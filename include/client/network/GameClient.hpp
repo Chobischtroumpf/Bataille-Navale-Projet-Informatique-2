@@ -23,7 +23,7 @@ public:
     std::future<std::string> Login(const std::string& userId, const std::string& password);
     std::future<std::string> GetUserId(const std::string& username);
     std::future<std::string> GetGames();
-    std::future<njson> QueryGameState(const std::string& gameId);
+    std::future<njson> QueryGameState(const std::string& sessionId, const std::string& userId);
     std::future<bool> SendMessage(const std::string& senderId, const std::string& targetId, const std::string& message);
 
 private:
