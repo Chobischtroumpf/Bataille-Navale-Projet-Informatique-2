@@ -393,7 +393,7 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
 
     uri_builder builder(to_string_t(path));
     auto fullUri = builder.to_uri();
-    wcout << L"Full URI: " << fullUri.to_string() << endl;
+    cout << "Full URI: " << fullUri.to_string() << endl;
 
     http_request request(methods::POST);
     request.headers().set_content_type(U("application/json"));
