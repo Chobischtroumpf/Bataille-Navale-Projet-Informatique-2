@@ -41,18 +41,23 @@ class TokenHandler{
         /*
          *removes the user_id/token pair from the the map
         */
-       bool removeToken(int user_id=0, string token="");
+       bool removeToken(string token="");
 
         /*
          * checks if the user_id and token pair are still valid, returns true if they are,
          * or false if they are'nt
         */
-        bool validateToken(int user_id=0, string token="");
+        bool validateToken(string token);
 
         /*
          * will update user's token validity to the amount of time
          * in minutes specified in update_validity, defaults to 15 minutes
         */
-        bool updateTokenValidity(int user_id, string token, int update_validity=15);
+        bool updateTokenValidity(string token, int update_validity=15);
+
+        /*
+         * returns the user_id of the token
+        */
+        int getUserID(string token);
         
 };

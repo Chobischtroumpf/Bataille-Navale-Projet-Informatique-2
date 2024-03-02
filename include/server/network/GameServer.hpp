@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include "SessionManager.hpp" // Include SessionManager header
+#include "TokenHandler.hpp"
 
 using namespace web;
 using namespace web::http;
@@ -25,6 +26,7 @@ public:
 
 private:
     http_listener listener_; // HTTP listener
+    TokenHandler tokenHandler; // TokenHandler instance
 };
 
 #endif // GAMESERVER_H

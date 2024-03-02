@@ -1,8 +1,4 @@
 #include "GameServer.hpp"
-#include <cpprest/http_listener.h>
-#include <nlohmann/json.hpp>
-#include <string>
-
 
 using namespace web;
 using namespace web::http;
@@ -20,7 +16,7 @@ auto to_string_t = [](const std::string& input) -> utility::string_t {
     return utility::conversions::to_string_t(input);
 };
 
-GameServer::GameServer(const std::string& address) : listener_(to_string_t(address)) {
+GameServer::GameServer(const std::string& address) : listener_(to_string_t(address)), tokenHandler() {
     listener_.support(methods::GET, std::bind(&GameServer::handleGet, this, std::placeholders::_1));
     listener_.support(methods::POST, std::bind(&GameServer::handlePost, this, std::placeholders::_1));
 }
@@ -44,14 +40,11 @@ void GameServer::initialize() {
 
 bool GameServer::verifyAuthToken(const web::http::http_request& request) {
     auto headers = request.headers();
+
     if (headers.has(U("AuthToken"))) {
         auto authToken = headers[U("AuthToken")];
         
-        // Placeholder logic for verifying the authToken
-        
-        bool isValid = true; // Placeholder for actual verification logic
-        
-        return isValid;
+        return tokenHandler.validateToken(authToken);
 
     } else {
         // If the AuthToken header is missing, return false
@@ -76,8 +69,10 @@ void GameServer::handleGet(http_request request) {
     }
 
 
-    // Handle the case for "/api/games/query" - Query game state by session ID ( and user ID )
+    // Handle the case for "/api/games/query" - Query game state by session ID ( and user ID ) -- Protected
     else if (path.find(U("/api/games/query")) == 0 ) {
+
+
 
         // Parsing query parameters
         auto queryParams = uri::split_query(request.request_uri().query());
@@ -91,7 +86,7 @@ void GameServer::handleGet(http_request request) {
             auto userId = userIdIt->second;
 
             // Use sessionId and userId to query the game state
-            auto& gameSession = sessionManager.getSession(to_utf8(sessionId));
+            auto gameSession = sessionManager.getSession(to_utf8(sessionId));
             njson gameState = gameSession->getGameState(to_utf8(userId));
             response["gameState"] = gameState;
             request.reply(status_codes::OK, response.dump(), "application/json");
@@ -102,7 +97,7 @@ void GameServer::handleGet(http_request request) {
         }
     }
 
-    // Handle the case for "/api/games/join" - Join game by session ID ( and user ID )
+    // Handle the case for "/api/games/join" - Join game by session ID ( and user ID ) -- Protected
     else if (path.find(U("/api/games/join")) == 0 ) {
 
         // Parsing query parameters
@@ -117,7 +112,7 @@ void GameServer::handleGet(http_request request) {
             auto userId = userIdIt->second;
 
             // Use sessionId and userId to add player to the game 
-            auto& gameSession = sessionManager.getSession(to_utf8(sessionId));
+            auto gameSession = sessionManager.getSession(to_utf8(sessionId));
             gameSession->addParticipant(to_utf8(userId));
 
             response["gameDetails"] = {}; // Not implemented

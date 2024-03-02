@@ -27,7 +27,9 @@ src/server/server.cpp
 src/server/network/GameServer.cpp 
 src/server/network/SessionManager.cpp 
 src/server/network/GameSession.cpp 
+src/server/network/TokenHandler.cpp
 src/server/game/GameState.cpp
+
 )
 # Define include directories for target 'server'
 target_include_directories(server PRIVATE include/server/database include/server/game include/server/network)
@@ -43,5 +45,5 @@ if(NOT cpprestsdk_FOUND)
   message(WARNING "Cpprestsdk not found. Please run the script provided under linux/installCppRestSDK.sh to install cpprestsdk. Admin privileges are likely required")
 endif()
 
-target_link_libraries(server PRIVATE cpprestsdk::cpprest)
-target_link_libraries(client PRIVATE cpprestsdk::cpprest)
+target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
+target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)

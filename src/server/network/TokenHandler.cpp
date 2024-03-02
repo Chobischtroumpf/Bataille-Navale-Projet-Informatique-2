@@ -1,4 +1,4 @@
-#include "token_handler.hh"
+#include "TokenHandler.hpp"
 
 string TokenHandler::findToken(int user_id){
     for (auto iter:this->valid_tokens){
@@ -21,10 +21,7 @@ string TokenHandler::generateToken(int user_id){
     return token;
 }
 
-bool TokenHandler::removeToken(int user_id, string token){
-    if (user_id !=0 && token.length() != 0){
-        token = this->findToken(user_id);
-    }
+bool TokenHandler::removeToken(string token){
     if (token.empty())
         return false;
     else
@@ -32,27 +29,36 @@ bool TokenHandler::removeToken(int user_id, string token){
     return true;
 }
 
-bool TokenHandler::validateToken(int user_id, string token){
-    if (token.empty() && user_id != 0){
-        token = this->findToken(user_id);
-    }
+bool TokenHandler::validateToken(string token){
+    TimePoint current_time = time_point_cast<TimePoint::duration>(steady_clock::now());
     if (!token.empty()){
-        TimePoint current_time = time_point_cast<TimePoint::duration>(steady_clock::now());
-        if (this->valid_tokens[token].second >= current_time)
+        if (this->valid_tokens[token].second >= current_time){
+            if (this->valid_tokens[token].second - current_time < minutes(5))
+                if (this->updateTokenValidity(token, 15))
+                    return true;
             return true;
+        } else {
+            this->removeToken(token);
+            return false;
+        }
     }
     return false;
 }
 
-bool TokenHandler::updateTokenValidity(int user_id, string token, int update_validity) {
+bool TokenHandler::updateTokenValidity(string token, int update_validity) {
     TimePoint validity_time = time_point_cast<TimePoint::duration>(steady_clock::now() + minutes(update_validity));
-    if (token.empty() && user_id != 0){
-        token = this->findToken(user_id);
-    }
     if (!token.empty()){
         this->valid_tokens[token].second = validity_time;
         return true;
     }
-    else
+    else {
         return false;
+    }
+}
+
+int TokenHandler::getUserID(string token){
+    if (!token.empty()){
+        return this->valid_tokens[token].first;
+    }
+    return 0;
 }
