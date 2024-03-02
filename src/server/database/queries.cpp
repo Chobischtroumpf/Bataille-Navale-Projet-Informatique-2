@@ -10,6 +10,13 @@
 
 #include "security.hh"
 
+QueryResult Queries::getUsername(const std::string &id_user){
+    std::string condition = "id_user = '" + id_user + "'";
+    QueryResult result = db->selectFromTable("Users", "username", condition);
+    if(result.data.empty()){result.error = DbError::NON_EXISTENT_USER_NAME;}
+    return result;
+}
+
 
 QueryResult Queries::checkUserName(const std::string &username){
     std::string condition = "username = '" + username + "'";
@@ -60,13 +67,17 @@ QueryResult Queries::userRegister(const std::string &username, const std::string
 }
 
 
-QueryResult Queries::addFriend(const std::string &id_user, const std::string &id_friend){
-    std::string columns = "id_user_r, id_friend";
-    std::string values = "'" + id_user + "', '" + id_friend + "'";
-    QueryResult result = db->insertEntry("Relations", columns, values);
-    if (result.error == DbError::OK){
-        values = "'" + id_friend + "', '" + id_user + "'";
+QueryResult Queries::addFriend(const std::string &id_user, const std::string &friend_username){
+    QueryResult result = checkUserName(friend_username);
+    if(result.data.size() != 0){
+        std::string id_friend = result.data[0][0];
+        std::string columns = "id_user_r, id_friend";
+        std::string values = "'" + id_user + "', '" + id_friend + "'";
         result = db->insertEntry("Relations", columns, values);
+        if (result.error == DbError::OK){
+            values = "'" + id_friend + "', '" + id_user + "'";
+            result = db->insertEntry("Relations", columns, values);
+        }
     }
     return result;
 }

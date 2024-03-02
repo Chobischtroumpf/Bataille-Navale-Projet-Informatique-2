@@ -190,9 +190,9 @@ public:
         std::cout << "Test 5: testValidAddFriend" << std::endl;
         std::cout << "///////////////////////////////" << std::endl;
         std::vector<std::pair<std::string, std::string>> valid_entry = {
-            {"1", "2"},
-            {"1", "3"},
-            {"2", "3"},
+            {"1", "d"},
+            {"1", "b"},
+            {"2", "c"},
         };
         for (const auto& user_data : valid_entry) {
             std::cout << "(" << user_data.first << ", "  << user_data.second << "): ";
@@ -207,9 +207,9 @@ public:
         std::cout << "Test 5: testInvalidAddFriend" << std::endl;
         std::cout << "///////////////////////////////" << std::endl;
         std::vector<std::pair<std::string, std::string>> valid_entry = {
-            {"", "2"},    // id do not exists
-            {"1", "54"},    // id do not exists
-            {"1", "1"},     // error friend with him self
+            {"", "b"},    // id do not exists
+            {"54", "c"},    // id do not exists
+            {"1", "a"},     // error friend with him self
         };
         for (const auto& user_data : valid_entry) {
             std::cout << "(" << user_data.first << ", "  << user_data.second << "): ";

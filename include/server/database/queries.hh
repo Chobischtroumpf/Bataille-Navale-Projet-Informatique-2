@@ -87,6 +87,15 @@ public:
     */
     QueryResult getAllUserMsg(const std::string &id_user);
 
+
+    /**
+    * Get the username.
+    * @param id_user The ID of the user.
+    * @return A QueryResult containing all messages exchanged by the user.
+    */
+    QueryResult getUsername(const std::string &id_user);
+
+
     /**
     * Update the username of a user.
     * @param id_user The id of the user.
