@@ -1,0 +1,10 @@
+librairie a installer:
+    pour la database:
+        sqlite3: sudo apt-get install libsqlite3-dev
+    pour le chiffrement:
+        sodium: sudo apt-get install libsodium-dev
+
+options de compilation:
+-lsqlite3 -lstdc++
+$ g++ -o database main.cpp database.cpp queries.cpp security.cpp -lsqlite3 -lstdc++ -lsodium
+
