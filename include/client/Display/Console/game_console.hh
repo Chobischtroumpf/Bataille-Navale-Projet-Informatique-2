@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "../../Controllers/game_controller.hh"
-#include "../../../common/not_implemented_error.hh"
+#include "../../../../src/common/not_implemented_error.hh"
 #include "../console.hh"
 
 enum InputStatus {

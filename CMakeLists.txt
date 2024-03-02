@@ -10,7 +10,27 @@ include(FetchContent)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
+include_directories(include)
 
+function(get_sources dir result)
+    file(GLOB_RECURSE sources "${dir}/*.cpp" "${dir}/*.cc")
+    set(${result} ${sources} PARENT_SCOPE)
+endfunction()
+
+# Client sources
+get_sources("src/client" CLIENT_SOURCES)
+
+# Server sources
+get_sources("src/server" SERVER_SOURCES)
+
+# Common sources
+get_sources("src/common" COMMON_SOURCES)
+
+# Create client executable
+add_executable(battleship ${CLIENT_SOURCES} ${COMMON_SOURCES})
+
+# Create server executable
+add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
 # Define an executable target built from `client.cpp` and its dependencies
 add_executable(client 
@@ -21,16 +41,6 @@ src/client/network/GameClient.cpp
 # Define include directories for target 'client' 
 target_include_directories(client PRIVATE include/client/network)
 
-# Define an executable target built from `server.cpp` and its dependencies
-add_executable(server 
-src/server/server.cpp 
-src/server/network/GameServer.cpp 
-src/server/network/SessionManager.cpp 
-src/server/network/GameSession.cpp 
-src/server/network/TokenHandler.cpp
-src/server/game/GameState.cpp
-
-)
 # Define include directories for target 'server'
 target_include_directories(server PRIVATE include/server/database include/server/game include/server/network)
 

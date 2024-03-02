@@ -1,6 +1,6 @@
 #include <iostream>
-#include "chat_console.hh"
-#include "../../Controllers/chat_controller.hh"
+#include "../../../../include/client/Display/Console/chat_console.hh"
+#include "../../../../include/client/Controllers/chat_controller.hh"
 
 
 ChatConsole::ChatConsole(const std::string& senderUser, const std::string& receiverUser)

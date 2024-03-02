@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "chat_view.hh"
+#include "../../../include/client/Views/chat_view.hh"
 
 
 

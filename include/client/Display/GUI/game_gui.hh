@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../gui.hh"
-#include "../../../common/board_coordinates.hh"
+#include "../../../../src/common/board_coordinates.hh"
 #include "../../Views/game_view.hh"
 #include <memory>
 

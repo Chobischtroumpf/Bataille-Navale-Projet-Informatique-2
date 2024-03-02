@@ -1,4 +1,4 @@
-#include "local_board.hh"
+#include "../../include/client/local_board.hh"
 #include <vector>
 #include <unistd.h>
 #include <iostream>

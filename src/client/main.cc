@@ -1,6 +1,6 @@
-#include "Controllers/game_controller.hh"
-#include "Display/Console/game_console.hh"
-#include "local_board.hh"
+#include "../../include/client/Controllers/game_controller.hh"
+#include "../../include/client/Display/Console/game_console.hh"
+#include "../../include/client/local_board.hh"
 #include <iostream>
 #include <memory>
 

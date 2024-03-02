@@ -1,4 +1,4 @@
-#include "game_controller.hh"
+#include "../../../include/client/Controllers/game_controller.hh"
 #include "../../common/cell_type.hh"
 #include "../../common/board_coordinates.hh"
 #include "../../common/ship_coordinates.hh"
