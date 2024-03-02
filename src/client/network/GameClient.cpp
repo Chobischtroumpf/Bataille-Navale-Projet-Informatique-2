@@ -96,34 +96,35 @@ std::future<void> GameClient::TestRequest3() {
 
     return promise->get_future();
 }
-future<njson> GameClient::QueryGameState(const string& gameId) {
+
+future<njson> GameClient::QueryGameState(const string& sessionId, const string& userId) {
     cout << "Sending GET request to api/games..." << endl;
 
-        // Use a promise to return the result asynchronously
-        auto promise = std::make_shared<std::promise<njson>>();
-        auto resultFuture = promise->get_future();
+    // Use a promise to return the result asynchronously
+    auto promise = std::make_shared<std::promise<njson>>();
+    auto resultFuture = promise->get_future();
 
-        GetRequest("/api/games/" + gameId + "/query").then([promise](njson jsonResponse) {
-            // Check if the response contains a 'gameDetails' key
-            if (!jsonResponse.empty() && jsonResponse.find("gameDetails") != jsonResponse.end()) {
-                // Success path: Extract game details from jsonResponse
-                auto gameDetails = jsonResponse["gameDetails"].get<njson>();
-                cout << "Game info retrieved " << endl;
-                promise->set_value(gameDetails);
-            } else {
-                // Error or info not provided, set a default error value (empty object)
-                promise->set_value(njson {});
-            }
-        }).then([promise](pplx::task<void> errorHandler) {
-            try {
-                // Attempt to catch exceptions if any
-                errorHandler.get();
-            } catch (const exception& e) {
-                // In case of exception, indicate failure
-                cerr << "Exception caught while fetching game state: " << e.what() << endl;
-                promise->set_value(njson {});; // Indicate failure due to exception
-            }
-        });
+    GetRequest("/api/games/query?sessionid=" + sessionId + "&userid=" + userId ).then([promise](njson jsonResponse) {
+        // Check if the response contains a 'gameDetails' key
+        if (!jsonResponse.empty() && jsonResponse.find("gameDetails") != jsonResponse.end()) {
+            // Success path: Extract game details from jsonResponse
+            auto gameDetails = jsonResponse["gameDetails"].get<njson>();
+            cout << "Game info retrieved " << endl;
+            promise->set_value(gameDetails);
+        } else {
+            // Error or info not provided, set a default error value (empty object)
+            promise->set_value(njson {});
+        }
+    }).then([promise](pplx::task<void> errorHandler) {
+        try {
+            // Attempt to catch exceptions if any
+            errorHandler.get();
+        } catch (const exception& e) {
+            // In case of exception, indicate failure
+            cerr << "Exception caught while fetching game state: " << e.what() << endl;
+            promise->set_value(njson {});; // Indicate failure due to exception
+        }
+    });
 
     cout << "Game creation request sent." << endl;
     return resultFuture;
@@ -210,7 +211,7 @@ future<njson> GameClient::JoinGame(const string& sessionId) {
     auto resultFuture = promise->get_future();
 
     // Construct the request path with the sessionId
-    string requestPath = "/api/game/session/" + sessionId + "/details";
+    string requestPath = "/api/game/join?sessionId="  + sessionId;
 
     // Make the GET request to join the game and retrieve the session details
     GetRequest(requestPath)
@@ -324,7 +325,7 @@ future<string> GameClient::GetUserId(const string& username) {
     auto promise = std::make_shared<std::promise<string>>();
     auto resultFuture = promise->get_future();
 
-    GetRequest("/api/login/uid/" + username)
+    GetRequest("/api/login/uid?username=" + username)
     .then([promise](njson jsonResponse) {
         // Success path: Process the JSON response here
         if (jsonResponse.contains("userId")) {

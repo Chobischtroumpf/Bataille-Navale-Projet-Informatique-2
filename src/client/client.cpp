@@ -38,7 +38,7 @@ int main() {
     cout << "Games information received: " << gamesInfo << endl;
 
     // Asynchronously query game state
-    auto queryGameStateFuture = gameClient.QueryGameState("exampleSessionId");
+    auto queryGameStateFuture = gameClient.QueryGameState("exampleSessionId", "exampleuserid");
     auto gameState = queryGameStateFuture.get(); // This will wait and retrieve the game state
     cout << "Game state for session 'exampleSessionId': " << gameState.dump() << endl;
 
