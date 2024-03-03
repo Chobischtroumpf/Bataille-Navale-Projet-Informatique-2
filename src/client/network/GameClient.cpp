@@ -399,7 +399,7 @@ future<string> GameClient::GetUserId(const string& username) {
 }
 
 // Method to make a move in a game session, returning a future<bool> indicating success
-future<bool> GameClient::SendMessage(const string& senderId, const string& recipientId, const string& message) {
+future<bool> GameClient::SendMessage(const string& recipientId, const string& message) {
     cout << "Sending message to user " << recipientId << " ..." << endl;
 
     // Use a promise to return the result asynchronously

@@ -25,7 +25,7 @@ public:
     std::future<std::string> GetUserId(const std::string& username);
     std::future<std::string> GetGames();
     std::future<njson> QueryGameState(const std::string& sessionId, const std::string& userId);
-    std::future<bool> SendMessage(const std::string& senderId, const std::string& targetId, const std::string& message);
+    std::future<bool> SendMessage(const std::string& targetId, const std::string& message);
     std::future<nlohmann::json> GetMessages(const std::string& recipientId);
 private:
     // Use unique_ptr for automatic resource management of http_client
@@ -38,7 +38,7 @@ private:
     void TestRequest();
     std::future<void> TestRequest2();
     std::future<void> TestRequest3();
-    
+
     // Helper method to add Authorization header to requests
     void AddAuthHeader(http_request& request);
 
