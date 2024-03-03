@@ -1,6 +1,7 @@
 #include "../../../../include/client/Display/Console/main_menu_console.hh"
 #include <iostream>
 
+
 MainMenuConsole::MainMenuConsole(std::shared_ptr<MainMenuView> view): _view(view) {}
 
 void MainMenuConsole::displayFriends() {
@@ -75,6 +76,7 @@ void MainMenuConsole::displayOptions(int mode) {
 
 
 void MainMenuConsole::display() {
+    // Gets all the updated data from the view and displays them
     displayFriends();
     displayNotifications();
     displayOptions(0);
@@ -93,25 +95,30 @@ ReturnInput MainMenuConsole::handle_input() {
     std::cin >> input;
     switch (input) {
         int mode; int friend_id;
-        case 1:
+        case 1: // Create a game
             displayFriends(); displayNotifications(); displayOptions(1);
             std::cin >> mode; // game
             displayFriends(); displayNotifications(); displayOptions(2);
             std::cin >> friend_id; // friend_id
-            //_controller->createGame(mode, friend_id)
-            // Need to change the display and view after this point
-            display(); // Delete after adding the previous points
+            _controller->createGame(mode, friend_id);
+            return {ReturnInput::GAME_CREATION, ""};
             break;
-        case 2:
+        case 2: // Add a friend
             displayFriends(); displayNotifications(); displayOptions(3);
             std::cin >> friend_id;
+            _controller->addFriend(friend_id);
+            system("clear");
             display();
             break;
-        case 3:
+        case 3: // Refresh
+            system("clear");
             display();
             break;
-        case 4:
+        case 4: // Display more friends
             _friendlist_position += 4;
+            system("clear");
             display();
     }
+    // In case no game was created, displays the same menu after an input
+    return {ReturnInput::MAIN_MENU, ""};
 }

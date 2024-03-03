@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory> // For unique_ptr
 #include <future> // For future
-#include "GameClient.hpp" 
+#include "../../../include/client/network/GameClient.hpp" 
 
 using namespace std;
 using namespace web;

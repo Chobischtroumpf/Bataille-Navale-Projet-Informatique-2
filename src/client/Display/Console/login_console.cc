@@ -48,7 +48,7 @@ ReturnInput LoginConsole::handle_input() {
 
 bool LoginConsole::seConnecter(LoginController &loginController) {
   system("clear");
-  std::cout << "Enregistrement\n";
+  std::cout << "Se connecter\n";
   std::string nomUtilisateur = demanderNomUtilisateur();
   std::string motDePasse = demanderMotDePasse();
   return loginController.attemptLogin(

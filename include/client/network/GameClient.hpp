@@ -3,6 +3,7 @@
 
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
+#include <cpprest/http_msg.h>
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <memory> // For unique_ptr
@@ -40,7 +41,7 @@ private:
     std::future<void> TestRequest3();
 
     // Helper method to add Authorization header to requests
-    void AddAuthHeader(http_request& request);
+    void AddAuthHeader(web::http::http_request& request);
 
     pplx::task<njson> PostRequest(const std::string& path, const njson& data);
     pplx::task<njson> GetRequest(const std::string& path);
