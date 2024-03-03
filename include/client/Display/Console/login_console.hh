@@ -9,6 +9,7 @@
 
 class LoginConsole : public Console {
 public:
+  explicit LoginConsole(const std::string& baseUri);
   ReturnInput handle_input() override;                       
   virtual void display() override {}
   virtual void display_error() override {}
@@ -24,3 +25,4 @@ private:
   bool validCin(int choix);
   bool contientMajuscule(const std::string& str);
 };
+

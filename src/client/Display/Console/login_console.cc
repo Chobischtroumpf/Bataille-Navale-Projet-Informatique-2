@@ -8,14 +8,16 @@ Dans la classe LoginController à quoi correspond checkValidity
 Faut il donc une autre méthode pour Ajouter le compte nouvellememnt créé à la BD
 Attention il n y a pas encore de fichier.cpp pour LoginController
 */
+LoginConsole::LoginConsole(const std::string& baseUri) 
+    : loginController(baseUri) {
+}
 
 ReturnInput LoginConsole::handle_input() {
-  LoginController loginController;
   int choix;
   bool continuer = true;
 
   while (!validCin(choix)) {
-    system("clear");
+    //system("clear");
     std::cout << "1. Se connecter\n";
     std::cout << "2. S'enregistrer\n";
     std::cout << "Entrez votre choix: ";
@@ -26,7 +28,6 @@ ReturnInput LoginConsole::handle_input() {
     if (choix == 1) {
       if (seConnecter(loginController)) {
         std::cout << "Connexion réussie!\n";
-        // Fonction pour déplacer vers la prochaine fenêtre, MenuPrincipal
         continuer = false;
         return {ReturnInput::MAIN_MENU, ""};
       } else {
@@ -34,8 +35,9 @@ ReturnInput LoginConsole::handle_input() {
       }
     } else if (choix == 2) {
       if (sEnregistrer(loginController)) {
-        std::cout << "Enregistrement réussi. Veuillez vous connecter.\n";
-        choix = 1;
+        std::cout << "Enregistrement réussi.";
+        continuer = false;
+        return {ReturnInput::MAIN_MENU, ""};
       } else {
         std::cout << "Échec de l'enregistrement. Veuillez réessayer.\n";
       }
@@ -43,25 +45,25 @@ ReturnInput LoginConsole::handle_input() {
       std::cout << "Choix invalide. Veuillez réessayer.\n";
     }
   }
-  return {ReturnInput::Screen::MAIN_MENU, ""};
+  return {ReturnInput::Screen::LOGIN, ""};
 }
 
 bool LoginConsole::seConnecter(LoginController &loginController) {
-  system("clear");
+  //system("clear");
   std::cout << "Se connecter\n";
-  std::string nomUtilisateur = demanderNomUtilisateur();
-  std::string motDePasse = demanderMotDePasse();
-  return loginController.attemptLogin(
-      nomUtilisateur, motDePasse); // LC IMPLEMENTER attemptLogin
+  std::string username = demanderNomUtilisateur();
+  std::string password = demanderMotDePasse();
+  auto registerFuture = loginController.attemptLogin(username, password);
+  return (registerFuture.get());
 }
 
 bool LoginConsole::sEnregistrer(LoginController &loginController) {
-  system("clear");
+  //system("clear");
   std::cout << "Enregistrement\n";
-  std::string nomUtilisateur = demanderNomUtilisateur();
-  std::string motDePasse = demanderMotDePasseEnregistrement();
-  return loginController.checkValidity(
-      nomUtilisateur, motDePasse); // LC IMPLEMENTER checkValidity
+  std::string username = demanderNomUtilisateur();
+  std::string password = demanderMotDePasseEnregistrement();
+  auto registerFuture = loginController.attemptLogin(username, password);
+  return (registerFuture.get());
 }
 
 std::string LoginConsole::demanderNomUtilisateur() {
@@ -102,7 +104,6 @@ std::string LoginConsole::demanderMotDePasseEnregistrement() {
                    "moins 6 caractères et une majuscule.\n";
     }
   }
-
   return motDePasse;
 }
 

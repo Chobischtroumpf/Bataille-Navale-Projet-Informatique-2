@@ -1,7 +1,8 @@
+#include <iostream>
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
 #include <nlohmann/json.hpp>
-#include <iostream>
+
 #include <memory> // For unique_ptr
 #include <future> // For future
 #include "../../../include/client/network/game_client.hh" 
