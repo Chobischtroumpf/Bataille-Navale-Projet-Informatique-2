@@ -1,0 +1,26 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>0</x><y>151</y><w>400</w><h>200</h></coordinates><panel_attributes>DataBase
+--
+-db sqlite3*
+-createDb(): DbError
+-createTables():DbError
+-callback(data:void*, argc:int, argv:char**, az_col_name:char**):int
+-executeQuery(sql_query:str):QR
+-parseError(errorMsg:str): DbError
+--
++insertEntry(table_name:str, columns:str, values:str): QR
++deleteEntry(table_name:str, columns:str, condition:str): QR
++updateEntry(table_name:str, columns:str, condition:str): QR
++selectFromTable(table_name:str, columns:str, condition:str): QR</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>141</y><w>380</w><h>210</h></coordinates><panel_attributes>Queries
+--
+-db: shared_ptr&lt;DataBase&gt;
+--
++checkPwd(id_user:str, pwd:str): Bool
++checkUserName(username:str): QR
++userRegister(username:str, pwd:str): Bool
++addFriend(id_user:str, id_friend:str): Bool
++getMsgBetweenUsers(id_user:str, id_friend:str): QR
++getAllUserMsg(id_user:str): QR
++updateUserName(id_user:str, pwd:str, new_username:str):Bool
++updatePwd(username:str, pwd:str, new_pwd:str): Bool
++deleteFriend(username:str, friend_username:str)|: Bool
++deleteAccount(id_user:str, pwd:str): Bool</panel_attributes><additional_attributes></additional_attributes></element></diagram>

@@ -37,9 +37,17 @@ Makefile
 test.cc
 gen_board.hh
 */*.json
+vcpkg
+_deps
+CMakeFiles
+CMakeCache.txt
+*.cmake
+
+*.bat
+windows
 
 # TeXLive compilation files
-*.log
+# *.log
 *.aux
 *.toc
-.vscode/
+.vscode
