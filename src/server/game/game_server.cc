@@ -1,4 +1,5 @@
-#include "game_server.hh"
+#include "../../../include/server/game/game_server.hh"
+#include "../../../include/server/game/board_control.hh"
 
 GameServer::GameServer(unsigned int player1_id, unsigned int player2_id,
                        std::vector<unsigned int> &spectators,

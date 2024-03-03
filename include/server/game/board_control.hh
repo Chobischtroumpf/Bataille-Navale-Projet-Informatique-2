@@ -1,8 +1,8 @@
 #pragma once
 
 #include "board.hh"
-#include "../../../include/common/board_coordinates.hh"
-#include "../../../include/common/ship_coordinates.hh"
+#include "../../common/board_coordinates.hh"
+#include "../../common/ship_coordinates.hh"
 #include <memory>
 #include <utility>
 

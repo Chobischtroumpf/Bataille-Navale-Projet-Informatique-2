@@ -1,4 +1,4 @@
-#include "board_control.hh"
+#include "../../../include/server/game/board_control.hh"
 #include "board_view.hh"
 
 bool BoardControl::fire(BoardCoordinates coord) {
