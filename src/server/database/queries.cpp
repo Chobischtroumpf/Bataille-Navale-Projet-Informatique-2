@@ -37,7 +37,6 @@ bool Queries::checkPwd(const std::string &id_user, const std::string &pwd){
     // Parse result data
     std::string hash_pwd = result.data[0][0];
     std::string salt = result.data[0][1];
-    //parsePwdResult(result.data[0], hash_pwd, salt);
     std::string salt_pwd = pwd + salt;
     // check if the password match 
     if (!Security::verifyPwd(hash_pwd, salt_pwd)){
@@ -47,27 +46,29 @@ bool Queries::checkPwd(const std::string &id_user, const std::string &pwd){
 }
 
 
-QueryResult Queries::userLogin(const std::string &username, const std::string &pwd){
-    std::string condition = "username = '" + username + "' AND hash_pwd = '" + pwd + "'";
-    QueryResult result = db->selectFromTable("Users", "id_user", condition);
-    return result;
+bool Queries::userLogin(const std::string &username, const std::string &pwd){
+    QueryResult result = checkUserName(username);
+    if(result.isOk()){
+        return checkPwd(result.getFirst(), pwd);
+    }
+    return false;
 }
 
 
-QueryResult Queries::userRegister(const std::string &username, const std::string &pwd){
+bool Queries::userRegister(const std::string &username, const std::string &pwd){
     std::string salt = Security::genSalt();
     std::string hashpwd = Security::hashPwd(pwd+salt);
     std::string columns = "username, hash_pwd, salt";
     std::string values = "'" + username + "', '" + hashpwd + "', '" + salt + "'";
     QueryResult result = db->insertEntry("Users", columns, values);
-    if(result.error == DbError::OK){
-        result = checkUserName(username);
+    if(result.isOk()){
+        return true;
     }
-    return result;
+    return false;
 }
 
 
-QueryResult Queries::addFriend(const std::string &id_user, const std::string &friend_username){
+bool Queries::addFriend(const std::string &id_user, const std::string &friend_username){
     QueryResult result = checkUserName(friend_username);
     if(result.data.size() != 0){
         std::string id_friend = result.data[0][0];
@@ -79,11 +80,11 @@ QueryResult Queries::addFriend(const std::string &id_user, const std::string &fr
             result = db->insertEntry("Relations", columns, values);
         }
     }
-    return result;
+    return result.isOk();
 }
 
 
-QueryResult Queries::sendMsg(const std::string &sender, const std::string &receiver, const std::string &msg){
+bool Queries::sendMsg(const std::string &sender, const std::string &receiver, const std::string &msg){
     // Get the string time the message was send (now)
     std::string time = getTime();
 
@@ -92,12 +93,12 @@ QueryResult Queries::sendMsg(const std::string &sender, const std::string &recei
     std::string columns = "sender, receiver, msg, msg_date_time";
     std::string values = "'" + sender + "', '" + receiver + "', '" + clean_msg + "', '" + time +  "'";
     QueryResult result = db->insertEntry("Messages", columns, values);
-    return result;
+    return result.isOk();
 }
 
 
 QueryResult Queries::getMsgBetweenUsers(const std::string &id_user, const std::string &id_friend){
-    std::string columns = "*";
+    std::string columns = "sender, receiver, msg";
     std::string condition = "(sender = '" + id_user + "' AND receiver = '" + id_friend + "')"\
                             " OR (sender = '" + id_friend + "' AND receiver = '" + id_user + "')";
     std::string order_by = " ORDER BY msg_date_time";   // Order by the msg_date_time column
@@ -107,7 +108,7 @@ QueryResult Queries::getMsgBetweenUsers(const std::string &id_user, const std::s
 
 
 QueryResult Queries::getAllUserMsg(const std::string &id_user){
-    std::string columns = "*";
+    std::string columns = "sender, receiver, msg";
     std::string condition = "(sender = '" + id_user + "' OR receiver = '" + id_user + "')";
     std::string order_by = " ORDER BY (CASE WHEN sender = '" + id_user + "' THEN receiver ELSE sender END)";
     QueryResult result = db->selectFromTable("Messages", columns, condition + order_by);

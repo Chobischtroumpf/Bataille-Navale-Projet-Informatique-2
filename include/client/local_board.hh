@@ -67,7 +67,7 @@ public:
 
   void update() override { throw NotImplementedError("Update"); }
 
-  static constexpr inline CellType best(CellType lhs, CellType rhs);
+  CellType best(CellType lhs, CellType rhs);
 
 
 private:

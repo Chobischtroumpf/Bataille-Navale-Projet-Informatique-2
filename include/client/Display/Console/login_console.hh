@@ -4,12 +4,15 @@
 #include <memory>
 #include "../console.hh"
 #include <string>
-#include <limits>
 #include "../../Controllers/login_controller.hh"
+#include "../../display.hh"
 
 class LoginConsole : public Console {
 public:
-  void afficherMenuPrincipal();                       
+  ReturnInput handle_input() override;                       
+  virtual void display() override {}
+  virtual void display_error() override {}
+  virtual void update() override {}
   bool seConnecter(LoginController& loginController);
   bool sEnregistrer(LoginController& loginController);
 private:

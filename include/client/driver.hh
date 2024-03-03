@@ -32,8 +32,6 @@ private:
     void displayGameCreationScreen();
 
     std::shared_ptr<Display> _display;
-    std::shared_ptr<Controller> _controller;
-    std::shared_ptr<View> _view;
 
     DisplayType _display_type;
     ReturnInput::Screen _current_screen;

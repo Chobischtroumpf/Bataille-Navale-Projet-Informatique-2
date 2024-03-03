@@ -6,6 +6,9 @@
 #include <string>
 #include "SessionManager.hpp" // Include SessionManager header
 #include "TokenHandler.hpp"
+#include "database.hh"
+#include "queries.hh"
+#include <memory>
 
 using namespace web;
 using namespace web::http;
@@ -18,7 +21,7 @@ public:
     explicit GameServer(const std::string& address);
     ~GameServer();
     
-    bool verifyAuthToken(const web::http::http_request& request);
+    std::string verifyAuthToken(const web::http::http_request& request);
 
     void initialize();
     void handleGet(http_request request);
@@ -27,6 +30,8 @@ public:
 private:
     http_listener listener_; // HTTP listener
     TokenHandler tokenHandler; // TokenHandler instance
+    std::shared_ptr<DataBase> database; // DataBase instance
+    Queries dbManager; // Database interface instance
 };
 
 #endif // GAMESERVER_H

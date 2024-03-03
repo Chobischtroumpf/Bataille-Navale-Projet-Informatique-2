@@ -1,4 +1,4 @@
-#include "local_board.hh"
+#include "../../include/client/local_board.hh"
 #include <vector>
 #include <unistd.h>
 #include <iostream>
@@ -90,7 +90,7 @@ std::array<std::pair<ShipType, uint8_t>, 4> LocalBoard::shipsToPlace() const {
   return _ships_to_place;
 }
 
-constexpr inline CellType LocalBoard::best(CellType lhs, CellType rhs) {
+CellType LocalBoard::best(CellType lhs, CellType rhs) {
   if (!(lhs & IS_SHIP) || !(rhs & IS_SHIP)) {
     std::cerr << "BoardView::best(" << static_cast<unsigned>(lhs) << ", "
               << static_cast<unsigned>(rhs) << ")" << std::endl;

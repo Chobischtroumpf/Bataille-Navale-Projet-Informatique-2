@@ -1,5 +1,5 @@
 #include <iostream>
-#include "chat_controller.hh"
+#include "../../../include/client/Controllers/chat_controller.hh"
 
 void ChatController::send_msg_to_server(const Message& message) {
 	// Ajout code pour envoyer Message vers le serveur

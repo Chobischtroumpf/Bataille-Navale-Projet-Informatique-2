@@ -41,10 +41,15 @@ vcpkg
 _deps
 CMakeFiles
 CMakeCache.txt
-*.cmake
 
 *.bat
 windows
+build
+
+# Build folder
+build/*
+!build/linux
+
 
 # TeXLive compilation files
 # *.log
