@@ -7,10 +7,10 @@
 #include <stdexcept>
 #include <nlohmann/json.hpp>
 
-#include "../common/board_coordinates.hh"
-#include "../common/cell_type.hh"
-#include "../common/ship_types.hh"
-#include "../common/turn.hh"
+#include "../../../include/common/ship_types.hh"
+#include "../../../include/common/board_coordinates.hh"
+#include "../../../include/common/cell_type.hh"
+#include "../../../include/common/turn.hh"
 
 using json = nlohmann::json;
 
