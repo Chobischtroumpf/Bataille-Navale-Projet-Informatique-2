@@ -319,7 +319,44 @@ void GameServer::handlePost(http_request request) {
                 request.reply(status_codes::BadRequest, response.dump(), "application/json");
             }
         }
-        
+
+        // Handle the case for "/api/login" - User login 
+        if (path == U("/api/login")) {
+
+            // Extract userId from query parameters
+            auto queryParams = uri::split_query(request.request_uri().query());
+            auto userIdIt = queryParams.find(U("userid"));
+            if (userIdIt == queryParams.end()) {
+                response["error"] = "Missing userId parameter";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                return;
+            }
+
+            auto userId = userIdIt->second;
+
+            // Extract password from request body
+            if (!requestBody.has_field(U("password"))) {
+                response["error"] = "Missing password";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                return;
+            }
+
+            auto password = requestBody[U("password")].as_string();
+
+            // Authenticate user and generate authToken -------------------------------- TBA
+            auto authToken = this->tokenHandler.generateToken(to_utf8(userId));
+
+            if (!authToken.empty()) {
+                // Authentication successful
+                response["authToken"] = authToken;
+                request.reply(status_codes::OK, response.dump(), "application/json");
+            } else {
+                // Authentication failed
+                response["error"] = "Authentication failed";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+            }
+        }
+         
         else {
             // Handle unmatched paths
             response["error"] = "Unknown path";
