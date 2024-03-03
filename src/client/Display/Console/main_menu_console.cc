@@ -100,25 +100,25 @@ ReturnInput MainMenuConsole::handle_input() {
             std::cin >> mode; // game
             displayFriends(); displayNotifications(); displayOptions(2);
             std::cin >> friend_id; // friend_id
-            _controller->createGame(mode, friend_id)
-            return {GAME_CREATION, ""};
+            _controller->createGame(mode, friend_id);
+            return {ReturnInput::GAME_CREATION, ""};
             break;
         case 2: // Add a friend
             displayFriends(); displayNotifications(); displayOptions(3);
             std::cin >> friend_id;
-            _controller->addFriend(int friend_id);
-            system("clear")
+            _controller->addFriend(friend_id);
+            system("clear");
             display();
             break;
         case 3: // Refresh
-            system("clear")
+            system("clear");
             display();
             break;
         case 4: // Display more friends
             _friendlist_position += 4;
-            system("clear")
+            system("clear");
             display();
     }
     // In case no game was created, displays the same menu after an input
-    return {MAIN_MENU, ""};
+    return {ReturnInput::MAIN_MENU, ""};
 }
