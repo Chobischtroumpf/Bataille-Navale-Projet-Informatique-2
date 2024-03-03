@@ -7,13 +7,10 @@ project(Battleship) # The project name
 
 # Add fetch content macro to fetch external libraries from their repo
 include(FetchContent)
+# Find the sodium package
+include(${CMAKE_CURRENT_SOURCE_DIR}/lib/sodium.cmake)
 find_package(SQLite3 REQUIRED)
-# Update the commit to point to whatever libsodium-cmake-commit you want to target.
-FetchContent_Declare(Sodium
-    GIT_REPOSITORY https://github.com/robinlinden/libsodium-cmake.git
-    GIT_TAG 99f14233eab1d4f7f49c2af4ec836f2e701c445e # HEAD as of 2022-05-28
-)
-FetchContent_MakeAvailable(Sodium)
+
 # Fetch the nlohmann json library
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
