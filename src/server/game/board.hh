@@ -8,20 +8,25 @@
 #include <random>
 #include <utility>
 #include <vector>
+#include <nlohmann/json.hpp>
+
+
+
+
 
 #include "../../../include/common/board_coordinates.hh"
 #include "../../../include/common/ship_coordinates.hh"
-#include "../../../include/common/ship_types.hh"
-#include "../../../include/common/turn.hh"
-#include "board.hh"
 #include "ship.hh"
+#include "../../../include/common/turn.hh"
+#include "../../../include/common/ship_types.hh"
+
+
 
 using std::map;
 using std::nullopt;
 using std::vector;
+using json = nlohmann::json;
 
-// forward declaration
-class GameServer;
 
 /*
  * Représente le plateau de jeu des deux joueurs
@@ -75,7 +80,6 @@ class Board {
     bool _state;
   };
 
-  std::shared_ptr<GameServer> _server;
   bool _my_turn{true};
   bool _is_finished{false};
   bool _is_victory{false};
@@ -281,11 +285,11 @@ public:
     case SUNK:
       return "SUNK";
     default:
-      throw NotImplementedError("ConsoleBoardDisplay unknown CellType");
+      throw NotImplementedError("Board unknown CellType");
     }
   }
 
-  json toJson(Turn turn) const override {
+  json toJson(Turn turn) const /*override*/ {
     json boardJson;
 
     // Serialize fleet A
@@ -365,7 +369,7 @@ public:
     return boardJson;
   }
 
-  json toJsonSpectator() const override {
+  json toJsonSpectator() const /*override*/ {
     json boardJson;
 
     json fleetAJson;

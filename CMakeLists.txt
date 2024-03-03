@@ -7,7 +7,13 @@ project(Battleship) # The project name
 
 # Add fetch content macro to fetch external libraries from their repo
 include(FetchContent)
-
+find_package(SQLite3 REQUIRED)
+# Update the commit to point to whatever libsodium-cmake-commit you want to target.
+FetchContent_Declare(Sodium
+    GIT_REPOSITORY https://github.com/robinlinden/libsodium-cmake.git
+    GIT_TAG 99f14233eab1d4f7f49c2af4ec836f2e701c445e # HEAD as of 2022-05-28
+)
+FetchContent_MakeAvailable(Sodium)
 # Fetch the nlohmann json library
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
@@ -64,3 +70,5 @@ endif()
 target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(battleship PRIVATE cpprestsdk::cpprest crypto)
+target_link_libraries(server PRIVATE SQLite::SQLite3)
+target_link_libraries(server PRIVATE sodium)
