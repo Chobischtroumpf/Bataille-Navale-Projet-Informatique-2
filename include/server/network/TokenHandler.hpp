@@ -20,9 +20,9 @@ typedef time_point<steady_clock, seconds> TimePoint;
 
 class TokenHandler{
     private:
-        map<string /*token*/, std::pair<int /*userID*/, TimePoint/*time until expiration*/>> valid_tokens;
+        map<string /*token*/, std::pair<string /*userID*/, TimePoint/*time until expiration*/>> valid_tokens;
 
-        string findToken(int user_id);
+        string findToken(string user_id);
 
     public:
 

@@ -1,6 +1,6 @@
 #include "TokenHandler.hpp"
 
-string TokenHandler::findToken(int user_id){
+string TokenHandler::findToken(string user_id){
     for (auto iter:this->valid_tokens){
         if (iter.second.first == user_id)
             return iter.first;
