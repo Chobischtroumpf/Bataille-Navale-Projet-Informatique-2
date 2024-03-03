@@ -35,7 +35,7 @@ void ChatConsole::displayMessage(const std::vector<Message>& messages, std::stri
 	for (const auto& msg : messages) {
 		std::string text = msg.getText();
 		diviserEnLignes(text, 45, msg.getSender().length());
-		std::cout << "│ \033[4m" << msg.getSender() << "\033[0m: " << msg.getText() << "\n";
+		std::cout << "│ \033[4m" << msg.getSender() << "\033[0m: " << text << "\n";
 	}
 	std::cout << "└─────────────────────────────────────────────┘\n";
 	std::cout << "Type your message : ";
