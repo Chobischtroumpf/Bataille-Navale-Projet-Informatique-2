@@ -274,32 +274,34 @@ future<bool> GameClient::MakeMove(const string& sessionId, const string& move) {
     return resultFuture;
 }
 
-// Function to perform login using userId and password, returning an authToken asynchronously
-future<string> GameClient::Login(const string& userId, const string& password) {
+// Function to perform login using username and password, returning an authToken asynchronously
+future<bool> GameClient::Login(const string& username, const string& password) {
     cout << "Initiating login request..." << endl;
 
     // Use a promise to return the result asynchronously
-    auto promise = std::make_shared<std::promise<string>>();
+    auto promise = std::make_shared<std::promise<bool>>();
     auto resultFuture = promise->get_future();
 
-    // Prepare the JSON object with userId and password
+    // Prepare the JSON object with username and password
     njson loginData;
-    loginData["userId"] = userId;  
+    loginData["username"] = username;  
     loginData["password"] = password;
 
     // Send the POST request to the login endpoint
     PostRequest("/api/login", loginData)
-    .then([promise](njson jsonResponse) {
+    .then([promise, this](njson jsonResponse) {
 
         // Process the JSON response here
         if (jsonResponse.contains("authToken")) {
 
             auto authToken = jsonResponse["authToken"].get<string>();
             cout << "Auth Token: " << authToken << endl;
-            promise->set_value(to_utf8string(authToken));
+
+            this->authToken = authToken;
+            promise->set_value(true);
         } else {
             // Error or authToken not found, set a default error value (empty string)
-            promise->set_value("");
+            promise->set_value(false);
         }
     }).then([promise](pplx::task<void> errorHandler) {
         try {
@@ -313,6 +315,52 @@ future<string> GameClient::Login(const string& userId, const string& password) {
     });
 
     cout << "Login request sent." << endl;
+    return resultFuture;
+}
+
+// Function to perform registration using username and password, returning a future<bool> indicating success
+future<bool> GameClient::Register(const string& username, const string& password) {
+    cout << "Initiating registration request..." << endl;
+
+    // Use a promise to return the result asynchronously
+    auto promise = std::make_shared<std::promise<bool>>();
+    auto resultFuture = promise->get_future();
+
+    // Prepare the JSON object with username and password
+    njson registerData;
+    registerData["username"] = username;
+    registerData["password"] = password;
+
+    // Send the POST request to the registration endpoint
+    PostRequest("/api/register", registerData)
+    .then([promise, this](njson jsonResponse) {
+        // Process the JSON response here
+        if (jsonResponse.contains("authToken")) {
+            // Extract the authToken from the response
+            auto authToken = jsonResponse["authToken"].get<string>();
+            cout << "Registration successful. Auth Token: " << authToken << endl;
+
+            // Update the authToken in the GameClient instance
+            this->authToken = authToken;
+            // Indicate successful registration
+            promise->set_value(true);
+        } else {
+            // authToken not found, indicate registration failure
+            cout << "Registration failed." << endl;
+            promise->set_value(false);
+        }
+    }).then([promise](pplx::task<void> errorHandler) {
+        try {
+            // Attempt to catch and handle any exceptions
+            errorHandler.get();
+        } catch (const exception& e) {
+            // In case of exception, log it and indicate failure
+            cerr << "Exception caught during registration: " << e.what() << endl;
+            promise->set_value(false);
+        }
+    });
+
+    cout << "Registration request sent." << endl;
     return resultFuture;
 }
 
@@ -425,6 +473,13 @@ future<nlohmann::json> GameClient::GetMessages(const std::string& recipientId) {
     return resultFuture;
 }
 
+// Add Authorization header to requests if authToken is available
+void GameClient::AddAuthHeader(http_request& request) {
+    if (!authToken.empty()) {
+        request.headers().add(U("Authorization"), U("Bearer ") + conversions::to_string_t(authToken));
+    }
+}
+
 // General-purpose POST request handler
 pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data) {
     cout << "Preparing to send POST request to path: " << path << endl;
@@ -437,6 +492,9 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
     request.headers().set_content_type(U("application/json"));
     // Convert nlohmann::json to string for the request body
     request.set_body(data.dump());
+
+
+    AddAuthHeader(request); // Add the auth header if token is available
 
     cout << "Sending POST request..." << endl;
 
@@ -491,6 +549,8 @@ pplx::task<njson> GameClient::GetRequest(const string& path) {
     uri_builder builder(to_string_t(path));
     auto requestUri = builder.to_uri().to_string();
     http_request request(methods::GET);
+
+    AddAuthHeader(request); // Add the auth header if token is available
 
     return client->request(request).then([](http_response response) -> pplx::task<njson> {
         if (response.status_code() == status_codes::OK || response.status_code() == status_codes::Created) {
