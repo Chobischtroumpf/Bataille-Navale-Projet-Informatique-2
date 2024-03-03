@@ -197,17 +197,33 @@ void GameServer::handleGet(http_request request) {
             auto recipientId = recipientIdIt->second;
 
             
-            njson conversation; // Placeholder 
-            
-            bool retrievalResult = true;
+            QueryResult result = this->dbManager.getMsgBetweenUsers(requesterId, to_utf8(recipientId));
 
-            if (retrievalResult) {
-                response["conversation"] = conversation;
-                request.reply(status_codes::OK, response.dump(), "application/json");
-            } else {
-                response["error"] = "Failed to retrieve conversation";
+            if (!result.isOk()) {
+                response["error"] = "Failed to retrieve conversation : " + result.getError();
                 request.reply(status_codes::BadRequest, response.dump(), "application/json");
             }
+
+            njson conversation = njson::array();
+            
+            njson messagesJson ; // Create a JSON array to hold the messages
+
+            // Iterate over each message in the QueryResult
+            for (const auto& messageVec : result.data) {
+                if (messageVec.size() == 3) { // Ensure the inner vector has exactly 3 elements
+                    // Create a JSON object for the current message
+                    njson messageJson = {
+                        {"sender", messageVec[0]},
+                        {"message", messageVec[2]}
+                    };
+                    // Append the message JSON object to the messages array
+                    messagesJson.push_back(messageJson);
+                }
+            }
+            
+            response["conversation"] = conversation;
+            request.reply(status_codes::OK, response.dump(), "application/json");
+            
         } else {
             response["error"] = "Missing userId parameter";
             request.reply(status_codes::BadRequest, response.dump(), "application/json");
@@ -343,7 +359,6 @@ void GameServer::handlePost(http_request request) {
 
             auto password = requestBody[U("password")].as_string();
 
-
             // Authenticate user and generate authToken -------------------------------- TBA
             bool isSuccessful = this->dbManager.userLogin(to_utf8(username), to_utf8(password));
 
@@ -363,12 +378,82 @@ void GameServer::handlePost(http_request request) {
                 response["authToken"] = authToken;
                 request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
-                // Authentication failed
-                response["error"] = "Authentication failed";
-                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                // AuthToken generation failed
+                response["error"] = "AuthToken generation failed";
+                request.reply(status_codes::InternalError, response.dump(), "application/json");
             }
         }
-         
+
+
+        // Handle the case for "/api/register" - User registration
+        if (path == U("/api/register")) {
+
+            // Extract username and password from request body
+            if (!requestBody.has_field(U("username")) || !requestBody.has_field(U("password"))) {
+                response["error"] = "Missing username or password";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                return;
+            }
+
+            auto username = requestBody[U("username")].as_string();
+            auto password = requestBody[U("password")].as_string();
+
+            // Register user ------------------------------------------------ TBA
+            bool isRegistered = this->dbManager.userRegister(to_utf8(username), to_utf8(password));
+
+            if (!isRegistered) {
+                // Registration failed
+                response["error"] = "Registration failed";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                return;
+            }
+
+            // After successful registration, generate authToken for the user
+            string userId = this->dbManager.checkUserName(to_utf8(username)).getFirst();
+
+            auto authToken = this->tokenHandler.generateToken(userId);
+
+            if (!authToken.empty()) {
+                // Registration and authToken generation successful
+                response["authToken"] = authToken;
+                request.reply(status_codes::OK, response.dump(), "application/json");
+            } else {
+                // AuthToken generation failed
+                response["error"] = "AuthToken generation failed";
+                request.reply(status_codes::InternalError, response.dump(), "application/json");
+            }
+        }
+
+        // Handle the case for "/api/chat/send" - Sending a message
+        if (path == U("/api/chat/send")) {
+            // Protected route - verify the AuthToken and retrieve the senderId
+            auto senderId = verifyAuthToken(request);
+
+            // If senderId is empty, the token is invalid or missing
+            if (senderId.empty()) {
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
+            }
+
+            // Extract recipientId and message from request body
+            auto recipientId = requestBody[U("recipientId")].as_string();
+            auto message = requestBody[U("message")].as_string();
+
+            // Send the message using your backend logic -------------------------------- TBA
+            bool isSuccessful = this->dbManager.sendMsg(senderId, to_utf8(recipientId), to_utf8(message));
+
+            if (isSuccessful) {
+                // Message sent successfully
+                response["status"] = "Message sent successfully";
+                request.reply(status_codes::OK, response.dump(), "application/json");
+            } else {
+                // Failed to send message
+                response["error"] = "Failed to send message";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
+            }
+        }
+
         else {
             // Handle unmatched paths
             response["error"] = "Unknown path";
