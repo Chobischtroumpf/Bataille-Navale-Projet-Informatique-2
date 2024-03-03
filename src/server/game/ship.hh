@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "../common/board_coordinates.hh"
-#include "../common/ship_coordinates.hh"
-#include "../common/cell.hh"
+#include "../../../include/common/board_coordinates.hh"
+#include "../../../include/common/ship_coordinates.hh"
+#include "../../../include/common/cell.hh"
 
 using std::vector;
 

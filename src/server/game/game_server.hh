@@ -1,9 +1,9 @@
 #pragma once
 
 #include "board.hh"
-#include "ship_coordinates.hh"
+#include "../../../include/common/ship_coordinates.hh"
 #include "timer.hh"
-#include "turn.hh"
+#include "../../../include/common/turn.hh"
 
 // Class that handles the game between 2 players and a list of spectators
 class GameServer {

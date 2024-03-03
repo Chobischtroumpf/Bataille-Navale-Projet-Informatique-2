@@ -1,17 +1,12 @@
 #include <iostream>
 
-#include "chat_view.hh"
+#include "../../../include/client/Views/chat_view.hh"
 
+std::vector<Message> ChatView::get_messages(const std::vector<Message>& messages) {
+    // ajout requête chargement de la classe message
+    return messages;
+}
 
-
-void ChatView::displayMessage(const std::vector<Message>& messages, std::string selectedUser){
-	std::cout << "Type './exit' to end chat session\n";
-    std::cout << "┌─────────────────────────────────┐\n";
-    std::cout << "│ Chat with " << selectedUser << "\n";
-	std::cout << "├─────────────────────────────────┤\n";
-	for (const auto& msg : messages) {
-		std::cout << "│ " << msg.getSender() << ": " << msg.getText() << "\n";
-	}
-	std::cout << "└─────────────────────────────────┘\n";
-	std::cout << "Type your message : ";
+void ChatView::update(){
+    int test;
 }

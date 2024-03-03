@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include "game_console.hh"
-#include "../../local_board.hh"
+#include "../../../../include/client/Display/Console/game_console.hh"
+#include "../../../../include/client/local_board.hh"
 
 using std::string;
 

@@ -1,4 +1,4 @@
-#include "message.hh"
+#include "../../include/common/message.hh"
 
 Message::Message(const std::string& text, const std::string& sender, const std::string& destination)
     : _text(text), _sender(sender), _destination(destination) {

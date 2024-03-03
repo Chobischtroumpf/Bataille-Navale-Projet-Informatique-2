@@ -1,4 +1,4 @@
-#include "main_menu_view.hh"
+#include "../../../include/client/Views/main_menu_view.hh"
 
 std::vector<std::string> MainMenuView::getNotifications() const {
     return _notifications;
