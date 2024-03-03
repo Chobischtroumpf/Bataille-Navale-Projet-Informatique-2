@@ -7,6 +7,13 @@ Pour faire fonctionner le projet, vous aurez besoin des libraires suivantes:
  - libSQLite3-dev · `sudo apt install libsqlite3-dev`
  - libsodium-dev · `sudo apt install libsodium-dev`
 
+Pour vous aider à installer les dépendances, un script est là pour simplifier la tache si vous êtes sur un système basé sur Debian:
+```sh
+> chmod +x dependencies.sh
+> ./dependencies.sh
+```
+
+### Compilation
 Pour build le projet, vous entrez les commandes suivantes:
 ```sh
 > mkdir build && cd build
