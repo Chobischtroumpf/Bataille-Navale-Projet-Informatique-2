@@ -42,7 +42,7 @@
 ## Login
 - **Endpoint**: `/api/login`
 - **Method**: `POST`
-- **Description**: Authenticates a user and returns an authToken.
+- **Description**: Authenticates a user.
 - **Parameters**:
   - `userId`: The user ID.
   - `password`: The user's password.
@@ -52,7 +52,7 @@
 ## Register
 - **Endpoint**: `/api/register`
 - **Method**: `POST`
-- **Description**: Registers a user and returns an authToken.
+- **Description**: Registers a user and authenticates them.
 - **Parameters**:
   - `username`: The user's usernam.
   - `password`: The user's password.
