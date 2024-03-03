@@ -18,7 +18,7 @@ public:
     explicit GameServer(const std::string& address);
     ~GameServer();
     
-    bool verifyAuthToken(const web::http::http_request& request);
+    std::string verifyAuthToken(const web::http::http_request& request);
 
     void initialize();
     void handleGet(http_request request);

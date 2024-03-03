@@ -3,9 +3,8 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <memory> // For unique_ptr
-#include <future>           
-// For future
-#include "../../../include/client/network/GameClient.hpp" 
+#include <future> // For future
+#include "GameClient.hpp" 
 
 using namespace std;
 using namespace web;
@@ -387,13 +386,52 @@ future<bool> GameClient::SendMessage(const string& senderId, const string& recip
     return resultFuture;
 }
 
+future<nlohmann::json> GameClient::GetMessages(const std::string& recipientId) {
+    cout << "Fetching conversation with user " << recipientId << "..." << endl;
+
+    // Use a shared promise to return the conversation asynchronously
+    auto promise = std::make_shared<std::promise<nlohmann::json>>();
+    auto resultFuture = promise->get_future();
+
+    // Construct the query URL with recipientId as a query parameter
+    std::string queryUri = "/api/chat/get?recipientId=" + recipientId ;
+
+    // Perform the GET request
+    GetRequest(queryUri)
+    .then([promise](nlohmann::json jsonResponse) {
+        // Check if the response contains a 'conversation' key
+        if (!jsonResponse.empty() && jsonResponse.find("conversation") != jsonResponse.end()) {
+            // Success path: Extract conversation from jsonResponse
+            auto conversation = jsonResponse["conversation"];
+            cout << "Conversation retrieved successfully." << endl;
+            promise->set_value(conversation);
+        } else {
+            // Error or conversation not provided, set a default error value (empty object)
+            cout << "Failed to retrieve conversation." << endl;
+            promise->set_value(nlohmann::json{});
+        }
+    }).then([promise](pplx::task<void> errorHandler) {
+        try {
+            // Attempt to catch exceptions if any
+            errorHandler.get();
+        } catch (const std::exception& e) {
+            // In case of exception, indicate failure
+            cerr << "Exception caught while fetching conversation: " << e.what() << endl;
+            promise->set_value(nlohmann::json{{"error", e.what()}});
+        }
+    });
+
+    cout << "Conversation fetch request sent." << endl;
+    return resultFuture;
+}
+
 // General-purpose POST request handler
 pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data) {
     cout << "Preparing to send POST request to path: " << path << endl;
 
     uri_builder builder(to_string_t(path));
     auto fullUri = builder.to_uri();
-    cout << "Full URI: " << fullUri.to_string() << endl;
+    cout << "Full URI: " << to_utf8string(fullUri.to_string()) << endl;
 
     http_request request(methods::POST);
     request.headers().set_content_type(U("application/json"));

@@ -20,9 +20,9 @@ typedef time_point<steady_clock, seconds> TimePoint;
 
 class TokenHandler{
     private:
-        map<string /*token*/, std::pair<int /*userID*/, TimePoint/*time until expiration*/>> valid_tokens;
+        map<string /*token*/, std::pair<string /*userID*/, TimePoint/*time until expiration*/>> valid_tokens;
 
-        string findToken(int user_id);
+        string findToken(string user_id);
 
     public:
 
@@ -36,7 +36,7 @@ class TokenHandler{
         /*
          * creates a user_id/token kay/value pair that has a base validity of 15 minutes, 
         */
-        string generateToken(int user_id);
+        string generateToken(string user_id);
 
         /*
          *removes the user_id/token pair from the the map
@@ -58,6 +58,6 @@ class TokenHandler{
         /*
          * returns the user_id of the token
         */
-        int getUserID(string token);
+        string getUserID(string token);
         
 };
