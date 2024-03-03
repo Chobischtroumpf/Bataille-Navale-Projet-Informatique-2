@@ -2,4 +2,6 @@
 
 #include "../view.hh"
 
-class RegisterView : public View {};
+class RegisterView : public View {
+    void update() override {}
+};

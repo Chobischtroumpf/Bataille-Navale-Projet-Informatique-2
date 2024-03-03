@@ -9,17 +9,19 @@
 #include <utility>
 #include <vector>
 
-#include "../common/board_coordinates.hh"
-#include "../common/ship_coordinates.hh"
-#include "../common/ship_types.hh"
-#include "../common/turn.hh"
+#include "../../../include/common/board_coordinates.hh"
+#include "../../../include/common/ship_coordinates.hh"
+#include "../../../include/common/ship_types.hh"
+#include "../../../include/common/turn.hh"
 #include "board.hh"
-#include "game_server.hh"
 #include "ship.hh"
 
 using std::map;
 using std::nullopt;
 using std::vector;
+
+// forward declaration
+class GameServer;
 
 /*
  * Représente le plateau de jeu des deux joueurs

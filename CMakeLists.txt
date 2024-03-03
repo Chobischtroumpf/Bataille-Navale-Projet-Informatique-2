@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10) # minimum version of CMake
 cmake_policy(SET CMP0135 NEW) # Silence the warning for FetchContent
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(Battleship) # The project name
 
@@ -44,8 +46,12 @@ target_include_directories(client PRIVATE include/client/network)
 # Define include directories for target 'server'
 target_include_directories(server PRIVATE include/server/database include/server/game include/server/network)
 
+# Define include directories for target 'server'
+target_include_directories(battleship PRIVATE include/client include/client/network include/client/Controllers include/client/Views include/client/Display include/client/Display/console include/client/Display/GUI include/common)
+
 # Specifies libraries for targets
 target_link_libraries(server PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(battleship PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(client PRIVATE nlohmann_json::nlohmann_json)
 
 # using libraries like cpprestsdk, link with both executables
@@ -57,3 +63,4 @@ endif()
 
 target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)
+target_link_libraries(battleship PRIVATE cpprestsdk::cpprest crypto)

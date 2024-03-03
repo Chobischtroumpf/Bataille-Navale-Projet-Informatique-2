@@ -1,4 +1,5 @@
 #include "../../../../include/client/Display/Console/login_console.hh"
+#include <limits>
 #include <iostream>
 
 /*
@@ -44,6 +45,7 @@ ReturnInput LoginConsole::afficherMenuPrincipal() {
             std::cout << "Choix invalide. Veuillez réessayer.\n";
         }
     }
+    return {ReturnInput::Screen::LOGIN,""};
 }
 
 bool LoginConsole::seConnecter(LoginController& loginController) {

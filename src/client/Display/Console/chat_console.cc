@@ -3,8 +3,8 @@
 #include "../../../../include/client/Controllers/chat_controller.hh"
 
 
-ChatConsole::ChatConsole(const std::string& senderUser, const std::string& receiverUser)
-    : currentUser(senderUser), selectedUser(receiverUser) {
+ChatConsole::ChatConsole(const std::string& user)
+    : user(user) {
     _view = std::make_shared<ChatView>();
     _controller = std::make_shared<ChatController>();
 }
@@ -20,10 +20,10 @@ ReturnInput ChatConsole::run() {
             return {ReturnInput::MAIN_MENU,""};
         }
 
-		_controller->send_msg_to_server(Message(input, currentUser, selectedUser));// IMPLEMENTATION POUR TEST le driver, il faudra enlever le lien entre controller et view!
+		_controller->send_msg_to_server(Message(input, user));// IMPLEMENTATION POUR TEST le driver, il faudra enlever le lien entre controller et view!
         auto messages = _view->get_messages(_controller->get_messages()); 
 		system("clear");
-        displayMessage(messages,selectedUser);
+        displayMessage(messages,user);
     }
 }
 

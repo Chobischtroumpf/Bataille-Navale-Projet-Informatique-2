@@ -5,7 +5,7 @@
 #include <memory> // For unique_ptr
 #include <future>           
 // For future
-#include "GameClient.hpp" 
+#include "../../../include/client/network/GameClient.hpp" 
 
 using namespace std;
 using namespace web;
@@ -296,7 +296,7 @@ future<string> GameClient::Login(const string& userId, const string& password) {
         if (jsonResponse.contains("authToken")) {
 
             auto authToken = jsonResponse["authToken"].get<string>();
-            cout << L"Auth Token: " << authToken << endl;
+            cout << "Auth Token: " << authToken << endl;
             promise->set_value(to_utf8string(authToken));
         } else {
             // Error or authToken not found, set a default error value (empty string)
