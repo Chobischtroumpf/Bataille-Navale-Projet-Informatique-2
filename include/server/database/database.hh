@@ -1,36 +1,11 @@
 #ifndef DATABASE_HH
 #define DATABASE_HH
 
+#include "../../../include/server/database/queryResult.hh"
+
 #include <sqlite3.h>
 #include <iostream>
 #include <vector>
-
-
-enum class DbError {
-    OK,
-    EXECUTION_ERROR,
-    DB_CONNECTION_ERROR,
-    DDL_FILE_OPENING_ERROR,
-    DDL_FILE_EXECUTION_ERROR,
-    WRONG_PWD_FAILED,
-    NON_EXISTENT_USER_NAME,
-    UNIQUE_CONSTRAINT_FAILED,
-    CHECK_USERNAME_CONSTRAINT_FAILED,
-    CHECK_RELATION_CONSTRAINT_FAILED,
-    CHECK_MSG_CONSTRAINT_FAILED,
-    CHECK_SENDER_CONSTRAINT_FAILED,
-    CANNOT_UPDATE_ID_COLUMN,
-    FOREIGN_KEY_CONSTRAINT_FAILED
-};
-
-struct QueryResult {
-    QueryResult() : error(DbError::OK) {} // Initialize error to DbError::OK
-    std::vector<std::vector<std::string>> data;
-    DbError error;
-};
-
-std::ostream& operator<<(std::ostream&, const DbError&);
-std::ostream& operator<<(std::ostream&, const QueryResult&);
 
 
 class DataBase
