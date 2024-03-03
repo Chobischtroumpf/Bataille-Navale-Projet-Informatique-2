@@ -41,7 +41,6 @@ vcpkg
 _deps
 CMakeFiles
 CMakeCache.txt
-*.cmake
 
 *.bat
 windows
