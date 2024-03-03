@@ -1,6 +1,7 @@
 #pragma once
 
 #include "board.hh"
+#include "board_control.hh"
 #include "../../../include/common/ship_coordinates.hh"
 #include "timer.hh"
 #include "../../../include/common/turn.hh"

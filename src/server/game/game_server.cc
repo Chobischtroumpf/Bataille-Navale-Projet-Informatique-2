@@ -1,4 +1,5 @@
-#include "game_server.hh"
+#include "../../../include/server/game/game_server.hh"
+#include "../../../include/server/game/board_control.hh"
 
 GameServer::GameServer(unsigned int player1_id, unsigned int player2_id,
                        std::vector<unsigned int> &spectators,
@@ -13,8 +14,8 @@ bool GameServer::is_finished() const {
 }
 
 void GameServer::start_timer() {
-  _game_timer.start(std::bind(&game_timer_finished, this));
-  _player_timer.start(std::bind(&player_timer_finished, this));
+  _game_timer.start(std::bind(&GameServer::game_timer_finished, this));
+  _player_timer.start(std::bind(&GameServer::player_timer_finished, this));
 }
 
 void GameServer::game_timer_finished() {
