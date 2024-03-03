@@ -1,67 +1,11 @@
 #include "../../../include/server/database/database.hh"
+#include "../../../include/server/database/queryResult.hh"
 
 #include <iostream>
 #include <sqlite3.h>
 #include <fstream>
 #include <sstream>
 #include <ctime>
-
-
-std::ostream& operator<<(std::ostream& os, const DbError& dberror){
-    switch(dberror) {
-        case DbError::OK:
-            os << "No issues.";
-            break;
-        case DbError::EXECUTION_ERROR:
-            os << "Unknow error.";
-            break;
-        case DbError::NON_EXISTENT_USER_NAME:
-            os << "The username do not exists.";
-            break;
-        case DbError::WRONG_PWD_FAILED:
-            os << "Wrong password.";
-            break;
-        case DbError::UNIQUE_CONSTRAINT_FAILED:
-            os << "Entry already exists.";
-            break;
-        case DbError::CHECK_USERNAME_CONSTRAINT_FAILED:
-            os << "Empty username.";
-            break;
-        case DbError::CHECK_RELATION_CONSTRAINT_FAILED:
-            os << "User can not be friend with himself.";
-            break;
-        case DbError::CHECK_MSG_CONSTRAINT_FAILED:
-            os << "Message can not be empty.";
-            break;
-        case DbError::CANNOT_UPDATE_ID_COLUMN:
-            os << "Can not update an id column.";
-            break;
-        case DbError::CHECK_SENDER_CONSTRAINT_FAILED:
-            os << "User can not send a message to himself.";
-            break;
-        case DbError::FOREIGN_KEY_CONSTRAINT_FAILED:
-            os << "ID do not exists.";
-            break;             
-        default:
-            os << "Unrecognized error.";
-            break;
-    }
-    return os;
-}
-
-
-std::ostream& operator<<(std::ostream& os, const QueryResult& result){
-    os << "QueryResult: { ";
-    os << "Data: [ ";
-    for(const auto& row : result.data) {
-        for(const auto& item : row) {
-            os << item << " ";
-        }
-    }
-    os << "], Error: " << result.error;
-    os << " }";
-    return os;
-}
 
 
 DbError DataBase::createDb() {
