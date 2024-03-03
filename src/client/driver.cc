@@ -1,32 +1,35 @@
-#include "driver.hh"
+#include "../../include/client/driver.hh"
+#include <memory>
 
 // Controllers
-#include "Controllers/game_controller.hh"
-#include "Controllers/login_controller.hh"
-#include "Controllers/register_controller.hh"
-#include "Controllers/main_menu_controller.hh"
-#include "Controllers/chat_controller.hh"
+#include "../../include/client/Controllers/game_controller.hh"
+#include "../../include/client/Controllers/login_controller.hh"
+#include "../../include/client/Controllers/register_controller.hh"
+#include "../../include/client/Controllers/main_menu_controller.hh"
+#include "../../include/client/Controllers/chat_controller.hh"
 
 // Displays
-#include "Display/Console/game_console.hh"
-#include "Display/Console/login_console.hh"
-#include "Display/Console/register_console.hh"
-#include "Display/Console/main_menu_console.hh"
-#include "Display/Console/chat_console.hh"
+#include "../../include/client/Display/Console/game_console.hh"
+#include "../../include/client/Display/Console/login_console.hh"
+#include "../../include/client/Display/Console/register_console.hh"
+#include "../../include/client/Display/Console/main_menu_console.hh"
+#include "../../include/client/Display/Console/chat_console.hh"
 
 // Views
-#include "display.hh"
-#include "local_board.hh"
-#include "Views/login_view.hh"
-#include "Views/register_view.hh"
-#include "Views/main_menu_view.hh"
-#include "Views/chat_view.hh"
+#include "../../include/client/display.hh"
+#include "../../include/client/local_board.hh"
+#include "../../include/client/Views/login_view.hh"
+#include "../../include/client/Views/register_view.hh"
+#include "../../include/client/Views/main_menu_view.hh"
+#include "../../include/client/Views/chat_view.hh"
 
 Driver::Driver(DisplayType display_type) : _display_type{display_type} {}
 
 Driver::~Driver() {}
 
 void Driver::launchApp() {
+  //std::string user = "slectedUser";
+  displayLoginScreen();
   run(ReturnInput::Screen::LOGIN);
 }
 
@@ -63,9 +66,9 @@ void Driver::run(ReturnInput::Screen base_screen) {
 
 void Driver::displayGameScreen() {
   if (_display_type == CONSOLE) {
-    _view = std::make_shared<LocalBoard>();
-    _controller = std::make_shared<GameController>(_view);
-    _display = std::make_shared<GameConsole>(_controller, _view);
+    std::shared_ptr<LocalBoard> board = std::make_shared<LocalBoard>();
+    std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
+    _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller);
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }
@@ -73,9 +76,8 @@ void Driver::displayGameScreen() {
 
 void Driver::displayLoginScreen() {
   if (_display_type == CONSOLE) {
-    _view = std::make_shared<LoginView>();
-    _controller = std::make_shared<LoginController>(_view);
-    _display = std::make_shared<LoginConsole>(_controller, _view);
+    _display = std::make_shared<LoginConsole>();
+    _current_screen = ReturnInput::Screen::LOGIN;
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }
@@ -83,9 +85,7 @@ void Driver::displayLoginScreen() {
 
 void Driver::displayRegisterScreen() {
   if (_display_type == CONSOLE) {
-    _view = std::make_shared<RegisterView>();
-    _controller = std::make_shared<RegisterController>(_view);
-    _display = std::make_shared<RegisterConsole>(_controller, _view);
+    _display = std::make_shared<RegisterConsole>();
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }
@@ -93,9 +93,8 @@ void Driver::displayRegisterScreen() {
 
 void Driver::displayMainMenuScreen() {
   if (_display_type == CONSOLE) {
-    _view = std::make_shared<MainMenuView>();
-    _controller = std::make_shared<MainMenuController>(_view);
-    _display = std::make_shared<MainMenuConsole>(_controller, _view);
+    std::shared_ptr<MainMenuView> _view = std::make_shared<MainMenuView>();
+    _display = std::make_shared<MainMenuConsole>(_view);
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }
@@ -103,9 +102,8 @@ void Driver::displayMainMenuScreen() {
 
 void Driver::displayChatScreen(std::string username) {
   if (_display_type == CONSOLE) {
-    _view = std::make_shared<ChatView>();
-    _controller = std::make_shared<ChatController>(_view);
-    _display = std::make_shared<ChatConsole>(_controller, _view);
+    _display = std::make_shared<ChatConsole>("me",username);
+    _current_screen = ReturnInput::Screen::CHAT;
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }

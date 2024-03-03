@@ -1,4 +1,5 @@
-#include "main_menu_console.hh"
+#include "../../../../include/client/Display/Console/main_menu_console.hh"
+#include <iostream>
 
 MainMenuConsole::MainMenuConsole(std::shared_ptr<MainMenuView> view): _view(view) {}
 
@@ -87,7 +88,7 @@ void MainMenuConsole::update() {
 
 }
 
-void MainMenuConsole::handle_input() {
+ReturnInput MainMenuConsole::handle_input() {
     int input;
     std::cin >> input;
     switch (input) {

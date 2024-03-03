@@ -1,2 +1,2 @@
-#include "game_view.hh"
+#include "../../../include/client/Views/game_view.hh"
 
