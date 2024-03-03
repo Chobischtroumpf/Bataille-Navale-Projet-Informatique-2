@@ -36,7 +36,7 @@ add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
 # Define an executable target built from `client.cpp` and its dependencies
 add_executable(client 
-src/client/client.cpp 
+src/test_client/client.cpp 
 src/client/network/GameClient.cpp
 )
 
@@ -46,7 +46,7 @@ target_include_directories(client PRIVATE include/client/network)
 # Define include directories for target 'server'
 target_include_directories(server PRIVATE include/server/database include/server/game include/server/network)
 
-# Define include directories for target 'server'
+# Define include directories for target 'battleship'
 target_include_directories(battleship PRIVATE include/client include/client/network include/client/Controllers include/client/Views include/client/Display include/client/Display/console include/client/Display/GUI include/common)
 
 # Specifies libraries for targets
