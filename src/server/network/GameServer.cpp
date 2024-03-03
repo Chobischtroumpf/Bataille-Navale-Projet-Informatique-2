@@ -16,7 +16,7 @@ auto to_string_t = [](const std::string& input) -> utility::string_t {
     return utility::conversions::to_string_t(input);
 };
 
-GameServer::GameServer(const std::string& address) : listener_(to_string_t(address)), tokenHandler() {
+GameServer::GameServer(const std::string& address) : listener_(to_string_t(address)), tokenHandler(), dbManager(database) {
     listener_.support(methods::GET, std::bind(&GameServer::handleGet, this, std::placeholders::_1));
     listener_.support(methods::POST, std::bind(&GameServer::handlePost, this, std::placeholders::_1));
 }
@@ -156,15 +156,15 @@ void GameServer::handleGet(http_request request) {
         // Parsing query parameters
         auto queryParams = uri::split_query(request.request_uri().query());
          // Extracting sessionId from query parameters
-        auto sessionIdIt = queryParams.find(U("username"));
+        auto usernameIt = queryParams.find(U("username"));
        
 
         // Verifying both sessionId and userId are provided
-        if (sessionIdIt != queryParams.end() ) {
-            auto sessionId = sessionIdIt->second;
+        if (usernameIt != queryParams.end() ) {
+            auto username = usernameIt->second;
            
 
-            //Not implemented
+            dbManager.checkUserName(to_utf8(username));
 
             
             request.reply(status_codes::OK, response.dump(), "application/json");
@@ -325,14 +325,14 @@ void GameServer::handlePost(http_request request) {
 
             // Extract userId from query parameters
             auto queryParams = uri::split_query(request.request_uri().query());
-            auto userIdIt = queryParams.find(U("userid"));
-            if (userIdIt == queryParams.end()) {
+            auto usernameIt = queryParams.find(U("username"));
+            if (usernameIt == queryParams.end()) {
                 response["error"] = "Missing userId parameter";
                 request.reply(status_codes::BadRequest, response.dump(), "application/json");
                 return;
             }
 
-            auto userId = userIdIt->second;
+            auto username = usernameIt->second;
 
             // Extract password from request body
             if (!requestBody.has_field(U("password"))) {
@@ -343,8 +343,20 @@ void GameServer::handlePost(http_request request) {
 
             auto password = requestBody[U("password")].as_string();
 
+
             // Authenticate user and generate authToken -------------------------------- TBA
-            auto authToken = this->tokenHandler.generateToken(to_utf8(userId));
+            bool isSuccessful = this->dbManager.userLogin(to_utf8(username), to_utf8(password));
+
+            if (!isSuccessful) {
+                // Authentication failed
+                response["error"] = "Authentication failed";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return;       
+            }
+
+            string userId = this->dbManager.checkUserName(to_utf8(username)).getFirst();
+
+            auto authToken = this->tokenHandler.generateToken(userId);
 
             if (!authToken.empty()) {
                 // Authentication successful
