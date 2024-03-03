@@ -1,7 +1,6 @@
 #pragma once
 
 #include "board.hh"
-#include "board_control.hh"
 #include "../../../include/common/ship_coordinates.hh"
 #include "timer.hh"
 #include "../../../include/common/turn.hh"
@@ -15,25 +14,18 @@ public:
 
   bool is_finished() const;
 
-  void start_timer();
-
   void game_timer_finished();
 
   void player_timer_finished();
 
-  void handle_place_ship(unsigned int player_id);
+  void handle_place_ship(unsigned int player_id, ShipCoordinates ship_coordinates);
 
-  void handle_fire(unsigned int player_id);
+  void handle_fire(unsigned int player_id, BoardCoordinates board_coordinates);
 
-  void place_ships();
-
-  void play();
-
-  unsigned int winner() const;
+  nlohmann::json get_state(unsigned int player_id);
 
 private:
   std::shared_ptr<Board> _board;
-  std::shared_ptr<BoardControl> _controller;
   unsigned int _player1_id;
   unsigned int _player2_id;
   std::vector<unsigned int> _spectators;
@@ -41,4 +33,6 @@ private:
   Timer _game_timer;
   Timer _player_timer;
   bool _is_timer_finished;
+
+  void start_timer();
 };

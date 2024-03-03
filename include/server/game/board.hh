@@ -289,7 +289,7 @@ public:
     }
   }
 
-  json toJson(Turn turn) const /*override*/ {
+  json toJson(Turn turn) const {
     json boardJson;
 
     // Serialize fleet A
@@ -369,7 +369,7 @@ public:
     return boardJson;
   }
 
-  json toJsonSpectator() const /*override*/ {
+  json toJsonSpectator() const {
     json boardJson;
 
     json fleetAJson;
