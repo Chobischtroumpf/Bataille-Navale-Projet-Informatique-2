@@ -63,19 +63,17 @@ public:
     * @param id_sender The ID of the sender.
     * @param id_receiver The ID of the receiver.
     * @param msg The message to be sent.
-    * @return A QueryResult containing the error message if something went wrong else Ok.
-    * to check error: result.isOk()
+    * @return True if there were no error false esle.
     */
-    QueryResult sendMsg(const std::string &id_sender, const std::string &id_receiver, const std::string &msg);
+    bool sendMsg(const std::string &id_sender, const std::string &id_receiver, const std::string &msg);
 
     /**
     * Add a friend to the user's friend list.
     * @param id_user The ID of the user.
     * @param friend_username The username of the friend to be added.
-    * @return A QueryResult containing the error message if something went wrong else Ok.
-    * to check error: result.isOk()
+    * @return True if there were no error false esle.
     */
-    QueryResult addFriend(const std::string &id_user, const std::string &friend_username);
+    bool addFriend(const std::string &id_user, const std::string &friend_username);
 
     /**
     * Get all messages exchanged between two users.

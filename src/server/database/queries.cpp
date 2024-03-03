@@ -68,7 +68,7 @@ bool Queries::userRegister(const std::string &username, const std::string &pwd){
 }
 
 
-QueryResult Queries::addFriend(const std::string &id_user, const std::string &friend_username){
+bool Queries::addFriend(const std::string &id_user, const std::string &friend_username){
     QueryResult result = checkUserName(friend_username);
     if(result.data.size() != 0){
         std::string id_friend = result.data[0][0];
@@ -80,11 +80,11 @@ QueryResult Queries::addFriend(const std::string &id_user, const std::string &fr
             result = db->insertEntry("Relations", columns, values);
         }
     }
-    return result;
+    return result.isOk();
 }
 
 
-QueryResult Queries::sendMsg(const std::string &sender, const std::string &receiver, const std::string &msg){
+bool Queries::sendMsg(const std::string &sender, const std::string &receiver, const std::string &msg){
     // Get the string time the message was send (now)
     std::string time = getTime();
 
@@ -93,7 +93,7 @@ QueryResult Queries::sendMsg(const std::string &sender, const std::string &recei
     std::string columns = "sender, receiver, msg, msg_date_time";
     std::string values = "'" + sender + "', '" + receiver + "', '" + clean_msg + "', '" + time +  "'";
     QueryResult result = db->insertEntry("Messages", columns, values);
-    return result;
+    return result.isOk();
 }
 
 
