@@ -3,9 +3,8 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <memory> // For unique_ptr
-#include <future>           
-// For future
-#include "../../../include/client/network/GameClient.hpp" 
+#include <future> // For future
+#include "GameClient.hpp" 
 
 using namespace std;
 using namespace web;
