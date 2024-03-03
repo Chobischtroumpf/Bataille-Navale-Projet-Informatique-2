@@ -248,3 +248,37 @@ This is all the endpoints used for the communication between the client & the se
 </details>
 
 -----------------------------------------------------------------------------------------
+
+#### _**GetMessage**_
+
+<details>
+ <summary><code>GET</code> <code><b>/api/chat/get</b></code> <code>(Get messages between two users)</code></summary>
+
+##### Header
+- User Token
+##### Parameters
+
+> | name      |  type     | data type               | description                                                           |
+> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
+> | recipientId    |  required | string  | The unique identifier for the recipient|
+> | message    |  required | string  | The message to be sent |
+
+
+##### Responses
+
+> | http code     | content-type                      | response                                                            |
+> |---------------|-----------------------------------|---------------------------------------------------------------------|
+> | `200`         | `text/plain;charset=UTF-8`       | `Boolean value indicating success of the send`                                |
+> | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                            |
+
+##### Example Request
+
+> ```javascript
+>  POST /api/chat/send
+> {
+>   "recipientId": "exampleRecipientId",
+>   "message": "Example message"
+> }
+> ```
+
+</details>
