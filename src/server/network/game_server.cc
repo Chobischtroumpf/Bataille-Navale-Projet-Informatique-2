@@ -16,7 +16,7 @@ auto to_string_t = [](const std::string& input) -> utility::string_t {
     return utility::conversions::to_string_t(input);
 };
 
-GameServer::GameServer(const std::string& address) : listener_(to_string_t(address)), tokenHandler(), dbManager(database) {
+GameServer::GameServer(const std::string& address) : listener_(to_string_t(address)), tokenHandler(), database(std::make_shared<DataBase>()), dbManager(database) {
     listener_.support(methods::GET, std::bind(&GameServer::handleGet, this, std::placeholders::_1));
     listener_.support(methods::POST, std::bind(&GameServer::handlePost, this, std::placeholders::_1));
 }
@@ -64,6 +64,8 @@ void GameServer::handleGet(http_request request) {
     auto path = request.relative_uri().path();
     njson response;
 
+    cout << "Received GET request for path " << to_utf8(path) << endl;
+
     // Retrieve the session manager instance
     auto& sessionManager = SessionManager::getInstance();
 
@@ -76,7 +78,7 @@ void GameServer::handleGet(http_request request) {
     }
 
     // Handle the case for "/api/games/query" - Query game state by session ID ( and user ID ) -- Protected
-    else if (path.find(U("/api/games/query")) == 0 ) {
+    else if (path.find(U("/api/games/query")) != wstring::npos ) {
 
         // Protected route - verify the AuthToken and retrieve the userId
         auto userId = verifyAuthToken(request);
@@ -112,7 +114,7 @@ void GameServer::handleGet(http_request request) {
     }
 
     // Handle the case for "/api/games/join" - Join game by session ID ( and user ID ) -- Protected
-    else if (path.find(U("/api/games/join")) == 0 ) {
+    else if (path.find(U("/api/games/join")) != wstring::npos) {
 
 
          // Protected route - verify the AuthToken and retrieve the userId
@@ -150,7 +152,7 @@ void GameServer::handleGet(http_request request) {
     }
 
     // Handle the case for "/api/user/uid" - Retrieve user ID from database
-    else if (path.find(U("/api/login/uid")) == 0 ) {
+    else if (path.find(U("/api/login/uid")) != wstring::npos ) {
 
 
         // Parsing query parameters
@@ -163,10 +165,8 @@ void GameServer::handleGet(http_request request) {
         if (usernameIt != queryParams.end() ) {
             auto username = usernameIt->second;
            
-
             dbManager.checkUserName(to_utf8(username));
 
-            
             request.reply(status_codes::OK, response.dump(), "application/json");
         } else {
             // Handle missing parameters
@@ -176,7 +176,7 @@ void GameServer::handleGet(http_request request) {
     }
 
     // Handle the case for "/api/chat/get" - Retrieve conversation with a user -- Protected
-    if (path.find(U("/api/chat/get"))) {
+    if (path.find(U("/api/chat/get")) != wstring::npos ) {
         
         // First, verify the AuthToken and retrieve the userId of the requester
         auto requesterId = verifyAuthToken(request);
@@ -241,16 +241,17 @@ void GameServer::handleGet(http_request request) {
 void GameServer::handlePost(http_request request) {
     auto path = request.relative_uri().path();
     
+    cout << "Received POST request for path " << to_utf8(path) << endl;
+
     // Retrieve the session manager instance
     auto& sessionManager = SessionManager::getInstance();
 
     request.extract_json().then([path, &sessionManager, this, request](web::json::value requestBody) mutable {
         njson response;
-
         // Handle the case for "/api/games/create" - Create a new game session -- Protected
-        if (path.find(U("/api/games/create"))) {
+        if (path.find(U("/api/games/create")) != wstring::npos) {
 
-             // First, verify the AuthToken and retrieve the userId
+            // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
 
             // If userId is empty, the token is invalid or missing
@@ -270,7 +271,7 @@ void GameServer::handlePost(http_request request) {
         }
         
         // Handle the case for "/api/games/move" - Make a move in a game session -- Protected
-        else if (path.find(U("/api/games/move"))) {
+        else if (path.find(U("/api/games/move")) != wstring::npos ) {
             
             // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
@@ -307,7 +308,7 @@ void GameServer::handlePost(http_request request) {
         }
 
         // Handle the case for "/api/chat/send" - Send a message to a user -- Protected
-        if (path.find(U("/api/chat/send"))) {
+        if (path.find(U("/api/chat/send")) != wstring::npos ) {
 
             // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
@@ -338,56 +339,8 @@ void GameServer::handlePost(http_request request) {
         }
 
         // Handle the case for "/api/login" - User login 
-        if (path.find(U("/api/login"))) {
-
-            // Extract userId from query parameters
-            auto queryParams = uri::split_query(request.request_uri().query());
-            auto usernameIt = queryParams.find(U("username"));
-            if (usernameIt == queryParams.end()) {
-                response["error"] = "Missing userId parameter";
-                request.reply(status_codes::BadRequest, response.dump(), "application/json");
-                return;
-            }
-
-            auto username = usernameIt->second;
-
-            // Extract password from request body
-            if (!requestBody.has_field(U("password"))) {
-                response["error"] = "Missing password";
-                request.reply(status_codes::BadRequest, response.dump(), "application/json");
-                return;
-            }
-
-            auto password = requestBody[U("password")].as_string();
-
-            // Authenticate user and generate authToken -------------------------------- TBA
-            bool isSuccessful = this->dbManager.userLogin(to_utf8(username), to_utf8(password));
-
-            if (!isSuccessful) {
-                // Authentication failed
-                response["error"] = "Authentication failed";
-                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
-                return;       
-            }
-
-            string userId = this->dbManager.checkUserName(to_utf8(username)).getFirst();
-
-            auto authToken = this->tokenHandler.generateToken(userId);
-
-            if (!authToken.empty()) {
-                // Authentication successful
-                response["authToken"] = authToken;
-                request.reply(status_codes::OK, response.dump(), "application/json");
-            } else {
-                // AuthToken generation failed
-                response["error"] = "AuthToken generation failed";
-                request.reply(status_codes::InternalError, response.dump(), "application/json");
-            }
-        }
-
-
-        // Handle the case for "/api/register" - User registration
-        if (path.find(U("/api/register"))) {
+        if (path.find(U("/api/login")) != wstring::npos ) {
+            try {
 
             // Extract username and password from request body
             if (!requestBody.has_field(U("username")) || !requestBody.has_field(U("password"))) {
@@ -398,7 +351,47 @@ void GameServer::handlePost(http_request request) {
 
             auto username = requestBody[U("username")].as_string();
             auto password = requestBody[U("password")].as_string();
+        
+            // Authenticate user and generate authToken -------------------------------- TBA
+            bool isSuccessful = this->dbManager.userLogin(to_utf8(username), to_utf8(password));
 
+            if (!isSuccessful) {
+                // Authentication failed
+                response["error"] = "Authentication failed";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return;       
+            }
+            string userId = this->dbManager.checkUserName(to_utf8(username)).getFirst();
+
+            auto authToken = this->tokenHandler.generateToken(userId);
+            if (!authToken.empty()) {
+                // Authentication successful
+                response["authToken"] = authToken;
+                request.reply(status_codes::OK, response.dump(), "application/json");
+            } else {
+                // AuthToken generation failed
+                response["error"] = "AuthToken generation failed";
+                request.reply(status_codes::InternalError, response.dump(), "application/json");
+            }
+            } catch (const std::exception e){
+                cerr << "Exception in login request : " << e.what() << endl;
+            }
+        }
+
+
+        // Handle the case for "/api/register" - User registration
+        if (path.find(U("/api/register")) != wstring::npos ) {
+
+            // Extract username and password from request body
+            if (!requestBody.has_field(U("username")) || !requestBody.has_field(U("password"))) {
+                response["error"] = "Missing username or password";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                return;
+            }
+
+            auto username = requestBody[U("username")].as_string();
+            auto password = requestBody[U("password")].as_string();
+            cout << to_utf8(username) << " " << to_utf8(password) << endl;
             // Register user ------------------------------------------------ TBA
             bool isRegistered = this->dbManager.userRegister(to_utf8(username), to_utf8(password));
 
@@ -426,7 +419,7 @@ void GameServer::handlePost(http_request request) {
         }
 
         // Handle the case for "/api/chat/send" - Sending a message
-        if (path.find(U("/api/chat/send"))) {
+        if (path.find(U("/api/chat/send")) != wstring::npos ) {
             // Protected route - verify the AuthToken and retrieve the senderId
             auto senderId = verifyAuthToken(request);
 
