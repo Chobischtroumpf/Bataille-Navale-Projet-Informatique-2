@@ -176,7 +176,7 @@ void GameServer::handleGet(http_request request) {
     }
 
     // Handle the case for "/api/chat/get" - Retrieve conversation with a user -- Protected
-    if (path == U("/api/chat/get")) {
+    if (path.find(U("/api/chat/get"))) {
         
         // First, verify the AuthToken and retrieve the userId of the requester
         auto requesterId = verifyAuthToken(request);
@@ -248,7 +248,7 @@ void GameServer::handlePost(http_request request) {
         njson response;
 
         // Handle the case for "/api/games/create" - Create a new game session -- Protected
-        if (path == U("/api/games/create")) {
+        if (path.find(U("/api/games/create"))) {
 
              // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
@@ -270,7 +270,7 @@ void GameServer::handlePost(http_request request) {
         }
         
         // Handle the case for "/api/games/move" - Make a move in a game session -- Protected
-        else if (path == U("/api/games/move")) {
+        else if (path.find(U("/api/games/move"))) {
             
             // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
@@ -307,7 +307,7 @@ void GameServer::handlePost(http_request request) {
         }
 
         // Handle the case for "/api/chat/send" - Send a message to a user -- Protected
-        if (path == U("/api/chat/send")) {
+        if (path.find(U("/api/chat/send"))) {
 
             // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
@@ -338,7 +338,7 @@ void GameServer::handlePost(http_request request) {
         }
 
         // Handle the case for "/api/login" - User login 
-        if (path == U("/api/login")) {
+        if (path.find(U("/api/login"))) {
 
             // Extract userId from query parameters
             auto queryParams = uri::split_query(request.request_uri().query());
@@ -387,7 +387,7 @@ void GameServer::handlePost(http_request request) {
 
 
         // Handle the case for "/api/register" - User registration
-        if (path == U("/api/register")) {
+        if (path.find(U("/api/register"))) {
 
             // Extract username and password from request body
             if (!requestBody.has_field(U("username")) || !requestBody.has_field(U("password"))) {
@@ -426,7 +426,7 @@ void GameServer::handlePost(http_request request) {
         }
 
         // Handle the case for "/api/chat/send" - Sending a message
-        if (path == U("/api/chat/send")) {
+        if (path.find(U("/api/chat/send"))) {
             // Protected route - verify the AuthToken and retrieve the senderId
             auto senderId = verifyAuthToken(request);
 
