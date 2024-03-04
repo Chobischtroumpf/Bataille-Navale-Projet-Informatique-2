@@ -5,8 +5,9 @@
 #include <array>
 #include <map>
 #include <iostream>
+#include <cstdint>
 
-#include "../common/board_coordinates.hh"
+#include "board_coordinates.hh"
 #include "../common/cell.hh"
 #include "../common/not_implemented_error.hh"
 #include "../common/ship_coordinates.hh"
