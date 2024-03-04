@@ -1,4 +1,4 @@
-#include "../../../include/server/database/queryResult.hh"
+#include "../../../include/server/database/query_result.hh"
 
 
 std::string QueryResult::getFirst(){

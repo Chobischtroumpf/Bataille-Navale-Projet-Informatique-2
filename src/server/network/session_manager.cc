@@ -1,4 +1,4 @@
-#include "SessionManager.hpp"
+#include "../../../include/server/network/session_manager.hh"
 #include <string>
 #include <random>
 #include <sstream>

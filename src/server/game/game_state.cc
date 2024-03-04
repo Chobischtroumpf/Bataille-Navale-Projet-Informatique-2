@@ -1,5 +1,5 @@
 // GameState.cpp
-#include "GameState.hpp"
+#include "../../../include/server/game/game_state.hh"
 
 GameState::GameState(const nlohmann::json& gameDetails) : gameDetails(gameDetails) {
     // Initialize currentState with some default value or based on gameDetails

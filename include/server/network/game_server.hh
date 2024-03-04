@@ -4,8 +4,8 @@
 #include <cpprest/http_listener.h>
 #include <nlohmann/json.hpp>
 #include <string>
-#include "SessionManager.hpp" // Include SessionManager header
-#include "TokenHandler.hpp"
+#include "session_manager.hh" // Include SessionManager header
+#include "token_handler.hh"
 #include "database.hh"
 #include "queries.hh"
 #include <memory>

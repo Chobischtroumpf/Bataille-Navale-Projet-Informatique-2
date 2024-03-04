@@ -1,5 +1,5 @@
-#include "GameSession.hpp"
-#include "GameState.hpp"
+#include "../../../include/server/network/game_session.hh"
+#include "../../../include/server/game/game_state.hh"
 
 GameSession::GameSession(const std::string& leaderId, const nlohmann::json& gameDetails)
     : leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {

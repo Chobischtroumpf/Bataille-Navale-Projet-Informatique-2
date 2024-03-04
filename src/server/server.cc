@@ -1,5 +1,4 @@
-#include "GameServer.hpp"
-
+#include "../../include/server/network/game_server.hh"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
 #include "../../../include/server/database/database.hh"
-#include "../../../include/server/database/queryResult.hh"
+#include "../../../include/server/database/query_result.hh"
 
 #include <iostream>
 #include <sqlite3.h>

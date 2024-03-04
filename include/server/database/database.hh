@@ -1,7 +1,7 @@
 #ifndef DATABASE_HH
 #define DATABASE_HH
 
-#include "../../../include/server/database/queryResult.hh"
+#include "../../../include/server/database/query_result.hh"
 
 #include <sqlite3.h>
 #include <iostream>

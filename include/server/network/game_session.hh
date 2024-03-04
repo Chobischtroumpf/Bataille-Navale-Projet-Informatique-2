@@ -5,7 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
-#include "GameState.hpp"
+#include "../game/game_state.hh"
 
 class GameSession {
 public:

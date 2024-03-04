@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <mutex>
 #include <memory>
-#include "GameSession.hpp" // Ensure you have a GameSession class defined
+#include "game_session.hh" // Ensure you have a GameSession class defined
 #include <nlohmann/json.hpp>
 using njson = nlohmann::json;
 

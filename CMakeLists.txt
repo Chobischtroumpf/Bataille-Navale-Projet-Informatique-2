@@ -39,8 +39,8 @@ add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
 # Define an executable target built from `client.cpp` and its dependencies
 add_executable(client 
-src/test_client/client.cpp 
-src/client/network/GameClient.cpp
+src/test_client/client.cc
+src/client/network/game_client.cc
 )
 
 # Define include directories for target 'client' 
