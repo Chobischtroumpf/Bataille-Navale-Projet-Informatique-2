@@ -1,4 +1,4 @@
-#include "GameServer.hpp"
+#include "game_server.hh"
 
 
 using namespace std;

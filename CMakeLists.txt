@@ -18,18 +18,18 @@ FetchContent_MakeAvailable(json)
 include_directories(include)
 
 function(get_sources dir result)
-    file(GLOB_RECURSE sources "${dir}/*.cpp" "${dir}/*.cc")
+    file(GLOB_RECURSE sources "${dir}/*.cc")
     set(${result} ${sources} PARENT_SCOPE)
 endfunction()
 
 # Client sources
-get_sources("src/client" CLIENT_SOURCES)
+get_sources("src/Client" CLIENT_SOURCES)
 
 # Server sources
-get_sources("src/server" SERVER_SOURCES)
+get_sources("src/Server" SERVER_SOURCES)
 
 # Common sources
-get_sources("src/common" COMMON_SOURCES)
+get_sources("src/Common" COMMON_SOURCES)
 
 # Create client executable
 add_executable(battleship ${CLIENT_SOURCES} ${COMMON_SOURCES})
@@ -38,24 +38,24 @@ add_executable(battleship ${CLIENT_SOURCES} ${COMMON_SOURCES})
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
 # Define an executable target built from `client.cpp` and its dependencies
-add_executable(client 
-src/test_client/client.cpp 
-src/client/network/GameClient.cpp
-)
+# add_executable(client 
+# test/test_client.cc 
+# src/Client/Network/game_client.cc
+# )
 
 # Define include directories for target 'client' 
-target_include_directories(client PRIVATE include/client/network)
+# target_include_directories(client PRIVATE include/Client/Network)
 
 # Define include directories for target 'server'
-target_include_directories(server PRIVATE include/server/database include/server/game include/server/network)
+target_include_directories(server PRIVATE include/Server/Database include/Server/Game include/Server/Network include/Common)
 
 # Define include directories for target 'battleship'
-target_include_directories(battleship PRIVATE include/client include/client/network include/client/Controllers include/client/Views include/client/Display include/client/Display/console include/client/Display/GUI include/common)
+target_include_directories(battleship PRIVATE include/Client include/Client/Network include/Client/Controllers include/Client/Views include/Client/Display include/Client/Display/Console include/Client/Display/GUI include/Common)
 
 # Specifies libraries for targets
 target_link_libraries(server PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(battleship PRIVATE nlohmann_json::nlohmann_json)
-target_link_libraries(client PRIVATE nlohmann_json::nlohmann_json)
+# target_link_libraries(client PRIVATE nlohmann_json::nlohmann_json)
 
 # using libraries like cpprestsdk, link with both executables
 find_package(cpprestsdk REQUIRED)
@@ -65,7 +65,7 @@ if(NOT cpprestsdk_FOUND)
 endif()
 
 target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
-target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)
+# target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(battleship PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(server PRIVATE SQLite::SQLite3)
 target_link_libraries(server PRIVATE sodium)
