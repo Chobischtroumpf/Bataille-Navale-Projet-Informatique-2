@@ -7,8 +7,8 @@
 
 class ChatController : public Controller {
 public:
-    void send_msg_to_server(const Message& message);
-    std::vector<Message> get_messages();
+    void sendMsgToServer(const Message& message);
+    std::vector<Message> getMessages();
 
 private:
     std::vector<Message> messages;
