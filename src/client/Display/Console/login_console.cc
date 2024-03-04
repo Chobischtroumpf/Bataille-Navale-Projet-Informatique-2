@@ -62,7 +62,7 @@ bool LoginConsole::sEnregistrer(LoginController &loginController) {
   std::cout << "Enregistrement\n";
   std::string username = demanderNomUtilisateur();
   std::string password = demanderMotDePasseEnregistrement();
-  auto registerFuture = loginController.attemptLogin(username, password);
+  auto registerFuture = loginController.attemptRegister(username, password);
   return (registerFuture.get());
 }
 
