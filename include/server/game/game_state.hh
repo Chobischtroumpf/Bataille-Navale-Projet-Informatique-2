@@ -4,11 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-enum class PlayerRole {
-        Leader, // Player A
-        Opponent, // Player B
-        Spectator // Not directly interacting, but may need game state info
-};
+#include "player_role.hh"
 
 class GameState {
 public:

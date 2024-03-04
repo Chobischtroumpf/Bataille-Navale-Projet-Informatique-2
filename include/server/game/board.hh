@@ -4,33 +4,27 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <nlohmann/json.hpp>
 #include <optional>
 #include <random>
 #include <utility>
 #include <vector>
-#include <nlohmann/json.hpp>
-
-
-
-
 
 #include "../../../include/common/board_coordinates.hh"
 #include "../../../include/common/ship_coordinates.hh"
 #include "ship.hh"
 #include "../../../include/common/turn.hh"
 #include "../../../include/common/ship_types.hh"
-
-
+#include "player_role.hh"
 
 using std::map;
 using std::nullopt;
 using std::vector;
 using json = nlohmann::json;
 
-
 /*
  * Représente le plateau de jeu des deux joueurs
-*/
+ */
 class Board {
 
   /** The cell type and an optional ship identifier */
@@ -289,132 +283,52 @@ public:
     }
   }
 
-  json toJson(Turn turn) const {
+  json toJson(PlayerRole player) const {
     json boardJson;
-
-    // Serialize fleet A
-    json fleetAJson;
-    json fleetBJson;
-
-    // Serialize player one's perspective
-    if (turn == PLAYERONE) {
-      for (size_t y = 0; y < height(); ++y) {
-        json rowJsonA;
-        json rowJsonB;
-        for (size_t x = 0; x < width(); ++x) {
-          json cellObjectA;
-          Cell cellA = _my_side[y][x];
-          cellObjectA["type"] = toString(cellA.type());
-          rowJsonA.push_back(cellObjectA);
-
-          json cellObjectB;
-          Cell cellB = _their_side[y][x];
-          if (cellB.type() == UNDAMAGED) {
-            cellObjectB["type"] = toString(WATER);
-          } else {
-            cellObjectB["type"] = toString(cellB.type());
-          }
-          rowJsonB.push_back(cellObjectB);
-        }
-        fleetAJson.push_back(rowJsonA);
-        fleetBJson.push_back(rowJsonB);
-      }
-    } else { // Serialize player two's perspective
-      for (size_t y = 0; y < height(); ++y) {
-        json rowJsonA;
-        json rowJsonB;
-        for (size_t x = 0; x < width(); ++x) {
-          json cellObjectA;
-          Cell cellA = _their_side[y][x];
-          cellObjectA["type"] = toString(cellA.type());
-          rowJsonA.push_back(cellObjectA);
-
-          json cellObjectB;
-          Cell cellB = _my_side[y][x];
-          if (cellB.type() == UNDAMAGED) {
-            cellObjectB["type"] = toString(WATER);
-          } else {
-            cellObjectB["type"] = toString(cellB.type());
-          }
-          rowJsonB.push_back(cellObjectB);
-        }
-        fleetAJson.push_back(rowJsonA);
-        fleetBJson.push_back(rowJsonB);
-      }
-    }
-
-    boardJson["fleetA"] = fleetAJson;
-    boardJson["fleetB"] = fleetBJson;
-
-    json finished;
-    if (isFinished()) {
-      finished = "true";
-    } else {
-      finished = "false";
-    }
-    boardJson["Finished"] = finished;
-
-    json winner;
-    if (isFinished()) {
-      if (isVictory()) {
-        winner = "PLAYERONE";
-      } else {
-        winner = "PLAYERTWO";
-      }
-    } else {
-      winner = "None";
-    }
-    boardJson["Winner"] = winner;
-
-    return boardJson;
-  }
-
-  json toJsonSpectator() const {
-    json boardJson;
-
-    json fleetAJson;
-    json fleetBJson;
-
+    json fleetAJson, fleetBJson;
     for (size_t y = 0; y < height(); ++y) {
-      json rowJsonA;
-      json rowJsonB;
+      json rowJsonA, rowJsonB;
       for (size_t x = 0; x < width(); ++x) {
-        json cellObjectA;
-        Cell cellA = _my_side[y][x];
+        json cellObjectA, cellObjectB;
+        Cell cellA, cellB;
+        if (player == PlayerRole::Leader or player == PlayerRole::Spectator) {
+          cellA = _my_side[y][x];
+          cellB = _their_side[y][x];
+        } else {
+          cellA = _their_side[y][x];
+          cellB = _my_side[y][x];
+        }
+
         cellObjectA["type"] = toString(cellA.type());
         rowJsonA.push_back(cellObjectA);
 
-        json cellObjectB;
-        Cell cellB = _their_side[y][x];
-        cellObjectB["type"] = toString(cellB.type());
-
+        if ((player == PlayerRole::Leader || player == PlayerRole::Opponent) &&
+            cellB.type() == UNDAMAGED) {
+          cellObjectB["type"] = toString(WATER);
+        } else {
+          cellObjectB["type"] = toString(cellB.type());
+        }
         rowJsonB.push_back(cellObjectB);
       }
       fleetAJson.push_back(rowJsonA);
       fleetBJson.push_back(rowJsonB);
     }
+
     boardJson["fleetA"] = fleetAJson;
     boardJson["fleetB"] = fleetBJson;
 
-    json finished;
+    
     if (isFinished()) {
-      finished = "true";
-    } else {
-      finished = "false";
-    }
-    boardJson["Finished"] = finished;
-
-    json winner;
-    if (isFinished()) {
+      boardJson["Finished"] = "true";
       if (isVictory()) {
-        winner = "PLAYERONE";
+        boardJson["Winner"] = "PLAYERONE";
       } else {
-        winner = "PLAYERTWO";
+        boardJson["Winner"] = "PLAYERTWO";
       }
     } else {
-      winner = "None";
+      boardJson["Finished"] = "false";
+      boardJson["Winner"] = "None";
     }
-    boardJson["Winner"] = winner;
 
     return boardJson;
   }
