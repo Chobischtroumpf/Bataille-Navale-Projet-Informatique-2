@@ -247,18 +247,19 @@ void GameServer::handlePost(http_request request) {
     request.extract_json().then([path, &sessionManager, this, request](web::json::value requestBody) mutable {
         njson response;
 
-        // First, verify the AuthToken and retrieve the userId
-        auto userId = verifyAuthToken(request);
-
-        // If userId is empty, the token is invalid or missing
-        if (userId.empty()) {
-            response["error"] = "Invalid or missing AuthToken";
-            request.reply(status_codes::Unauthorized, response.dump(), "application/json");
-            return; // Stop further processing
-        }
-
         // Handle the case for "/api/games/create" - Create a new game session -- Protected
         if (path == U("/api/games/create")) {
+
+             // First, verify the AuthToken and retrieve the userId
+            auto userId = verifyAuthToken(request);
+
+            // If userId is empty, the token is invalid or missing
+            if (userId.empty()) {
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
+            }
+
             // Extract game details from request body
             njson gameDetails = requestBody[U("gameDetails")].serialize();
             
