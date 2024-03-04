@@ -1,6 +1,6 @@
-#include "../../../include/server/game/game_server.hh"
+#include "../../../include/server/game/game.hh"
 
-GameServer::GameServer(unsigned int player1_id, unsigned int player2_id,
+Game::Game(unsigned int player1_id, unsigned int player2_id,
                        std::vector<unsigned int> &spectators,
                        bool mode_commandant, int time_game, int time_player)
     : _board{std::make_shared<Board>()}, _player1_id{player1_id},
@@ -10,27 +10,27 @@ GameServer::GameServer(unsigned int player1_id, unsigned int player2_id,
         start_timer();
       }
 
-bool GameServer::is_finished() const {
+bool Game::is_finished() const {
   return _board->isFinished() || _is_timer_finished;
 }
 
-void GameServer::start_timer() {
-  _game_timer.start(std::bind(&GameServer::game_timer_finished, this));
-  _player_timer.start(std::bind(&GameServer::player_timer_finished, this));
+void Game::start_timer() {
+  _game_timer.start(std::bind(&Game::game_timer_finished, this));
+  _player_timer.start(std::bind(&Game::player_timer_finished, this));
 }
 
-void GameServer::game_timer_finished() {
+void Game::game_timer_finished() {
   _is_timer_finished = true;
   // Handle it by sending both players to disconnect
 }
 
-void GameServer::player_timer_finished() {
+void Game::player_timer_finished() {
   _is_timer_finished = true;
   // Handle it by checking who s turn and setting the other as winner, might
   // use disconnect player
 }
 
-void GameServer::handle_place_ship(unsigned int player_id, ShipCoordinates ship_coordinates) {
+void Game::handle_place_ship(unsigned int player_id, ShipCoordinates ship_coordinates) {
   if (_board->myTurn() && player_id == _player1_id){  // if it s player ones turn and the id provided is player s one
     _board->placeShip(ship_coordinates, _board->myTurn());
     _board->changeTurn();
@@ -43,7 +43,7 @@ void GameServer::handle_place_ship(unsigned int player_id, ShipCoordinates ship_
   // (Inform the player that the boat was placed sucessfully or only send the json back ?)
 }
 
-void GameServer::handle_fire(unsigned int player_id, BoardCoordinates board_coordinates) {
+void Game::handle_fire(unsigned int player_id, BoardCoordinates board_coordinates) {
   if (_board->myTurn() && player_id == _player1_id){
     _board->fire(board_coordinates);
     _board->changeTurn();
@@ -55,7 +55,7 @@ void GameServer::handle_fire(unsigned int player_id, BoardCoordinates board_coor
   }
 }
 
-nlohmann::json GameServer::get_state(unsigned int player_id){
+nlohmann::json Game::get_state(unsigned int player_id){
   if (player_id == _player1_id ){
     return _board->toJson(PLAYERONE);
   }else if (player_id == _player2_id){

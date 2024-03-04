@@ -6,9 +6,9 @@
 #include "../../../include/common/turn.hh"
 
 // Class that handles the game between 2 players and a list of spectators
-class GameServer {
+class Game {
 public:
-  GameServer(unsigned int player1_id, unsigned int player2_id,
+  Game(unsigned int player1_id, unsigned int player2_id,
              std::vector<unsigned int> &spectators, bool mode_commandant,
              int time_game, int time_player);
 
