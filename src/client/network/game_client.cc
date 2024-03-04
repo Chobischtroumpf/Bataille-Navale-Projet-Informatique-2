@@ -488,8 +488,9 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
     uri_builder builder(to_string_t(path));
     auto fullUri = builder.to_uri();
     cout << "Full URI: " << to_utf8string(fullUri.to_string()) << endl;
-
+    
     http_request request(methods::POST);
+    request.set_request_uri(fullUri);
     request.headers().set_content_type(U("application/json"));
     // Convert nlohmann::json to string for the request body
     request.set_body(data.dump());
@@ -548,9 +549,10 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
 pplx::task<njson> GameClient::GetRequest(const string& path) {
     
     uri_builder builder(to_string_t(path));
-    auto requestUri = builder.to_uri().to_string();
-    http_request request(methods::GET);
+    auto requestUri = builder.to_uri();
 
+    http_request request(methods::GET);
+    request.set_request_uri(requestUri);
     AddAuthHeader(request); // Add the auth header if token is available
 
     return client->request(request).then([](http_response response) -> pplx::task<njson> {
