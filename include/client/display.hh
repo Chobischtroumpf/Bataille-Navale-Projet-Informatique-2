@@ -23,7 +23,7 @@ struct ReturnInput {
 class Display {
 public:
   virtual void display() = 0;
-  virtual void display_error() = 0;
+  virtual void displayError() = 0;
   virtual void update() = 0;
-  virtual ReturnInput handle_input() = 0;
+  virtual ReturnInput handleInput() = 0;
 };

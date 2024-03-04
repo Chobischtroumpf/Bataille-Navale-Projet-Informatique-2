@@ -54,9 +54,9 @@ class GameConsole : public Console {
 
   // Console methods
   void display() override;
-  void display_error() override;
+  void displayError() override;
   void update() override;
-  ReturnInput handle_input() override;
+  ReturnInput handleInput() override;
 
   virtual ~GameConsole() = default;
 

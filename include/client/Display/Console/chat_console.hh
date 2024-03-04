@@ -12,9 +12,9 @@ class ChatConsole : public Console {
 public:
     ChatConsole(const std::string& sender, const std::string& destination);
     virtual void display() override {}
-    virtual void display_error() override {}
+    virtual void displayError() override {}
     virtual void update() override {}
-    ReturnInput handle_input() override;
+    ReturnInput handleInput() override;
 
 private:
     std::shared_ptr<ChatView> _view;

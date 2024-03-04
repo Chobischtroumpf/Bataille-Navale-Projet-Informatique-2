@@ -4,8 +4,8 @@
 
 class FriendListController : public Controller {
 public:
-    void add_friend(std::string user_name);
-    void delete_friend(std::string user_name);
+    void addFriend(std::string user_name);
+    void deleteFriend(std::string user_name);
 private:
 
 };
