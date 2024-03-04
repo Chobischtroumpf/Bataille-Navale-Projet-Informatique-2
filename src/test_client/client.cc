@@ -26,7 +26,20 @@ int main() {
     // auto getValue = gameClient.TestRequest3();
     // getValue.get();
     // cout << "Successfully got the void value" << endl;
-    
+
+    // Tries to register
+    auto registerFuture = gameClient.Register("newUser", "newPassword");
+    auto registerVal = registerFuture.get();
+    if (registerVal) {
+        cout << "Register request success." << endl;
+    } else {
+        cout << "Register request failed." << endl;
+    }
+    // Tries to login
+    auto loginFuture = gameClient.Login("random", "random");
+    auto loginVal = loginFuture.get();
+    cout << "Login request success : " << loginVal << endl;
+
     // Asynchronously create a game and wait for the session ID
     auto createGameFuture = gameClient.CreateGame(gameDetails);
     auto sessionId = createGameFuture.get();
