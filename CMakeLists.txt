@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10) # minimum version of CMake
 
 # Specify the C++ compiler
-set(CMAKE_CXX_COMPILER g++-10)
+# set(CMAKE_CXX_COMPILER g++-10)
 # cmake_policy(SET CMP0135 NEW) # Silence the warning for FetchContent
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
