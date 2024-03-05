@@ -1,4 +1,4 @@
-#include "../../../include/server/game/timer.hh"
+#include "timer.hh"
 
 
 Timer::Timer(): limit_seconds{0}, current_time{0}, is_running{false} {}
