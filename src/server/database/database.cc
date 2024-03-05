@@ -11,7 +11,7 @@
 
 
 DbError DataBase::createDb() {
-    int rc = sqlite3_open("users.db", &this->db);
+    int rc = sqlite3_open("../users.db", &this->db);
     if (rc) {
         this->db = nullptr;
         closeConnection();
@@ -25,7 +25,6 @@ DbError DataBase::createDb() {
 
 
 DbError DataBase::createTables(){
-    std::cout << "!!!!!!!!!! create tables" << std::endl;
     // Read DDL file
     std::ifstream file(DATABASE_DIR);
     if (!file.is_open()) {
@@ -67,6 +66,7 @@ QueryResult DataBase::executeQuery(std::string& sql_query) {
     else{
         result.error = DbError::OK;
     }
+    std::cout << result << std::endl;
     return result;
 }
 

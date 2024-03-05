@@ -57,6 +57,7 @@ bool Queries::userLogin(const std::string &username, const std::string &pwd){
 
 
 bool Queries::userRegister(const std::string &username, const std::string &pwd){
+    std::cout << "Register request -> username: " << username << " pwd: " << pwd << std::endl;
     std::string salt = Security::genSalt();
     std::string hashpwd = Security::hashPwd(pwd+salt);
     std::string columns = "username, hash_pwd, salt";
@@ -65,7 +66,6 @@ bool Queries::userRegister(const std::string &username, const std::string &pwd){
     if(result.isOk()){
         return true;
     }
-    std::cout << "heyyyyyyy" << result << std::endl;
     return false;
 }
 
