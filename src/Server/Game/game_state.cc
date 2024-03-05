@@ -9,7 +9,7 @@ GameState::~GameState() {
     // Cleanup resources if needed
 }
 
-bool GameState::makeMove(PlayerRole player, const std::string& move) {
+bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
     // Placeholder implementation
     // For now, we just return true to indicate the move was "successful"
     return true;
