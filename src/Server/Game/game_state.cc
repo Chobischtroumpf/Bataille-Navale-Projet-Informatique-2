@@ -22,6 +22,14 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
 }
 
 bool GameState::handle_fire(PlayerRole player, const nlohmann::json& move){
+    std::string x = move["anchor"]["x"].get<std::string>();
+        size_t y = move["anchor"]["y"];
+        BoardCoordinates board_coordinates{BoardCoordinates::parseX(x).value(),y-1};
+    if (player==Leader){        
+        return game->handle_fire(PLAYERONE,board_coordinates);
+    }else{
+        return game->handle_fire(PLAYERTWO,board_coordinates);
+    }
 
 }
 
