@@ -1,26 +1,34 @@
-#include "timer.hh"
+#include "../../../include/server/game/timer.hh"
+
+
+Timer::Timer(): limit_seconds{0}, current_time{0}, is_running{false} {}
 
 Timer::Timer(int limit_seconds)
-    : _limit_seconds(limit_seconds), _current_time(limit_seconds),
-      _is_running(false) {}
+    : limit_seconds{limit_seconds}, current_time{limit_seconds},
+      is_running{false} {}
 
-bool Timer::is_finished() const { return _current_time <= 0; }
+bool Timer::is_finished() const { return current_time <= 0; }
 
 void Timer::start(std::function<void()> callback) {
-  if (!_is_running) {
-    _is_running = true;
+  if (!is_running) {
+    is_running = true;
     std::thread([this, callback = std::move(callback)]() mutable {
-      while (!is_finished() && _is_running) {
+      while (!is_finished() && is_running) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        --_current_time;
+        --current_time;
       }
       callback();
     }).detach();
   }
 }
 
-void Timer::reset() { _current_time = _limit_seconds; }
+void Timer::reset() { current_time = limit_seconds; }
 
-void Timer::stop() { _is_running = false; }
+void Timer::stop() { is_running = false; }
 
-int Timer::get_time() const { return _current_time; }
+void Timer::set(int limit_seconds) {
+    limit_seconds = limit_seconds;
+    current_time = limit_seconds;
+}
+
+int Timer::get_time() const { return current_time; }

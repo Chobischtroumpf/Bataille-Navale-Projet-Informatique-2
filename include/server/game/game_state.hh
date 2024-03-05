@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
+#include "game.hh"
 #include "player_role.hh"
 
 class GameState {
@@ -29,11 +30,13 @@ public:
     nlohmann::json getGameState(PlayerRole player) const;
 
 private:
-    // Game details and rules
+
+    std::shared_ptr<Game> game;
+    /*// Game details and rules
     nlohmann::json gameDetails;
 
     // Current state of the game
-    nlohmann::json currentState;
+    nlohmann::json currentState;*/
 };
 
 #endif // GAMESTATE_H

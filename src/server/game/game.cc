@@ -1,9 +1,9 @@
 #include "../../../include/server/game/game.hh"
 
-Game::Game(bool mode_commandant, int time_game, int time_player)
-    : _board{std::make_shared<Board>()}, mode_commandant{mode_commandant},
-      game_timer{time_game}, player_timer{time_player}, is_timer_finished{
+Game::Game(const nlohmann::json& game_details)
+    : _board{std::make_shared<Board>()}, is_timer_finished{
                                                             false} {
+  set_game(game_details);
   start_timer();
 }
 
@@ -54,4 +54,19 @@ bool Game::handle_fire(Turn turn, BoardCoordinates board_coordinates) {
 
 nlohmann::json Game::get_state(PlayerRole player) {
   return _board->toJson(player);
+}
+
+void Game::set_game(const nlohmann::json& game_details){
+  std::string str_bool_commandant = game_details.at("mode_commandant").get<std::string>();
+  if (str_bool_commandant == "true"){
+    mode_commandant = true;
+  } else if (str_bool_commandant == "false"){
+    mode_commandant = false;
+  } else{
+    // handle error properly
+    mode_commandant = false;
+  }
+
+  player_timer.set(std::stoi(game_details.at("player_timer").get<std::string>()));
+  game_timer.set(std::stoi(game_details.at("game_timer").get<std::string>()));
 }

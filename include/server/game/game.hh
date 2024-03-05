@@ -6,11 +6,10 @@
 #include "../../../include/common/turn.hh"
 #include "player_role.hh"
 
-// Class that handles the game between 2 players and a list of spectators
+// Class that handles the game between 2 players
 class Game {
 public:
-  Game(bool mode_commandant,
-             int time_game, int time_player);
+  Game(const nlohmann::json& game_details);
 
   bool is_finished() const;
 
@@ -32,4 +31,6 @@ private:
   bool is_timer_finished;
 
   void start_timer();
+  
+  void set_game(const nlohmann::json& gameDetails);
 };
