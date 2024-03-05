@@ -66,7 +66,6 @@ QueryResult DataBase::executeQuery(std::string& sql_query) {
     else{
         result.error = DbError::OK;
     }
-    std::cout << result << std::endl;
     return result;
 }
 
@@ -107,7 +106,7 @@ QueryResult DataBase::deleteEntry(const std::string &table_name, const std::stri
     std::string sql = "DELETE FROM " + table_name + " WHERE " + condition + ";";
     QueryResult result = executeQuery(sql);
     //int num_del_rows = sqlite3_changes(db);
-    return executeQuery(sql);
+    return result;
 }
 
 
