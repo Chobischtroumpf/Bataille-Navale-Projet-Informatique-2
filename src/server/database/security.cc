@@ -1,4 +1,4 @@
-#include "security.hh"
+#include "../../../include/server/database/security.hh"
 
 #include <sodium.h>
 

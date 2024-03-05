@@ -1,4 +1,6 @@
-#include "queries.hh"
+#include "../../../include/server/database/queries.hh"
+#include "../../../include/server/database/security.hh"
+
 #include <sqlite3.h>
 #include <fstream>
 #include <sstream>
@@ -8,7 +10,6 @@
 #include <regex>
 #include <sodium.h>
 
-#include "security.hh"
 
 QueryResult Queries::getUsername(const std::string &id_user){
     std::string condition = "id_user = '" + id_user + "'";
@@ -64,6 +65,7 @@ bool Queries::userRegister(const std::string &username, const std::string &pwd){
     if(result.isOk()){
         return true;
     }
+    std::cout << "heyyyyyyy" << result << std::endl;
     return false;
 }
 

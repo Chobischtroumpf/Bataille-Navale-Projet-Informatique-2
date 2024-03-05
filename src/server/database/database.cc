@@ -7,13 +7,15 @@
 #include <sstream>
 #include <ctime>
 
+#define DATABASE_DIR "../src/server/database/DDL_user_db.sql"
+
 
 DbError DataBase::createDb() {
     int rc = sqlite3_open("users.db", &this->db);
     if (rc) {
         this->db = nullptr;
         closeConnection();
-        std::cout << "create_db failed" << std::endl;
+        std::cerr << "create_db failed" << std::endl;
         return DbError::DB_CONNECTION_ERROR;
     }
     // Enable foreign key constraint
@@ -23,10 +25,11 @@ DbError DataBase::createDb() {
 
 
 DbError DataBase::createTables(){
+    std::cout << "!!!!!!!!!! create tables" << std::endl;
     // Read DDL file
-    std::ifstream file("DDL_user_db.sql");
+    std::ifstream file(DATABASE_DIR);
     if (!file.is_open()) {
-        std::cout << "open ddl failed" << std::endl;
+        std::cerr << "open ddl failed" << std::endl;
         return DbError::DDL_FILE_OPENING_ERROR;
     }
     std::stringstream buffer;
@@ -37,7 +40,7 @@ DbError DataBase::createTables(){
     int rc = sqlite3_exec(this->db, sql.c_str(), NULL, 0, NULL);
     if (rc != SQLITE_OK) {
         sqlite3_close(this->db);
-        std::cout << "execute ddl failed" << std::endl;
+        std::cerr << "execute ddl failed" << std::endl;
         return DbError::DDL_FILE_EXECUTION_ERROR;
     }
     return DbError::OK;
