@@ -37,6 +37,11 @@ private:
 
     // Current state of the game
     nlohmann::json currentState;*/
+
+    bool handle_place_ship(PlayerRole player, const nlohmann::json& move);
+
+    bool handle_fire(PlayerRole player, const nlohmann::json& move);
+
 };
 
 #endif // GAMESTATE_H

@@ -10,10 +10,26 @@ GameState::~GameState() {
 }
 
 bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
-    // Placeholder implementation
-    // For now, we just return true to indicate the move was "successful"
-    return true;
+    std::string str_move = move.at("move").get<std::string>() ;
+    if (str_move == "fire"){
+        return handle_fire(player, move);
+    }else if (str_move == "placeship"){
+        return handle_place_ship(player, move);
+    }else{
+        //handle error
+        return false;
+    }
 }
+
+bool GameState::handle_fire(PlayerRole player, const nlohmann::json& move){
+
+}
+
+bool GameState::handle_place_ship(PlayerRole player, const nlohmann::json& move){
+    
+}
+
+
 
 nlohmann::json GameState::getGameState(PlayerRole player) const {
     // Return a placeholder or current game state
