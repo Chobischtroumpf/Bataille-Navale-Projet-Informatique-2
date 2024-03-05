@@ -1,4 +1,5 @@
 #include "queries.hh"
+#include "database.hh"
 #include "security.hh"
 
 QueryResult Queries::getUsername(const std::string &id_user){

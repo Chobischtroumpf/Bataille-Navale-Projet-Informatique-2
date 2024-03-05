@@ -7,8 +7,10 @@
 #include <sstream>
 #include <ctime>
 
+#define DATABASE_DIR "../src/Server/Database/DDL_user_db.sql"
+
 DbError DataBase::createDb() {
-    int rc = sqlite3_open("users.db", &this->db);
+    int rc = sqlite3_open("../users.db", &this->db);
     if (rc) {
         this->db = nullptr;
         closeConnection();
@@ -23,7 +25,7 @@ DbError DataBase::createDb() {
 
 DbError DataBase::createTables(){
     // Read DDL file
-    std::ifstream file("DDL_user_db.sql");
+    std::ifstream file(DATABASE_DIR);
     if (!file.is_open()) {
         std::cout << "open ddl failed" << std::endl;
         return DbError::DDL_FILE_OPENING_ERROR;
