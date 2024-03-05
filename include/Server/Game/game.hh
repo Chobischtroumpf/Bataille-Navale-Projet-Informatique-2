@@ -26,13 +26,19 @@ public:
   nlohmann::json get_state(PlayerRole player);
 
 private:
+  const size_t required_ship_placements = 5; // Number of ship placements required
   std::shared_ptr<Board> _board;
   bool mode_commandant;
   Timer game_timer;
   Timer player_timer;
   bool is_timer_finished;
+  std::unordered_map<Turn, unsigned int> ship_placements;
 
   void start_timer();
   
   void set_game(const nlohmann::json& gameDetails);
+
+  void initialize_ship_placements();
+
+  bool ship_placements_finished() const;
 };

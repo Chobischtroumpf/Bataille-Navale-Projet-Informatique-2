@@ -42,6 +42,8 @@ private:
 
     bool handle_fire(PlayerRole player, const nlohmann::json& move);
 
+    Turn role_to_turn(PlayerRole player);
+
 };
 
 #endif // GAMESTATE_H

@@ -4,6 +4,7 @@ Game::Game(const nlohmann::json& game_details)
     : _board{std::make_shared<Board>()}, is_timer_finished{
                                                             false} {
   set_game(game_details);
+  initialize_ship_placements();
   start_timer();
 }
 
@@ -28,17 +29,14 @@ void Game::player_timer_finished() {
 }
 
 bool Game::handle_place_ship(Turn turn, ShipCoordinates ship_coordinates) {
-
-  if (_board->whoseTurn() == turn) {
-    _board->placeShip(ship_coordinates, _board->myTurn());
-    _board->changeTurn();
-    return true;
-  } else {
-    // handle if the it s not his turn
-    return false;
+  if (turn == PLAYERONE){
+    _board->placeShip(ship_coordinates, true);
+    ship_placements.at(PLAYERONE)++;
+  }else{
+    _board->placeShip(ship_coordinates, false);
+    ship_placements.at(PLAYERTWO)++;
   }
-  // (Inform the player that the boat was placed sucessfully or only send the
-  // json back ?)
+  return true;
 }
 
 bool Game::handle_fire(Turn turn, BoardCoordinates board_coordinates) {
@@ -69,4 +67,17 @@ void Game::set_game(const nlohmann::json& game_details){
 
   player_timer.set(std::stoi(game_details.at("player_timer").get<std::string>()));
   game_timer.set(std::stoi(game_details.at("game_timer").get<std::string>()));
+}
+
+void Game::initialize_ship_placements() {
+  // Clear existing contents if any
+    ship_placements.clear(); 
+    ship_placements.emplace(PLAYERONE, 0); 
+    ship_placements.emplace(PLAYERTWO, 0); 
+}
+
+bool Game::ship_placements_finished() const {
+    
+    return ship_placements.at(PLAYERONE) == required_ship_placements &&
+           ship_placements.at(PLAYERTWO) == required_ship_placements;
 }
