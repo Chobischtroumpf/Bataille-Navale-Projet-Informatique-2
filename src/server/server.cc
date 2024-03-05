@@ -1,4 +1,4 @@
-#include "../../include/server/network/game_server.hh"
+#include "game_server.hh"
 
 using namespace std;
 
