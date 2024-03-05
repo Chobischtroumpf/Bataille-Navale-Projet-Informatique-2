@@ -12,6 +12,7 @@
 
 class LoginConsole : public Console {
 public:
+  explicit LoginConsole(const std::string& baseUri);
   ReturnInput handleInput() override;                       
   virtual void display() override {}
   virtual void displayError() override {}

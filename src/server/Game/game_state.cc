@@ -1,9 +1,8 @@
-// GameState.cpp
 #include "game_state.hh"
 
-GameState::GameState(const nlohmann::json& gameDetails) : gameDetails(gameDetails) {
-    // Initialize currentState with some default value or based on gameDetails
-    currentState = nlohmann::json::object();
+GameState::GameState(const nlohmann::json& gameDetails) : game{std::make_shared<Game>(gameDetails)} {
+    /*// Initialize currentState with some default value or based on gameDetails
+    currentState = nlohmann::json::object();*/
 }
 
 GameState::~GameState() {
@@ -19,5 +18,5 @@ bool GameState::makeMove(PlayerRole player, const std::string& move) {
 nlohmann::json GameState::getGameState(PlayerRole player) const {
     // Return a placeholder or current game state
     // For simplicity, we return currentState directly
-    return currentState;
+    return game->get_state(player);
 }

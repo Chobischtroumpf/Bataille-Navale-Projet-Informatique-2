@@ -1,6 +1,12 @@
 #include "database.hh"
 #include "query_result.hh"
 
+#include <iostream>
+#include <sqlite3.h>
+#include <fstream>
+#include <sstream>
+#include <ctime>
+
 DbError DataBase::createDb() {
     int rc = sqlite3_open("users.db", &this->db);
     if (rc) {

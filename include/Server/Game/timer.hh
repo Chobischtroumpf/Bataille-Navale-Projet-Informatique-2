@@ -7,6 +7,8 @@
 
 class Timer {
 public:
+
+  Timer();
   Timer(int limit_seconds);
 
   bool is_finished() const;
@@ -21,8 +23,10 @@ public:
 
   int get_time() const;
 
+  void set(int limit_seconds);
+
 private:
-  const int _limit_seconds;
-  int _current_time;
-  bool _is_running;
+  const int limit_seconds;
+  int current_time;
+  bool is_running;
 };

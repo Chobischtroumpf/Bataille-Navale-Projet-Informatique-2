@@ -53,7 +53,7 @@ void Driver::displayGameScreen() {
 
 void Driver::displayLoginScreen() {
   if (_display_type == CONSOLE) {
-    _display = std::make_shared<LoginConsole>();
+    _display = std::make_shared<LoginConsole>("http://localhost:8080");
     _current_screen = ReturnInput::Screen::LOGIN;
   } else {
     throw NotImplementedError("GUI not implemented yet");

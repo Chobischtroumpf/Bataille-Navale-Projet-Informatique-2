@@ -1,9 +1,12 @@
 #include "login_controller.hh"
 
-bool LoginController::attemptLogin(std::string username, std::string password) const{
-	return true;
+LoginController::LoginController(const std::string& baseUri) 
+    : gameClient(std::make_shared<GameClient>(baseUri)) {}
+
+std::future<bool> LoginController::attemptLogin(const std::string& username, const std::string& password) const {
+    return gameClient->Login(username, password);
 }
 
-bool LoginController::checkValidity(std::string username, std::string password) const{
-	return true;
+std::future<bool> LoginController::attemptRegister(const std::string& username, const std::string& password) const {
+    return gameClient->Register(username, password);
 }

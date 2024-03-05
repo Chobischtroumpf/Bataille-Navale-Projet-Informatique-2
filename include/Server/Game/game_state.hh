@@ -4,11 +4,8 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-enum class PlayerRole {
-        Leader, // Player A
-        Opponent, // Player B
-        Spectator // Not directly interacting, but may need game state info
-};
+#include "game.hh"
+#include "player_role.hh"
 
 class GameState {
 public:
@@ -33,11 +30,13 @@ public:
     nlohmann::json getGameState(PlayerRole player) const;
 
 private:
-    // Game details and rules
+
+    std::shared_ptr<Game> game;
+    /*// Game details and rules
     nlohmann::json gameDetails;
 
     // Current state of the game
-    nlohmann::json currentState;
+    nlohmann::json currentState;*/
 };
 
 #endif // GAMESTATE_H

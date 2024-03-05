@@ -1,6 +1,5 @@
 #include "game_server.hh"
 
-
 using namespace std;
 
 int main() {
