@@ -165,7 +165,7 @@ future<string> GameClient::CreateGame(const njson& gameDetails) {
     auto resultFuture = promise->get_future();
 
     // Send the POST request to the game creation endpoint with gameDetails
-    PostRequest("/api/games/create", gameDetails)
+    PostRequest("/api/games/create", njson{{"gameDetails",gameDetails}} )
     .then([promise](njson jsonResponse) {
         // Check if the response contains a sessionId
         if (!jsonResponse.empty() && jsonResponse.find("sessionId") != jsonResponse.end()) {

@@ -288,7 +288,7 @@ void GameServer::handlePost(http_request request) {
                         request.reply(status_codes::Unauthorized, response.dump(), "application/json");
                         return; // Stop further processing
                     }
-
+                    cout << "data: " << requestBody.serialize() << endl;
                      // Check if "gameDetails" exists in the requestBody
                     if (!requestBody.has_field(U("gameDetails"))) {
                         response["error"] = "Missing gameDetails";
