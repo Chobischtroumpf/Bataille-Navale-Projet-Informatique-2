@@ -107,13 +107,12 @@ void GameServer::handleGet(http_request request) {
                 request.reply(status_codes::Unauthorized, response.dump(), "application/json");
                 return; // Stop further processing
             }
-
+            
             // Parsing query parameters
             auto queryParams = uri::split_query(request.request_uri().query());
             // Extracting sessionId  from query parameters
-            auto sessionIdIt = queryParams.find(U("sessionid"));
+            auto sessionIdIt = queryParams.find(U("sessionId"));
             
-
             // Verifying both sessionId  are provided
             if (sessionIdIt != queryParams.end() ) {
                 auto sessionId = sessionIdIt->second;
@@ -300,7 +299,7 @@ void GameServer::handlePost(http_request request) {
                     njson gameDetails = njson::parse(requestBody[U("gameDetails")].serialize());
 
                     // Create a new session
-                    auto sessionId = njson::parse(sessionManager.createSession(userId, gameDetails));
+                    auto sessionId = sessionManager.createSession(userId, gameDetails);
                     response["sessionId"] = sessionId;
                     request.reply(status_codes::OK, response.dump(), "application/json");
                 }
