@@ -1,4 +1,4 @@
-#include "../../include/client/network/game_client.hh" // Header file for GameClient
+#include "game_client.hh" // Header file for GameClient
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <future> // For std::async and std::future
@@ -36,7 +36,7 @@ int main() {
         cout << "Register request failed." << endl;
     }
     // Tries to login
-    auto loginFuture = gameClient.Login("random", "random");
+    auto loginFuture = gameClient.Login("newUser", "newPassword");
     auto loginVal = loginFuture.get();
     cout << "Login request success : " << loginVal << endl;
 
