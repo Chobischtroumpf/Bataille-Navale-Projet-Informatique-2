@@ -89,14 +89,14 @@ std::future<void> GameClient::TestRequest3() {
     return promise->get_future();
 }
 
-future<njson> GameClient::QueryGameState(const string& sessionId, const string& userId) {
+future<njson> GameClient::QueryGameState(const string& sessionId) {
     cout << "Sending GET request to api/games/query" << endl;
 
     // Use a promise to return the result asynchronously
     auto promise = std::make_shared<std::promise<njson>>();
     auto resultFuture = promise->get_future();
 
-    GetRequest("/api/games/query?sessionid=" + sessionId + "&userid=" + userId ).then([promise](njson jsonResponse) {
+    GetRequest("/api/games/query?sessionId=" + sessionId).then([promise](njson jsonResponse) {
         // Check if the response contains a 'gameDetails' key
         if (!jsonResponse.empty() && jsonResponse.find("gameDetails") != jsonResponse.end()) {
             // Success path: Extract game details from jsonResponse
