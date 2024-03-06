@@ -23,7 +23,7 @@ bool Queries::checkPwd(const std::string &id_user, const std::string &pwd){
     std::string columns = "hash_pwd, salt";
     std::string condition = "id_user = '" + id_user + "'";
     QueryResult result = db->selectFromTable("Users", columns, condition);
-    if (result.error != DbError::OK or result.data.size() == 0) {
+    if (result.error != DbError::OK || result.data.size() == 0) {
         return false;   // Id_user do not exists
     }
     // Parse result data
