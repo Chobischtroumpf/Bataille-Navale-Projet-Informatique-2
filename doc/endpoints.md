@@ -17,21 +17,21 @@
 - **Returns**: A list of session IDs.
 
 ## CreateGame
-- **Endpoint**: `/api/game/create`
+- **Endpoint**: `/api/games/create`
 - **Method**: `POST`
 - **Description**: Creates a new game session with the provided game details.
 - **Parameters**: `gameDetails` (in NJSON format) containing the game configuration.
 - **Returns**: The session ID of the created game.
 
 ## JoinGame
-- **Endpoint**: `/api/game/join`
+- **Endpoint**: `/api/games/join`
 - **Method**: `GET`
 - **Description**: Joins a game session using the session ID.
 - **Parameters**: `sessionId` query parameter to specify the game session to join.
 - **Returns**: Game details of the joined session.
 
 ## MakeMove
-- **Endpoint**: `/api/game/move`
+- **Endpoint**: `/api/games/move`
 - **Method**: `POST`
 - **Description**: Makes a move in the specified game session.
 - **Parameters**:
