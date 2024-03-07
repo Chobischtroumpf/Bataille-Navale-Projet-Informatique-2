@@ -36,8 +36,7 @@ class Board {
 
     // Method to notify the Fleet that a Ship has sunk
     void notify(const BoardCoordinates &coords) {
-      // Check if any ship in the fleet is operational
-      
+      // Check if any ship in the fleet is operational      
 
       for (Ship &ship : _ships) {
         ship.notify(coords);
@@ -52,7 +51,6 @@ class Board {
           return;
         }
       }
-
       _state = false;
     }
     // Method to get the number of ships in the fleet
