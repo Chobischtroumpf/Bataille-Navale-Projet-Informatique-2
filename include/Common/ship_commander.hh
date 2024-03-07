@@ -1,18 +1,8 @@
 #pragma once
 
-#include "ship.hh"
-#include "not_implemented_error.hh"
-#include <optional>
-#include <string>
-#include <vector>
+#include "ship_classic.hh"
 
-class ShipCommander {
-private:
-    std::vector<Ship> _ships;
-    int _pos = 0;
-public:
+class ShipCommander : public ShipClassic {
+  public:
     ShipCommander(int number_of_case);
-    void next();
-    Ship getShip();
-    void rotate();
 };
