@@ -18,8 +18,6 @@ public:
   // sunk
   void notify(const BoardCoordinates &coords) {
 
-    _state = false;
-
     // Check if ship is sunk
     for (const BoardCoordinates &tile : tiles) {
       // std::cout << "Checking for tile X : " << tile.x() << " Y : " <<
@@ -30,6 +28,7 @@ public:
         return;
       }
     }
+    _state = false;
   }
 
   Ship(const ShipCoordinates &coords, const vector<vector<Cell>> &board)
