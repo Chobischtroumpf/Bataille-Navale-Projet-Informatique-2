@@ -6,12 +6,12 @@
 #include <string>
 #include <vector>
 
-class ship_commander {
+class ShipCommander {
 private:
     std::vector<Ship> _ships;
     int _pos = 0;
 public:
-    ship_commander(int number_of_case);
+    ShipCommander(int number_of_case);
     void next();
     Ship getShip();
     void rotate();

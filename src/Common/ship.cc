@@ -7,12 +7,6 @@ Ship::Ship(std::vector<std::pair<int, int>> coordinates): _coordinates(coordinat
     }
 }
 
-void Ship::addCoordinate(int x, int y) {
-    _coordinates.push_back({x, y});
-    if (x + 1 > _size_x) { _size_x = x + 1; }
-    if (y + 1 > _size_y) { _size_y = y + 1; }
-}
-
 void Ship::rotate() {
     int temp = _size_x;
     _size_x = _size_y;
@@ -27,4 +21,19 @@ void Ship::rotate() {
 
 std::vector<std::pair<int, int>> Ship::getCoordinates() {
     return _coordinates;
+}
+
+void Ship::print() {
+    std::vector<std::vector<std::string>> to_print(_size_y, std::vector<std::string>(_size_x, "  "));
+
+    for (auto &c: _coordinates) {
+        to_print[c.second][c.first] = "██";
+    }
+
+    for (auto &to_print2: to_print) {
+        for (auto &p: to_print2) {
+            std::cout << p;
+        }
+        std::cout << std::endl;
+    }
 }

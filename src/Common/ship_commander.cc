@@ -1,6 +1,6 @@
 #include "../../include/common/ship_commander.hh"
 
-ship_commander::ship_commander(int number_of_case) {
+ShipCommander::ShipCommander(int number_of_case) {
     switch (number_of_case) {
     case 2:
         _ships.push_back(Ship({{0, 0}, {1, 0}}));
@@ -26,15 +26,15 @@ ship_commander::ship_commander(int number_of_case) {
     }
 }
 
-void ship_commander::next() {
+void ShipCommander::next() {
     _pos ++;
     _pos %= _ships.size();
 }
 
-Ship ship_commander::getShip() {
+Ship ShipCommander::getShip() {
     return _ships[_pos];
 }
 
-void ship_commander::rotate() {
+void ShipCommander::rotate() {
     _ships[_pos].rotate();
 }

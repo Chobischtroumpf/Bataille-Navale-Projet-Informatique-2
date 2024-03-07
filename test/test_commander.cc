@@ -6,6 +6,7 @@
 #include <optional>
 #include <stdexcept>
 
+/*
 typedef enum {
   // Flags:
   IS_SHIP = 0b001,
@@ -20,6 +21,52 @@ typedef enum {
   UNDAMAGED = IS_SHIP,                 //< undamaged ship, used for my side
   HIT = IS_SHIP | IS_KNOWN,            //< hit ship
   SUNK = IS_SHIP | IS_KNOWN | IS_SUNK, //< sunk ship
+} CellType;
+*/
+
+/*
+is_ship
+is_mine
+is_kwown
+is_hit
+is_sunk
+
+plateau adverse             - plateau joueur
+eau non decouverte          - eau                     - 0
+eau decouverte ou scanné  ╳ - eau scanné ou touché  ╳ - is_knwon
+
+None                        - case mine             ¤ - is_mine
+case mine scanné          █ - case mine             ¤ - is_mine | is_kwown
+case mine touché          ¤ - case mine touché      * - is_mine | is_hit
+
+None                        - case bateau           █ - is_ship
+case bateau scanné        █ - case bateau scanné    █ - is_ship | is_kwown
+case bateau touché        ▒ - case bateau touché    ▒ - is_ship | is_hit
+case bateau coulé         ░ - case bateau coulé     ░ - is_ship | is_hit | is_sunk
+*/
+
+typedef enum {
+  // Flags:
+  IS_SHIP = 0b00001,
+  IS_MINE = 0b00010,
+  IS_KNOWN = 0b00100,
+  IS_HIT = 0b01000,
+  IS_SUNK = 0b10000,
+
+  // Non-ship types:
+  WATER = 0,        //< water (my side) or unknown (assumed water, their side)
+  OCEAN = IS_KNOWN, //< was empty target
+
+  // Mine:
+  MINE = IS_MINE,
+  SCANNED_MINE = IS_MINE | IS_KNOWN,
+  HIT_MINE = IS_MINE | IS_HIT,
+
+  // Ship states:
+  UNDAMAGED_SHIP = IS_SHIP,
+  SCANNED_SHIP = IS_SHIP | IS_KNOWN,
+  HIT_SHIP = IS_SHIP | IS_HIT,
+  SUNK_SHIP = IS_SHIP | IS_HIT | IS_SUNK,
 } CellType;
 
 class Cell {
@@ -38,11 +85,11 @@ public:
             return "- ";
         case OCEAN:
             return "╳ ";
-        case UNDAMAGED:
+        case UNDAMAGED_SHIP:
             return "█ ";
-        case HIT:
+        case HIT_SHIP:
             return "▒ ";
-        case SUNK:
+        case SUNK_SHIP:
             return "░ ";
     }
   }
@@ -55,22 +102,17 @@ private:
     int _size_y = 0;
 
 public:
-    Ship() {};
-    Ship(std::vector<std::pair<int, int>> coordinates): _coordinates(coordinates) {
-        for (auto &c: coordinates) {
-            if (c.first + 1 > _size_x) { _size_x = c.first + 1; }
-            if (c.second + 1 > _size_y) { _size_y = c.second + 1; }
-        }
-    };
-    void addCoordinate(int x, int y);
+    Ship(std::vector<std::pair<int, int>> coordinates);
     void rotate();
+    void print();
     std::vector<std::pair<int, int>> getCoordinates();
 };
 
-void Ship::addCoordinate(int x, int y) {
-    _coordinates.push_back({x, y});
-    if (x + 1 > _size_x) { _size_x = x + 1; }
-    if (y + 1 > _size_y) { _size_y = y + 1; }
+Ship::Ship(std::vector<std::pair<int, int>> coordinates): _coordinates(coordinates) {
+    for (auto &c: coordinates) {
+        if (c.first + 1 > _size_x) { _size_x = c.first + 1; }
+        if (c.second + 1 > _size_y) { _size_y = c.second + 1; }
+    }
 }
 
 void Ship::rotate() {
@@ -85,23 +127,38 @@ void Ship::rotate() {
     }
 }
 
+void Ship::print() {
+    std::vector<std::vector<std::string>> to_print(_size_y, std::vector<std::string>(_size_x, "  "));
+
+    for (auto &c: _coordinates) {
+        to_print[c.second][c.first] = "██";
+    }
+
+    for (auto &to_print2: to_print) {
+        for (auto &p: to_print2) {
+            std::cout << p;
+        }
+        std::cout << std::endl;
+    }
+}
+
 std::vector<std::pair<int, int>> Ship::getCoordinates() {
     return _coordinates;
 }
 
 
-class ship_commander {
+class ShipCommander {
 private:
     std::vector<Ship> _ships;
     int _pos = 0;
 public:
-    ship_commander(int number_of_case);
+    ShipCommander(int number_of_case);
     void next();
     Ship getShip();
     void rotate();
 };
 
-ship_commander::ship_commander(int number_of_case) {
+ShipCommander::ShipCommander(int number_of_case) {
     switch (number_of_case) {
     case 2:
         _ships.push_back(Ship({{0, 0}, {1, 0}}));
@@ -127,16 +184,16 @@ ship_commander::ship_commander(int number_of_case) {
     }
 }
 
-void ship_commander::next() {
+void ShipCommander::next() {
     _pos ++;
     _pos %= _ships.size();
 }
 
-Ship ship_commander::getShip() {
+Ship ShipCommander::getShip() {
     return _ships[_pos];
 }
 
-void ship_commander::rotate() {
+void ShipCommander::rotate() {
     _ships[_pos].rotate();
 }
 
@@ -173,25 +230,36 @@ void LocalBoard::print() {
 
 void LocalBoard::addShip(Ship s, int x, int y) {
     for (auto &c: s.getCoordinates()) {
-        _my_board[y + c.second][x + c.first].setType(UNDAMAGED);
+        _my_board[y + c.second][x + c.first].setType(UNDAMAGED_SHIP);
     }
   }
 
 
 int main() {
 	LocalBoard test;
-    ship_commander ships(5);
+    ShipCommander ships(4);
+    ships.next();
     //ships.next();
     //ships.next();
     //ships.next();
     //ships.next();
     //ships.next();
-    //ships.next();
+    ships.rotate();
     //ships.rotate();
     //ships.rotate();
     //ships.rotate();
-    //ships.rotate();
+    ships.getShip().print();
     test.addShip(ships.getShip(), 2, 2);
     test.print();
     return 0;
 }
+/*
+¤
+?
+
+█ ¤ █
+█ █ █
+
+? ? ?
+? ? ?
+*/
