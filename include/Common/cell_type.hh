@@ -19,3 +19,23 @@ enum CellType {
   SUNK = IS_SHIP | IS_KNOWN | IS_SUNK //< sunk ship
 
 };
+
+/*
+is_ship
+is_mine
+is_kwown
+is_hit
+is_sunk
+
+eau non decouverte             - eau                   0
+eau decouverte (ou scanné)   ╳ - eau scanné ou touché  ╳ - is_hit
+
+                               -   ¤             - is_mine
+case mine inconnu (scanné)   █ -   ¤             - is_mine | is_kwown
+case mine connu (touché)     ¤ -   * is_mine | is_hit
+
+                               -   █             - is_ship
+case bateau inconnu (scanné) █ -   █ is_ship | is_kwown
+case bateau touché           ▒ -   ▒ is_ship | is_hit
+case bateau coulé            ░ -   ░ is_ship | is_hit | is_sunk
+*/
