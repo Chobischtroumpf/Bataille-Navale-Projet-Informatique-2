@@ -5,6 +5,6 @@
 class Torpedo : public SpecialAbility
 {
   public:
-    Torpedo() : SpecialAbility{"Tir", "basic attack, aims for a single cell", 0, TORPEDO} {};
+    Torpedo() : SpecialAbility{"Torpedo", "basic attack, targets a single cell", 0, TORPEDO} {};
     ~Torpedo() = default;
 };

@@ -4,12 +4,20 @@
 
 typedef enum
 {
-    MINE,
-    SONAR,
-    PROBE,
-    TORPEDO,
-    AREA_DESTRUCTION,
-    PERIMETER_DESTRUCTION,
+    IS_LINE =       0b001000,
+    IS_AREA =       0b010000,
+    IS_MINE =       0b000001,
+    IS_SONAR =      0b000010,
+    IS_TORPEDO =    0b000100,
+    IS_PERIMETER =  0b100000,
+    
+    MINE = IS_MINE,
+    SONAR = IS_SONAR | IS_AREA,
+    PROBE = IS_SONAR | IS_LINE,
+    TORPEDO = IS_TORPEDO,
+    PIERCING_TORPEDO = IS_TORPEDO | IS_LINE,
+    BIG_TORPEDO = IS_TORPEDO | IS_AREA,
+    AERIAL_STRIKE = IS_TORPEDO | IS_PERIMETER
 }   SpecialAbilityType;
 
 class SpecialAbility
