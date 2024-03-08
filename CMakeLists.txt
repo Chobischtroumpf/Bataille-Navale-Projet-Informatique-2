@@ -55,7 +55,7 @@ add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 target_include_directories(server PRIVATE include/Server include/Server/Database include/Server/Game include/Server/Network include/Common)
 
 # Define include directories for target 'battleship'
-target_include_directories(battleship PRIVATE include/Client include/Client/Network include/Client/Controllers include/Client/Views include/Client/Display include/Client/Display/Console include/Client/Display/GUI include/Common)
+target_include_directories(battleship PRIVATE include/Client include/Client/Network include/Client/Controllers include/Client/Views include/Client/Display include/Client/Display/Console include/Client/Display/GUI include/Common include/Common/Commandant)
 
 # Specifies libraries for targets
 target_link_libraries(server PRIVATE nlohmann_json::nlohmann_json)

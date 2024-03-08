@@ -202,7 +202,7 @@ public:
 
   // To call ater each turn to know if the game is over.
   [[nodiscard]] bool isFinished() const {
-    return _fleetA.getState() and _fleetB.getState();
+    return !(_fleetA.getState() and _fleetB.getState());
   }
   // To call after the game is over to know who won.
   [[nodiscard]] bool isVictory() const { return _fleetA.getState(); }
