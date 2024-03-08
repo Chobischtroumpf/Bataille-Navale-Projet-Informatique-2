@@ -1,9 +1,10 @@
 #include "../../include/common/ship.hh"
 
-Ship::Ship(std::vector<std::pair<int, int>> coordinates): _coordinates(coordinates) {
+Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates(coordinates) {
     for (auto &c: coordinates) {
-        if (c.first > _size_x) { _size_x = c.first; }
-        if (c.second > _size_y) { _size_y = c.second; }
+        _number_of_case++;
+        if (c.x() > _size_x) { _size_x = c.x(); }
+        if (c.y() > _size_y) { _size_y = c.y(); }
     }
 }
 
@@ -13,21 +14,15 @@ void Ship::rotate() {
     _size_y = temp;
 
     for (auto &c: _coordinates) {
-        int temp = c.first;
-        c.first = -c.second + _size_x - 1;
-        c.second = temp;
+        c.set(-c.y() + _size_x - 1, c.x());
     }
-}
-
-std::vector<std::pair<int, int>> Ship::getCoordinates() {
-    return _coordinates;
 }
 
 void Ship::print() {
     std::vector<std::vector<std::string>> to_print(_size_y, std::vector<std::string>(_size_x, "  "));
 
     for (auto &c: _coordinates) {
-        to_print[c.second][c.first] = "██";
+        to_print[c.y()][c.x()] = "██";
     }
 
     for (auto &to_print2: to_print) {
@@ -36,4 +31,12 @@ void Ship::print() {
         }
         std::cout << std::endl;
     }
+}
+
+std::vector<BoardCoordinates> Ship::getCoordinates() {
+    return _coordinates;
+}
+
+int Ship::getNumberOfCase() {
+    return _number_of_case;
 }
