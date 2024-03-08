@@ -3,6 +3,8 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <random>
+#include <ctime>
 #include "../../Views/game_player_view.hh"
 #include "../console.hh"
 #include "../../Controllers/game_player_controller.hh"
@@ -14,7 +16,7 @@ public:
     void display() override;
     void display_error() override;
     void update() override;
-    void handle_input() override;
+    ReturnInput handle_input() override;
 private:
     std::shared_ptr<GamePlayerView> _view;
     std::shared_ptr<GamePlayerController> _controller;

@@ -4,19 +4,21 @@
 #include <string>
 #include <vector>
 #include <iostream>
+
 #include "board_coordinates.hh"
 
 class Ship {
   private:
-    std::vector<std::pair<int, int>> _coordinates;
+    std::vector<BoardCoordinates> _coordinates;
     BoardCoordinates _top_left;
     int _size_x = 0;
     int _size_y = 0;
-
+    int _number_of_case = 0;
 
   public:
-    Ship(std::vector<std::pair<int, int>> coordinates);
+    Ship(std::vector<BoardCoordinates> coordinates);
     void rotate();
-    std::vector<std::pair<int, int>> getCoordinates();
     void print();
+    std::vector<BoardCoordinates> getCoordinates();
+    int getNumberOfCase();
 };
