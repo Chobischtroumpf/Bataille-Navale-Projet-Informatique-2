@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2023.11.27)  15 DEC 2023 23:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2023.11.27)  8 MAR 2024 17:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -745,100 +745,99 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.4.10})
                                                   \__shipout_drop_firstpage_...
 l.3 
      <./design_fonctionnement_sys//img_design/dia_class.png>]
-<design_fonctionnement_sys//img_design/RegisterSD.jpg, id=285, 1109.14375pt x 6
+<design_fonctionnement_sys//img_design/RegisterSD.jpg, id=286, 1109.14375pt x 6
 43.40375pt>
 File: design_fonctionnement_sys//img_design/RegisterSD.jpg Graphic file (type j
 pg)
 <use design_fonctionnement_sys//img_design/RegisterSD.jpg>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/RegisterSD.jpg  
-used on input line 16.
+used on input line 38.
 (pdftex.def)             Requested size: 443.64964pt x 257.35693pt.
 
-Overfull \hbox (10.02965pt too wide) in paragraph at lines 16--18
+Overfull \hbox (10.02965pt too wide) in paragraph at lines 38--40
  [][] 
  []
 
-[15
+[15] [16
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.11})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.20 \newpage
+l.42 \newpage
               <./design_fonctionnement_sys//img_design/RegisterSD.jpg>]
-<design_fonctionnement_sys//img_design/connexion_seq.png, id=291, 682.55pt x 39
+<design_fonctionnement_sys//img_design/connexion_seq.png, id=297, 682.55pt x 39
 1.4625pt>
 File: design_fonctionnement_sys//img_design/connexion_seq.png Graphic file (typ
 e png)
 <use design_fonctionnement_sys//img_design/connexion_seq.png>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/connexion_seq.pn
-g  used on input line 30.
+g  used on input line 51.
 (pdftex.def)             Requested size: 273.01517pt x 156.58221pt.
-<design_fonctionnement_sys//img_design/Chat_DS.png, id=292, 534.19576pt x 151.7
+<design_fonctionnement_sys//img_design/Chat_DS.png, id=298, 534.19576pt x 151.7
 67pt>
 File: design_fonctionnement_sys//img_design/Chat_DS.png Graphic file (type png)
 
 <use design_fonctionnement_sys//img_design/Chat_DS.png>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Chat_DS.png  use
-d on input line 41.
+d on input line 67.
 (pdftex.def)             Requested size: 160.25996pt x 45.53044pt.
-
-[16
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.12})
- has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.46 \newpage
-             
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.13})
- has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.46 \newpage
-              <./design_fonctionnement_sys//img_design/connexion_seq.png (PNG c
-opy)> <./design_fonctionnement_sys//img_design/Chat_DS.png>]
-<design_fonctionnement_sys//img_design/PreLoby.jpg, id=301, 1409.265pt x 1023.8
+<design_fonctionnement_sys//img_design/PreLoby.jpg, id=299, 1409.265pt x 1023.8
 25pt>
 File: design_fonctionnement_sys//img_design/PreLoby.jpg Graphic file (type jpg)
 
 <use design_fonctionnement_sys//img_design/PreLoby.jpg>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/PreLoby.jpg  use
-d on input line 53.
+d on input line 79.
 (pdftex.def)             Requested size: 422.78276pt x 307.14987pt.
- [17
+
+[17
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.12})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.83 
+     
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.13})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.83 
+      <./design_fonctionnement_sys//img_design/connexion_seq.png (PNG copy)> <.
+/design_fonctionnement_sys//img_design/Chat_DS.png>] [18
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.14})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.58 \newpage
+l.84 \newpage
               <./design_fonctionnement_sys//img_design/PreLoby.jpg>]
-<design_fonctionnement_sys//img_design/PreGame.jpg, id=307, 1150.2975pt x 896.3
+<design_fonctionnement_sys//img_design/PreGame.jpg, id=314, 1150.2975pt x 896.3
 4875pt>
 File: design_fonctionnement_sys//img_design/PreGame.jpg Graphic file (type jpg)
 
 <use design_fonctionnement_sys//img_design/PreGame.jpg>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/PreGame.jpg  use
-d on input line 67.
+d on input line 93.
 (pdftex.def)             Requested size: 460.11086pt x 358.53316pt.
 
-Overfull \hbox (26.49086pt too wide) in paragraph at lines 67--69
+Overfull \hbox (26.49086pt too wide) in paragraph at lines 93--95
  [][] 
  []
 
-[18
+[19
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.15})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.71 \newpage
+l.97 \newpage
               <./design_fonctionnement_sys//img_design/PreGame.jpg>]
-<design_fonctionnement_sys//img_design/Game.jpg, id=314, 1021.8175pt x 920.4387
+<design_fonctionnement_sys//img_design/Game.jpg, id=321, 1021.8175pt x 920.4387
 5pt>
 File: design_fonctionnement_sys//img_design/Game.jpg Graphic file (type jpg)
 <use design_fonctionnement_sys//img_design/Game.jpg>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Game.jpg  used o
-n input line 81.
+n input line 107.
 (pdftex.def)             Requested size: 306.54762pt x 276.13376pt.
-)) [19
+)) [20
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.16})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -849,33 +848,40 @@ l.36 \end{document}
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `master.out' has not changed.
-(rerunfilecheck)             Checksum: 8630B576FB6C03F9744E213BF59DD4BA;4123.
+
+Package rerunfilecheck Warning: File `master.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `master.out':
+(rerunfilecheck)             Before: 8630B576FB6C03F9744E213BF59DD4BA;4123
+(rerunfilecheck)             After:  3A5C4913178CA672B12FAF7B75C15F79;4524.
  ) 
 Here is how much of TeX's memory you used:
- 11352 strings out of 478022
- 189029 string characters out of 5839673
+ 11357 strings out of 478022
+ 189090 string characters out of 5839673
  1863330 words of memory out of 5000000
- 31200 multiletter control sequences out of 15000+600000
- 522446 words of font info for 46 fonts, out of 8000000 for 9000
+ 31201 multiletter control sequences out of 15000+600000
+ 523132 words of font info for 47 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,8n,76p,362b,676s stack positions out of 10000i,1000n,20000p,200000b,200000s
- </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600
-pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.60
-0pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1000.6
-00pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.
-600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074
-.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm100
-0.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx10
-00.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2
-488.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm
-1200.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ect
-i1728.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ec
-rm1728.600pk>
-Output written on master.pdf (20 pages, 1101585 bytes).
+ </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600
+pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.60
+0pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.6
+00pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1000.
+600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440
+.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx207
+4.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm10
+00.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1
+000.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx
+2488.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecr
+m1200.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ec
+ti1728.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/e
+crm1728.600pk>
+Output written on master.pdf (21 pages, 1110273 bytes).
 PDF statistics:
- 728 PDF objects out of 1000 (max. 8388607)
- 318 compressed objects within 4 object streams
- 75 named destinations out of 1000 (max. 500000)
+ 760 PDF objects out of 1000 (max. 8388607)
+ 328 compressed objects within 4 object streams
+ 78 named destinations out of 1000 (max. 500000)
  370 words of extra memory for PDF output out of 10000 (max. 10000000)
 
