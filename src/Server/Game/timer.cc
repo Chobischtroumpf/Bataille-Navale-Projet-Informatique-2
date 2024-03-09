@@ -1,5 +1,6 @@
 #include "timer.hh"
 
+Timer::Timer(): limit_seconds{0}, current_time{0}, is_running{false} {}
 
 Timer::Timer(int limit_seconds, std::function<void()> callback)
     : limit_seconds{limit_seconds}, current_time{limit_seconds},
@@ -36,3 +37,9 @@ void Timer::stop() { is_running = false; }
 int Timer::get_time() const { return current_time; }
 
 int Timer::get_original_time() const {return limit_seconds;}
+
+void Timer::set(int limit_seconds, std::function<void()> callback_function) {
+  limit_seconds = limit_seconds;
+  current_time = limit_seconds;
+  callback = callback_function;
+}

@@ -1,5 +1,7 @@
 #include "game_timer.hh"
 
+GameTimer::GameTimer():timer{}, player1_timer{0}, player2_timer{0},turn{PLAYERONE}, finished{false}{}
+
 GameTimer::GameTimer(int switch_time, int game_time)
     : timer{switch_time, [this]() { switch_turn(); }}, player1_timer{game_time},
       player2_timer{game_time}, turn{PLAYERONE}, finished{false} {}
@@ -52,4 +54,10 @@ void GameTimer::update_time() {
       player2_timer = 0;
     }
   }
+}
+
+void GameTimer::set(int switch_time, int player_time){
+    timer.set(switch_time, [this]() { switch_turn(); });
+    player1_timer = player_time;
+    player2_timer = player_time;
 }

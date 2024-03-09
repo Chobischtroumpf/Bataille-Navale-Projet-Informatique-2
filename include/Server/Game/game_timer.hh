@@ -5,6 +5,9 @@
 
 class GameTimer {
 public:
+
+  GameTimer();
+
   GameTimer(int switch_time, int game_time);
 
   void start_timer();
@@ -18,6 +21,8 @@ public:
   int get_player2_timer();
 
   int get_timer() const;
+
+  void set(int switch_time, int player_time);
 
 private:
   Timer timer;

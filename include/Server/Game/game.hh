@@ -4,7 +4,7 @@
 
 #include "turn.hh"
 #include "board.hh"
-#include "timer.hh"
+#include "game_timer.hh"
 #include "player_role.hh"
 #include "ship_coordinates.hh"
 
@@ -14,10 +14,6 @@ public:
   Game(const nlohmann::json& game_details);
 
   bool is_finished() const;
-
-  void game_timer_finished();
-
-  void player_timer_finished();
 
   bool handle_place_ship(Turn turn, ShipCoordinates ship_coordinates);
 
@@ -29,9 +25,7 @@ private:
   const size_t required_ship_placements = 5; // Number of ship placements required
   std::shared_ptr<Board> _board;
   bool mode_commandant;
-  //Timer game_timer;
-  //Timer player_timer;
-  bool is_timer_finished;
+  GameTimer game_timer;
   std::unordered_map<Turn, unsigned int> ship_placements;
 
   void start_timer();

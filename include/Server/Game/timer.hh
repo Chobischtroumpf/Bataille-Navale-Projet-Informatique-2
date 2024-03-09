@@ -8,6 +8,9 @@
 
 class Timer {
 public:
+
+  Timer();
+
   Timer(int limit_seconds, std::function<void()> callback);
 
   bool is_finished() const;
@@ -23,7 +26,7 @@ public:
 
   int get_original_time() const;
 
-  void set(int limit_seconds);
+  void set(int limit_seconds, std::function<void()> callback_function);
 
 private:
   const int limit_seconds;
