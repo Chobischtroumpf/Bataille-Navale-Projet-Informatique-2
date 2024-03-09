@@ -4,6 +4,7 @@
 
 typedef enum
 {
+    NONE =          0b000000,
     IS_LINE =       0b001000,
     IS_AREA =       0b010000,
     IS_MINE =       0b000001,
@@ -27,11 +28,14 @@ class SpecialAbility
     std::string description_;
     int energy_cost_;
     SpecialAbilityType type_;
-    
-  public:
-    SpecialAbility(std::string name, std::string description, int energy_cost, SpecialAbilityType type) : name_{name}, description_{description}, energy_cost_{energy_cost}, type_{type} {};
-    int     getEnergyCost() { return energy_cost_; };
+  protected:
+    void    setName(std::string new_name) { this->name_ = new_name; };
+    void    setDescription(std::string new_description) { this->description_ = new_description; };
     void    setEnergyCost(int new_cost) { this->energy_cost_ = new_cost; };
+    void    setType(SpecialAbilityType new_type) { this->type_ = new_type; };
+  public:
+    SpecialAbility(std::string name, std::string description="", int energy_cost=0, SpecialAbilityType type=NONE) : name_{name}, description_{description}, energy_cost_{energy_cost}, type_{type} {};
+    int     getEnergyCost() { return energy_cost_; };
     SpecialAbilityType getType() { return type_; };
 
     virtual ~SpecialAbility() = default;

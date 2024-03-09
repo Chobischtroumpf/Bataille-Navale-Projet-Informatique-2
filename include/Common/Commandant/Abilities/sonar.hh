@@ -5,6 +5,6 @@
 class Sonar : public SpecialAbility
 {
   public:
-    Sonar() : SpecialAbility{"Sonar", "capacité permettant de poser des mines pendant la partie", 4, SONAR} {};
+    Sonar(int cost=4) : SpecialAbility{"Sonar", "capacité permettant de poser des mines pendant la partie", cost, SONAR} {};
     ~Sonar() = default;
 };

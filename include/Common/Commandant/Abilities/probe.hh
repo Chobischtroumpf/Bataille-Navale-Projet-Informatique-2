@@ -5,6 +5,6 @@
 class Probe : public SpecialAbility
 {
   public:
-    Probe() : SpecialAbility{"Tir", "capacité de base, vise une case simple", 0, PROBE} {};
+    Probe(int cost=4) : SpecialAbility{"Tir", "capacité de base, vise une case simple", cost, PROBE} {};
     ~Probe() = default;
 };

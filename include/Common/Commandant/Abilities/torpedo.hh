@@ -5,6 +5,6 @@
 class Torpedo : public SpecialAbility
 {
   public:
-    Torpedo() : SpecialAbility{"Torpedo", "basic attack, targets a single cell", 0, TORPEDO} {};
+    Torpedo(int cost=4) : SpecialAbility{"Torpedo", "basic attack, targets a single cell", cost, TORPEDO} {};
     ~Torpedo() = default;
 };

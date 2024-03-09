@@ -5,16 +5,29 @@
 #include "special_ability.hh"
 #include "ship.hh"
 
+typedef int Amount;
+typedef int Size;
+typedef std::pair<Amount, Size> PossibleShip;
+typedef std::vector<PossibleShip> PossibleShips;
+typedef std::vector<SpecialAbility> SpecialAbilities;
 class Faction {
-  protected:
+  private:
     std::string name_;
-    std::vector<Ship> ships_;
-    std::vector<SpecialAbility> special_abilities_;
+    PossibleShips ships_;
+    SpecialAbilities special_abilities_;
+
+  protected:
+    virtual void setName(std::string name) { this->name_ = name;};
+    virtual void setPossibleShips(PossibleShips ships) { this->ships_ = ships;};
+    virtual void addSpecialAbility(SpecialAbility new_ability) { this->special_abilities_.push_back(new_ability);};
+    virtual void setSpecialAbilities(std::vector<SpecialAbility> abilities) { this->special_abilities_ = abilities;};
 
   public:
-    Faction(std::string name, std::vector<Ship> ships, std::vector<SpecialAbility> special_abilities): name_{name}, ships_{ships}, special_abilities_{special_abilities} {};
+    Faction() = default;
+    Faction(std::string name, std::vector<PossibleShip> ships, std::vector<SpecialAbility> special_abilities): name_{name}, ships_{ships}, special_abilities_{special_abilities} {};
+
     virtual std::string getName() { return name_; };
-    virtual std::vector<Ship> getShips() { return ships_; };
+    virtual std::vector<PossibleShip> getShips() { return ships_; };
     virtual std::vector<SpecialAbility> getSpecialAbilities() { return special_abilities_; };
     virtual ~Faction() = default;
 };
