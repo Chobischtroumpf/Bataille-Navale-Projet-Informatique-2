@@ -252,7 +252,26 @@ void GameServer::handleGet(http_request request) {
             }
         }
 
-        // Handle unmatched paths
+        // Handle the case for "/api/friend" - Returns the user's friend list
+        else if (path == U("/api/friend")) {
+
+            // First, verify the AuthToken and retrieve the userId
+            auto userId = verifyAuthToken(request);
+
+            // If userId is empty, the token is invalid or missing
+            if (userId.empty()) {
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
+            }
+
+            // Getting the friend list
+            dbManager.getUserFriends(userId);
+            request.reply(status_codes::OK, response.dump(), "application/json");
+        }
+
+
+            // Handle unmatched paths
         else {
             response["error"] = "Unknown path";
             request.reply(status_codes::BadRequest, response.dump(), "application/json");
@@ -368,6 +387,34 @@ void GameServer::handlePost(http_request request) {
                         request.reply(status_codes::OK, response.dump(), "application/json");
                     } else {
                         response["error"] = "Failed to send message";
+                        request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                    }
+                }
+
+                // Handle the case for "/api/friend/add" - Add a friend
+                if (path == U("/api/friend/add")) {
+
+                    // First, verify the AuthToken and retrieve the userId
+                    auto userId = verifyAuthToken(request);
+
+                    // If userId is empty, the token is invalid or missing
+                    if (userId.empty()) {
+                        response["error"] = "Invalid or missing AuthToken";
+                        request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                        return; // Stop further processing
+                    }
+
+                    // Extract friendUsername from request body
+                    auto friendUsername = requestBody[U("friendId")].as_string();
+
+                    // Response based on the friend's username validity
+                    if (dbManager.checkUserName(friendUsername).isOk()) {
+                        // Adding the friend
+                        dbManager.addFriend(userId, friendUsername);
+                        response["status"] = "Friend added successfully";
+                        request.reply(status_codes::OK, response.dump(), "application/json");
+                    } else {
+                        response["error"] = "Failed to add friend";
                         request.reply(status_codes::BadRequest, response.dump(), "application/json");
                     }
                 }
