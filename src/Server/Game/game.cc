@@ -13,8 +13,8 @@ bool Game::is_finished() const {
 }
 
 void Game::start_timer() {
-  game_timer.start(std::bind(&Game::game_timer_finished, this));
-  player_timer.start(std::bind(&Game::player_timer_finished, this));
+  //game_timer.start(std::bind(&Game::game_timer_finished, this));
+  //player_timer.start(std::bind(&Game::player_timer_finished, this));
 }
 
 void Game::game_timer_finished() {
@@ -65,8 +65,8 @@ void Game::set_game(const nlohmann::json& game_details){
     mode_commandant = false;
   }
 
-  player_timer.set(std::stoi(game_details.at("player_timer").get<std::string>()));
-  game_timer.set(std::stoi(game_details.at("game_timer").get<std::string>()));
+  //player_timer.set(std::stoi(game_details.at("player_timer").get<std::string>()));
+  //game_timer.set(std::stoi(game_details.at("game_timer").get<std::string>()));
 }
 
 void Game::initialize_ship_placements() {
