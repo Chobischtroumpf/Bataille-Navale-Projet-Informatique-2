@@ -18,7 +18,7 @@ bool GameController::checkShipsInBoard(ShipCoordinates coord) const {
 bool GameController::checkShipPosition(ShipCoordinates coord) const {
     for (int i = 0; i < coord.ship_id(); i++) {
         if (coord.orientation() == HORIZONTAL) {
-            if (coord.x() + i < _board->width() && _board->cellType(true, BoardCoordinates(coord.x() + i, coord.y())) != UNDAMAGED) {
+            if (coord.x() + i < _board->width() && _board->cellType(true, BoardCoordinates(coord.x() + i, coord.y())) != UNDAMAGED_SHIP) {
                 for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x() + i, coord.y()))) {
                     if (neighbor.type() == IS_SHIP) {
                         return false;
@@ -28,7 +28,7 @@ bool GameController::checkShipPosition(ShipCoordinates coord) const {
                 return false;
             }
         } else {
-            if (coord.y() + i < _board->height() && _board->cellType(true, BoardCoordinates(coord.x(), coord.y() + i)) != UNDAMAGED) {
+            if (coord.y() + i < _board->height() && _board->cellType(true, BoardCoordinates(coord.x(), coord.y() + i)) != UNDAMAGED_SHIP) {
                 for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x(), coord.y() + i))) {
                     if (neighbor.type() == IS_SHIP) {
                         return false;

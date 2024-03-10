@@ -145,13 +145,13 @@ public:
       for (int i = 0; i < shipCoords.ship_id(); i++) {
         _my_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)]
                 [shipCoords.x() + (shipCoords.orientation() ? i : 0)]
-                    .setType(UNDAMAGED);
+                    .setType(UNDAMAGED_SHIP);
       }
     } else {
       for (int i = 0; i < shipCoords.ship_id(); i++) {
         _their_side[shipCoords.y() + (!shipCoords.orientation() ? i : 0)]
                    [shipCoords.x() + (shipCoords.orientation() ? i : 0)]
-                       .setType(UNDAMAGED);
+                       .setType(UNDAMAGED_SHIP);
       }
     }
 
@@ -161,7 +161,7 @@ public:
   void fire(const BoardCoordinates &coords) {
     Cell &cell = myTurn() ? _their_side[coords.y()][coords.x()]
                           : _my_side[coords.y()][coords.x()];
-    if (cell.type() == UNDAMAGED) {
+    if (cell.type() == UNDAMAGED_SHIP) {
       cell.setType(HIT);
     } else if (cell.type() == WATER) {
       cell.setType(OCEAN);
@@ -175,7 +175,7 @@ public:
     for (const auto &row : board) {
       for (const auto &cell : row) {
         switch (cell.type()) {
-        case UNDAMAGED:
+        case UNDAMAGED_SHIP:
           std::cout << "U ";
           break;
         case HIT:
@@ -273,12 +273,14 @@ public:
       return "WATER";
     case OCEAN:
       return "OCEAN";
-    case UNDAMAGED:
-      return "UNDAMAGED";
-    case HIT:
-      return "HIT";
-    case SUNK:
-      return "SUNK";
+    case UNDAMAGED_SHIP:
+      return "UNDAMAGED_SHIP";
+    case HIT_SHIP:
+      return "HIT_SHIP";
+    case HIT_MINE:
+      return "HIT_MINE";
+    case SUNK_SHIP:
+      return "SUNK_SHIP";
     default:
       throw NotImplementedError("Board unknown CellType");
     }
@@ -304,7 +306,7 @@ public:
         rowJsonA.push_back(cellObjectA);
 
         if ((player == PlayerRole::Leader || player == PlayerRole::Opponent) &&
-            cellB.type() == UNDAMAGED) {
+            cellB.type() == UNDAMAGED_SHIP) {
           cellObjectB["type"] = toString(WATER);
         } else {
           cellObjectB["type"] = toString(cellB.type());

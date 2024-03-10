@@ -119,15 +119,15 @@ std::vector<string> GameConsole::createGrid(bool my_side) const {
       string              border  = "│";
       CellType content = _board->cellType(my_side, {j, i});
 
-    if (_board->myTurn() && !my_side && content == UNDAMAGED){
+    if (_board->myTurn() && !my_side && content == UNDAMAGED_SHIP){
         oss << border << toString(WATER);
-      }else if (!_board->myTurn() && my_side && content == UNDAMAGED){
+      }else if (!_board->myTurn() && my_side && content == UNDAMAGED_SHIP){
         oss << border << toString(WATER);
       }else{
         if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
           CellType previous = _board->cellType(my_side, {j - 1, i});
           
-          if ((previous == UNDAMAGED) && ((_board->myTurn() && !my_side) || (!_board->myTurn() && my_side))) {
+          if ((previous == UNDAMAGED_SHIP) && ((_board->myTurn() && !my_side) || (!_board->myTurn() && my_side))) {
             border  = "│";
           }else{
             border = toString(_board->best(content, previous));
@@ -152,9 +152,13 @@ std::vector<string> GameConsole::createGrid(bool my_side) const {
 std::vector<string> GameConsole::createMapKey() const {
   std::vector<string> map_key;
   map_key.emplace_back(" > " + toString(OCEAN) + " Ocean          <");
-  map_key.emplace_back(" > " + toString(UNDAMAGED) + " Undamaged ship <");
-  map_key.emplace_back(" > " + toString(HIT) + " Hit ship       <");
-  map_key.emplace_back(" > " + toString(SUNK) + " Sunk ship      <");
+  map_key.emplace_back(" > " + toString(UNDAMAGED_SHIP) + " UNDAMAGED ship <");
+  map_key.emplace_back(" > " + toString(UNDAMAGED_MINE) + " UNDAMAGED mine <");
+  map_key.emplace_back(" > " + toString(SCANNED_SHIP) + " SCANNED ship <");
+  map_key.emplace_back(" > " + toString(SCANNED_MINE) + " SCANNED mine <");
+  map_key.emplace_back(" > " + toString(HIT_SHIP) + " Hit ship       <");
+  map_key.emplace_back(" > " + toString(HIT_MINE) + " Hit mine       <");
+  map_key.emplace_back(" > " + toString(SUNK_SHIP) + " Sunk ship      <");
   return map_key;
 }
 
@@ -168,10 +172,10 @@ std::vector<string> GameConsole::createBoatsKey() const {
     std::array<std::string, 3> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m"};
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
-    boat_key.emplace_back(color_code.at(remaining_destroyer) + " > " + toString(UNDAMAGED) * 3 + "        Destroyer  (×" + std::to_string(remaining_destroyer) + ") <" + color_code.at(1));
-    boat_key.emplace_back(color_code.at(remaining_submarine) + " > " + toString(UNDAMAGED) * 5 + "      Submarine  (×"+ std::to_string(remaining_submarine) +") <" + color_code.at(1));
-    boat_key.emplace_back(color_code.at(remaining_battleship) + " > " + toString(UNDAMAGED) * 7 + "    Battleship (×"+ std::to_string(remaining_battleship) +") <" + color_code.at(1));
-    boat_key.emplace_back(color_code.at(remaining_carrier) + " > " + toString(UNDAMAGED) * 9 + "  Carrier    (×"+ std::to_string(remaining_carrier) +") <" + color_code.at(1));
+    boat_key.emplace_back(color_code.at(remaining_destroyer) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        Destroyer  (×" + std::to_string(remaining_destroyer) + ") <" + color_code.at(1));
+    boat_key.emplace_back(color_code.at(remaining_submarine) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      Submarine  (×"+ std::to_string(remaining_submarine) +") <" + color_code.at(1));
+    boat_key.emplace_back(color_code.at(remaining_battleship) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    Battleship (×"+ std::to_string(remaining_battleship) +") <" + color_code.at(1));
+    boat_key.emplace_back(color_code.at(remaining_carrier) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  Carrier    (×"+ std::to_string(remaining_carrier) +") <" + color_code.at(1));
     return boat_key;
   }
 

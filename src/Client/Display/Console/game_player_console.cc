@@ -1,4 +1,4 @@
-#include "../../../../include/client/Display/Console/game_player_console.hh"
+#include "game_player_console.hh"
 
 GamePlayerConsole::GamePlayerConsole(std::shared_ptr<GamePlayerView> view): _view(view) {}
 
@@ -77,7 +77,7 @@ void GamePlayerConsole::display() {
     displayOptions(0);
 }
 
-void GamePlayerConsole::display_error() {
+void GamePlayerConsole::displayError() {
 
 }
 
@@ -85,7 +85,7 @@ void GamePlayerConsole::update() {
 
 }
 
-ReturnInput GamePlayerConsole::handle_input() {
+ReturnInput GamePlayerConsole::handleInput() {
     std::srand(std::time(nullptr));
     bool next = false;
     int p1 = 0;
@@ -135,7 +135,7 @@ ReturnInput GamePlayerConsole::handle_input() {
                         input_error = false;
                         break;
                       case 11:
-                        return;
+                        return ;
                       default:
                         break;
                     }
@@ -191,7 +191,7 @@ ReturnInput GamePlayerConsole::handle_input() {
                         input_error = false;
                         break;
                       case 11:
-                        return;
+                        return ;
                       default:
                         break;
                     }
@@ -229,7 +229,7 @@ ReturnInput GamePlayerConsole::handle_input() {
                         next = true;
                         break;
                       case 4:
-                        return;
+                        return ;
                       default:
                         break;
                     }

@@ -88,4 +88,11 @@ void Driver::displayChatScreen(std::string username) {
 
 void Driver::displayLobbyScreen() {}
 
-void Driver::displayGameCreationScreen() {}
+void Driver::displayGameCreationScreen() {
+  if (_display_type == CONSOLE) {
+    _display = std::make_shared<GamePlayerConsole>();
+
+  } else {
+    throw NotImplementedError("GUI not implemented yet");
+  }
+}

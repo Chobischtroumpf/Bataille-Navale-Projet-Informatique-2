@@ -12,9 +12,9 @@ class GameSettingConsole : public Console {
 public:
     GameSettingConsole(std::shared_ptr<GameSettingView> view);
     void display() override;
-    void display_error() override;
+    void displayError() override;
     void update() override;
-    void handle_input() override;
+    ReturnInput handleInput() override;
 private:
     std::shared_ptr<GameSettingView> _view;
     std::shared_ptr<GameSettingController> _controller;

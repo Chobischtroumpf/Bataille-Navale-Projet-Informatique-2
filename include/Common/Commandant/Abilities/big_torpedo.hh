@@ -5,6 +5,6 @@
 class BigTorpedo : public SpecialAbility
 {
   public:
-    BigTorpedo() : SpecialAbility{"Big Torpedo", "upgrade OF the basic attack, targets an area of four cells", 4, BIG_TORPEDO} {};
+    BigTorpedo(int cost=4) : SpecialAbility{"Big Torpedo", "upgrade OF the basic attack, targets an area of four cells", cost, BIG_TORPEDO} {};
     ~BigTorpedo() = default;
 };

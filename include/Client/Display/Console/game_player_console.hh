@@ -5,18 +5,19 @@
 #include <string>
 #include <random>
 #include <ctime>
-#include "../../Views/game_player_view.hh"
-#include "../console.hh"
-#include "../../Controllers/game_player_controller.hh"
+
+#include "game_player_view.hh"
+#include "console.hh"
+#include "game_player_controller.hh"
 
 
 class GamePlayerConsole : public Console {
 public:
     GamePlayerConsole(std::shared_ptr<GamePlayerView> view);
     void display() override;
-    void display_error() override;
+    void displayError() override;
     void update() override;
-    ReturnInput handle_input() override;
+    ReturnInput handleInput() override;
 private:
     std::shared_ptr<GamePlayerView> _view;
     std::shared_ptr<GamePlayerController> _controller;

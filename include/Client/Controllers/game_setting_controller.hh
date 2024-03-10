@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../controller.hh"
+#include "controller.hh"
 
 class GameSettingController : public Controller {
 public:

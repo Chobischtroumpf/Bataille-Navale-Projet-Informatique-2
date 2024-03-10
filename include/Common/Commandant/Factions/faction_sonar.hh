@@ -21,6 +21,6 @@ class FactionSonar : public Faction
       setPossibleShips(ships);
       setSpecialAbilities({Torpedo(), PiercingTorpedo(), Sonar(3), AerialStrike(), Probe()});
     };
-    ~FactionSonar();
+    ~FactionSonar() {};
 };
 

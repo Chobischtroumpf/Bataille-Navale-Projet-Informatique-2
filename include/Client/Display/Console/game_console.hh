@@ -102,11 +102,13 @@ private:
         return " ";
       case OCEAN:
         return "╳";
-      case UNDAMAGED:
+      case UNDAMAGED_SHIP:
         return "█";
-      case HIT:
+      case HIT_SHIP:
         return "▒";
-      case SUNK:
+      case HIT_MINE:
+        return "⚑";
+      case SUNK_SHIP:
         return "░";
       default:
         throw NotImplementedError("ConsoleBoardDisplay unknown CellType");

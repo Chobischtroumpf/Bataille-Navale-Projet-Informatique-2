@@ -16,7 +16,7 @@ enum CellType {
   OCEAN = IS_KNOWN, //< was empty target
 
   // Mine:
-  MINE = IS_MINE,
+  UNDAMAGED_MINE = IS_MINE,
   SCANNED_MINE = IS_MINE | IS_KNOWN,
   HIT_MINE = IS_MINE | IS_KNOWN | IS_HIT,
 

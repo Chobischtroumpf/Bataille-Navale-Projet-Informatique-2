@@ -82,7 +82,9 @@ private:
   bool _is_finished;
   bool _is_victory;
 
-  /* Get the cell in one of the board*/
+  /*
+   * Get the cell in one of the boards
+  */
   Cell get(bool my_side, BoardCoordinates position) const;
 
   int shipId(bool my_side, BoardCoordinates position);

@@ -150,7 +150,7 @@ typedef enum {
   OCEAN = IS_KNOWN, //< was empty target
 
   // Ship states:
-  UNDAMAGED = IS_SHIP,                 //< undamaged ship, used for my side
+  UNDAMAGED_SHIP = IS_SHIP,                 //< UNDAMAGED_SHIP ship, used for my side
   HIT = IS_SHIP | IS_KNOWN,            //< hit ship
   SUNK = IS_SHIP | IS_KNOWN | IS_SUNK, //< sunk ship
 } CellType;
@@ -195,7 +195,7 @@ typedef enum {
   HIT_MINE = IS_MINE | IS_KNOWN | IS_HIT,
 
   // Ship states:
-  UNDAMAGED_SHIP = IS_SHIP,
+  UNDAMAGED_SHIP_SHIP = IS_SHIP,
   SCANNED_SHIP = IS_SHIP | IS_KNOWN,
   HIT_SHIP = IS_SHIP | IS_KNOWN | IS_HIT,
   SUNK_SHIP = IS_SHIP | IS_KNOWN | IS_HIT | IS_SUNK,
@@ -219,6 +219,8 @@ public:
             return "╳ ";
         case UNDAMAGED_SHIP:
             return "█ ";
+        case UNDAMAGED_MINE:
+            return "¤ ";
         case HIT_SHIP:
             return "▒ ";
         case SUNK_SHIP:
@@ -381,13 +383,13 @@ void LocalBoard::print() {
 
 bool LocalBoard::addShip(Ship s, int x, int y) {
     for (auto &c: s.getCoordinates()) {
-        if (_my_board.at(y + c.second).at(x + c.first).type() == UNDAMAGED_SHIP) {
+        if (_my_board.at(y + c.second).at(x + c.first).type() == UNDAMAGED_SHIP_SHIP) {
           return false;
         }
     }
 
     for (auto &c: s.getCoordinates()) {
-        _my_board.at(y + c.second).at(x + c.first).setType(UNDAMAGED_SHIP);
+        _my_board.at(y + c.second).at(x + c.first).setType(UNDAMAGED_SHIP_SHIP);
     }
     return true;
   }

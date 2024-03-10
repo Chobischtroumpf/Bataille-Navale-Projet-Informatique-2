@@ -24,7 +24,7 @@ public:
       // std::cout << "Checking for tile X : " << tile.x() << " Y : " <<
       // tile.y() << std::endl;
 
-      if (_board[tile.y()][tile.x()].type() == UNDAMAGED) {
+      if (_board[tile.y()][tile.x()].type() == UNDAMAGED_SHIP) {
         _state = true;
         return;
       }

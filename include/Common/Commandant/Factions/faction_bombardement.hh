@@ -6,6 +6,7 @@
 #include "probe.hh"
 #include "torpedo.hh"
 #include "piercing_torpedo.hh"
+#include "big_torpedo.hh"
 #include "aerial_strike.hh"
 
 class FactionBombardement : public Faction
@@ -20,7 +21,7 @@ class FactionBombardement : public Faction
       ships.push_back(std::make_pair(2, 4));
       ships.push_back(std::make_pair(1, 5));
       setPossibleShips(ships);
-      setSpecialAbilities({Torpedo(), PiercingTorpedo(), Sonar(3), AerialStrike(), Probe()});
+      setSpecialAbilities({Torpedo(), PiercingTorpedo(), BigTorpedo(), Sonar(), AerialStrike(7)});
     };
     ~FactionBombardement() {};
 };

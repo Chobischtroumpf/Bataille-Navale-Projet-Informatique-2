@@ -8,7 +8,6 @@
 #include "piercing_torpedo.hh"
 #include "aerial_strike.hh"
 
-
 class FactionMines : public Faction
 {
   public:
@@ -22,6 +21,6 @@ class FactionMines : public Faction
         setPossibleShips(ships);
         setSpecialAbilities({Torpedo(), PiercingTorpedo(), Sonar(), AerialStrike(), Mine()});
     };
-    ~FactionMines();
+    ~FactionMines() {};
 };
 

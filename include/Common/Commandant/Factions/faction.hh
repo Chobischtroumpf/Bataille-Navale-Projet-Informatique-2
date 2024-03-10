@@ -10,6 +10,7 @@ typedef int Size;
 typedef std::pair<Amount, Size> PossibleShip;
 typedef std::vector<PossibleShip> PossibleShips;
 typedef std::vector<SpecialAbility> SpecialAbilities;
+
 class Faction {
   private:
     std::string name_;
