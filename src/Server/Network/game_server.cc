@@ -121,6 +121,7 @@ void GameServer::handleGet(http_request request) {
                     // Handle missing parameters
                     response["error"] = "Session could not be found";
                     request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                    return;
                 }
 
                 // Use sessionId to query the game state
@@ -186,8 +187,17 @@ void GameServer::handleGet(http_request request) {
             // Verifying both sessionId and userId are provided
             if (usernameIt != queryParams.end() ) {
                 auto username = usernameIt->second;
-            
-                dbManager.checkUserName(to_utf8(username));
+
+                QueryResult query = dbManager.checkUserName(to_utf8(username));
+
+                if (!query.isOk()) {
+                    // Handle missing parameters
+                    response["error"] = "Error on parameter query : " + query.getError();
+                    request.reply(status_codes::InternalError, response.dump(), "application/json");
+                }
+
+                string userId = query.getFirst();
+                response["userId"] = userId;
 
                 request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
@@ -249,6 +259,36 @@ void GameServer::handleGet(http_request request) {
             } else {
                 response["error"] = "Missing userId parameter";
                 request.reply(status_codes::BadRequest, response.dump(), "application/json");
+            }
+        }
+        
+        // Handle the case for "/api/friend/list" - Retrieving the friend list -- Protected
+        else if (path.find(U("/api/friend/list")) != wstring::npos) {
+            // Protected route - verify the AuthToken and retrieve the userId
+            auto userId = verifyAuthToken(request);
+
+            // If userId is empty, the token is invalid or missing
+            if (userId.empty()) {
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
+            }
+
+            // Retrieve the user's friend list
+            auto friendQuery = dbManager.getUserFriends(userId);
+
+            if (!friendQuery.isOk()) {
+                // Handle error in retrieving friend list
+                response["error"] = "Failed to retrieve friend list";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
+            } else {
+                // Successfully retrieved friend list
+                nlohmann::json friendsJson = nlohmann::json::array();
+                for (const auto& friendId : friendQuery.data.at(0)) {
+                    friendsJson.push_back(friendId);
+                }
+                response["friends"] = friendsJson;
+                request.reply(status_codes::OK, response.dump(), "application/json");
             }
         }
 
@@ -478,6 +518,35 @@ void GameServer::handlePost(http_request request) {
                     } else {
                         // Failed to send message
                         response["error"] = "Failed to send message";
+                        request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                    }
+                }
+                
+                 // Handle the case for "/api/friend/add" - Adding a friend -- Protected
+                else if (path.find(U("/api/friend/add")) != wstring::npos ) {
+                    // Protected route - verify the AuthToken and retrieve the userId
+                    auto userId = verifyAuthToken(request);
+
+                    // If userId is empty, the token is invalid or missing
+                    if (userId.empty()) {
+                        response["error"] = "Invalid or missing AuthToken";
+                        request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                        return; // Stop further processing
+                    }
+
+                    // Extract recipientId and message from request body
+                    auto friendUsername = requestBody[U("friend")].as_string();
+
+                    // Add the friend to the user's friend list
+                    bool isSuccessful = this->dbManager.addFriend(userId, to_utf8(friendUsername));
+
+                    if (isSuccessful) {
+                        // Friend added successfully
+                        response["status"] = "Friend added successfully";
+                        request.reply(status_codes::OK, response.dump(), "application/json");
+                    } else {
+                        // Failed to add friend
+                        response["error"] = "Failed to add friend";
                         request.reply(status_codes::BadRequest, response.dump(), "application/json");
                     }
                 }
