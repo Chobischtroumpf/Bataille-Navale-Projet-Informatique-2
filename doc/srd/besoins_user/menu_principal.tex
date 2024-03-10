@@ -23,10 +23,8 @@ Si au moins un joueur à rejoint la partie, le joueur principale peut le fixer e
 Mais avant que la partie ne puisse commencer, il faudra placer tous les bateaux disponibles sur le board, après quoi la partie se lance.
 
 \subsection{Rejoindre une partie}
-Lorsqu'un utilisateur est invité par un ami a rejoindre une partie, il a la possibilité de rejoindre la partie en acceptant l'invitation, mais il peut aussi refuser
-ou encore ignorer l'invitation. Si jamais le joueur est déconnecté, un message d'erreur est affiché pour informer qu'il n'est pas possible d'inviter le joueur.
-Un joueur a aussi la possibilité de rejoindre une partie sans invitation à condition que la partie soit au stade de lobby.
-
+Afin de rejoindre une partie, l'utilisateur doit simplement entrer un code de partie qu'il aura reçu de la part du joueur principal.
+Notons que le code peut être envoyé par le biais du chat, ou tout autre moyen de communication.
 
 \subsection{Gérer sa liste d'ami}
 Chaque utilisateur possède une liste d'amis qu'il peut modifier. Il a la possibilité de:
@@ -34,8 +32,11 @@ Chaque utilisateur possède une liste d'amis qu'il peut modifier. Il a la possib
     \item ajouter un ami a sa liste
     \item retirer un ami de sa liste
 \end{itemize}
+La liste d'ami permet d'initier chat avec l'ami, ce qui permet de notamment communiquer avec lui, mais également de lui envoyer des codes de partie.
 
 \subsection{Chat}
 Si le joueur a des amis en ligne dans sa liste d'amis, il a la possibilité de communiquer avec eux via un chat. 
-Si un ami n'est pas connecté, ses messages cesseront d'être transmis, et le programme lui présentera un message l'informant de cette situation.
+Si le joueur n'est pas en ligne, il peut tout de même envoyer un message, qui sera reçu par l'ami lorsqu'il se connectera.
+Cependant, nous ne pouvons pas assurer le système de notification lorsque l'ami n'est pas en ligne.
+
 \end{document}
