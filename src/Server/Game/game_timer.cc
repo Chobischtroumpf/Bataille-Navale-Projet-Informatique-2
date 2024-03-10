@@ -1,6 +1,8 @@
 #include "game_timer.hh"
 
-GameTimer::GameTimer():timer{}, player1_timer{0}, player2_timer{0},turn{PLAYERONE}, finished{false}{}
+GameTimer::GameTimer()
+    : timer{}, player1_timer{0},
+      player2_timer{0}, turn{PLAYERONE}, finished{false} {}
 
 GameTimer::GameTimer(int switch_time, int game_time)
     : timer{switch_time, [this]() { switch_turn(); }}, player1_timer{game_time},
@@ -19,23 +21,31 @@ void GameTimer::switch_turn() {
 bool GameTimer::is_finished() const { return finished; }
 
 int GameTimer::get_player1_timer() {
-  int temp_timer = player1_timer - timer.get_original_time() + timer.get_time();
-  if (temp_timer <= 0) {
-    finished = true;
-    player1_timer = 0;
-    temp_timer = 0;
+  if (turn == PLAYERONE) {
+    int temp_timer =
+        player1_timer - timer.get_original_time() + timer.get_time();
+    if (temp_timer <= 0) {
+      finished = true;
+      player1_timer = 0;
+      temp_timer = 0;
+    }
+    return temp_timer;
   }
-  return temp_timer;
+  return player1_timer;
 }
 
 int GameTimer::get_player2_timer() {
-  int temp_timer = player2_timer - timer.get_original_time() + timer.get_time();
-  if (temp_timer <= 0) {
-    finished = true;
-    player2_timer = 0;
-    temp_timer = 0;
+  if (turn == PLAYERTWO) {
+    int temp_timer =
+        player2_timer - timer.get_original_time() + timer.get_time();
+    if (temp_timer <= 0) {
+      finished = true;
+      player2_timer = 0;
+      temp_timer = 0;
+    }
+    return temp_timer;
   }
-  return temp_timer;
+  return player2_timer;
 }
 
 int GameTimer::get_timer() const { return timer.get_time(); }
@@ -58,21 +68,19 @@ void GameTimer::update_time() {
   }
 }
 
-void GameTimer::set(int switch_time, int player_time){
-    timer.set(switch_time, [this]() { switch_turn(); });
-    player1_timer = player_time;
-    player2_timer = player_time;
+void GameTimer::set(int switch_time, int player_time, std::function<void()> callback_function) {
+  timer.set(switch_time, callback_function);
+  player1_timer = player_time;
+  player2_timer = player_time;
 }
 
-int GameTimer::winner() const{
-  if (finished){
-    if (player1_timer == 0){
+int GameTimer::winner() const {
+  if (finished) {
+    if (player1_timer == 0) {
       return 2;
-    }
-    else{
+    } else {
       return 1;
     }
   }
   return 0;
-  
 }

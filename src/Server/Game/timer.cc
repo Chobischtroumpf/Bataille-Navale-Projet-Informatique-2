@@ -43,8 +43,8 @@ int Timer::get_time() const { return current_time; }
 
 int Timer::get_original_time() const { return limit_seconds; }
 
-void Timer::set(int limit_seconds, std::function<void()> callback_function) {
-  limit_seconds = limit_seconds;
+void Timer::set(int new_limit_seconds, std::function<void()> callback_function) {
+  limit_seconds = new_limit_seconds;
   current_time = limit_seconds;
   callback = callback_function;
 }

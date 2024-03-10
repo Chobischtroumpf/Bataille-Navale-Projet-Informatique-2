@@ -22,7 +22,7 @@ public:
 
   int get_timer() const;
 
-  void set(int switch_time, int player_time);
+  void set(int switch_time, int player_time, std::function<void()> callback_function);
 
   int winner() const;
 

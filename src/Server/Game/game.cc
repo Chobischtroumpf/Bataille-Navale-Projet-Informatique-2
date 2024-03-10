@@ -4,7 +4,6 @@ Game::Game(const nlohmann::json &game_details)
     : _board{std::make_shared<Board>()} {
   set_game(game_details);
   initialize_ship_placements();
-  start_timer();
 }
 
 bool Game::is_finished() const {
@@ -38,8 +37,7 @@ bool Game::handle_place_ship(Turn turn, ShipCoordinates ship_coordinates) {
 bool Game::handle_fire(Turn turn, BoardCoordinates board_coordinates) {
   if (_board->whoseTurn() == turn) {
     _board->fire(board_coordinates);
-    _board->changeTurn();
-    game_timer.switch_turn();
+    change_turn();
     return true;
   } else {
     // handle if the it s not his turn
@@ -98,7 +96,7 @@ void Game::set_game(const nlohmann::json &game_details) {
       std::stoi(game_details.at("switch_time").get<std::string>());
   int player_time =
       std::stoi(game_details.at("player_time").get<std::string>());
-  game_timer.set(switch_time, player_time);
+  game_timer.set(switch_time, player_time, [this]() { change_turn(); });
   // player_timer.set(std::stoi(game_details.at("player_timer").get<std::string>()));
   // game_timer.set(std::stoi(game_details.at("game_timer").get<std::string>()));
 }
@@ -114,4 +112,9 @@ bool Game::ship_placements_finished() const {
 
   return ship_placements.at(PLAYERONE) == required_ship_placements &&
          ship_placements.at(PLAYERTWO) == required_ship_placements;
+}
+
+void Game::change_turn(){
+  _board->changeTurn();
+  game_timer.switch_turn();
 }

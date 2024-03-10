@@ -35,4 +35,6 @@ private:
   void initialize_ship_placements();
 
   bool ship_placements_finished() const;
+
+  void change_turn();
 };

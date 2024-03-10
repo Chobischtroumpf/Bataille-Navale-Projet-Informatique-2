@@ -26,10 +26,10 @@ public:
 
   int get_original_time() const;
 
-  void set(int limit_seconds, std::function<void()> callback_function);
+  void set(int new_limit_seconds, std::function<void()> callback_function);
 
 private:
-  const int limit_seconds;
+  int limit_seconds;
   std::atomic<int> current_time;
   std::atomic<bool> is_running;
   std::function<void()> callback;
