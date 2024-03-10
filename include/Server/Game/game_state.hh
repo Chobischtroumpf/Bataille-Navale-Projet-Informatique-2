@@ -24,7 +24,7 @@ public:
     virtual ~GameState();
 
     // Make a move in the game
-    bool makeMove(PlayerRole player, const std::string& move);
+    bool makeMove(PlayerRole player, const nlohmann::json& move );
 
     // Get the current state of the game
     nlohmann::json getGameState(PlayerRole player) const;
@@ -37,6 +37,13 @@ private:
 
     // Current state of the game
     nlohmann::json currentState;*/
+
+    bool handle_place_ship(PlayerRole player, const nlohmann::json& move);
+
+    bool handle_fire(PlayerRole player, const nlohmann::json& move);
+
+    Turn role_to_turn(PlayerRole player);
+
 };
 
 #endif // GAMESTATE_H

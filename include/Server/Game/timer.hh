@@ -4,18 +4,19 @@
 #include <functional>
 #include <iostream>
 #include <thread>
+#include <atomic>
 
 class Timer {
 public:
 
   Timer();
-  Timer(int limit_seconds);
+
+  Timer(int limit_seconds, std::function<void()> callback);
 
   bool is_finished() const;
 
-  // Method to start the timer, and once it finished it calls the function given
-  // in parameter
-  void start(std::function<void()> callback);
+  // Method to start the timer
+  void start();
 
   void reset();
 
@@ -23,10 +24,13 @@ public:
 
   int get_time() const;
 
-  void set(int limit_seconds);
+  int get_original_time() const;
+
+  void set(int limit_seconds, std::function<void()> callback_function);
 
 private:
   const int limit_seconds;
-  int current_time;
-  bool is_running;
+  std::atomic<int> current_time;
+  std::atomic<bool> is_running;
+  std::function<void()> callback;
 };
