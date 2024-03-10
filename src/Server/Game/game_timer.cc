@@ -22,6 +22,7 @@ int GameTimer::get_player1_timer() {
   int temp_timer = player1_timer - timer.get_original_time() + timer.get_time();
   if (temp_timer <= 0) {
     finished = true;
+    player1_timer = 0;
     temp_timer = 0;
   }
   return temp_timer;
@@ -31,6 +32,7 @@ int GameTimer::get_player2_timer() {
   int temp_timer = player2_timer - timer.get_original_time() + timer.get_time();
   if (temp_timer <= 0) {
     finished = true;
+    player2_timer = 0;
     temp_timer = 0;
   }
   return temp_timer;
@@ -60,4 +62,17 @@ void GameTimer::set(int switch_time, int player_time){
     timer.set(switch_time, [this]() { switch_turn(); });
     player1_timer = player_time;
     player2_timer = player_time;
+}
+
+int GameTimer::winner() const{
+  if (finished){
+    if (player1_timer == 0){
+      return 2;
+    }
+    else{
+      return 1;
+    }
+  }
+  return 0;
+  
 }

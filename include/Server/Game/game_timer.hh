@@ -24,6 +24,8 @@ public:
 
   void set(int switch_time, int player_time);
 
+  int winner() const;
+
 private:
   Timer timer;
   std::atomic<int> player1_timer;

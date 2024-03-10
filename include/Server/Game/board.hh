@@ -320,17 +320,6 @@ public:
     boardJson["fleetB"] = fleetBJson;
 
     
-    if (isFinished()) {
-      boardJson["Finished"] = "true";
-      if (isVictory()) {
-        boardJson["Winner"] = "PLAYERONE";
-      } else {
-        boardJson["Winner"] = "PLAYERTWO";
-      }
-    } else {
-      boardJson["Finished"] = "false";
-      boardJson["Winner"] = "None";
-    }
 
     return boardJson;
   }

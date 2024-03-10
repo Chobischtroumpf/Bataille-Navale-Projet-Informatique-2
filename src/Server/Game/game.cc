@@ -48,7 +48,39 @@ bool Game::handle_fire(Turn turn, BoardCoordinates board_coordinates) {
 }
 
 nlohmann::json Game::get_state(PlayerRole player) {
-  return _board->toJson(player);
+  json game_json = _board->toJson(player);
+
+
+  if (is_finished()) {
+      game_json["Finished"] = "true";
+      if (_board->isVictory() || game_timer.winner() == 1) {
+        game_json["Winner"] = "PLAYERONE";
+      } else {
+        game_json["Winner"] = "PLAYERTWO";
+      }
+    } else {
+      game_json["Finished"] = "false";
+      game_json["Winner"] = "None";
+    }
+
+
+  if (ship_placements_finished()){
+    game_json["ship_placements_finished"] = "true";
+  }else{
+    game_json["ship_placements_finished"] = "false";
+  }
+
+  game_json["player1_timer"] = std::to_string(game_timer.get_player1_timer());
+  game_json["player2_timer"] = std::to_string(game_timer.get_player2_timer());
+  game_json["timer"] = std::to_string(game_timer.get_timer());
+  if (_board->whoseTurn() == PLAYERONE){
+    game_json["turn"] = "PLAYERONE";
+  }else{
+    game_json["turn"] = "PLAYERTWO";
+  }
+  
+
+  return game_json;
 }
 
 void Game::set_game(const nlohmann::json &game_details) {
