@@ -28,6 +28,10 @@ string SessionManager::createSession(const string& userId, const njson& gameDeta
 
     return sessionId;
 }
+bool SessionManager::sessionExists(const string& sessionId) {
+    auto it = sessions.find(sessionId);
+    return it != sessions.end();
+}
 
 shared_ptr<GameSession> SessionManager::getSession(const string& sessionId) {
     lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety

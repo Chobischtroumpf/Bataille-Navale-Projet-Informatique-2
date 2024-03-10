@@ -1,7 +1,11 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/ui/text/TestRunner.h>
-#include "queries.hh"
-#include "database.hh"
+
+#include "../include/server/database/database.hh"
+#include "../include/server/database/queries.hh"
+#include "../include/server/database/query_result.hh"
+
+
 #include <vector>
 #include <string>
 
@@ -20,6 +24,8 @@
 class QueriesTest : public CppUnit::TestFixture {
     std::unique_ptr<Queries> queries;
     CPPUNIT_TEST_SUITE(QueriesTest);
+    //CPPUNIT_TEST(testCreateDb);
+    //CPPUNIT_TEST(testCreateTables);
     CPPUNIT_TEST(testValidUserRegister);
     CPPUNIT_TEST(testInvalidUserRegister);
     CPPUNIT_TEST(testValidCheckUserName);
@@ -56,9 +62,8 @@ public:
         };
         for (const auto& user_data : valid_entry) {
             std::cout << "(" << user_data.first << ", " << user_data.second << "): ";
-            QueryResult result = queries->userRegister(user_data.first, user_data.second);
-            CUSTOM_ASSERT(result.error == DbError::OK);
-            std::cout << "return: " << result << std::endl;
+            bool  result = queries->userRegister(user_data.first, user_data.second);
+            CUSTOM_ASSERT(result);
         }
     }
 
@@ -72,9 +77,8 @@ public:
         };
         for (const auto& user_data : invalid_entry) {
             std::cout << "(" << user_data.first << ", " << user_data.second << "): ";
-            QueryResult result = queries->userRegister(user_data.first, user_data.second);
-            CUSTOM_ASSERT(result.error != DbError::OK);
-            std::cout << "return: " << result << std::endl;
+            bool result = queries->userRegister(user_data.first, user_data.second);
+            CUSTOM_ASSERT(!result);
         }   
     }
 
@@ -162,9 +166,8 @@ public:
         };
         for (const auto& user_data : valid_entry) {
             std::cout << "(" << std::get<0>(user_data) << ", " << std::get<1>(user_data) << ", " << std::get<2>(user_data) << "): ";
-            QueryResult result = queries->sendMsg(std::get<0>(user_data), std::get<1>(user_data), std::get<2>(user_data));
-            CUSTOM_ASSERT(result.error == DbError::OK);
-            std::cout << "return: " << result << std::endl;
+            bool result = queries->sendMsg(std::get<0>(user_data), std::get<1>(user_data), std::get<2>(user_data));
+            CUSTOM_ASSERT(result);
         }
     }
 
@@ -179,8 +182,8 @@ public:
         };
         for (const auto& user_data : invalid_entry) {
             std::cout << "(" << std::get<0>(user_data) << ", " << std::get<1>(user_data) << ", " << std::get<2>(user_data) << "): ";
-            QueryResult result = queries->sendMsg(std::get<0>(user_data), std::get<1>(user_data), std::get<2>(user_data));
-            CUSTOM_ASSERT(result.error != DbError::OK);
+            bool result = queries->sendMsg(std::get<0>(user_data), std::get<1>(user_data), std::get<2>(user_data));
+            CUSTOM_ASSERT(!result);
             std::cout << "return: " << result << std::endl;
         }
     }
@@ -196,9 +199,8 @@ public:
         };
         for (const auto& user_data : valid_entry) {
             std::cout << "(" << user_data.first << ", "  << user_data.second << "): ";
-            QueryResult result = queries->addFriend(user_data.first, user_data.second);
-            CUSTOM_ASSERT(result.error == DbError::OK);
-            std::cout << "return: " << result << std::endl;
+            bool result = queries->addFriend(user_data.first, user_data.second);
+            CUSTOM_ASSERT(result);
         }
     }
 
@@ -213,9 +215,8 @@ public:
         };
         for (const auto& user_data : valid_entry) {
             std::cout << "(" << user_data.first << ", "  << user_data.second << "): ";
-            QueryResult result = queries->addFriend(user_data.first, user_data.second);
-            CUSTOM_ASSERT(result.error != DbError::OK);
-            std::cout << "return: " << result << std::endl;
+            bool result = queries->addFriend(user_data.first, user_data.second);
+            CUSTOM_ASSERT(!result);
         }
     }
 
