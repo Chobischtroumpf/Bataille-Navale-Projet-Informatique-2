@@ -36,12 +36,12 @@ class Board {
 
     // Method to notify the Fleet that a Ship has sunk
     void notify(const BoardCoordinates &coords) {
-      // Check if any ship in the fleet is operational
-      _state = false;
+      // Check if any ship in the fleet is operational      
 
       for (Ship &ship : _ships) {
         ship.notify(coords);
       }
+      
 
       for (const Ship &ship : _ships) {
         // std::cout << "Here's the ship state : " << ship.getState() <<
@@ -51,6 +51,7 @@ class Board {
           return;
         }
       }
+      _state = false;
     }
     // Method to get the number of ships in the fleet
     map<ShipType, int> getNumShips() const {
@@ -321,17 +322,6 @@ public:
     boardJson["fleetB"] = fleetBJson;
 
     
-    if (isFinished()) {
-      boardJson["Finished"] = "true";
-      if (isVictory()) {
-        boardJson["Winner"] = "PLAYERONE";
-      } else {
-        boardJson["Winner"] = "PLAYERTWO";
-      }
-    } else {
-      boardJson["Finished"] = "false";
-      boardJson["Winner"] = "None";
-    }
 
     return boardJson;
   }

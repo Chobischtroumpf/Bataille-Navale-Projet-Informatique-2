@@ -3,10 +3,10 @@
 // #include <iostream>
 
 
-LocalBoardCommander::LocalBoardCommander()
-    : _is_finished{false},
+LocalBoardCommander::LocalBoardCommander(Player player)
+    : _player{player},
+      _is_finished{false},
       _is_victory{false},
-      _my_turn{true},
       _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
       _their_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))} {}
 

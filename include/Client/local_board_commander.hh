@@ -12,79 +12,80 @@
 #include "not_implemented_error.hh"
 #include "ship_commander.hh"
 #include "game_view.hh"
+#include "player.hh"
 
 
 /*
  * Local board view
  */
 class LocalBoardCommander : public GameView {
-public:
-  LocalBoardCommander();
-  
-  virtual ~LocalBoardCommander() override = default;
+  private:
+    Player _player;
+    std::vector<std::vector<Cell>> _my_board;
+    // std::vector<Ship> _placed_ships;
+    std::vector<std::vector<Cell>> _their_board;
+    // std::array<uint8_t, > _ships_to_place;
+    bool _my_turn;
+    bool _is_finished;
+    bool _is_victory;
 
-  // Getters
-  bool myTurn() const override ;
-  bool isFinished() const override;
-  bool isVictory() const override;
-  std::size_t width() const override;
-  std::size_t height() const override;
+    /* Get the cell in one of the board*/
+    Cell get(bool my_side, BoardCoordinates position) const;
 
-  /*
-   * Get the cell type at the given coordinates
-    * @param coordinates : coordinates of the cell
-    * @return le cell type
-  */
-  CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
+    int shipId(bool my_side, BoardCoordinates position);
+    bool check();
+    //void placeShip(ShipCoordinates coordinates, bool my_fleet);
+    void fire();
 
-  /* WARNING : NOT FULLY IMPLEMENTED 
-   * Check if two cells are part of the same ship*/
-  bool isSameShip(bool my_side, BoardCoordinates first,
-                  BoardCoordinates second) const override;
+  public:
+    LocalBoardCommander(Player player);
+    
+    virtual ~LocalBoardCommander() override = default;
 
-  /* Get the neighbors of a cell */
-  std::vector<Cell> getNeighbors(BoardCoordinates coord) const;
+    // Getters
+    bool myTurn() const override ;
+    bool isFinished() const override;
+    bool isVictory() const override;
+    std::size_t width() const override;
+    std::size_t height() const override;
 
-  /* Returns the ships that needs can be placed */
-  std::array<uint8_t, 5> shipsToPlace() const;
+    /*
+    * Get the cell type at the given coordinates
+      * @param coordinates : coordinates of the cell
+      * @return le cell type
+    */
+    CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
 
-  /* Returns true if all boats are placed */
-  bool allBoatsPlaced() const;
+    /* WARNING : NOT FULLY IMPLEMENTED 
+    * Check if two cells are part of the same ship*/
+    bool isSameShip(bool my_side, BoardCoordinates first,
+                    BoardCoordinates second) const override;
 
-  /* Returns true if the ship is remaining */
-  bool isRemainingShip(int number_of_case) const;
+    /* Get the neighbors of a cell */
+    std::vector<Cell> getNeighbors(BoardCoordinates coord) const;
 
-  /* Returns the ships that needs can be placed */
-  std::vector<Ship> getPlacedShips() const;
+    /* Returns the ships that needs can be placed */
+    std::array<uint8_t, 5> shipsToPlace() const;
 
-  /* Add a place a ship (locally) */
-  void addPlacedShip(Ship ship, int x, int y);
+    /* Returns true if all boats are placed */
+    bool allBoatsPlaced() const;
 
-  /* Polls the server to wait the beggining of the game */
-  void waitGame();
+    /* Returns true if the ship is remaining */
+    bool isRemainingShip(int number_of_case) const;
 
-  /* Polls the server to wait the turn */
-  void waitTurn();
+    /* Returns the ships that have been placed */
+    std::vector<Ship> getPlacedShips() const;
 
-  void update() override { throw NotImplementedError("Update"); }
+    /* Add a placed ship (locally) */
+    void addPlacedShip(Ship ship, int x, int y);
 
-  CellType best(CellType lhs, CellType rhs);
+    /* Polls the server to wait the beggining of the game */
+    void waitGame();
 
+    /* Polls the server to wait the turn */
+    void waitTurn();
 
-private:
-  std::vector<std::vector<Cell>> _my_board;
-  std::vector<Ship> _placed_ships;
-  std::vector<std::vector<Cell>> _their_board;
-  std::array<uint8_t, 5> _ships_to_place = {1, 1, 2, 1, 1};
-  bool _my_turn;
-  bool _is_finished;
-  bool _is_victory;
+    void update() override { throw NotImplementedError("Update"); }
 
-  /* Get the cell in one of the board*/
-  Cell get(bool my_side, BoardCoordinates position) const;
-
-  int shipId(bool my_side, BoardCoordinates position);
-  bool check();
-  //void placeShip(ShipCoordinates coordinates, bool my_fleet);
-  void fire();
+    CellType best(CellType lhs, CellType rhs);
 };

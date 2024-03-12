@@ -18,11 +18,10 @@ public:
   // sunk
   void notify(const BoardCoordinates &coords) {
 
-
     // Check if ship is sunk
     for (const BoardCoordinates &tile : tiles) {
-      // std::cout << "Checking for tile X : " << tile.x() << " Y : " <<
-      // tile.y() << std::endl;
+      std::cout << "Checking for tile X : " << tile.x() << " Y : " <<
+      tile.y() << std::endl;
 
       if (_board[tile.y()][tile.x()].type() == UNDAMAGED_SHIP) {
         _state = true;

@@ -1,11 +1,12 @@
-#include "../../include/common/ship.hh"
+#include "Common/ship.hh"
 
-Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates(coordinates) {
+Ship::Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board): _coordinates(coordinates) {
     for (auto &c: coordinates) {
-        _number_of_case++;
+        _length++;
         if (c.x() > _size_x) { _size_x = c.x(); }
         if (c.y() > _size_y) { _size_y = c.y(); }
     }
+    // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
 }
 
 void Ship::rotate() {
@@ -19,7 +20,7 @@ void Ship::rotate() {
 }
 
 void Ship::print() {
-    std::vector<std::vector<std::string>> to_print(_size_y, std::vector<std::string>(_size_x, "  "));
+    vector<vector<std::string>> to_print(_size_y, vector<std::string>(_size_x, "  "));
 
     for (auto &c: _coordinates) {
         to_print[c.y()][c.x()] = "██";
@@ -33,10 +34,32 @@ void Ship::print() {
     }
 }
 
-std::vector<BoardCoordinates> Ship::getCoordinates() {
+vector<BoardCoordinates> Ship::getCoordinates() {
     return _coordinates;
 }
 
-int Ship::getNumberOfCase() {
-    return _number_of_case;
+const vector<vector<Cell>> Ship::getShipCells() const {
+    return _ship_cells;
 }
+
+int Ship::getLength() {
+    return _length;
+}
+
+bool Ship::isSunk() const {
+    return _is_sunk;
+}
+
+void Ship::setSunk(bool is_sunk) {
+    _is_sunk = is_sunk;
+}
+
+void Ship::setShipCells(const vector<vector<Cell>> &ship_cells) {
+    _ship_cells = ship_cells;
+}
+
+void Ship::notify(const BoardCoordinates &coords) {
+
+    // Check if ship is sunk
+
+  }

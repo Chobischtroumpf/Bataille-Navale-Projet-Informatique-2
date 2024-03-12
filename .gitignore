@@ -41,7 +41,7 @@ vcpkg
 _deps
 CMakeFiles
 CMakeCache.txt
-
+*.db
 *.bat
 windows
 build

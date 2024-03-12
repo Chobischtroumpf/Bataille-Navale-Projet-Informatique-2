@@ -89,14 +89,14 @@ std::future<void> GameClient::TestRequest3() {
     return promise->get_future();
 }
 
-future<njson> GameClient::QueryGameState(const string& sessionId, const string& userId) {
-    cout << "Sending GET request to api/games..." << endl;
+future<njson> GameClient::QueryGameState(const string& sessionId) {
+    cout << "Sending GET request to api/games/query" << endl;
 
     // Use a promise to return the result asynchronously
     auto promise = std::make_shared<std::promise<njson>>();
     auto resultFuture = promise->get_future();
 
-    GetRequest("/api/games/query?sessionid=" + sessionId + "&userid=" + userId ).then([promise](njson jsonResponse) {
+    GetRequest("/api/games/query?sessionId=" + sessionId).then([promise](njson jsonResponse) {
         // Check if the response contains a 'gameDetails' key
         if (!jsonResponse.empty() && jsonResponse.find("gameDetails") != jsonResponse.end()) {
             // Success path: Extract game details from jsonResponse
@@ -118,13 +118,13 @@ future<njson> GameClient::QueryGameState(const string& sessionId, const string& 
         }
     });
 
-    cout << "Game creation request sent." << endl;
+    cout << "Game state query request sent." << endl;
     return resultFuture;
 }
 
 // Simple function to send a GET request to api/games
 future<string> GameClient::GetGames() {
-        cout << "Sending GET request to api/games..." << endl;
+        cout << "Sending GET request to api/games" << endl;
 
         // Use a promise to return the result asynchronously
         auto promise = std::make_shared<std::promise<string>>();
@@ -152,7 +152,7 @@ future<string> GameClient::GetGames() {
             }
         });
 
-    cout << "Game creation request sent." << endl;
+    cout << "Game retrieve request sent." << endl;
     return resultFuture;
 }
 
@@ -165,7 +165,7 @@ future<string> GameClient::CreateGame(const njson& gameDetails) {
     auto resultFuture = promise->get_future();
 
     // Send the POST request to the game creation endpoint with gameDetails
-    PostRequest("/api/game/create", gameDetails)
+    PostRequest("/api/games/create", njson{{"gameDetails",gameDetails}} )
     .then([promise](njson jsonResponse) {
         // Check if the response contains a sessionId
         if (!jsonResponse.empty() && jsonResponse.find("sessionId") != jsonResponse.end()) {
@@ -203,7 +203,7 @@ future<njson> GameClient::JoinGame(const string& sessionId) {
     auto resultFuture = promise->get_future();
 
     // Construct the request path with the sessionId
-    string requestPath = "/api/game/join?sessionId="  + sessionId;
+    string requestPath = "/api/games/join?sessionId="  + sessionId;
 
     // Make the GET request to join the game and retrieve the session details
     GetRequest(requestPath)
@@ -213,8 +213,8 @@ future<njson> GameClient::JoinGame(const string& sessionId) {
             // Success path: jsonResponse contains game details
             promise->set_value(jsonResponse);
         } else {
-            // Error or game session not found, pass the received object 
-            promise->set_value(jsonResponse);
+            // Error or game session not found, return empty object
+            promise->set_value(njson {});
         }
     }).then([promise](pplx::task<void> errorHandler) {
         try {
@@ -231,40 +231,41 @@ future<njson> GameClient::JoinGame(const string& sessionId) {
     return resultFuture;
 }
 
-// Method to make a move in a game session, returning a future<bool> indicating success
 future<bool> GameClient::MakeMove(const string& sessionId, const string& move) {
     cout << "Sending move to game session: " << sessionId << " ..." << endl;
 
     // Use a promise to return the result asynchronously
     auto promise = std::make_shared<std::promise<bool>>();
-    auto resultFuture = promise->get_future();
 
     // Prepare the JSON object with sessionId and move
-    njson moveData;
-    moveData["sessionId"] = sessionId;
-    moveData["move"] = move;
-
-    // Serialize nlohmann::json object to string for the POST request
-    string serializedData = moveData.dump();
+    njson moveData = {{"sessionId", sessionId}, {"move", move}};
 
     // Send the POST request to the game move endpoint
-    PostRequest("/api/game/move", serializedData)
-    .then([promise](bool success) {
-        // Directly use the boolean result of the PostRequest to fulfill the promise
-        promise->set_value(success);
+    PostRequest("/api/games/move", moveData.dump())
+    .then([promise](njson jsonResponse) {
+        // Check if the response contains an 'error' key to determine if the move was unsuccessful
+        if (jsonResponse.contains("error")) {
+            // If an error is present, the move was not successful
+            cerr << "Failed to make a move: " << jsonResponse["error"].get<std::string>() << endl;
+            promise->set_value(false);
+        } else {
+            // No error key, assume the move was successful
+            cout << "Move made successfully." << endl;
+            promise->set_value(true);
+        }
     }).then([promise](pplx::task<void> errorHandler) {
         try {
-            // Attempt to catch exceptions if any
+            // Attempt to catch and handle any exceptions
             errorHandler.get();
         } catch (const exception& e) {
-            // In case of exception, indicate failure
-            cerr << "Exception caught while making a move: " << e.what() << endl;
-            promise->set_value(false); // Indicate failure due to exception
+            // In case of exception, log it and indicate failure
+            cerr << "Exception caught during make move request: " << e.what() << endl;
+            promise->set_value(false);
         }
     });
 
     cout << "Move request sent." << endl;
-    return resultFuture;
+    return promise->get_future();
 }
 
 // Function to perform login using username and password, returning an authToken asynchronously
@@ -359,7 +360,7 @@ future<bool> GameClient::Register(const string& username, const string& password
 
 // Function to get a user ID using the username, returning a future (asynchronous)
 future<string> GameClient::GetUserId(const string& username) {
-    cout << "Sending login request for username: " << username << " ..." << endl;
+    cout << "Getting userid request for username: " << username << " ..." << endl;
 
     // Use a promise to return the result asynchronously
     auto promise = std::make_shared<std::promise<string>>();
@@ -391,31 +392,32 @@ future<string> GameClient::GetUserId(const string& username) {
     return resultFuture;
 }
 
-// Method to make a move in a game session, returning a future<bool> indicating success
 future<bool> GameClient::SendMessage(const string& recipientId, const string& message) {
     cout << "Sending message to user " << recipientId << " ..." << endl;
 
     // Use a promise to return the result asynchronously
     auto promise = std::make_shared<std::promise<bool>>();
-    auto resultFuture = promise->get_future();
 
     // Prepare the JSON object with data 
-    njson moveData;
-    moveData["recipientId"] = recipientId;
-    moveData["message"] = message;
+    njson messageData = {{"recipientId", recipientId}, {"message", message}};
 
-    // Serialize nlohmann::json object to string for the POST request
-    string serializedData = moveData.dump();
-
-    // Send the POST request to the game move endpoint
-    PostRequest("/api/chat/send", serializedData)
-    .then([promise](bool success) {
-        // Directly use the boolean result of the PostRequest to fulfill the promise
-        promise->set_value(success);
-    }).then([promise](pplx::task<void> errorHandler) {
+    // Send the POST request to the message endpoint
+    PostRequest("/api/chat/send", messageData.dump())
+    .then([promise](njson response) {
+        // Check if the response contains an 'error' key
+        if (response.contains("error")) {
+            // If an error key exists, the request was not successful
+            cerr << "Failed to send message "<< endl;
+            promise->set_value(false);
+        } else {
+            // No error key, assume the request was successful
+            cout << "Message sent successfully." << endl;
+            promise->set_value(true);
+        }
+    }).then([promise](pplx::task<void> catchTask) {
+        // Catch and handle exceptions
         try {
-            // Attempt to catch exceptions if any
-            errorHandler.get();
+            catchTask.get();
         } catch (const exception& e) {
             // In case of exception, indicate failure
             cerr << "Exception caught while sending message: " << e.what() << endl;
@@ -423,15 +425,88 @@ future<bool> GameClient::SendMessage(const string& recipientId, const string& me
         }
     });
 
-    cout << "Move request sent." << endl;
+    cout << "Message request sent." << endl;
+    return promise->get_future();
+}
+
+future<bool> GameClient::AddFriend(const string& username) {
+    cout << "Attempting to add user " << username << " as a friend..." << endl;
+
+    // Use a promise to return the result asynchronously
+    auto promise = std::make_shared<std::promise<bool>>();
+    auto resultFuture = promise->get_future();
+
+    // Prepare the JSON object with data
+    njson friendData = {{"friend", username}};
+
+    // Send the POST request to the add friend endpoint
+    PostRequest("/api/friend/add", friendData)
+    .then([promise](njson response) {
+        // Check the response to see if adding the friend was successful
+        if (!response.contains("error")) {
+            cout << "Friend added successfully." << endl;
+            promise->set_value(true);
+        } else {
+            // If the response indicates failure or the expected success message is not present
+            cout << "Failed to add friend." << endl;
+            promise->set_value(false);
+        }
+    }).then([promise](pplx::task<void> errorHandler) {
+        try {
+            // Attempt to catch exceptions if any
+            errorHandler.get();
+        } catch (const std::exception& e) {
+            // In case of exception, indicate failure
+            cerr << "Exception caught while adding friend: " << e.what() << endl;
+            promise->set_value(false); // Indicate failure due to exception
+        }
+    });
+
+    cout << "Friend add request sent." << endl;
     return resultFuture;
 }
 
-future<nlohmann::json> GameClient::GetMessages(const std::string& recipientId) {
+future<njson> GameClient::GetFriends() {
+    cout << "Retrieving user's friend list..." << endl;
+
+    // Use a shared promise to return the friend list asynchronously
+    auto promise = std::make_shared<std::promise<njson>>();
+    auto resultFuture = promise->get_future();
+
+    // Perform the GET request to the friend list endpoint
+    GetRequest("/api/friend/list")
+    .then([promise](njson jsonResponse) {
+        // Check if the response contains a 'friends' key
+        if (!jsonResponse.empty() && jsonResponse.find("friends") != jsonResponse.end()) {
+            // Success path: Extract friends list from jsonResponse
+            auto friendList = jsonResponse["friends"];
+            cout << "Friend list retrieved successfully." << endl;
+            promise->set_value(friendList);
+        } else {
+            // Error or friend list not provided, set a default error value (empty array)
+            cout << "Failed to retrieve friend list." << endl;
+            promise->set_value(njson::array());
+        }
+    }).then([promise](pplx::task<void> errorHandler) {
+        try {
+            // Attempt to catch exceptions if any
+            errorHandler.get();
+        } catch (const std::exception& e) {
+            // In case of exception, indicate failure
+            cerr << "Exception caught while retrieving friend list: " << e.what() << endl;
+            promise->set_value(njson{{"error", e.what()}});
+        }
+    });
+
+    cout << "Friend list request sent." << endl;
+    return resultFuture;
+}
+
+future<njson> GameClient::GetMessages(const std::string& recipientId) {
     cout << "Fetching conversation with user " << recipientId << "..." << endl;
 
     // Use a shared promise to return the conversation asynchronously
-    auto promise = std::make_shared<std::promise<nlohmann::json>>();
+    auto promise = std::make_shared<std::promise<njson>>();
     auto resultFuture = promise->get_future();
 
     // Construct the query URL with recipientId as a query parameter
@@ -439,7 +514,7 @@ future<nlohmann::json> GameClient::GetMessages(const std::string& recipientId) {
 
     // Perform the GET request
     GetRequest(queryUri)
-    .then([promise](nlohmann::json jsonResponse) {
+    .then([promise](njson jsonResponse) {
         // Check if the response contains a 'conversation' key
         if (!jsonResponse.empty() && jsonResponse.find("conversation") != jsonResponse.end()) {
             // Success path: Extract conversation from jsonResponse
@@ -449,7 +524,7 @@ future<nlohmann::json> GameClient::GetMessages(const std::string& recipientId) {
         } else {
             // Error or conversation not provided, set a default error value (empty object)
             cout << "Failed to retrieve conversation." << endl;
-            promise->set_value(nlohmann::json{});
+            promise->set_value(njson{});
         }
     }).then([promise](pplx::task<void> errorHandler) {
         try {
@@ -458,7 +533,7 @@ future<nlohmann::json> GameClient::GetMessages(const std::string& recipientId) {
         } catch (const std::exception& e) {
             // In case of exception, indicate failure
             cerr << "Exception caught while fetching conversation: " << e.what() << endl;
-            promise->set_value(nlohmann::json{{"error", e.what()}});
+            promise->set_value(njson{{"error", e.what()}});
         }
     });
 
@@ -484,7 +559,7 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
     http_request request(methods::POST);
     request.set_request_uri(fullUri);
     request.headers().set_content_type(U("application/json"));
-    // Convert nlohmann::json to string for the request body
+    // Convert njson to string for the request body
     request.set_body(data.dump());
 
 
@@ -498,7 +573,7 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
         cout << "Received response status code: " << response.status_code() << endl;
 
        if (response.status_code() == status_codes::OK || response.status_code() == status_codes::Created) {
-                // Convert and return the web::json::value to nlohmann::json
+                // Convert and return the web::json::value to njson
                 return response.extract_json().then([](web::json::value webJsonValue) -> njson {
                     return njson::parse(webJsonValue.serialize());
                 });
@@ -507,7 +582,7 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
                 return response.extract_json().then([&response](web::json::value webJsonValue) -> njson {
                         // Check if json has an error field sent from server
                         auto errorJson = njson::parse(webJsonValue.serialize());
-                        // Check if the nlohmann::json has an "error" field
+                        // Check if the njson has an "error" field
                         if (errorJson.contains("error")) {
                             // Extract the error message as a string
                             auto error = errorJson["error"].get<string>();
@@ -549,7 +624,7 @@ pplx::task<njson> GameClient::GetRequest(const string& path) {
 
     return client->request(request).then([](http_response response) -> pplx::task<njson> {
         if (response.status_code() == status_codes::OK || response.status_code() == status_codes::Created) {
-            // Convert and return the web::json::value to nlohmann::json
+            // Convert and return the web::json::value to njson
             return response.extract_json().then([](web::json::value webJsonValue) -> njson {
                 return njson::parse(webJsonValue.serialize());
             });
@@ -558,7 +633,7 @@ pplx::task<njson> GameClient::GetRequest(const string& path) {
             return response.extract_json().then([&response](web::json::value webJsonValue) -> njson {
                     // Check if json has an error field sent from server
                     auto errorJson = njson::parse(webJsonValue.serialize());
-                    // Check if the nlohmann::json has an "error" field
+                    // Check if the njson has an "error" field
                     if (errorJson.contains("error")) {
                         // Extract the error message as a string
                         auto error = errorJson["error"].get<string>();
