@@ -22,7 +22,9 @@ private:
     void displayTitle();
     void displayParameter();
     void displayParameter(std::string game_name);
-    void displayParameter(std::string game_name, int number_boat);
-    void displayParameter(std::string game_name, int number_boat, bool spectator_allowed);
-    void displayOptions(int mode);
+    void displayParameter(std::string game_name, bool game_mode_classic);
+    void displayParameter(std::string game_name, bool game_mode_classic, int time_per_turn);
+    void displayParameter(std::string game_name, bool game_mode_classic, int time_per_turn, int time_per_game);
+    void displayParameter(std::string game_name, bool game_mode_classic, int time_per_turn, int time_per_game, bool spectator_allowed);
+    ReturnInput displayOptions(int mode);
 };

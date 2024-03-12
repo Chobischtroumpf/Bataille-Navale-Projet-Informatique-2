@@ -37,6 +37,14 @@ std::vector<BoardCoordinates> Ship::getCoordinates() {
     return _coordinates;
 }
 
+BoardCoordinates Ship::getTopLeft() {
+    return _top_left;
+}
+
 int Ship::getNumberOfCase() {
     return _number_of_case;
+}
+
+void Ship::setType(CellType new_type) {
+    _type = new_type;
 }

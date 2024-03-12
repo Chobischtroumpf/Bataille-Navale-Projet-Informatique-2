@@ -35,7 +35,7 @@ is_kwown
 is_hit
 is_sunk
 
-plateau adverse             - plateau joueur
+/plateau adverse/           - /plateau joueur/
 eau non decouverte          - eau                     - 0
 eau decouverte ou scanné  ╳ - eau scanné ou touché  ╳ - is_knwon
 

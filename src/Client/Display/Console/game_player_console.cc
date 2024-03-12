@@ -17,7 +17,8 @@ void GamePlayerConsole::displayPlayer() {
         i++;
     }
 
-    for (int j = i; j < 10; j++) { std::cout << "║ (" << j << ") -" << std::endl; }
+    for (int j = i; j < 9; j++) { std::cout << "║ (" << j << ") -" << std::endl; }
+    displayOptions(0);
 }
 
 void GamePlayerConsole::displayPlayer(int p1) {
@@ -31,7 +32,8 @@ void GamePlayerConsole::displayPlayer(int p1) {
         i++;
     }
 
-    for (int j = i; j < 10; j++) { std::cout << "║ (" << j << ") -" << std::endl; }
+    for (int j = i; j < 9; j++) { std::cout << "║ (" << j << ") -" << std::endl; }
+    displayOptions(0);
 }
 
 void GamePlayerConsole::displayPlayer(int p1, int p2) {
@@ -46,7 +48,8 @@ void GamePlayerConsole::displayPlayer(int p1, int p2) {
         i++;
     }
 
-    for (int j = i; j < 10; j++) { std::cout << "║ (" << j << ") -" << std::endl; }
+    for (int j = i; j < 9; j++) { std::cout << "║ (" << j << ") -" << std::endl; }
+    displayOptions(1);
 }
 
 void GamePlayerConsole::displayOptions(int mode) {
@@ -56,13 +59,14 @@ void GamePlayerConsole::displayOptions(int mode) {
         std::cout << "║ Select the player number " << mode + 1 << " ║" << std::endl;
         std::cout << "╠════════════════════════════╩══════════════════════════════╪" << std::endl;
         std::cout << "║ (0)     Choose random" << std::endl;
-        std::cout << "║ (1 - 9) Choose the player" << std::endl;
+        std::cout << "║ (1 - 8) Choose the player" << std::endl;
         std::cout << "║ (10)    Refresh" << std::endl;
         std::cout << "║ (11)    Leave" << std::endl;
     }
     else {
         std::cout << "║ What do you want to do ?   ║" << std::endl;
         std::cout << "╠════════════════════════════╩══════════════════════════════╪" << std::endl;
+        std::cout << "║" << std::endl;
         std::cout << "║ (1) Rechoose" << std::endl;
         std::cout << "║ (2) Refresh" << std::endl;
         std::cout << "║ (3) Continue" << std::endl;
@@ -97,9 +101,7 @@ ReturnInput GamePlayerConsole::handleInput() {
         bool input_error = false;
 
         while (invalid_input) {
-            displayTitle();
             displayPlayer();
-            displayOptions(0);
             
             if (input_error) {
                 std::cout << "Invalid Input !";
@@ -125,12 +127,12 @@ ReturnInput GamePlayerConsole::handleInput() {
                       case 6:
                       case 7:
                       case 8:
-                      case 9:
                         p1 = value;
                         if (p1 < _view->getPlayerName().size()) {
                             invalid_input = false;
                         }
                         break;
+                      case 9:
                       case 10:
                         input_error = false;
                         break;
@@ -147,9 +149,7 @@ ReturnInput GamePlayerConsole::handleInput() {
         input_error = false;
         
         while (invalid_input) {
-            displayTitle();
             displayPlayer(p1);
-            displayOptions(0);
             
             if (input_error) {
                 std::cout << "Invalid Input !";
@@ -203,9 +203,7 @@ ReturnInput GamePlayerConsole::handleInput() {
         input_error = false;
         
         while (invalid_input) {
-            displayTitle();
             displayPlayer(p1, p2);
-            displayOptions(1);
             
             if (input_error) {
                 std::cout << "Invalid Input !";
