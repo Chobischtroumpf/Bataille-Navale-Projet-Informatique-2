@@ -38,9 +38,13 @@ vector<BoardCoordinates> Ship::getCoordinates() {
     return _coordinates;
 }
 
-const vector<vector<Cell>> Ship::getShipCells() const {
-    return _ship_cells;
+BoardCoordinates Ship::getTopLeft() {
+    return _top_left;
 }
+
+// const vector<vector<Cell>> Ship::getShipCells() const {
+//     return _ship_cells;
+// }
 
 int Ship::getLength() {
     return _length;
@@ -54,12 +58,16 @@ void Ship::setSunk(bool is_sunk) {
     _is_sunk = is_sunk;
 }
 
-void Ship::setShipCells(const vector<vector<Cell>> &ship_cells) {
-    _ship_cells = ship_cells;
-}
+// void Ship::setShipCells(const vector<vector<Cell>> &ship_cells) {
+//     _ship_cells = ship_cells;
+// }
 
 void Ship::notify(const BoardCoordinates &coords) {
 
     // Check if ship is sunk
 
   }
+
+void Ship::setType(CellType new_type) {
+    _type = new_type;
+}

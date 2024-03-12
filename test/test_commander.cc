@@ -6,6 +6,21 @@
 #include <optional>
 #include <stdexcept>
 
+#ifdef _WIN32
+#include <windows.h> // Pour Windows
+#else
+#include <cstdlib>   // Pour Linux/macOS
+#endif
+
+void clear_screen() {
+#ifdef _WIN32
+    std::system("cls");
+#else
+    // Assume que les autres systèmes d'exploitation sont compatibles avec ANSI escape codes
+    std::cout << "\033[2J\033[1;1H";
+#endif
+}
+
 /*
  * Représente un coordonnées dans le plateau
  */
@@ -138,6 +153,8 @@ std::istream& operator>>(std::istream& is, BoardCoordinates& bc) {
 
 
 
+
+
 /*
 typedef enum {
   // Flags:
@@ -190,16 +207,20 @@ typedef enum {
   OCEAN = IS_KNOWN, //< was empty target
 
   // Mine:
-  MINE = IS_MINE,
+  UNDAMAGED_MINE = IS_MINE,
   SCANNED_MINE = IS_MINE | IS_KNOWN,
   HIT_MINE = IS_MINE | IS_KNOWN | IS_HIT,
 
   // Ship states:
-  UNDAMAGED_SHIP_SHIP = IS_SHIP,
+  UNDAMAGED_SHIP = IS_SHIP,
   SCANNED_SHIP = IS_SHIP | IS_KNOWN,
   HIT_SHIP = IS_SHIP | IS_KNOWN | IS_HIT,
   SUNK_SHIP = IS_SHIP | IS_KNOWN | IS_HIT | IS_SUNK,
 } CellType;
+
+
+
+
 
 class Cell {
   CellType _type{WATER};
@@ -229,23 +250,34 @@ public:
   }
 };
 
+
+
+
 class Ship {
-private:
-    std::vector<std::pair<int, int>> _coordinates;
+  private:
+    std::vector<BoardCoordinates> _coordinates;
+    BoardCoordinates _top_left;
     int _size_x = 0;
     int _size_y = 0;
+    int _number_of_case = 0;
+    CellType _type = UNDAMAGED_SHIP;
 
-public:
-    Ship(std::vector<std::pair<int, int>> coordinates);
+  public:
+    Ship(std::vector<BoardCoordinates> coordinates);
     void rotate();
     void print();
-    std::vector<std::pair<int, int>> getCoordinates();
+    std::vector<BoardCoordinates> getCoordinates();
+    BoardCoordinates getTopLeft();
+    int getNumberOfCase();
+    void setTopLeft(BoardCoordinates top_left);
+    void setType(CellType new_type);
 };
 
-Ship::Ship(std::vector<std::pair<int, int>> coordinates): _coordinates(coordinates) {
+Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates(coordinates) {
     for (auto &c: coordinates) {
-        if (c.first + 1 > _size_x) { _size_x = c.first + 1; }
-        if (c.second + 1 > _size_y) { _size_y = c.second + 1; }
+        _number_of_case++;
+        if (c.x() + 1 > _size_x) { _size_x = c.x() + 1; }
+        if (c.y() + 1 > _size_y) { _size_y = c.y() + 1; }
     }
 }
 
@@ -255,19 +287,17 @@ void Ship::rotate() {
     _size_y = temp;
 
     for (auto &c: _coordinates) {
-        int temp = c.first;
-        c.first = -c.second + _size_x - 1;
-        c.second = temp;
+        c.set(-c.y() + _size_x - 1, c.x());
     }
 }
 
 void Ship::print() {
     std::vector<std::vector<std::string>> to_print(_size_y, std::vector<std::string>(_size_x, "  "));
-
+    
     for (auto &c: _coordinates) {
-        to_print[c.second][c.first] = "██";
+        to_print.at(c.y()).at(c.x()) = "██";
     }
-
+    
     for (auto &to_print2: to_print) {
         for (auto &p: to_print2) {
             std::cout << p;
@@ -276,9 +306,30 @@ void Ship::print() {
     }
 }
 
-std::vector<std::pair<int, int>> Ship::getCoordinates() {
+std::vector<BoardCoordinates> Ship::getCoordinates() {
     return _coordinates;
 }
+
+BoardCoordinates Ship::getTopLeft() {
+    return _top_left;
+}
+
+int Ship::getNumberOfCase() {
+    return _number_of_case;
+}
+
+void Ship::setTopLeft(BoardCoordinates top_left) {
+    _top_left = top_left;
+}
+
+void Ship::setType(CellType new_type) {
+    _type = new_type;
+}
+
+
+
+
+
 
 
 class ShipClassic {
@@ -290,6 +341,8 @@ public:
     void next();
     Ship getShip();
     void rotate();
+    void setTopLeft(BoardCoordinates top_left);
+    void print();
 };
 
 ShipClassic::ShipClassic(int number_of_case) {
@@ -324,6 +377,16 @@ void ShipClassic::rotate() {
     _ships[_pos].rotate();
 }
 
+void ShipClassic::setTopLeft(BoardCoordinates top_left) {
+    _ships[_pos].setTopLeft(top_left);
+}
+
+void ShipClassic::print() {
+    _ships[_pos].print();
+}
+
+
+
 
 class ShipCommander : public ShipClassic {
 public:
@@ -332,6 +395,10 @@ public:
 
 ShipCommander::ShipCommander(int number_of_case): ShipClassic{number_of_case} {
     switch (number_of_case) {
+      case 1:
+        _ships.push_back(Ship({{0, 0}}));
+        _ships[1].setType(UNDAMAGED_MINE);
+        break;
       case 3:
         _ships.push_back(Ship({{0, 0}, {0, 1}, {1, 1}}));
         break;
@@ -351,11 +418,14 @@ ShipCommander::ShipCommander(int number_of_case): ShipClassic{number_of_case} {
 }
 
 
+
+
+
 class LocalBoard {
 public:
   LocalBoard();
   void print();
-  bool addShip(Ship s, int x, int y);
+  bool addShip(Ship s);
 
 private:
   std::vector<std::vector<Cell>> _my_board;
@@ -381,43 +451,148 @@ void LocalBoard::print() {
     }
   }
 
-bool LocalBoard::addShip(Ship s, int x, int y) {
+bool LocalBoard::addShip(Ship s) {
     for (auto &c: s.getCoordinates()) {
-        if (_my_board.at(y + c.second).at(x + c.first).type() == UNDAMAGED_SHIP_SHIP) {
+        if (_my_board.at(s.getTopLeft().y() + c.y()).at(s.getTopLeft().x() + c.x()).type() == UNDAMAGED_SHIP) {
           return false;
         }
     }
 
     for (auto &c: s.getCoordinates()) {
-        _my_board.at(y + c.second).at(x + c.first).setType(UNDAMAGED_SHIP_SHIP);
+        _my_board.at(s.getTopLeft().y() + c.y()).at(s.getTopLeft().x() + c.x()).setType(UNDAMAGED_SHIP);
     }
     return true;
   }
 
 
+/*
 int main() {
-	  //LocalBoard test;
-    //ShipClassic* ships = new ShipCommander(4);
+	LocalBoard test;
+    ShipClassic* ships = new ShipCommander(4);
+    //ships->next();
+    ships->next();
     //ships->next();
     //ships->next();
     //ships->next();
     //ships->next();
-    //ships->next();
-    //ships->next();
+    ships->rotate();
     //ships->rotate();
     //ships->rotate();
     //ships->rotate();
-    //ships->rotate();
-    //ships->getShip().print();
-    //test.addShip(ships->getShip(), 2, 2);
+    ships->print();
+    //test.addShip(ships->getShip());
     //test.print();
-    //delete ships;
+    delete ships;
     
-    BoardCoordinates coordinates{};
-    std::cout << "\x1b[32;49;1m";
-    std::cin >> coordinates;
-    std::cout << "\x1b[0m";
-    std::cout << coordinates.x() << " " << coordinates.y() << std::endl;
-    std::cout << std::endl;
+    //BoardCoordinates coordinates{};
+    //std::cout << "\x1b[32;49;1m";
+    //std::cin >> coordinates;
+    //std::cout << "\x1b[0m";
+    //std::cout << coordinates.x() << " " << coordinates.y() << std::endl;
+    //std::cout << std::endl;
     return 0;
+}
+*/
+
+
+
+int main() {
+    LocalBoard test;
+    std::array<uint8_t, 5> _ships_to_place = {1, 1, 2, 1, 1};
+
+    bool boat_remaining = true;
+
+    while (boat_remaining) {
+        test.print();
+        int i = 1;
+
+        for (auto &b: _ships_to_place) {
+        std::cout << "(" << i << ") - " << unsigned(b) << " boat left of size " << i << std::endl;
+        i++;
+        }
+
+        bool invalid_input = true;
+        bool input_error = false;
+        std::string answer;
+        int boat_selected;
+        
+        while (invalid_input) {            
+            if (input_error) {
+                std::cout << "Invalid Input !";
+            }
+            std::cout << std::endl;
+            
+            input_error = true;
+            std::getline(std::cin, answer);
+            if (!answer.empty()) {
+                try {
+                    boat_selected = stoi(answer);
+                
+                    if ((boat_selected > 0) and (boat_selected < 6)) {
+                        if (_ships_to_place[boat_selected] != 0) {
+                            invalid_input = false;
+                        }
+                    }
+                }
+                catch (const std::exception& e) {}
+            }
+        }
+        ShipClassic* ships = new ShipCommander(boat_selected);
+        
+        invalid_input = true;
+        input_error = false;
+
+        while (invalid_input) {
+            ships->print();
+            std::cout << "(1) - next boat" << std::endl;
+            std::cout << "(2) - rotate boat" << std::endl;
+            std::cout << "(3) - select boat" << std::endl;
+
+            if (input_error) {
+                std::cout << "Invalid Input !";
+            }
+            std::cout << std::endl;
+            
+            input_error = true;
+            std::getline(std::cin, answer);
+            if (!answer.empty()) {
+                try {
+                    int value = stoi(answer);
+                    switch (value) {
+                      case 1:
+                        input_error = false;
+                        ships->next();
+                        break;
+                      case 2:
+                        input_error = false;
+                        ships->rotate();
+                        break;
+                      case 3:
+                        invalid_input = false;
+                      default:
+                        break;
+                    }
+                }
+                catch (const std::exception& e) {}
+            }
+        }
+        std::cout << "select a position" << std::endl;
+        BoardCoordinates coordinates{};
+        std::cin >> coordinates;
+        ships->setTopLeft(coordinates);
+        test.addShip(ships->getShip());
+
+        std::cout << boat_selected - 1 << std::endl;
+        _ships_to_place[boat_selected - 1]--;
+        
+        boat_remaining = false;
+        for (auto &b: _ships_to_place) {
+            if (b != 0) {
+                boat_remaining = true;
+                break;
+            }
+        } 
+
+        delete ships;
+    }
 }

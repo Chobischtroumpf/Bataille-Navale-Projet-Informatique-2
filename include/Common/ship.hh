@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "board_coordinates.hh"
+#include "cell_type.hh"
 #include "game_view.hh"
 #include "cell.hh"
 
@@ -15,6 +16,7 @@ class Ship {
   private:
     vector<BoardCoordinates> _coordinates;
     BoardCoordinates _top_left;
+    CellType _type = UNDAMAGED_SHIP;
     int _length = 0;
     int _size_x = 0;
     int _size_y = 0;
@@ -48,4 +50,8 @@ class Ship {
 
     // Print the ship
     void print();
+    std::vector<BoardCoordinates> getCoordinates();
+    BoardCoordinates getTopLeft();
+    int getNumberOfCase();
+    void setType(CellType new_type);
 };
