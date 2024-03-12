@@ -69,8 +69,6 @@ Si c'est le cas, le serveur peut alors effectuer toutes les manipulations néces
     \caption{Envoie d'un message}
 \end{figure}
 
-\subsection{Profil}
-
 \subsection{Matchmaking}
 Ce diagramme décrit la séquence d'actions réalisées lorsqu'un utilisateur veut créer/configurer une partie.
 
@@ -102,6 +100,9 @@ mais l'action est gérée par player. Cela permet à une classe player d'avoir d
 d'une faction. L'action est d'abbord vérifiée pour savoir si la case ciblée est autorisée. Si c'est le cas le plateau
 est modifié et l'interface est mise à jour.
 
+Vu que nous utilisons une architecture RESTful pour la communication client-serveur, le client doit faire du polling pour savoir si c'est à son tour de jouer.
+C'est à dire que le client doit envoyer une requête pour savoir si c'est à son tour de jouer. Si c'est le cas, le serveur renvoie une réponse positive, sinon, une réponse négative.
+
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.3]{img_design/Game.jpg}
@@ -109,6 +110,10 @@ est modifié et l'interface est mise à jour.
     \caption{Boucle de jeu}
 \end{figure}
 
+\subsection{Gestion des comptes}
+Afin de gérer tous les comptes utilisateur, leurs liste d'ami, et les messages privés, nous utilisons un moteur de base de donnée.
+Cela nous permet de stocker toutes les informations de manière efficace. Dans notre cas, nous utilisons une base de donnée relationnelle, à savoir SQLite.
+La plupart des informations qui sont fournies par le client sont stockées dans cette dernière.
 
 
 \end{document}

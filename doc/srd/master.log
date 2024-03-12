@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2023.11.27)  11 MAR 2024 17:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2023.11.27)  12 MAR 2024 15:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -423,19 +423,20 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 3.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 3.
-)
-\tf@toc=\write4
-\openout4 = `master.toc'.
 
- (./introduction.tex
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.5 \chapter
-            {Introduction} [1
+l.40 ...erline {4.2.7}Lobby}{22}{subsection.4.2.7}
+                                                  % [1
 
-] [2]
+])
+\tf@toc=\write4
+\openout4 = `master.toc'.
+
+ (./introduction.tex
+[2]
 Chapitre 1.
 (./introduction/but.tex
 Underfull \hbox (badness 10000) in paragraph at lines 4--9
@@ -468,7 +469,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 27--28
 (./besoins_user.tex [4]
 Chapitre 2.
 (./besoins_user/connexion.tex
-<besoins_user//img_fonctionnel/use_case_user_connexion.png, id=209, 582.175pt x
+<besoins_user//img_fonctionnel/use_case_user_connexion.png, id=219, 582.175pt x
  260.975pt>
 File: besoins_user//img_fonctionnel/use_case_user_connexion.png Graphic file (t
 ype png)
@@ -486,7 +487,7 @@ has been already used, duplicate ignored
 l.14   \newpage
                 <./besoins_user//img_fonctionnel/use_case_user_connexion.png (P
 NG copy)>]) (./besoins_user/menu_principal.tex
-<besoins_user//img_fonctionnel/use_case_user_ecran_principal.png, id=216, 973.6
+<besoins_user//img_fonctionnel/use_case_user_ecran_principal.png, id=226, 973.6
 375pt x 411.5375pt>
 File: besoins_user//img_fonctionnel/use_case_user_ecran_principal.png Graphic f
 ile (type png)
@@ -507,7 +508,7 @@ has been already used, duplicate ignored
 l.40     \item a
                 jouter un ami a sa liste <./besoins_user//img_fonctionnel/use_c
 ase_user_ecran_principal.png (PNG copy)>]) (./besoins_user/partie.tex
-<besoins_user//img_fonctionnel/use_case_user_ecran_partie.png, id=224, 662.475p
+<besoins_user//img_fonctionnel/use_case_user_ecran_partie.png, id=234, 662.475p
 t x 321.2pt>
 File: besoins_user//img_fonctionnel/use_case_user_ecran_partie.png Graphic file
  (type png)
@@ -525,7 +526,7 @@ l.25     \item 1
 e_user_ecran_partie.png (PNG copy)>] [8])) (./besoins_sys.tex [9]
 Chapitre 3.
 (./besoins_sys/connexion.tex
-<besoins_sys//img_fonctionnel/use_case_systeme_connexion.png, id=244, 712.6625p
+<besoins_sys//img_fonctionnel/use_case_systeme_connexion.png, id=252, 712.6625p
 t x 240.9pt>
 File: besoins_sys//img_fonctionnel/use_case_systeme_connexion.png Graphic file 
 (type png)
@@ -543,7 +544,7 @@ has been already used, duplicate ignored
 l.15 \newpage
               <./besoins_sys//img_fonctionnel/use_case_systeme_connexion.png (P
 NG copy)>]) (./besoins_sys/match_making.tex
-<besoins_sys//img_fonctionnel/usecas_sys_matchmaking.png, id=250, 873.2625pt x 
+<besoins_sys//img_fonctionnel/usecas_sys_matchmaking.png, id=258, 873.2625pt x 
 391.4625pt>
 File: besoins_sys//img_fonctionnel/usecas_sys_matchmaking.png Graphic file (typ
 e png)
@@ -575,7 +576,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--27
 
  []
 
-<design_fonctionnement_sys//img_design/Abstract.png, id=256, 731.73375pt x 202.
+<design_fonctionnement_sys//img_design/Abstract.png, id=264, 731.73375pt x 202.
 95825pt>
 File: design_fonctionnement_sys//img_design/Abstract.png Graphic file (type png
 )
@@ -591,7 +592,7 @@ Overfull \hbox (5.42365pt too wide) in paragraph at lines 37--39
 [12
 
 ]
-<design_fonctionnement_sys//img_design/Connexion_et_inscription.png, id=263, 55
+<design_fonctionnement_sys//img_design/Connexion_et_inscription.png, id=271, 55
 5.87675pt x 125.87025pt>
 File: design_fonctionnement_sys//img_design/Connexion_et_inscription.png Graphi
 c file (type png)
@@ -604,7 +605,7 @@ LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 5
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
-<design_fonctionnement_sys//img_design/Gestion_de_comptes.png, id=264, 149.358p
+<design_fonctionnement_sys//img_design/Gestion_de_comptes.png, id=272, 149.358p
 t x 241.50224pt>
 File: design_fonctionnement_sys//img_design/Gestion_de_comptes.png Graphic file
  (type png)
@@ -612,7 +613,7 @@ File: design_fonctionnement_sys//img_design/Gestion_de_comptes.png Graphic file
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Gestion_de_compt
 es.png  used on input line 59.
 (pdftex.def)             Requested size: 89.61548pt x 144.90245pt.
-<design_fonctionnement_sys//img_design/Main_menu.png, id=265, 535.40025pt x 214
+<design_fonctionnement_sys//img_design/Main_menu.png, id=273, 535.40025pt x 214
 .401pt>
 File: design_fonctionnement_sys//img_design/Main_menu.png Graphic file (type pn
 g)
@@ -641,14 +642,14 @@ l.72 \end{figure}
                   <./design_fonctionnement_sys//img_design/Abstract.png> <./des
 ign_fonctionnement_sys//img_design/Connexion_et_inscription.png> <./design_fonc
 tionnement_sys//img_design/Gestion_de_comptes.png>]
-<design_fonctionnement_sys//img_design/Profil.png, id=277, 570.933pt x 214.401p
+<design_fonctionnement_sys//img_design/Profil.png, id=285, 570.933pt x 214.401p
 t>
 File: design_fonctionnement_sys//img_design/Profil.png Graphic file (type png)
 <use design_fonctionnement_sys//img_design/Profil.png>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Profil.png  used
  on input line 78.
 (pdftex.def)             Requested size: 342.56244pt x 128.64159pt.
-<design_fonctionnement_sys//img_design/Matchmaking.png, id=278, 573.94424pt x 9
+<design_fonctionnement_sys//img_design/Matchmaking.png, id=286, 573.94424pt x 9
 3.951pt>
 File: design_fonctionnement_sys//img_design/Matchmaking.png Graphic file (type 
 png)
@@ -656,7 +657,7 @@ png)
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Matchmaking.png 
  used on input line 88.
 (pdftex.def)             Requested size: 344.3692pt x 56.37103pt.
-<design_fonctionnement_sys//img_design/Chat.png, id=279, 795.57225pt x 176.4592
+<design_fonctionnement_sys//img_design/Chat.png, id=287, 795.57225pt x 176.4592
 4pt>
 File: design_fonctionnement_sys//img_design/Chat.png Graphic file (type png)
 <use design_fonctionnement_sys//img_design/Chat.png>
@@ -689,7 +690,7 @@ l.102 \end{figure}
                    <./design_fonctionnement_sys//img_design/Main_menu.png> <./d
 esign_fonctionnement_sys//img_design/Profil.png> <./design_fonctionnement_sys//
 img_design/Matchmaking.png>]
-<design_fonctionnement_sys//img_design/Game_client.png, id=290, 535.40025pt x 2
+<design_fonctionnement_sys//img_design/Game_client.png, id=298, 535.40025pt x 2
 13.79875pt>
 File: design_fonctionnement_sys//img_design/Game_client.png Graphic file (type 
 png)
@@ -697,7 +698,7 @@ png)
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Game_client.png 
  used on input line 110.
 (pdftex.def)             Requested size: 321.24263pt x 128.28023pt.
-<design_fonctionnement_sys//img_design/Game_serveur.png, id=291, 411.33675pt x 
+<design_fonctionnement_sys//img_design/Game_serveur.png, id=299, 411.33675pt x 
 383.031pt>
 File: design_fonctionnement_sys//img_design/Game_serveur.png Graphic file (type
  png)
@@ -725,7 +726,7 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.127 \newpage
                <./design_fonctionnement_sys//img_design/Game_serveur.png>]
-<design_fonctionnement_sys//img_design/dia_class.png, id=307, 652.839pt x 390.8
+<design_fonctionnement_sys//img_design/dia_class.png, id=315, 652.839pt x 390.8
 6024pt>
 File: design_fonctionnement_sys//img_design/dia_class.png Graphic file (type pn
 g)
@@ -745,7 +746,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.4.10})
                                                   \__shipout_drop_firstpage_...
 l.3 
      <./design_fonctionnement_sys//img_design/dia_class.png>]
-<design_fonctionnement_sys//img_design/RegisterSD.jpg, id=315, 1109.14375pt x 6
+<design_fonctionnement_sys//img_design/RegisterSD.jpg, id=323, 1109.14375pt x 6
 43.40375pt>
 File: design_fonctionnement_sys//img_design/RegisterSD.jpg Graphic file (type j
 pg)
@@ -765,7 +766,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.4.11})
                                                   \__shipout_drop_firstpage_...
 l.42 \newpage
               <./design_fonctionnement_sys//img_design/RegisterSD.jpg>]
-<design_fonctionnement_sys//img_design/connexion_seq.png, id=326, 682.55pt x 39
+<design_fonctionnement_sys//img_design/connexion_seq.png, id=334, 682.55pt x 39
 1.4625pt>
 File: design_fonctionnement_sys//img_design/connexion_seq.png Graphic file (typ
 e png)
@@ -773,7 +774,7 @@ e png)
 Package pdftex.def Info: design_fonctionnement_sys//img_design/connexion_seq.pn
 g  used on input line 51.
 (pdftex.def)             Requested size: 273.01517pt x 156.58221pt.
-<design_fonctionnement_sys//img_design/Chat_DS.png, id=327, 534.19576pt x 151.7
+<design_fonctionnement_sys//img_design/Chat_DS.png, id=335, 534.19576pt x 151.7
 67pt>
 File: design_fonctionnement_sys//img_design/Chat_DS.png Graphic file (type png)
 
@@ -781,13 +782,13 @@ File: design_fonctionnement_sys//img_design/Chat_DS.png Graphic file (type png)
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Chat_DS.png  use
 d on input line 67.
 (pdftex.def)             Requested size: 160.25996pt x 45.53044pt.
-<design_fonctionnement_sys//img_design/PreLoby.jpg, id=328, 1409.265pt x 1023.8
+<design_fonctionnement_sys//img_design/PreLoby.jpg, id=336, 1409.265pt x 1023.8
 25pt>
 File: design_fonctionnement_sys//img_design/PreLoby.jpg Graphic file (type jpg)
 
 <use design_fonctionnement_sys//img_design/PreLoby.jpg>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/PreLoby.jpg  use
-d on input line 79.
+d on input line 77.
 (pdftex.def)             Requested size: 422.78276pt x 307.14987pt.
 
 [20
@@ -795,31 +796,31 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.4.12})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.83 
+l.81 
      
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.13})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.83 
+l.81 
       <./design_fonctionnement_sys//img_design/connexion_seq.png (PNG copy)> <.
 /design_fonctionnement_sys//img_design/Chat_DS.png>] [21
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.14})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.84 \newpage
+l.82 \newpage
               <./design_fonctionnement_sys//img_design/PreLoby.jpg>]
-<design_fonctionnement_sys//img_design/PreGame.jpg, id=341, 1150.2975pt x 896.3
+<design_fonctionnement_sys//img_design/PreGame.jpg, id=349, 1150.2975pt x 896.3
 4875pt>
 File: design_fonctionnement_sys//img_design/PreGame.jpg Graphic file (type jpg)
 
 <use design_fonctionnement_sys//img_design/PreGame.jpg>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/PreGame.jpg  use
-d on input line 93.
+d on input line 91.
 (pdftex.def)             Requested size: 460.11086pt x 358.53316pt.
 
-Overfull \hbox (26.49086pt too wide) in paragraph at lines 93--95
+Overfull \hbox (26.49086pt too wide) in paragraph at lines 91--93
  [][] 
  []
 
@@ -828,14 +829,14 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.4.15})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.97 \newpage
+l.95 \newpage
               <./design_fonctionnement_sys//img_design/PreGame.jpg>]
-<design_fonctionnement_sys//img_design/Game.jpg, id=347, 1021.8175pt x 920.4387
+<design_fonctionnement_sys//img_design/Game.jpg, id=355, 1021.8175pt x 920.4387
 5pt>
 File: design_fonctionnement_sys//img_design/Game.jpg Graphic file (type jpg)
 <use design_fonctionnement_sys//img_design/Game.jpg>
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Game.jpg  used o
-n input line 107.
+n input line 108.
 (pdftex.def)             Requested size: 306.54762pt x 276.13376pt.
 )) [23
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.16})
@@ -854,14 +855,14 @@ Package rerunfilecheck Warning: File `master.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `master.out':
-(rerunfilecheck)             Before: 3A5C4913178CA672B12FAF7B75C15F79;4524
-(rerunfilecheck)             After:  7B47BE264193255CC5478994B1645DAD;4799.
+(rerunfilecheck)             Before: 7B47BE264193255CC5478994B1645DAD;4799
+(rerunfilecheck)             After:  D8BAD8C7CC59EE7C896AA0634FA3E9CA;4870.
  ) 
 Here is how much of TeX's memory you used:
- 11367 strings out of 478022
- 189209 string characters out of 5839673
+ 11369 strings out of 478022
+ 189245 string characters out of 5839673
  1863330 words of memory out of 5000000
- 31203 multiletter control sequences out of 15000+600000
+ 31205 multiletter control sequences out of 15000+600000
  523132 words of font info for 47 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,8n,76p,362b,678s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -878,10 +879,10 @@ pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.60
 m1200.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ec
 ti1728.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/e
 crm1728.600pk>
-Output written on master.pdf (24 pages, 1121721 bytes).
+Output written on master.pdf (24 pages, 1122353 bytes).
 PDF statistics:
- 811 PDF objects out of 1000 (max. 8388607)
- 352 compressed objects within 4 object streams
+ 818 PDF objects out of 1000 (max. 8388607)
+ 360 compressed objects within 4 object streams
  86 named destinations out of 1000 (max. 500000)
- 386 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 402 words of extra memory for PDF output out of 10000 (max. 10000000)
 
