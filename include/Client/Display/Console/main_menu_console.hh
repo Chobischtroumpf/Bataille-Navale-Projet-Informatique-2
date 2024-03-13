@@ -11,7 +11,7 @@
 
 class MainMenuConsole : public Console {
 public:
-    MainMenuConsole(std::shared_ptr<MainMenuView> view);
+    MainMenuConsole(std::shared_ptr<MainMenuView> view, std::shared_ptr<MainMenuController> controller);
     void display() override;
     void displayError() override;
     void update() override;

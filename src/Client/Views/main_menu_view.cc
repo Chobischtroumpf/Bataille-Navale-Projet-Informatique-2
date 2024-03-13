@@ -1,10 +1,20 @@
 #include "main_menu_view.hh"
 
+MainMenuView::MainMenuView(std::shared_ptr<GameClient> gameClient) : _gameClient(gameClient) {}
+
 std::vector<std::string> MainMenuView::getNotifications() const {
     return _notifications;
 }
 
 std::vector<std::tuple<std::string, int>> MainMenuView::getFriends() const {
+    std::future<njson> friendlistFuture = _gameClient->GetFriends();
+    njson friendlist = friendlistFuture.get();
+
+    for (const auto& friendData : friendlist) {
+        std::cout << "Data = " << friendData << std::endl;
+        //std::cout << _gameClient->
+    }
+
     return _friends;
 }
 

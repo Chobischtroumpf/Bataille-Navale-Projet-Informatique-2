@@ -266,17 +266,14 @@ void GameServer::handleGet(http_request request) {
         else if (path.find(U("/api/friend/list")) != wstring::npos) {
             // Protected route - verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
-
             // If userId is empty, the token is invalid or missing
             if (userId.empty()) {
                 response["error"] = "Invalid or missing AuthToken";
                 request.reply(status_codes::Unauthorized, response.dump(), "application/json");
                 return; // Stop further processing
             }
-
             // Retrieve the user's friend list
             auto friendQuery = dbManager.getUserFriends(userId);
-
             if (!friendQuery.isOk()) {
                 // Handle error in retrieving friend list
                 response["error"] = "Failed to retrieve friend list";
@@ -284,7 +281,8 @@ void GameServer::handleGet(http_request request) {
             } else {
                 // Successfully retrieved friend list
                 nlohmann::json friendsJson = nlohmann::json::array();
-                for (const auto& friendId : friendQuery.data.at(0)) {
+                for (const auto& friendId : friendQuery.data) {
+                    std::cout << "Friend ID ADDED" << std::endl;
                     friendsJson.push_back(friendId);
                 }
                 response["friends"] = friendsJson;
@@ -436,6 +434,9 @@ void GameServer::handlePost(http_request request) {
 
                     // First, verify the AuthToken and retrieve the userId
                     auto userId = verifyAuthToken(request);
+                    std::cout << "user : " << userId << std::endl;
+                    std::cout << "request : " << path << std::endl;
+
 
                     // If userId is empty, the token is invalid or missing
                     if (userId.empty()) {
@@ -445,8 +446,7 @@ void GameServer::handlePost(http_request request) {
                     }
 
                     // Extract friendUsername from request body
-                    auto friendUsername = requestBody[U("friendId")].as_string();
-
+                    auto friendUsername = requestBody[U("friendUsername")].as_string();
                     // Response based on the friend's username validity
                     if (dbManager.checkUserName(friendUsername).isOk()) {
                         // Adding the friend

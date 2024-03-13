@@ -4,6 +4,7 @@
 
 #include "controller.hh"
 #include "view.hh"
+#include "game_client.hh"
 
 // Controllers
 #include "game_controller.hh"
@@ -44,6 +45,9 @@ public:
     // Main loop
     void run(ReturnInput::Screen base_screen);
 
+    // Getter
+    std::shared_ptr<GameClient> getClient();
+
 private:
     // Display a specific screen
     void displayGameScreen();
@@ -58,4 +62,6 @@ private:
 
     DisplayType _display_type;
     ReturnInput::Screen _current_screen;
+    std::shared_ptr<GameClient> _game_client;
+
 };

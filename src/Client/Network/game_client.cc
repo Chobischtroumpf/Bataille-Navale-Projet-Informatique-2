@@ -431,13 +431,13 @@ future<bool> GameClient::SendMessage(const string& recipientId, const string& me
 
 future<bool> GameClient::AddFriend(const string& username) {
     cout << "Attempting to add user " << username << " as a friend..." << endl;
-
+    // No auth token ?
     // Use a promise to return the result asynchronously
     auto promise = std::make_shared<std::promise<bool>>();
     auto resultFuture = promise->get_future();
 
     // Prepare the JSON object with data
-    njson friendData = {{"friend", username}};
+    njson friendData = {{"friendUsername", username}};
 
     // Send the POST request to the add friend endpoint
     PostRequest("/api/friend/add", friendData)

@@ -2,12 +2,15 @@
 #include <iostream>
 
 
-MainMenuConsole::MainMenuConsole(std::shared_ptr<MainMenuView> view): _view(view) {}
+MainMenuConsole::MainMenuConsole(std::shared_ptr<MainMenuView> view, std::shared_ptr<MainMenuController> controller):
+                _view(view), _controller(controller) {}
 
 void MainMenuConsole::displayFriends() {
+    _view->getFriends();
     std::cout << "╔════════════╗\n║Friends List║\n╠════"
                  "════════╩════════════════════════════════════════════════════════════════════╪\n║\n║ ";
     int friend_counter = 1;
+    /*
     for (auto i: _view->getFriends()) {
         // On récupère le status du joueur
         std::string status = "";
@@ -36,6 +39,7 @@ void MainMenuConsole::displayFriends() {
         _friendlist_position = 0;
     }
     std::cout << "\n║\n";
+     */
 }
 
 void MainMenuConsole::displayNotifications() {
@@ -93,30 +97,38 @@ void MainMenuConsole::update() {
 ReturnInput MainMenuConsole::handleInput() {
     int input;
     std::cin >> input;
+    int mode; std::string username;
     switch (input) {
-        int mode; int friend_id;
-        case 1: // Create a game
-            displayFriends(); displayNotifications(); displayOptions(1);
+        case 1: { // Create a game
+            displayFriends();
+            displayNotifications();
+            displayOptions(1);
             std::cin >> mode; // game
-            displayFriends(); displayNotifications(); displayOptions(2);
-            std::cin >> friend_id; // friend_id
-            _controller->createGame(mode, friend_id);
+            displayFriends();
+            displayNotifications();
+            displayOptions(2);
+            std::cin >> username; // username
+            //_controller->createGame(mode, friend_id);
             return {ReturnInput::GAME_CREATION, ""};
-        case 2: // Add a friend
+        }
+        case 2: {// Add a friend
             displayFriends(); displayNotifications(); displayOptions(3);
-            std::cin >> friend_id;
-            _controller->addFriend(friend_id);
-            system("cls");
+            std::cin >> username;
+            _controller->addFriend(username);
+            std::system("clear");
             display();
             break;
-        case 3: // Refresh
-            system("cls");
+        }
+        case 3: {// Refresh
+            std::system("clear");
             display();
             break;
-        case 4: // Display more friends
+        }
+        case 4: {// Display more friends
             _friendlist_position += 4;
-            system("cls");
+            std::system("clear");
             display();
+        }
     }
     // In case no game was created, displays the same menu after an input
     return {ReturnInput::MAIN_MENU, ""};
