@@ -269,6 +269,7 @@ class Ship {
     std::vector<BoardCoordinates> getCoordinates();
     BoardCoordinates getTopLeft();
     int getNumberOfCase();
+    CellType getType();
     void setTopLeft(BoardCoordinates top_left);
     void setType(CellType new_type);
 };
@@ -312,6 +313,10 @@ std::vector<BoardCoordinates> Ship::getCoordinates() {
 
 BoardCoordinates Ship::getTopLeft() {
     return _top_left;
+}
+
+CellType Ship::getType() {
+    return _type;
 }
 
 int Ship::getNumberOfCase() {
@@ -397,7 +402,7 @@ ShipCommander::ShipCommander(int number_of_case): ShipClassic{number_of_case} {
     switch (number_of_case) {
       case 1:
         _ships.push_back(Ship({{0, 0}}));
-        _ships[1].setType(UNDAMAGED_MINE);
+        _ships[0].setType(UNDAMAGED_MINE);
         break;
       case 3:
         _ships.push_back(Ship({{0, 0}, {0, 1}, {1, 1}}));
@@ -452,14 +457,15 @@ void LocalBoard::print() {
   }
 
 bool LocalBoard::addShip(Ship s) {
+    BoardCoordinates top_left = s.getTopLeft();
     for (auto &c: s.getCoordinates()) {
-        if (_my_board.at(s.getTopLeft().y() + c.y()).at(s.getTopLeft().x() + c.x()).type() == UNDAMAGED_SHIP) {
+        if (_my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).type() != WATER) {
           return false;
         }
     }
-
+    
     for (auto &c: s.getCoordinates()) {
-        _my_board.at(s.getTopLeft().y() + c.y()).at(s.getTopLeft().x() + c.x()).setType(UNDAMAGED_SHIP);
+        _my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).setType(s.getType());
     }
     return true;
   }

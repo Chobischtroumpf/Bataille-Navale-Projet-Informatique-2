@@ -34,19 +34,23 @@ void Ship::print() {
     }
 }
 
-vector<BoardCoordinates> Ship::getCoordinates() {
+vector<BoardCoordinates> Ship::getCoordinates() const {
     return _coordinates;
 }
 
-BoardCoordinates Ship::getTopLeft() {
+BoardCoordinates Ship::getTopLeft() const {
     return _top_left;
+}
+
+CellType Ship::getType() const {
+    return _type;
 }
 
 // const vector<vector<Cell>> Ship::getShipCells() const {
 //     return _ship_cells;
 // }
 
-int Ship::getLength() {
+int Ship::getLength() const {
     return _length;
 }
 

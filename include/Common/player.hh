@@ -24,7 +24,7 @@ class Player {
     int getEnergyPoints() const;
 
     void setFaction(Faction faction);
-    void setFleet(std::vector<Ship> fleet);
+    void setFleet(std::vector<Ship> fleet); // Cette méthode est peut etre inutile ?
     void addShip(Ship ship);
     void setTurn(bool is_turn);
     void setEnergyPoints(int energy_points);

@@ -60,32 +60,45 @@ std::vector<Cell> LocalBoardCommander::getNeighbors(BoardCoordinates coord) cons
 }
 
 bool LocalBoardCommander::isRemainingShip(int number_of_case) const {
-  return _ships_to_place.at(number_of_case - 1) > 0;
+  for (auto &s: _player.getFaction().getPossibleShips()) {
+    if (s.second == number_of_case) {
+      return s.first > 0;
+    }
+  }
+  return false;
 }
 
 std::vector<Ship> LocalBoardCommander::getPlacedShips() const {
-  return _placed_ships;
+  return _player.getFleet();
 }
 
-void LocalBoardCommander::addPlacedShip(Ship ship, int x, int y) {
-  _placed_ships.push_back(ship);
-  isRemainingShip(ship.getNumberOfCase()) ? _ships_to_place.at(ship.getNumberOfCase())-- : throw std::logic_error("Ship already placed");
-  for (auto &c : ship.getCoordinates()) {
-    _my_board.at(y + c.y()).at(x + c.x()).setType(IS_SHIP);
+bool LocalBoardCommander::addPlacedShip(Ship ship) {
+  BoardCoordinates top_left = ship.getTopLeft();
+  
+  for (auto &c: ship.getCoordinates()) {
+    if (_my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).type() != WATER) {
+      return false;
+    }
   }
+  
+  for (auto &c: ship.getCoordinates()) {
+      _my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).setType(ship.getType());
+  }
+
+  return true;
 }
 
 bool LocalBoardCommander::allBoatsPlaced() const {
-  for (auto ship : _ships_to_place) {
-    if (ship > 0) {
+  for (auto &ship: _player.getFaction().getPossibleShips()) {
+    if (ship.second > 0) {
       return false;
     }
   }
   return true;
 }
 
-std::array<uint8_t, 5> LocalBoardCommander::shipsToPlace() const {
-  return _ships_to_place;
+PossibleShips LocalBoardCommander::shipsToPlace() const {
+  return _player.getFaction().getPossibleShips();
 }
 
 CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {

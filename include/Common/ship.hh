@@ -20,7 +20,7 @@ class Ship {
     int _length = 0;
     int _size_x = 0;
     int _size_y = 0;
-    bool _is_sunk = false;
+    bool _is_sunk = false; // peut être juste changer le celltype ?
 
     void setSunk(bool is_sunk);
 
@@ -35,9 +35,11 @@ class Ship {
     void rotate();
 
     // Getters
-    vector<BoardCoordinates> getCoordinates();
+    vector<BoardCoordinates> getCoordinates() const;
+    BoardCoordinates getTopLeft() const;
     // const vector<vector<Cell>> getShipCells() const;
-    int getLength();
+    CellType getType() const;
+    int getLength() const;
     bool isSunk() const;
 
     //Setter

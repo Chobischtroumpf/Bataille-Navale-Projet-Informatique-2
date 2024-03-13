@@ -65,7 +65,7 @@ class LocalBoardCommander : public GameView {
     std::vector<Cell> getNeighbors(BoardCoordinates coord) const;
 
     /* Returns the ships that needs can be placed */
-    std::array<uint8_t, 5> shipsToPlace() const;
+    PossibleShips shipsToPlace() const;
 
     /* Returns true if all boats are placed */
     bool allBoatsPlaced() const;
@@ -77,7 +77,7 @@ class LocalBoardCommander : public GameView {
     std::vector<Ship> getPlacedShips() const;
 
     /* Add a placed ship (locally) */
-    void addPlacedShip(Ship ship, int x, int y);
+    bool addPlacedShip(Ship ship);
 
     /* Polls the server to wait the beggining of the game */
     void waitGame();
