@@ -392,6 +392,39 @@ future<string> GameClient::GetUserId(const string& username) {
     return resultFuture;
 }
 
+// Function to get a username using the userId, returning a future (asynchronous)
+future<string> GameClient::GetUsername(const string& userId) {
+    cout << "Getting username request for userId: " << userId << " ..." << endl;
+
+    // Use a promise to return the result asynchronously
+    auto promise = std::make_shared<std::promise<string>>();
+    auto resultFuture = promise->get_future();
+
+    GetRequest("/api/username?userId=" + userId)
+    .then([promise](njson jsonResponse) {
+        // Success path: Process the JSON response here
+        if (jsonResponse.contains("username")) {
+            auto userId = jsonResponse["username"].get<string>();
+            wcout << L"Username: " << wstring(userId.begin(), userId.end()) << endl;
+            promise->set_value(userId);
+        } else {
+            // Error or userId not found, set a default error value (empty string)
+            promise->set_value("");
+        }
+    }).then([promise](pplx::task<void> catchTask) {
+        try {
+            // Attempt to catch exceptions if any
+            catchTask.get();
+        } catch (const exception& e) {
+            // In case of exception, set an error value
+            cerr << "Exception caught in promise chain: " << e.what() << endl;
+            promise->set_value(""); // sert value to error signal in case it wasn't set before
+        }
+    });
+
+    return resultFuture;
+}
+
 future<bool> GameClient::SendMessage(const string& recipientId, const string& message) {
     cout << "Sending message to user " << recipientId << " ..." << endl;
 

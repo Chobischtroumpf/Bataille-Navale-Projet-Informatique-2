@@ -7,7 +7,7 @@
 QueryResult Queries::getUsername(const std::string &id_user){
     std::string condition = "id_user = '" + id_user + "'";
     QueryResult result = db->selectFromTable("Users", "username", condition);
-    if(result.data.empty()){result.error = DbError::NON_EXISTENT_USER_NAME;}
+    if(result.data.empty()){result.error = DbError::NON_EXISTENT_USER_ID;}
     return result;
 }
 

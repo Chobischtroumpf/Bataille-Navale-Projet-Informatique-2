@@ -24,6 +24,7 @@ public:
     std::future<bool> Login(const std::string& userId, const std::string& password);
     std::future<bool> Register(const std::string& userId, const std::string& password);
     std::future<std::string> GetUserId(const std::string& username);
+    std::future<std::string> GetUsername(const std::string& userId);
     std::future<std::string> GetGames();
     std::future<njson> QueryGameState(const std::string& sessionId);
     std::future<bool> SendMessage(const std::string& targetId, const std::string& message);
