@@ -84,6 +84,16 @@ curl -X POST -H "Content-type: application/json" -d '{"username": "yourname", "p
 curl -X GET -H "Content-type: application/json" -d '{"username": "yourname"}' 'http://localhost:8080/api/login/uid'
 ```
 
+## `GET` GetUsername
+- **Endpoint**: `/api/username`
+- **Method**: `GET`
+- **Description**: Retrieves the username of a user from the userId
+- **Parameters**: `userId` query parameter.
+- **Returns**: The username.
+```sh
+curl -X GET -H "Content-type: application/json" -d '{"userId": "yourUserId"}' 'http://localhost:8080/api/username'
+```
+
 ## `POST` SendMessage
 - **Endpoint**: `/api/chat/send`
 - **Method**: `POST`
