@@ -1,7 +1,7 @@
 #include "game.hh"
 
 Game::Game(const nlohmann::json &game_details)
-    : _board{std::make_shared<Board>()} {
+    : _board{std::make_shared<Board>()}, update_player1{true}, update_player2{true} {
   set_game(game_details);
   initialize_ship_placements();
 }
@@ -24,7 +24,10 @@ bool Game::handle_place_ship(Turn turn, ShipCoordinates ship_coordinates) {
     } else {
       _board->placeShip(ship_coordinates, false);
       ship_placements.at(PLAYERTWO)++;
+      
     }
+    update_player1 = true;
+    update_player2 = true;
     // if the ship placements finished then start the timer
     if (ship_placements_finished()){
       start_timer();
@@ -38,6 +41,9 @@ bool Game::handle_fire(Turn turn, BoardCoordinates board_coordinates) {
   if (_board->whoseTurn() == turn) {
     _board->fire(board_coordinates);
     change_turn();
+    update_player1 = true;
+    update_player2 = true;
+    
     return true;
   } else {
     // handle if the it s not his turn
@@ -46,20 +52,43 @@ bool Game::handle_fire(Turn turn, BoardCoordinates board_coordinates) {
 }
 
 nlohmann::json Game::get_state(PlayerRole player) {
-  json game_json = _board->toJson(player);
 
+  json game_json;
+  
+  if (player == PlayerRole::Leader && update_player1){
+    game_json = _board->toJson(player);
+    update_player1 = false;
+
+  }else if(player == PlayerRole::Opponent && update_player2){
+    game_json = _board->toJson(player);
+    update_player2 = false;
+    
+  }else if(player == PlayerRole::Spectator){
+    game_json = _board->toJson(player);
+  }
+  else{
+    game_json["fleetA"] = "None";
+    game_json["fleetB"] = "None";
+  }
 
   if (is_finished()) {
       game_json["Finished"] = "true";
-      if (_board->isVictory() || game_timer.winner() == 1) {
+      if (game_timer.winner() == 0){
+        if (_board->isVictory()){
+          game_json["Winner"] = "PLAYERONE";
+        } else{
+          game_json["Winner"] = "PLAYERTWO";
+        }
+      }
+      if (game_timer.winner() == 1) {
         game_json["Winner"] = "PLAYERONE";
       } else {
         game_json["Winner"] = "PLAYERTWO";
       }
-    } else {
+  } else {
       game_json["Finished"] = "false";
       game_json["Winner"] = "None";
-    }
+  }
 
 
   if (ship_placements_finished()){
@@ -118,3 +147,4 @@ void Game::change_turn(){
   _board->changeTurn();
   game_timer.switch_turn();
 }
+
