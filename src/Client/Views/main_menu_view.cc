@@ -6,15 +6,17 @@ std::vector<std::string> MainMenuView::getNotifications() const {
     return _notifications;
 }
 
-std::vector<std::tuple<std::string, int>> MainMenuView::getFriends() const {
+std::vector<std::tuple<std::string, int>> MainMenuView::getFriends() {
     std::future<njson> friendlistFuture = _gameClient->GetFriends();
     njson friendlist = friendlistFuture.get();
-
-    for (const auto& friendData : friendlist) {
-        std::cout << "Data = " << friendData << std::endl;
-        //std::cout << _gameClient->
+    _friends.clear();
+    for (const auto& userId : friendlist) {
+        std::string Id = userId[0];
+        auto usernameFuture = _gameClient->GetUsername(Id);
+        auto username = usernameFuture.get();
+        std::string pseudo_to_add(username);
+        addFriend(pseudo_to_add, 0);
     }
-
     return _friends;
 }
 

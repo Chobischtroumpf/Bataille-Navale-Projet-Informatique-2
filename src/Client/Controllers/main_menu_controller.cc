@@ -12,5 +12,14 @@ void MainMenuController::joinGame(int game_id) {
 }
 
 void MainMenuController::addFriend(const std::string& username) {
-    gameClient->AddFriend(username);
+    std::future<bool> resultFuture = gameClient->AddFriend(username);
+    // This code will not work due to the missing "error" section in each response
+    bool result = resultFuture.get();
+    if (result) {
+        std::cout << "Friend request sent." << std::endl;
+        //std::cout << "Friend added!" << std::endl;
+    }
+    else {
+        std::cout << "Failed to add friend :(" << std::endl;
+    }
 }

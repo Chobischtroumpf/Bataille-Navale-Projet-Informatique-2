@@ -172,7 +172,6 @@ QueryResult Queries::deleteAccount(const std::string &id_user, const std::string
 
 QueryResult Queries::getUserFriends(const std::string &id_user){
     std::string condition = "id_user_r = '" + id_user + "'";
-    std::cout << "\n" << condition;
     QueryResult result = db->selectFromTable("Relations", "id_friend", condition);
     return result;
 }

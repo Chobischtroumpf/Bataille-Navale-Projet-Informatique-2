@@ -8,6 +8,7 @@
 
 #include <memory> // For unique_ptr
 #include <future> // For future
+#include <vector>
 
 
 // Declare the njson namespace alias for nlohmann::json 
