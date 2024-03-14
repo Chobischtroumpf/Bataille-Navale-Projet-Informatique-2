@@ -7,12 +7,15 @@
 
 #include "display.hh"
 #include "controller.hh"
-#include "local_board.hh"
+#include "local_board_commander.hh"
+#include "ship_coordinates.hh"
+#include "board_coordinates.hh"
+#include "cell_type.hh"
 
 /** Interface to implement to receive events from the display */
 class GameController : public Controller {
 public:
-  GameController(std::shared_ptr<LocalBoard> board);
+  GameController(std::shared_ptr<LocalBoardCommander> board);
   GameController(const GameController &) = default;
   GameController(GameController &&) = default;
   GameController &operator=(const GameController &) = default;
@@ -43,11 +46,10 @@ public:
   virtual ~GameController() = default;
   
 private:
-  std::shared_ptr<LocalBoard> _board;
+  std::shared_ptr<LocalBoardCommander> _board;
   std::shared_ptr<Display> _display;
 
   virtual bool checkShipPosition(ShipCoordinates coord) const;
-  virtual bool checkShipsInBoard(ShipCoordinates coord) const;
   bool sendRequest(ShipCoordinates coord);
   bool sendRequest(BoardCoordinates coord);
 };

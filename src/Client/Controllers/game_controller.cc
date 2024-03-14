@@ -3,48 +3,24 @@
 #include "board_coordinates.hh"
 #include "ship_coordinates.hh"
 
-GameController::GameController(std::shared_ptr<LocalBoard> board) : _board{std::move(board)} {}
+GameController::GameController(std::shared_ptr<LocalBoardCommander> board) : _board{std::move(board)} {}
 
 bool GameController::fire(BoardCoordinates coord) const {
     // Sends POST request to fire to the gameServer
     return true;
 }
 
-bool GameController::checkShipsInBoard(ShipCoordinates coord) const {
-    std::array<std::pair<ShipType, uint8_t>, 4> ships = _board->shipsToPlace();
-    return ships.at(coord.ship_id() - 2).second > 0;
-}
-
-bool GameController::checkShipPosition(ShipCoordinates coord) const {
-    for (int i = 0; i < coord.ship_id(); i++) {
-        if (coord.orientation() == HORIZONTAL) {
-            if (coord.x() + i < _board->width() && _board->cellType(true, BoardCoordinates(coord.x() + i, coord.y())) != UNDAMAGED_SHIP) {
-                for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x() + i, coord.y()))) {
-                    if (neighbor.type() == IS_SHIP) {
-                        return false;
-                    }
-                }
-            } else {
-                return false;
-            }
-        } else {
-            if (coord.y() + i < _board->height() && _board->cellType(true, BoardCoordinates(coord.x(), coord.y() + i)) != UNDAMAGED_SHIP) {
-                for (auto &neighbor: _board->getNeighbors(BoardCoordinates(coord.x(), coord.y() + i))) {
-                    if (neighbor.type() == IS_SHIP) {
-                        return false;
-                    }
-                }
-            } else {
-                return false;
-            }
-        }
+bool GameController::checkShipPosition(Ship ship) const {
+    for (auto coord : ship.getCoordinates()) {
+        if (_board->getCell(coord) != CellType::WATER || !_board->isInBoard(coord))
+            return false;
     }
     return true;
 }
 
 bool GameController::placeShip(ShipCoordinates coord) const {
     // Verifier qu'on peut poser le bateau la
-    if ( checkShipsInBoard(coord) && checkShipPosition(coord)) {
+    if ( checkShipPosition(coord)) {
         // Sends a request to place the ship to the gameServer
         _board->addPlacedShip(coord);
         return true;

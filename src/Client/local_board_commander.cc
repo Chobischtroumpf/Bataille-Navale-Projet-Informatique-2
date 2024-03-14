@@ -175,3 +175,7 @@ void LocalBoardCommander::update_board(const nlohmann::json& new_board){
   }
 
 }
+
+bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {
+  return coord.x() >= 0 && coord.x() < 10 && coord.y() >= 0 && coord.y() < 10;
+}

@@ -93,4 +93,6 @@ class LocalBoardCommander : public GameView {
     static CellType string_to_celltype(std::string& type);
 
     void update_board(const nlohmann::json& new_board);
+
+    bool isInBoard(BoardCoordinates coord) const;
 };
