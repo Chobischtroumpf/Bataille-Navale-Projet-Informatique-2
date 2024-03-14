@@ -78,187 +78,179 @@ string GameServer::verifyAuthToken(const web::http::http_request& request) {
 }
 
 void GameServer::handleGet(http_request request) {
-  try {
-    auto path = request.relative_uri().path();
+      try {
+        auto path = request.relative_uri().path();
+        njson response;
 
-    cout << "Received GET request for path " << to_utf8(path) << endl;
+        cout << "Received GET request for path " << to_utf8(path) << endl;
 
-    // Retrieve the session manager instance
-    auto &sessionManager = SessionManager::getInstance();
-    request.extract_json()
-        .then([path, &sessionManager, this,
-               request](web::json::value requestBody) mutable {
-          njson response;
+        // Retrieve the session manager instance
+        auto& sessionManager = SessionManager::getInstance();
 
-          // Handle the case for "/api/games" - List of session IDs
-          if (path == U("/api/games")) {
+        // Handle the case for "/api/games" - List of session IDs
+        if (path == U("/api/games")) {
             // Placeholder session IDs for demonstration
-            std::vector<std::string> sessionIds = {"session1", "session2",
-                                                   "session3"};
+            std::vector<std::string> sessionIds = {"session1", "session2", "session3"};
             response["sessions"] = njson(sessionIds);
-            request.reply(status_codes::OK, response.dump(),
-                          "application/json");
-          }
+            request.reply(status_codes::OK, response.dump(), "application/json");
+        }
 
-          // Handle the case for "/api/games/query" - Query game state by
-          // session ID ( and user ID ) -- Protected
-          else if (path.find(U("/api/games/query")) != wstring::npos) {
+        // Handle the case for "/api/games/query" - Query game state by session ID ( and user ID ) -- Protected
+        else if (path.find(U("/api/games/query")) != wstring::npos ) {
 
             // Protected route - verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
 
             // If userId is empty, the token is invalid or missing
             if (userId.empty()) {
-              response["error"] = "Invalid or missing AuthToken";
-              request.reply(status_codes::Unauthorized, response.dump(),
-                            "application/json");
-              return; // Stop further processing
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
             }
-
+            
             // Parsing query parameters
             auto queryParams = uri::split_query(request.request_uri().query());
             // Extracting sessionId  from query parameters
             auto sessionIdIt = queryParams.find(U("sessionId"));
-
+            
             // Verifying both sessionId  are provided
-            if (sessionIdIt != queryParams.end()) {
-              auto sessionId = sessionIdIt->second;
+            if (sessionIdIt != queryParams.end() ) {
+                auto sessionId = sessionIdIt->second;
+                
+                if( !sessionManager.sessionExists(to_utf8(sessionId)) ) {
+                    // Handle missing parameters
+                    response["error"] = "Session could not be found";
+                    request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                    return;
+                }
 
-              if (!sessionManager.sessionExists(to_utf8(sessionId))) {
-                // Handle missing parameters
-                response["error"] = "Session could not be found";
-                request.reply(status_codes::BadRequest, response.dump(),
-                              "application/json");
-                return;
-              }
-
-              // Use sessionId to query the game state
-              auto gameSession = sessionManager.getSession(to_utf8(sessionId));
-              njson gameState = gameSession->getGameState(userId);
-              response["gameState"] = gameState;
-              request.reply(status_codes::OK, response.dump(),
-                            "application/json");
+                // Use sessionId to query the game state
+                auto gameSession = sessionManager.getSession(to_utf8(sessionId));
+                njson gameState = gameSession->getGameState(userId);
+                response["gameState"] = gameState;
+                request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
-              // Handle missing parameters
-              response["error"] = "Missing sessionId parameter";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
+                // Handle missing parameters
+                response["error"] = "Missing sessionId parameter";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
             }
-          }
+        }
 
-          // Handle the case for "/api/games/join" - Join game by session ID (
-          // and user ID ) -- Protected
-          else if (path.find(U("/api/games/join")) != wstring::npos) {
+        // Handle the case for "/api/games/join" - Join game by session ID ( and user ID ) -- Protected
+        else if (path.find(U("/api/games/join")) != wstring::npos) {
+
 
             // Protected route - verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
 
             // If userId is empty, the token is invalid or missing
             if (userId.empty()) {
-              response["error"] = "Invalid or missing AuthToken";
-              request.reply(status_codes::Unauthorized, response.dump(),
-                            "application/json");
-              return; // Stop further processing
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
             }
 
             // Parsing query parameters
             auto queryParams = uri::split_query(request.request_uri().query());
             // Extracting sessionId from query parameters
             auto sessionIdIt = queryParams.find(U("sessionid"));
+        
 
             // Verifying both sessionId and userId are provided
-            if (sessionIdIt != queryParams.end()) {
-              auto sessionId = sessionIdIt->second;
+            if (sessionIdIt != queryParams.end() ) {
+                auto sessionId = sessionIdIt->second;
+            
 
-              // Use sessionId and userId to add player to the game
-              auto gameSession = sessionManager.getSession(to_utf8(sessionId));
-              gameSession->addParticipant(userId);
+                // Use sessionId and userId to add player to the game 
+                auto gameSession = sessionManager.getSession(to_utf8(sessionId));
+                gameSession->addParticipant(userId);
 
-              response["gameDetails"] = {}; // Not implemented
-              request.reply(status_codes::OK, response.dump(),
-                            "application/json");
+                response["gameDetails"] = {}; // Not implemented
+                request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
-              // Handle missing parameters
-              response["error"] = "Missing sessionId parameter";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
+                // Handle missing parameters
+                response["error"] = "Missing sessionId parameter";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
             }
-          }
+        }
 
-          // Handle the case for "/api/user/uid" - Retrieve user ID from
-          // database
-          else if (path.find(U("/api/login/uid")) != wstring::npos) {
+        // Handle the case for "/api/user/uid" - Retrieve user ID from database
+        else if (path.find(U("/api/login/uid")) != wstring::npos ) {
 
-            // If username is empty, return an error
-            if (!requestBody.has_field(U("username"))) {
-              response["error"] = "Missing username";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
-              return;
-            }
-            auto username = requestBody[U("username")].as_string();
 
-            QueryResult query = dbManager.checkUserName(to_utf8(username));
+            // Parsing query parameters
+            auto queryParams = uri::split_query(request.request_uri().query());
+            // Extracting sessionId from query parameters
+            auto usernameIt = queryParams.find(U("username"));
+        
 
-            if (!query.isOk()) {
-              // Handle missing parameters
-              response["error"] =
-                  "Error on parameter query : " + query.getError();
-              request.reply(status_codes::InternalError, response.dump(),
-                            "application/json");
+            // Verifying both sessionId and userId are provided
+            if (usernameIt != queryParams.end() ) {
+                auto username = usernameIt->second;
+
+                QueryResult query = dbManager.checkUserName(to_utf8(username));
+
+                if (!query.isOk()) {
+                    // Handle missing parameters
+                    response["error"] = "Error on parameter query : " + query.getError();
+                    request.reply(status_codes::InternalError, response.dump(), "application/json");
+                }
+
+                string userId = query.getFirst();
+                response["userId"] = userId;
+
+                request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
-              string userId = query.getFirst();
-              response["userId"] = userId;
-
-              request.reply(status_codes::OK, response.dump(),
-                            "application/json");
+                // Handle missing parameters
+                response["error"] = "Missing username parameter";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
             }
-          }
+        }
 
-          // Handle the case for "/api/username" - retreive username from userId
-          else if (path.find(U("/api/username")) != wstring::npos) {
+        // Handle the case for "/api/username" - Retrieve username from database
+        else if (path.find(U("/api/username")) != wstring::npos ) {
 
-            // If userId is empty, return an error
-            if (!requestBody.has_field(U("userId"))) {
-              response["error"] = "Missing userId";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
-              return;
-            }
-            auto userId = requestBody[U("userId")].as_string();
 
-            QueryResult query = dbManager.getUsername(to_utf8(userId));
+            // Parsing query parameters
+            auto queryParams = uri::split_query(request.request_uri().query());
+            // Extracting sessionId from query parameters
+            auto userIdIt = queryParams.find(U("userId"));
+        
 
-            if (!query.isOk()) {
-              // Handle missing parameters
-              response["error"] =
-                  "Error on parameter query : " + query.getError();
-              request.reply(status_codes::InternalError, response.dump(),
-                            "application/json");
+            // Verifying both sessionId and userId are provided
+            if (userIdIt != queryParams.end() ) {
+                auto userId = userIdIt->second;
+
+                QueryResult query = dbManager.getUsername(to_utf8(userId));
+
+                if (!query.isOk()) {
+                    // Handle missing parameters
+                    response["error"] = "Error on parameter query : " + query.getError();
+                    request.reply(status_codes::InternalError, response.dump(), "application/json");
+                }
+
+                string username = query.getFirst();
+                response["username"] = username;
+
+                request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
-              string username = query.getFirst();
-              response["username"] = username;
-
-              request.reply(status_codes::OK, response.dump(),
-                            "application/json");
+                // Handle missing parameters
+                response["error"] = "Missing username parameter";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
             }
-          }
+        }
 
-          // Handle the case for "/api/chat/get" - Retrieve conversation with a
-          // user
-          // -- Protected
-          else if (path.find(U("/api/chat/get")) != wstring::npos) {
-
-            // First, verify the AuthToken and retrieve the userId of the
-            // requester
+        // Handle the case for "/api/chat/get" - Retrieve conversation with a user -- Protected
+        else if (path.find(U("/api/chat/get")) != wstring::npos ) {
+            
+            // First, verify the AuthToken and retrieve the userId of the requester
             auto requesterId = verifyAuthToken(request);
 
             // If requesterId is empty, the token is invalid or missing
             if (requesterId.empty()) {
-              response["error"] = "Invalid or missing AuthToken";
-              request.reply(status_codes::Unauthorized, response.dump(),
-                            "application/json");
-              return; // Stop further processing
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
             }
 
             // Parsing query parameters for the recipient's userId
@@ -267,117 +259,100 @@ void GameServer::handleGet(http_request request) {
 
             // Verifying recipient's userId is provided
             if (recipientIdIt != queryParams.end()) {
-              auto recipientId = recipientIdIt->second;
+                auto recipientId = recipientIdIt->second;
 
-              QueryResult result = this->dbManager.getMsgBetweenUsers(
-                  requesterId, to_utf8(recipientId));
+                
+                QueryResult result = this->dbManager.getMsgBetweenUsers(requesterId, to_utf8(recipientId));
 
-              if (!result.isOk()) {
-                response["error"] =
-                    "Failed to retrieve conversation : " + result.getError();
-                request.reply(status_codes::BadRequest, response.dump(),
-                              "application/json");
-              }
-
-              njson conversation = njson::array();
-
-              njson messagesJson; // Create a JSON array to hold the messages
-
-              // Iterate over each message in the QueryResult
-              for (const auto &messageVec : result.data) {
-                if (messageVec.size() ==
-                    3) { // Ensure the inner vector has exactly 3 elements
-                  // Create a JSON object for the current message
-                  njson messageJson = {{"sender", messageVec[0]},
-                                       {"message", messageVec[2]}};
-                  // Append the message JSON object to the messages array
-                  messagesJson.push_back(messageJson);
+                if (!result.isOk()) {
+                    response["error"] = "Failed to retrieve conversation : " + result.getError();
+                    request.reply(status_codes::BadRequest, response.dump(), "application/json");
                 }
-              }
 
-              response["conversation"] = conversation;
-              request.reply(status_codes::OK, response.dump(),
-                            "application/json");
+                njson conversation = njson::array();
+                
+                njson messagesJson ; // Create a JSON array to hold the messages
 
+                // Iterate over each message in the QueryResult
+                for (const auto& messageVec : result.data) {
+                    if (messageVec.size() == 3) { // Ensure the inner vector has exactly 3 elements
+                        // Create a JSON object for the current message
+                        njson messageJson = {
+                            {"sender", messageVec[0]},
+                            {"message", messageVec[2]}
+                        };
+                        // Append the message JSON object to the messages array
+                        messagesJson.push_back(messageJson);
+                    }
+                }
+                
+                response["conversation"] = conversation;
+                request.reply(status_codes::OK, response.dump(), "application/json");
+                
             } else {
-              response["error"] = "Missing userId parameter";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
+                response["error"] = "Missing userId parameter";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
             }
-          }
-
-          // Handle the case for "/api/friend/list" - Retrieving the friend list
-          // -- Protected
-          else if (path.find(U("/api/friend/list")) != wstring::npos) {
+        }
+        
+        // Handle the case for "/api/friend/list" - Retrieving the friend list -- Protected
+        else if (path.find(U("/api/friend/list")) != wstring::npos) {
             // Protected route - verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
+
             // If userId is empty, the token is invalid or missing
             if (userId.empty()) {
-              response["error"] = "Invalid or missing AuthToken";
-              request.reply(status_codes::Unauthorized, response.dump(),
-                            "application/json");
-              return; // Stop further processing
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
             }
+
             // Retrieve the user's friend list
             auto friendQuery = dbManager.getUserFriends(userId);
-            if (!friendQuery.isOk()) {
-              // Handle error in retrieving friend list
-              response["error"] = "Failed to retrieve friend list";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
-            } else {
-              // Successfully retrieved friend list
-              nlohmann::json friendsJson = nlohmann::json::array();
-              for (const auto &friendId : friendQuery.data) {
-                std::cout << "Friend ID ADDED" << std::endl;
-                friendsJson.push_back(friendId);
-              }
-              response["friends"] = friendsJson;
-              request.reply(status_codes::OK, response.dump(),
-                            "application/json");
-            }
-          }
 
-          // Handle the case for "/api/friend" - Returns the user's friend list
-          else if (path == U("/api/friend")) {
+            if (!friendQuery.isOk()) {
+                // Handle error in retrieving friend list
+                response["error"] = "Failed to retrieve friend list";
+                request.reply(status_codes::BadRequest, response.dump(), "application/json");
+            } else {
+                // Successfully retrieved friend list
+                nlohmann::json friendsJson = nlohmann::json::array();
+                for (const auto& friendId : friendQuery.data.at(0)) {
+                    friendsJson.push_back(friendId);
+                }
+                response["friends"] = friendsJson;
+                request.reply(status_codes::OK, response.dump(), "application/json");
+            }
+        }
+
+        // Handle the case for "/api/friend" - Returns the user's friend list
+        else if (path == U("/api/friend")) {
 
             // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
 
             // If userId is empty, the token is invalid or missing
             if (userId.empty()) {
-              response["error"] = "Invalid or missing AuthToken";
-              request.reply(status_codes::Unauthorized, response.dump(),
-                            "application/json");
-              return; // Stop further processing
+                response["error"] = "Invalid or missing AuthToken";
+                request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+                return; // Stop further processing
             }
 
             // Getting the friend list
             dbManager.getUserFriends(userId);
-            request.reply(status_codes::OK, response.dump(),
-                          "application/json");
-          }
+            request.reply(status_codes::OK, response.dump(), "application/json");
+        }
 
-          // Handle unmatched paths
-          else {
+
+            // Handle unmatched paths
+        else {
             response["error"] = "Unknown path";
-            request.reply(status_codes::BadRequest, response.dump(),
-                          "application/json");
-          }
-        })
-        .then([](pplx::task<void> errorHandler) {
-          try {
-            // Attempt to catch exceptions if any
-            errorHandler.get();
-          } catch (const exception &e) {
-            // In case of exception, set an error value
-            cerr << "Exception in handlePost (lambda): " << e.what() << endl;
-          }
-        });
-
-  } catch (const std::exception &e) {
-    cerr << "Exception in handlePost : " << e.what() << endl;
-  }
+            request.reply(status_codes::BadRequest, response.dump(), "application/json");
+        }
+    } catch (const exception& e) {
+                // In case of exception, set an error value
+                cerr << "Exception in handleGet: " << e.what() << endl;
+    }
 }
 
 void GameServer::handlePost(http_request request) {
