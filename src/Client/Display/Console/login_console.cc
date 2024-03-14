@@ -5,14 +5,13 @@ Dans la classe LoginController à quoi correspond checkValidity
 Faut il donc une autre méthode pour Ajouter le compte nouvellememnt créé à la BD
 Attention il n y a pas encore de fichier.cpp pour LoginController
 */
-LoginConsole::LoginConsole(const std::string& baseUri) 
-    : loginController(baseUri) {
+LoginConsole::LoginConsole(std::shared_ptr<GameClient> gameClient)
+    : loginController(gameClient) {
 }
 
 ReturnInput LoginConsole::handleInput() {
   int choix;
   bool continuer = true;
-
   while (!validCin(choix)) {
     //system("clear");
     std::cout << "1. Se connecter\n";
