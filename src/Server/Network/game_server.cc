@@ -269,10 +269,8 @@ void GameServer::handleGet(http_request request) {
                     request.reply(status_codes::BadRequest, response.dump(), "application/json");
                 }
 
-                njson conversation = njson::array();
+                njson conversation = njson::array(); // Create a JSON array to hold the messages
                 
-                njson messagesJson ; // Create a JSON array to hold the messages
-
                 // Iterate over each message in the QueryResult
                 for (const auto& messageVec : result.data) {
                     if (messageVec.size() == 3) { // Ensure the inner vector has exactly 3 elements
@@ -282,7 +280,7 @@ void GameServer::handleGet(http_request request) {
                             {"message", messageVec[2]}
                         };
                         // Append the message JSON object to the messages array
-                        messagesJson.push_back(messageJson);
+                        conversation.push_back(messageJson);
                     }
                 }
                 
