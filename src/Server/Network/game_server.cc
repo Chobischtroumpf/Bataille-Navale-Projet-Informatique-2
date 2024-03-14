@@ -317,7 +317,7 @@ void GameServer::handleGet(http_request request) {
             } else {
                 // Successfully retrieved friend list
                 nlohmann::json friendsJson = nlohmann::json::array();
-                for (const auto& friendId : friendQuery.data.at(0)) {
+                for (const auto& friendId : friendQuery.data) {
                     friendsJson.push_back(friendId);
                 }
                 response["friends"] = friendsJson;
