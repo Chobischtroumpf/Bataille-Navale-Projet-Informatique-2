@@ -6,6 +6,7 @@
 #include <map>
 #include <iostream>
 #include <cstdint>
+#include <nlohmann/json.hpp>
 
 #include "board_coordinates.hh"
 #include "cell.hh"
@@ -88,4 +89,8 @@ class LocalBoardCommander : public GameView {
     void update() override { throw NotImplementedError("Update"); }
 
     CellType best(CellType lhs, CellType rhs);
+
+    static CellType string_to_celltype(std::string& type);
+
+    void update_board(const nlohmann::json& new_board);
 };

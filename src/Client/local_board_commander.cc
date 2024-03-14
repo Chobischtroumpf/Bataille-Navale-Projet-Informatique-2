@@ -129,3 +129,49 @@ bool LocalBoardCommander::check() {}
 //void LocalBoardCommander::placeShip(ShipCoordinates coordinates, bool my_fleet) {}
 
 void LocalBoardCommander::fire() { }
+
+
+CellType LocalBoardCommander::string_to_celltype(const std::string& type) {
+    if (type == "WATER") {
+        return WATER;
+    } else if (type == "OCEAN") {
+        return OCEAN;
+    } else if (type == "UNDAMAGED_MINE") {
+        return UNDAMAGED_MINE;
+    } else if (type == "SCANNED_MINE") {
+        return SCANNED_MINE;
+    } else if (type == "HIT_MINE") {
+        return HIT_MINE;
+    } else if (type == "UNDAMAGED_SHIP") {
+        return UNDAMAGED_SHIP;
+    } else if (type == "SCANNED_SHIP") {
+        return SCANNED_SHIP;
+    } else if (type == "HIT_SHIP") {
+        return HIT_SHIP;
+    } else if (type == "SUNK_SHIP") {
+        return SUNK_SHIP;
+    } else {
+        throw std::runtime_error("Unknown CellType: " + type);
+    }
+}
+
+void LocalBoardCommander::update_board(const nlohmann::json& new_board){
+  auto fleetA = new_board["fleetA"];
+  auto fleetB = new_board["fleetB"];
+
+  if (!(fleetA.is_string() && fleetA.get<std::string>() == "None")){
+    for(int i = 0; i < _my_board.size(); i++){
+      for(int j = 0; j < _my_board.at(0).size(); j++){
+        _my_board[i][j].setType(string_to_celltype(fleetA[i][j]["type"]));
+      }
+    }
+  }
+  if (!(fleetB.is_string() && fleetB.get<std::string>() == "None")){
+    for(int i = 0; i < _their_board.size(); i++){
+      for(int j = 0; j < _their_board.at(0).size(); j++){
+        _their_board[i][j].setType(string_to_celltype(fleetB[i][j]["type"]));
+      }
+    }
+  }
+
+}
