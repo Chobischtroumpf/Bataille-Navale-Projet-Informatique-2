@@ -12,13 +12,13 @@ LoginConsole::LoginConsole(std::shared_ptr<GameClient> gameClient)
 ReturnInput LoginConsole::handleInput() {
   int choix;
   bool continuer = true;
-  while (!validCin(choix)) {
-    //system("clear");
+  do {
+    // system("clear");
     std::cout << "1. Se connecter\n";
     std::cout << "2. S'enregistrer\n";
     std::cout << "Entrez votre choix: ";
     std::cin >> choix;
-  }
+  } while (!validCin(choix));
 
   while (continuer) {
     if (choix == 1) {
