@@ -17,6 +17,7 @@ class Ship {
     vector<BoardCoordinates> _coordinates;
     BoardCoordinates _top_left;
     CellType _type = UNDAMAGED_SHIP;
+    std::shared_ptr<GameView> _board;
     int _length = 0;
     int _size_x = 0;
     int _size_y = 0;
@@ -46,7 +47,7 @@ class Ship {
 
     //Setter
 
-    void setShipCells(const vector<vector<Cell>> &ship_cells);
+    // void setShipCells(const vector<vector<Cell>> &ship_cells);
 
     // Notifies the Ship that a tile has been hit, allowing it to check if it has been sunk
     void notify(const BoardCoordinates &coords);

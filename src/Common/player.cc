@@ -1,6 +1,20 @@
 #include "player.hh"
 
+Player::Player(): _faction{FactionClassique()}, _is_turn{false}, _energy_points{0} {}
+
 Player::Player(Faction faction): _faction{faction}, _is_turn{false}, _energy_points{0} {}
+
+Player::Player(const Player& other): _faction{other._faction}, _fleet{other._fleet}, _is_turn{other._is_turn}, _energy_points{other._energy_points} {}
+
+Player& Player::operator=(const Player& other) {
+  if (this != &other) {
+    _faction = other._faction;
+    _fleet = other._fleet;
+    _is_turn = other._is_turn;
+    _energy_points = other._energy_points;
+  }
+  return *this;
+}
 
 Faction Player::getFaction() const {
   return _faction;

@@ -1,6 +1,6 @@
 #include "Common/ship.hh"
 
-Ship::Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board): _coordinates(coordinates) {
+Ship::Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board): _coordinates(coordinates), _board(std::move(board)) {
     for (auto &c: coordinates) {
         _length++;
         if (c.x() > _size_x) { _size_x = c.x(); }
@@ -75,8 +75,15 @@ void Ship::setSunk(bool is_sunk) {
 // }
 
 void Ship::notify(const BoardCoordinates &coords) {
-
+    (void) coords;
     // Check if ship is sunk
+    auto board_coordinate = _top_left;
+
+    if (
+    for (auto &c = _coordinates; c != _coordinates.end(); c++) {
+        
+    }
+
 
   }
 

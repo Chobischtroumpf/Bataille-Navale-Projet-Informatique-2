@@ -34,7 +34,10 @@ class SpecialAbility
     void    setEnergyCost(int new_cost) { this->energy_cost_ = new_cost; };
     void    setType(SpecialAbilityType new_type) { this->type_ = new_type; };
   public:
+    SpecialAbility() = delete;
     SpecialAbility(std::string name, std::string description="", int energy_cost=0, SpecialAbilityType type=NONE) : name_{name}, description_{description}, energy_cost_{energy_cost}, type_{type} {};
+    std::string getName() { return name_; };
+    std::string getDescription() { return description_; };
     int     getEnergyCost() { return energy_cost_; };
     SpecialAbilityType getType() { return type_; };
 

@@ -21,14 +21,14 @@ class Faction {
     virtual void setName(std::string name) { this->_name = name;};
     virtual void setPossibleShips(PossibleShips possible_ships) { this->_possible_ships = possible_ships;};
     virtual void addSpecialAbility(SpecialAbility new_ability) { this->_special_abilities.push_back(new_ability);};
-    virtual void setSpecialAbilities(std::vector<SpecialAbility> abilities) { this->_special_abilities = abilities;};
+    virtual void setSpecialAbilities(SpecialAbilities abilities) { this->_special_abilities = abilities;};
 
   public:
     Faction() = default;
-    Faction(std::string name, std::vector<PossibleShip> possible_ships, std::vector<SpecialAbility> special_abilities): _name{name}, _possible_ships{possible_ships}, _special_abilities{special_abilities} {};
+    Faction(std::string name, PossibleShips possible_ships, SpecialAbilities special_abilities): _name{name}, _possible_ships{possible_ships}, _special_abilities{special_abilities} {};
 
     virtual std::string getName() { return _name; };
-    virtual std::vector<PossibleShip> getPossibleShips() { return _possible_ships; };
-    virtual std::vector<SpecialAbility> getSpecialAbilities() { return _special_abilities; };
+    virtual PossibleShips getPossibleShips() { return _possible_ships; };
+    virtual SpecialAbilities getSpecialAbilities() { return _special_abilities; };
     virtual ~Faction() = default;
 };

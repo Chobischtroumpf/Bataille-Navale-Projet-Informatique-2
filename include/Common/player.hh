@@ -3,15 +3,17 @@
 #include <memory>
 
 #include "Commandant/Factions/faction.hh"
+#include "Commandant/Factions/faction_classique.hh"
 
 class Player {
   private:
     Faction _faction;
-    std::vector<Ship> _fleet;
+    std::vector<Ship&> _fleet;
     bool _is_turn;
     int _energy_points;
   
   public:
+    Player();
     Player(Faction faction);
     virtual ~Player() = default;
 
