@@ -75,6 +75,10 @@ std::vector<Ship> LocalBoardCommander::getPlacedShips() const {
 bool LocalBoardCommander::addPlacedShip(Ship ship) {
   BoardCoordinates top_left = ship.getTopLeft();
   
+  if ((top_left.x() + ship.getSizeX() > 10) or (top_left.y() + ship.getSizeY() > 10)) {
+        return false;
+    }
+  
   for (auto &c: ship.getCoordinates()) {
     if (_my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).type() != WATER) {
       return false;

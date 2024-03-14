@@ -54,6 +54,14 @@ int Ship::getLength() const {
     return _length;
 }
 
+int Ship::getSizeX() const {
+    return _size_x;
+}
+
+int Ship::getSizeY() const {
+    return _size_y;
+}
+
 bool Ship::isSunk() const {
     return _is_sunk;
 }

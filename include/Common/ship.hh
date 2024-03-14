@@ -40,6 +40,8 @@ class Ship {
     // const vector<vector<Cell>> getShipCells() const;
     CellType getType() const;
     int getLength() const;
+    int getSizeX() const;
+    int getSizeY() const;
     bool isSunk() const;
 
     //Setter

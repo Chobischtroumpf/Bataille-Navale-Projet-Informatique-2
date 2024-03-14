@@ -5,6 +5,7 @@
 #include <iostream>
 #include <optional>
 #include <stdexcept>
+#include <limits>
 
 #ifdef _WIN32
 #include <windows.h> // Pour Windows
@@ -269,6 +270,8 @@ class Ship {
     std::vector<BoardCoordinates> getCoordinates();
     BoardCoordinates getTopLeft();
     int getNumberOfCase();
+    int getSizeX();
+    int getSizeY();
     CellType getType();
     void setTopLeft(BoardCoordinates top_left);
     void setType(CellType new_type);
@@ -321,6 +324,14 @@ CellType Ship::getType() {
 
 int Ship::getNumberOfCase() {
     return _number_of_case;
+}
+
+int Ship::getSizeX() {
+    return _size_x;
+}
+
+int Ship::getSizeY() {
+    return _size_y;
 }
 
 void Ship::setTopLeft(BoardCoordinates top_left) {
@@ -448,7 +459,15 @@ LocalBoard::LocalBoard()
       _their_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))} {}
 
 void LocalBoard::print() {
+    std::cout << "   A B C D E F G H I J" << std::endl;
+    int i = 1;
     for (auto &ligne: _my_board) {
+        if (i < 10) {
+            std::cout << " ";
+        }
+        std::cout << i << " ";
+        i++;
+
         for (auto &c: ligne) {
             std::cout << c.toString();
         }
@@ -458,9 +477,14 @@ void LocalBoard::print() {
 
 bool LocalBoard::addShip(Ship s) {
     BoardCoordinates top_left = s.getTopLeft();
+
+    if ((top_left.x() + s.getSizeX() > 10) or (top_left.y() + s.getSizeY() > 10)) {
+        return false;
+    }
+
     for (auto &c: s.getCoordinates()) {
         if (_my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).type() != WATER) {
-          return false;
+            return false;
         }
     }
     
@@ -509,20 +533,22 @@ int main() {
     bool boat_remaining = true;
 
     while (boat_remaining) {
-        test.print();
-        int i = 1;
-
-        for (auto &b: _ships_to_place) {
-        std::cout << "(" << i << ") - " << unsigned(b) << " boat left of size " << i << std::endl;
-        i++;
-        }
-
         bool invalid_input = true;
         bool input_error = false;
         std::string answer;
         int boat_selected;
         
-        while (invalid_input) {            
+        while (invalid_input) {
+            clear_screen();
+            test.print();
+            std::cout << std::endl;
+            
+            int i = 1;
+            for (auto &b: _ships_to_place) {
+                std::cout << "(" << i << ") - " << unsigned(b) << " boat left of size " << i << std::endl;
+                i++;
+            }
+
             if (input_error) {
                 std::cout << "Invalid Input !";
             }
@@ -549,6 +575,10 @@ int main() {
         input_error = false;
 
         while (invalid_input) {
+            clear_screen();
+            test.print();
+            std::cout << std::endl;
+
             ships->print();
             std::cout << "(1) - next boat" << std::endl;
             std::cout << "(2) - rotate boat" << std::endl;
@@ -582,14 +612,34 @@ int main() {
                 catch (const std::exception& e) {}
             }
         }
-        std::cout << "select a position" << std::endl;
-        BoardCoordinates coordinates{};
-        std::cin >> coordinates;
-        ships->setTopLeft(coordinates);
-        test.addShip(ships->getShip());
 
-        std::cout << boat_selected - 1 << std::endl;
-        _ships_to_place[boat_selected - 1]--;
+        invalid_input = true;
+        input_error = false;
+
+        while (invalid_input) {
+            clear_screen();
+            test.print();
+            std::cout << std::endl;
+
+            std::cout << "select a position" << std::endl;
+            if (input_error) {
+                std::cout << "Invalid Input !";
+            }
+            std::cout << std::endl;
+            
+            input_error = true;
+            BoardCoordinates coordinates{};
+            std::cin >> coordinates;
+            ships->setTopLeft(coordinates);
+
+            if (test.addShip(ships->getShip())) {
+                invalid_input = false;
+                _ships_to_place[boat_selected - 1]--;
+            }
+            else {
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+        }
         
         boat_remaining = false;
         for (auto &b: _ships_to_place) {
