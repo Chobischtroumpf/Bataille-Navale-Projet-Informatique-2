@@ -8,6 +8,7 @@
 
 #include <memory> // For unique_ptr
 #include <future> // For future
+#include <vector>
 
 
 // Declare the njson namespace alias for nlohmann::json 
@@ -24,10 +25,13 @@ public:
     std::future<bool> Login(const std::string& userId, const std::string& password);
     std::future<bool> Register(const std::string& userId, const std::string& password);
     std::future<std::string> GetUserId(const std::string& username);
+    std::future<std::string> GetUsername(const std::string& userId);
     std::future<std::string> GetGames();
     std::future<njson> QueryGameState(const std::string& sessionId);
     std::future<bool> SendMessage(const std::string& targetId, const std::string& message);
-    std::future<nlohmann::json> GetMessages(const std::string& recipientId);
+    std::future<njson> GetMessages(const std::string& recipientId);
+    std::future<bool> AddFriend(const std::string& username);
+    std::future<njson> GetFriends();
 private:
     // Use unique_ptr for automatic resource management of http_client
     // Makes it possible to "initialize" the http client in the constructor, allowing easier debugging

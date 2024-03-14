@@ -13,7 +13,7 @@ private:
     std::shared_ptr<GameClient> gameClient;
 
 public:
-    explicit LoginController(const std::string& baseUri);
+    explicit LoginController(std::shared_ptr<GameClient> gameClient);
     std::future<bool> attemptLogin(const std::string& username, const std::string& password) const;
     std::future<bool> attemptRegister(const std::string& username, const std::string& password) const;
 };

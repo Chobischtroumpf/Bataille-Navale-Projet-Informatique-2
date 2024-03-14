@@ -18,6 +18,7 @@
 #include "game_controller.hh"
 #include "not_implemented_error.hh"
 #include "console.hh"
+#include "game_client.hh"
 
 enum InputStatus {
   OK,
@@ -40,7 +41,8 @@ class GameConsole : public Console {
    * or board->width() after construction. */
   GameConsole(std::ostream &out, std::istream &in,
               std::shared_ptr<LocalBoard> board,
-              std::shared_ptr<GameController> control);
+              std::shared_ptr<GameController> control,
+              std::shared_ptr<GameClient> client);
 
   GameConsole(const GameConsole &) = default;
   GameConsole() = delete;
@@ -77,6 +79,7 @@ private:
   std::istream&                          _in;       //< Where to read
   std::shared_ptr<LocalBoard> const _board;    //< What to print
   std::shared_ptr<GameController> const    _control;  //< Who to inform of user actions
+  std::shared_ptr<GameClient> const _game_client;
 
   uint8_t const _letter_width;  //< Number of character in a column name
   uint8_t const _number_width;  //< Number of character in a row name

@@ -1,34 +1,50 @@
 #include "timer.hh"
 
+Timer::Timer() : limit_seconds{0}, current_time{0}, is_running{false} {}
 
-Timer::Timer(): limit_seconds{0}, current_time{0}, is_running{false} {}
-
-Timer::Timer(int limit_seconds)
+Timer::Timer(int limit_seconds, std::function<void()> callback)
     : limit_seconds{limit_seconds}, current_time{limit_seconds},
-      is_running{false} {}
+      is_running{false}, callback{std::move(callback)} {}
 
 bool Timer::is_finished() const { return current_time <= 0; }
 
-void Timer::start(std::function<void()> callback) {
+void Timer::start() {
   if (!is_running) {
     is_running = true;
-    std::thread([this, callback = std::move(callback)]() mutable {
+    std::thread([this]() {
+      auto start_time = std::chrono::steady_clock::now();
       while (!is_finished() && is_running) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        --current_time;
+        auto end_time = std::chrono::steady_clock::now();
+        auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(
+                                   end_time - start_time)
+                                   .count();
+
+        if (elapsed_seconds >= 1) {
+          --current_time;
+          start_time = end_time;
+        }
       }
-      callback();
+
+      if (is_finished() && callback) {
+        callback();
+      }
     }).detach();
   }
 }
 
-void Timer::reset() { current_time = limit_seconds; }
+void Timer::reset() {
+  stop();
+  current_time = limit_seconds;
+}
 
 void Timer::stop() { is_running = false; }
 
-void Timer::set(int limit_seconds) {
-    limit_seconds = limit_seconds;
-    current_time = limit_seconds;
-}
-
 int Timer::get_time() const { return current_time; }
+
+int Timer::get_original_time() const { return limit_seconds; }
+
+void Timer::set(int new_limit_seconds, std::function<void()> callback_function) {
+  limit_seconds = new_limit_seconds;
+  current_time = limit_seconds;
+  callback = callback_function;
+}

@@ -26,7 +26,7 @@ fi
 
 # Test 2: Get userId of a user in a database
 echo -e "\x1b[34mTEST 2: Get userId of a database member \x1b[0m"
-response=$(curl -s -X GET -H "Content-Type: application/json" -d "{"username": "$username"}" http://localhost:8080/api/login/uid)
+response=$(curl -s -X GET http://localhost:8080/api/login/uid?username=$username)
 
 if echo $response | jq -e 'has("error")' > /dev/null; then
     echo -e "\e[1;31mTEST 2: Failed\e[0m"
