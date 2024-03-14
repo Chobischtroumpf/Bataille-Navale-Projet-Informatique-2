@@ -433,7 +433,7 @@ future<bool> GameClient::SendMessage(const string& recipientId, const string& me
     njson messageData = {{"recipientId", recipientId}, {"message", message}};
 
     // Send the POST request to the message endpoint
-    PostRequest("/api/chat/send", messageData.dump())
+    PostRequest("/api/chat/send", messageData)
     .then([promise](njson response) {
         // Check if the response contains an 'error' key
         if (response.contains("error")) {
