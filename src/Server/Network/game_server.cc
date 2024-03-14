@@ -255,7 +255,7 @@ void GameServer::handleGet(http_request request) {
 
             // Parsing query parameters for the recipient's userId
             auto queryParams = uri::split_query(request.request_uri().query());
-            auto recipientIdIt = queryParams.find(U("recipientID"));
+            auto recipientIdIt = queryParams.find(U("recipientId"));
 
             // Verifying recipient's userId is provided
             if (recipientIdIt != queryParams.end()) {
@@ -290,7 +290,7 @@ void GameServer::handleGet(http_request request) {
                 request.reply(status_codes::OK, response.dump(), "application/json");
                 
             } else {
-                response["error"] = "Missing userId parameter";
+                response["error"] = "Missing recipientId parameter";
                 request.reply(status_codes::BadRequest, response.dump(), "application/json");
             }
         }
@@ -444,41 +444,8 @@ void GameServer::handlePost(http_request request) {
             }
           }
 
-          // Handle the case for "/api/chat/send" - Send a message to a user --
-          // Protected
-          else if (path.find(U("/api/chat/send")) != wstring::npos) {
-
-            // First, verify the AuthToken and retrieve the userId
-            auto userId = verifyAuthToken(request);
-
-            // If userId is empty, the token is invalid or missing
-            if (userId.empty()) {
-              response["error"] = "Invalid or missing AuthToken";
-              request.reply(status_codes::Unauthorized, response.dump(),
-                            "application/json");
-              return; // Stop further processing
-            }
-
-            // Extract recipientId and message from request body
-            auto recipientId = requestBody[U("recipientId")].as_string();
-            auto message = requestBody[U("message")].as_string();
-
-            bool sendMessageResult = true; // Placeholder
-
-            // Respond based on the result of sending the message
-            if (sendMessageResult) {
-              response["status"] = "Message sent successfully";
-              request.reply(status_codes::OK, response.dump(),
-                            "application/json");
-            } else {
-              response["error"] = "Failed to send message";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
-            }
-          }
-
           // Handle the case for "/api/friend/add" - Add a friend
-          if (path == U("/api/friend/add")) {
+          else if (path == U("/api/friend/add")) {
 
             // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
@@ -627,7 +594,6 @@ void GameServer::handlePost(http_request request) {
             auto message = requestBody[U("message")].as_string();
 
             // Send the message using your backend logic
-            // -------------------------------- TBA
             bool isSuccessful = this->dbManager.sendMsg(
                 senderId, to_utf8(recipientId), to_utf8(message));
 
