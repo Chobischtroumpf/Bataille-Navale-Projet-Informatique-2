@@ -22,6 +22,7 @@ public:
     void addParticipant(const std::string& participantId);
     void removeParticipant(const std::string& participantId);
     PlayerRole getParticipantRole(const std::string& participantId) const;
+    std::vector<std::string> getParticipants() const;
 
     // Game Logic 
     bool makeMove( const std::string& userId, const std::string& move );

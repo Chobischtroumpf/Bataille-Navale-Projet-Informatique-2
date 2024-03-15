@@ -38,6 +38,21 @@ void GameSession::removeParticipant(const std::string& participantId) {
     }
 }
 
+vector<std::string> GameSession::getParticipants() const {
+    vector<std::string> participants;
+    participants.emplace_back(leaderId);
+
+    if (!opponentId.empty()) {
+        participants.emplace_back(opponentId);
+    }
+
+    for (const std::string& spectator : spectators) {
+        participants.emplace_back(spectator);
+    }
+
+    return participants;
+}
+
 // Utility method to retrieve a participant role by id
 PlayerRole GameSession::getParticipantRole(const std::string& participantId) const {
     auto it = participantRoles.find(participantId);
