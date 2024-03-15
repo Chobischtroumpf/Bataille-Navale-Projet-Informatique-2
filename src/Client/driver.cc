@@ -99,8 +99,8 @@ void Driver::displayLobbyScreen() {
 
 void Driver::displayGameCreationScreen() {
   if (_display_type == CONSOLE) {
-    std::shared_ptr<GamePlayerView> _view = std::make_shared<GamePlayerView>();
-    _display = std::make_shared<GamePlayerConsole>(_view);
+    _display = std::make_shared<GameSettingConsole>();
+    _current_screen = ReturnInput::Screen::GAME_CREATION;
 
   } else {
     throw NotImplementedError("GUI not implemented yet");
