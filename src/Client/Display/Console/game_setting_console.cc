@@ -1,4 +1,4 @@
-#include "../../../../include/client/Display/Console/game_setting_console.hh"
+#include "game_setting_console.hh"
 
 GameSettingConsole::GameSettingConsole(std::shared_ptr<GameClient> gameClient): gameClient(gameClient) {
     _controller = std::make_shared<ChatController>(gameClient)
@@ -174,7 +174,7 @@ void GameSettingConsole::displayOptions(int mode) {
         std::cout << "║ (2) No" << std::endl;
         break;
       default:
-        std::cout << "║ What do you want to do ?               ║" << std::endl;═══════
+        std::cout << "║ What do you want to do ?               ║" << std::endl;
         std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
         std::cout << "║ (1) Continue " << std::endl;
         std::cout << "║ (2) Go back" << std::endl;
