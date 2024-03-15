@@ -37,7 +37,7 @@ get_sources("src/Server" SERVER_SOURCES)
 get_sources("src/Common" COMMON_SOURCES)
 
 # Create client executable
-add_executable(battleship ${CLIENT_SOURCES} ${COMMON_SOURCES})
+add_executable(battleship ${COMMON_SOURCES} ${CLIENT_SOURCES})
 
 # Create server executable
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})

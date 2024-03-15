@@ -399,7 +399,7 @@ ReturnInput GameSettingConsole::handleInput() {
                     invalid_input = false;
                 }
                 else {
-                    return;
+                    return {};
                 }
             }
             catch (const std::exception& e) {}

@@ -1,8 +1,8 @@
 #include "chat_console.hh"
 #include "chat_controller.hh"
 
-ChatConsole::ChatConsole(const std::string& sender, const std::string& destination)
-    : sender(sender), destination(destination) {
+ChatConsole::ChatConsole(const std::string& sender, const std::string& destination, const std::shared_ptr<GameClient> client)
+    : sender(sender), destination(destination), _gameClient(client) {
     _view = std::make_shared<ChatView>();
     _controller = std::make_shared<ChatController>();
 }

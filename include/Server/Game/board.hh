@@ -11,10 +11,10 @@
 #include <vector>
 
 #include "board_coordinates.hh"
-#include "ship_coordinates.hh"
+// #include "ship_coordinates.hh"
 #include "ship.hh"
 #include "turn.hh"
-#include "ship_types.hh"
+// #include "ship_types.hh"
 #include "player_role.hh"
 
 
@@ -26,7 +26,7 @@ using json = nlohmann::json;
 /*
  * Représente le plateau de jeu des deux joueurs
  */
-class Board {
+class Board: public GameView {
 
   /** The cell type and an optional ship identifier */
   class Fleet {

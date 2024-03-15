@@ -1,35 +1,45 @@
 #include "game_controller.hh"
+#include "local_board_commander.hh"
 #include "cell_type.hh"
 #include "board_coordinates.hh"
-#include "ship_coordinates.hh"
 
 GameController::GameController(std::shared_ptr<LocalBoardCommander> board) : _board{std::move(board)} {}
 
-bool GameController::fire(BoardCoordinates coord) const {
+bool GameController::fire(SpecialAbility ability, BoardCoordinates coord) const {
     // Sends POST request to fire to the gameServer
     return true;
 }
 
 bool GameController::checkShipPosition(Ship ship) const {
+    if (_board->isShipAvailable(ship.getLength()) == false) {
+        return false;
+    }
     for (auto coord : ship.getCoordinates()) {
-        if (_board->getCell(coord) != CellType::WATER || !_board->isInBoard(coord))
+        if (_board->cellType(true, ship.getTopLeft() + coord) != CellType::WATER || !_board->isInBoard(coord))
             return false;
+        if (_board->mode() == GameMode::CLASSIC){
+            std::vector<Cell> cells = _board->getNeighbors(ship.getTopLeft() + coord);
+            for (auto cell: cells) {
+                if (cell.type() != CellType::WATER)
+                    return false;
+            }
+        }
     }
     return true;
 }
 
-bool GameController::placeShip(ShipCoordinates coord) const {
+bool GameController::placeShip(Ship ship) const {
     // Verifier qu'on peut poser le bateau la
-    if ( checkShipPosition(coord)) {
+    if ( checkShipPosition(ship)) {
         // Sends a request to place the ship to the gameServer
-        _board->addPlacedShip(coord);
+        _board->placeShip(ship);
         return true;
     } else {
         return false;
     }
 }
 
-void GameController::sendShips(std::vector<ShipCoordinates> boats) {
+void GameController::sendShips(std::vector<Ship> boats) {
     // POST request to the server to place the boats on the board
 }
 
@@ -37,5 +47,5 @@ void GameController::quit() {}
 
 void GameController::connectServer() {}
 
-bool GameController::sendRequest(ShipCoordinates coord) {}
-bool GameController::sendRequest(BoardCoordinates coord) {}
+bool GameController::sendRequest(Ship ship) {return true;}
+bool GameController::sendRequest(BoardCoordinates coord) {return true;}

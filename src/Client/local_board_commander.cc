@@ -3,17 +3,19 @@
 // #include <iostream>
 
 
-LocalBoardCommander::LocalBoardCommander(Player player)
+LocalBoardCommander::LocalBoardCommander(Player player, GameMode mode)
     : _player{player},
+      _mode{mode},
       _is_finished{false},
       _is_victory{false},
       _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
       _their_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))} {}
 
-bool LocalBoardCommander::myTurn() const { return _my_turn; }
+bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }
 
 bool LocalBoardCommander::isFinished() const { return _is_finished; }
 bool LocalBoardCommander::isVictory() const { return _is_victory; }
+GameMode LocalBoardCommander::mode() const { return _mode; }
 
 std::size_t LocalBoardCommander::width() const { return _my_board.at(0).size(); }
 std::size_t LocalBoardCommander::height() const { return _my_board.size(); }
@@ -24,10 +26,10 @@ CellType LocalBoardCommander::cellType(bool my_side, BoardCoordinates coordinate
 
 bool LocalBoardCommander::isSameShip(bool my_side, BoardCoordinates first,
                             BoardCoordinates second) const {
-  if (get(my_side, first).type() != IS_SHIP || get(my_side, second).type() != IS_SHIP) {
+  if (get(my_side, first).type() != UNDAMAGED_SHIP || get(my_side, second).type() != UNDAMAGED_SHIP) {
     return false;
   }
-  return get(my_side, first).shipId() == get(my_side, second).shipId();
+  return get(my_side, first).ship() == get(my_side, second).ship();
 }
 
 std::vector<Cell> LocalBoardCommander::getNeighbors(BoardCoordinates coord) const {
@@ -59,40 +61,39 @@ std::vector<Cell> LocalBoardCommander::getNeighbors(BoardCoordinates coord) cons
   return neighbors;
 }
 
-bool LocalBoardCommander::isRemainingShip(int number_of_case) const {
-  for (auto &s: _player.getFaction().getPossibleShips()) {
-    if (s.second == number_of_case) {
-      return s.first > 0;
-    }
-  }
-  return false;
-}
-
 std::vector<Ship> LocalBoardCommander::getPlacedShips() const {
   return _player.getFleet();
 }
 
-bool LocalBoardCommander::addPlacedShip(Ship ship) {
-  BoardCoordinates top_left = ship.getTopLeft();
+bool LocalBoardCommander::isShipAvailable(int size) const {
   
-  if ((top_left.x() + ship.getSizeX() > 10) or (top_left.y() + ship.getSizeY() > 10)) {
-        return false;
+  int count = 0;
+  
+  for (auto &ship: _player.getFleet()) { // counts how many ships of the given size are already placed
+    if (ship.getLength() == size) {
+      count++;
     }
-  
-  for (auto &c: ship.getCoordinates()) {
-    if (_my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).type() != WATER) {
-      return false;
-    }
-  }
-  
-  for (auto &c: ship.getCoordinates()) {
-      _my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).setType(ship.getType());
   }
 
-  return true;
+  // if the number of ships of the given size is less than the number of ships of that size that can be placed, return true
+  if (count < _player.getFaction().getPossibleShips()[size]) {
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
-bool LocalBoardCommander::allBoatsPlaced() const {
+void LocalBoardCommander::placeShip(Ship ship) {
+  BoardCoordinates top_left = ship.getTopLeft();
+
+  for (auto &coord: ship.getCoordinates()) {
+      _my_board.at(top_left.y() + coord.y()).at(top_left.x() + coord.x()).setType(ship.getType());
+      _my_board.at(top_left.y() + coord.y()).at(top_left.x() + coord.x()).setShip(ship);
+  }
+}
+
+bool LocalBoardCommander::allShipsPlaced() const {
   for (auto &ship: _player.getFaction().getPossibleShips()) {
     if (ship.second > 0) {
       return false;
@@ -102,11 +103,15 @@ bool LocalBoardCommander::allBoatsPlaced() const {
 }
 
 PossibleShips LocalBoardCommander::shipsToPlace() const {
-  return _player.getFaction().getPossibleShips();
+  PossibleShips ships = _player.getFaction().getPossibleShips();
+  for (auto &ship: _player.getFleet()) {
+    ships[ship.getLength()]--;
+  }
+  return ships;
 }
 
 CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
-  if (!(lhs & IS_SHIP) || !(rhs & IS_SHIP)) {
+  if (!(lhs & UNDAMAGED_SHIP) || !(rhs & UNDAMAGED_SHIP)) {
     std::cerr << "BoardView::best(" << static_cast<unsigned>(lhs) << ", "
               << static_cast<unsigned>(rhs) << ")" << std::endl;
     throw std::logic_error("BoardView::best called with non-ship types");
@@ -122,13 +127,15 @@ Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {
   return my_side ? _my_board.at(position.y()).at(position.x()) : _their_board.at(position.y()).at(position.x());
 }
 
-int LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) {}
+Ship &LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) {}
 
 bool LocalBoardCommander::check() {}
 
 //void LocalBoardCommander::placeShip(ShipCoordinates coordinates, bool my_fleet) {}
 
-void LocalBoardCommander::fire() { }
+// void LocalBoardCommander::fire(BoardCoordinates coordinates) {
+
+// }
 
 
 CellType LocalBoardCommander::string_to_celltype(const std::string& type) {

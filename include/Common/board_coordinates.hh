@@ -16,7 +16,14 @@ public:
   // Default constructor
   BoardCoordinates() : _x{0}, _y{0} {}
 
+  // Constructor
   BoardCoordinates(size_t x, size_t y) : _x{x}, _y{y} {}
+
+  // Copy constructor
+  BoardCoordinates(const BoardCoordinates &other) {
+    _x = other._x;
+    _y = other._y;
+  };
 
   // Destructor
   virtual ~BoardCoordinates() = default;
@@ -32,6 +39,12 @@ public:
 
   bool operator==(const BoardCoordinates &other) const {
     return x() == other.x() && y() == other.y();
+  }
+
+  // Supercharge the + operator
+
+  BoardCoordinates operator+(const BoardCoordinates &other) const {
+    return BoardCoordinates(x() + other.x(), y() + other.y());
   }
 
   /** Whether c is in [A-Za-z] */

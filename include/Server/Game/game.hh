@@ -6,7 +6,7 @@
 #include "board.hh"
 #include "game_timer.hh"
 #include "player_role.hh"
-#include "ship_coordinates.hh"
+// #include "ship_coordinates.hh"
 
 // Class that handles the game between 2 players
 class Game {
@@ -27,6 +27,8 @@ private:
   bool mode_commandant;
   GameTimer game_timer;
   std::unordered_map<Turn, unsigned int> ship_placements;
+  bool update_player1;
+  bool update_player2;
 
   void start_timer();
   

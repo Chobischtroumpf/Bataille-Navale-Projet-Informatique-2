@@ -5,11 +5,11 @@
  */
 enum CellType {
   // Flags:
-  IS_SHIP = 0b00001,
-  IS_MINE = 0b00010,
-  IS_KNOWN = 0b00100,
-  IS_HIT = 0b01000,
-  IS_SUNK = 0b10000,
+  IS_SHIP = 0b000001,
+  IS_MINE = 0b000010,
+  IS_KNOWN = 0b000100,
+  IS_HIT = 0b001000,
+  IS_SUNK = 0b010000,
 
   // Non-ship types:
   WATER = 0,        //< water (my side) or unknown (assumed water, their side)

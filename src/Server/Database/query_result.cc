@@ -26,6 +26,9 @@ std::string QueryResult::getError(){
         case DbError::NON_EXISTENT_USER_NAME:
             err = "The username do not exists.";
             break;
+        case DbError::NON_EXISTENT_USER_ID:
+            err = "The user id do not exists.";
+            break;
         case DbError::WRONG_PWD_FAILED:
             err = "Wrong password.";
             break;

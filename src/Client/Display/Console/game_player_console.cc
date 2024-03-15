@@ -137,7 +137,7 @@ ReturnInput GamePlayerConsole::handleInput() {
                         input_error = false;
                         break;
                       case 11:
-                        return ;
+                        return {};
                       default:
                         break;
                     }
@@ -191,7 +191,7 @@ ReturnInput GamePlayerConsole::handleInput() {
                         input_error = false;
                         break;
                       case 11:
-                        return ;
+                        return {};
                       default:
                         break;
                     }
@@ -227,7 +227,7 @@ ReturnInput GamePlayerConsole::handleInput() {
                         next = true;
                         break;
                       case 4:
-                        return ;
+                        return {};
                       default:
                         break;
                     }

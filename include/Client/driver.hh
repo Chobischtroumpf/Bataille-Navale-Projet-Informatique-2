@@ -4,6 +4,7 @@
 
 #include "controller.hh"
 #include "view.hh"
+#include "game_client.hh"
 
 // Controllers
 #include "game_controller.hh"
@@ -19,13 +20,15 @@
 #include "register_console.hh"
 #include "main_menu_console.hh"
 #include "chat_console.hh"
+#include "game_player_console.hh"
 
 // Views
-#include "local_board.hh"
+#include "local_board_commander.hh"
 #include "login_view.hh"
 #include "register_view.hh"
 #include "main_menu_view.hh"
 #include "chat_view.hh"
+#include "game_player_view.hh"
 
 
 enum DisplayType {
@@ -44,6 +47,9 @@ public:
     // Main loop
     void run(ReturnInput::Screen base_screen);
 
+    // Getter
+    std::shared_ptr<GameClient> getClient();
+
 private:
     // Display a specific screen
     void displayGameScreen();
@@ -58,4 +64,6 @@ private:
 
     DisplayType _display_type;
     ReturnInput::Screen _current_screen;
+    std::shared_ptr<GameClient> _game_client;
+
 };

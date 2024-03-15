@@ -1,4 +1,4 @@
-#include "../../include/common/ship_commander.hh"
+#include "ship_commander.hh"
 
 ShipCommander::ShipCommander(int number_of_case): ShipClassic(number_of_case) {
     switch (number_of_case) {
