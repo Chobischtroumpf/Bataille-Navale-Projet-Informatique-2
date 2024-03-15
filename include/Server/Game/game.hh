@@ -6,7 +6,7 @@
 #include "board.hh"
 #include "game_timer.hh"
 #include "player_role.hh"
-#include "ship_coordinates.hh"
+// #include "ship_coordinates.hh"
 
 // Class that handles the game between 2 players
 class Game {

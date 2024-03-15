@@ -7,7 +7,6 @@
 #include "board_coordinates.hh"
 #include "cell_type.hh"
 #include "game_view.hh"
-#include "cell.hh"
 
 class Ship {
   private:
@@ -25,7 +24,9 @@ class Ship {
   public:
     // Constructors
     Ship(std::vector<BoardCoordinates> coordinates);
+    Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates);
     Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
+    Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
     Ship(const Ship &other);
 
     // Operators

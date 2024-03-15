@@ -8,8 +8,25 @@ Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates(coordinates)
     }
     // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
 }
+Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates): _top_left(top_left), _coordinates(coordinates) {
+    for (auto &c: coordinates) {
+        _length++;
+        if (c.x() >= _size_x) { _size_x = c.x()+1; }
+        if (c.y() >= _size_y) { _size_y = c.y()+1; }
+    }
+    // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
+}
 
 Ship::Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board): _coordinates(coordinates), _board(std::move(board)) {
+    for (auto &c: coordinates) {
+        _length++;
+        if (c.x() > _size_x) { _size_x = c.x(); }
+        if (c.y() > _size_y) { _size_y = c.y(); }
+    }
+    // _ship_cells(std::vector<std::vector<Cell>>(_size_y, std::vector<Cell>(_size_x))
+}
+
+Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board): _coordinates(coordinates), _board(std::move(board)) {
     for (auto &c: coordinates) {
         _length++;
         if (c.x() > _size_x) { _size_x = c.x(); }
@@ -107,16 +124,13 @@ void Ship::setSunk(bool is_sunk) {
 // }
 
 void Ship::notify(const BoardCoordinates &coords) {
-    // (void) coords;
-    // // Check if ship is sunk
-    // auto board_coordinate = _top_left;
-
-    // if (
-    // for (auto &c = _coordinates; c != _coordinates.end(); c++) {
-        
-    // }
-
-
+    // Check if ship is sunk
+    for (auto &c: _coordinates) {
+    if (_board->cellType(true,_top_left+c) != HIT_SHIP) {
+        return;
+    }
+    }
+    setSunk(true);
 }
 
 void Ship::setType(CellType new_type) {

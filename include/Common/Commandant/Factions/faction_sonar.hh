@@ -12,12 +12,13 @@
 class FactionSonar : public Faction
 {
   public:
-    FactionSonar(): Faction() {
+    // Constructor
+    FactionSonar(): Faction() { // creates a Faction with preset values for the Sonar faction
       setName("Sonar");
       PossibleShips ships;
-      ships.push_back(std::make_pair(1, 1));
-      ships.push_back(std::make_pair(3, 2));
-      ships.push_back(std::make_pair(4, 3));
+      ships[1]=1;
+      ships[2]=3;
+      ships[3]=4;
       setPossibleShips(ships);
       setSpecialAbilities({Torpedo(), PiercingTorpedo(), Sonar(3), AerialStrike(), Probe()});
     };

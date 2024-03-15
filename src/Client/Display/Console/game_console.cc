@@ -166,7 +166,7 @@ std::vector<string> GameConsole::createMapKey() const {
 
 std::vector<string> GameConsole::createBoatsKey() const {
     std::vector<string> boat_key;
-    std::vector<PossibleShip> remaining_ships = _board->shipsToPlace();
+    PossibleShips remaining_ships = _board->shipsToPlace();
     std::array<std::string, 3> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m"};
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
@@ -284,7 +284,7 @@ void GameConsole::clearBadPlaceShipInput(bool placed) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     if (placed) {
-      if (_board->allBoatsPlaced()) {
+      if (_board->allShipsPlaced()) {
         _control->sendShips(_board->getPlacedShips());
         waitGame();
       } else {
@@ -355,7 +355,7 @@ void GameConsole::handleFire() {
         continue;
       }
 
-      fired = _control->fire(coordinates);
+      // fired = _control->fire(coordinates);
     }
   }
 }
