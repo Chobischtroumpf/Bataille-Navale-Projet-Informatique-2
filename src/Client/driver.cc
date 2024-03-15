@@ -6,8 +6,8 @@ Driver::~Driver() {}
 
 void Driver::launchApp() {
   //std::string user = "slectedUser";
-  displayLoginScreen();
-  run(ReturnInput::Screen::LOGIN);
+  displayGameScreen();
+  run(ReturnInput::Screen::GAME);
 }
 
 void Driver::run(ReturnInput::Screen base_screen) {

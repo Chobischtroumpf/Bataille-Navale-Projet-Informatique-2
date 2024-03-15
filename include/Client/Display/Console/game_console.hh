@@ -25,6 +25,11 @@ enum InputStatus {
   ERR
 };
 
+enum GamePhase {
+  PLACE_SHIP,
+  GAME
+};
+
 /** BoardDisplay using text.
  *
  * A grid is a side of the board as represented on the screen.
@@ -46,7 +51,13 @@ class GameConsole : public Console {
     size_t const   _width;    //< The number of character in a line with two grids and a gap
     std::vector<string> _map_key;  //< The map key, each string is a line without the ending '\n'
     bool _my_turn;  //< True if it's the player's turn
-    bool _valid_last_input = true;  //< True if the last input was valid
+    InputStatus _last_input = OK;  //< True if the last input was valid
+    GamePhase _phase = PLACE_SHIP;  //< The current phase of the game
+    std::unique_ptr<ShipClassic> _possible_ships = nullptr; //< The ships that can be placed
+
+    // Place ship variables
+    int _ship_size = 0;  //< The size of the ship to place, 0 means no selected ship
+    int _ship_id = 0;  //< The id of the ship to place
     // Utility methods
 
     /** Count number of unicode characters in a UTF-8 encoded string (assume linux platform)
@@ -62,7 +73,7 @@ class GameConsole : public Console {
           return " ";
         case OCEAN:
           return "╳";
-        case SCANNED:
+        case SCANNED_SHIP:
         case UNDAMAGED_SHIP:
           return "█";
         case HIT_SHIP:
@@ -117,9 +128,14 @@ class GameConsole : public Console {
     /** clear fail bits of _in, ignore until next '\n', redraw with the code status*/
     void clearBadPlaceShipInput(bool placed);
 
+    void handleShipSize();
+    void handleShipSelection();
+
     std::vector<string> createSelectShipSizePrompt(InputStatus status) const;
     std::vector<string> createSelectNextRotateKey(InputStatus status) const;
     std::vector<string> createSelectShipPositionPrompt(InputStatus status) const;
+    std::vector<string> createAvailableAbilities(InputStatus status) const;
+    std::vector<string> createAvailableBoats(InputStatus status) const;
 
   public:
 
@@ -143,18 +159,27 @@ class GameConsole : public Console {
 
     /** prints a temporary screen when changing turns, until next '\n' (enter) */
     void printChangeTurn();
+
+    /**
+      * Print on the screen two elements side by side
+    **/
     void printSideBySide(std::vector<string> left, std::vector<string> right);
+
+    /*
+     * Print on the screen three elements side by side
+    */
+    void printThreeElements(std::vector<string> left, std::vector<string> middle, std::vector<string> right);
     void printCenter(const std::vector<string>& board);
 
     /** Produces a redraw */
     void updatePlaceShip(InputStatus status);
     void updateGame(InputStatus);
-    void waitGame();
+    void displayWaitGame();
 
     /** Parse coordinates provided by user, check boundaries and call
      * BoardControl::fire. */
-    void handleFire();
-    void handlePlaceShip();
+    ReturnInput handleFire();
+    ReturnInput handlePlaceShip();
 
     // Console methods
     void display() override;

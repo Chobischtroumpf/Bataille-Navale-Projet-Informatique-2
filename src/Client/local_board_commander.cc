@@ -115,7 +115,7 @@ CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
 }
 
 void LocalBoardCommander::waitGame() {
-  // Wait for the game to start
+  sleep(1);
 }
 
 Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {
