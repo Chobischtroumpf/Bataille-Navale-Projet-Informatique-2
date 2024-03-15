@@ -14,3 +14,15 @@ void Faction::setSpecialAbilities(SpecialAbilities abilities) { this->_special_a
 std::string Faction::getName() const { return _name; };
 PossibleShips Faction::getPossibleShips() const { return _possible_ships; };
 SpecialAbilities Faction::getSpecialAbilities() const { return _special_abilities; };
+
+void Faction::removeShip(Amount amount) {
+    for (auto it = _possible_ships.begin(); it != _possible_ships.end(); it++) {
+        if (it->second == amount) {
+            it->first--;
+            if (it->second < 0) {
+                _possible_ships.erase(it);
+            }
+            break;
+        }
+    }
+}

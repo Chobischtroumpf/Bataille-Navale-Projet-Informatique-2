@@ -224,10 +224,9 @@ std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
 
 std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) const {
   std::vector<string> prompt(_map_key.size()-8, "");  // Add padding
-  prompt.emplace_back("");
-  prompt.emplace_back("Select the size of the boat you want to place");
+  for (int i = 0; i < _board->shipsToPlace().size()-2; i++) prompt.emplace_back("");
   if (status == OK) {
-    prompt.emplace_back("");
+    prompt.emplace_back("Select the size of the boat you want to place");
   } else {
     prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
   }
@@ -409,30 +408,21 @@ void GameConsole::printChangeTurn() {
 }
 
 ReturnInput GameConsole::handleFire() {
+  _in.ignore();
   std::string buf;
   _out << "\x1b[32;49;1m";
   getline(_in, buf);
   _out << "\x1b[0m";
   
-  // Check if user wants to quit
-  if (buf == "Q") {
-    _control->quit();
-    std::cerr << "quit" << std::endl;
-    return {ReturnInput::Screen::MAIN_MENU, ""};
-    
-  }
-  
   // Validate input length
   if (buf.size() != 4) {
     std::cerr << "Invalid input length\n";
-    std::cerr << "buf: " << buf << std::endl;
     _last_input = ERR;
     return {ReturnInput::Screen::GAME, ""};
   }
   
   // Validate input format
   if (!isValidInputFormat(buf)) {
-    std::cerr << "buf: " << buf << std::endl;
     return {ReturnInput::Screen::GAME, ""};
   }
 
@@ -443,7 +433,6 @@ ReturnInput GameConsole::handleFire() {
   
   // Validate ability index
   if (ability < 0 || ability >= _board->getPlayer().getFaction().getSpecialAbilities().size()) {
-    std::cerr << "Invalid ability index\n";
     _last_input = ERR;
     return {ReturnInput::Screen::GAME, ""};
   }
@@ -491,6 +480,7 @@ void GameConsole::handleShipSize() {
         _ship_size = size;
         _possible_ships = std::make_unique<ShipCommander>(size);
       }
+      std::cin.clear();
 }
 
 void GameConsole::handleShipSelection() {
@@ -514,25 +504,30 @@ void GameConsole::handleShipSelection() {
 }
 
 void GameConsole::handleShipPlacement() {
-  std::string buf;
+  _in.ignore();
+  BoardCoordinates coordinates{};
   _out << "\x1b[32;49;1m";
-  _in >> buf;
+  _in >> coordinates;
   _out << "\x1b[0m";
-  std::cerr << "buf: " << buf << std::endl;
-  Ship ship = _possible_ships->getShip();
-  if (buf.at(0) < 'A' || buf.at(0) > 'J' || buf.at(1) < '0' || buf.at(1) > '9') {
-    _last_input = ERR;
-  } else {
-    for (auto &coord : ship.getCoordinates()) {
-      coord.set(coord.x() + (buf.at(0) - 'A'), coord.y() + (buf.at(1) - '0'));
-    }
+
+  if (_in && coordinates.x() < _board->width() &&
+      coordinates.y() < _board->height()) {
+    Ship ship = _possible_ships->getShip();
+    ship.translate(coordinates.x(), coordinates.y());
     if (_control->placeShip(ship)) {
       _ship_size = 0;
       _ship_selected = false;
       _possible_ships.release();
+      _last_input = OK;
+      if (_board->allBoatsPlaced()) {
+        _control->sendShips(_board->getPlacedShips());
+        _phase = GAME;
+      }
     } else {
       _last_input = ERR;
     }
+  } else {
+    _last_input = ERR;
   }
   std::cin.clear();
 }

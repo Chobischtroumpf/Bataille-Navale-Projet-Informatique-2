@@ -52,7 +52,7 @@ class GameConsole : public Console {
     std::vector<string> _map_key;  //< The map key, each string is a line without the ending '\n'
     bool _my_turn;  //< True if it's the player's turn
     InputStatus _last_input = OK;  //< True if the last input was valid
-    GamePhase _phase = GAME;  //< The current phase of the game
+    GamePhase _phase = PLACE_SHIP;  //< The current phase of the game
     std::unique_ptr<ShipClassic> _possible_ships = nullptr; //< The ships that can be placed
     bool _ship_selected = false;  //< True if a boat has been selected
 

@@ -34,4 +34,6 @@ class Faction {
     virtual PossibleShips getPossibleShips() const;
     virtual SpecialAbilities getSpecialAbilities() const;
     virtual ~Faction() = default;
+
+    virtual void removeShip(Amount amount);
 };

@@ -88,7 +88,7 @@ bool LocalBoardCommander::addPlacedShip(Ship ship) {
   for (auto &c: ship.getCoordinates()) {
       _my_board.at(top_left.y() + c.y()).at(top_left.x() + c.x()).setType(ship.getType());
   }
-
+  _player.addShip(ship);
   return true;
 }
 
@@ -98,7 +98,7 @@ Player LocalBoardCommander::getPlayer() const {
 
 bool LocalBoardCommander::allBoatsPlaced() const {
   for (auto &ship: _player.getFaction().getPossibleShips()) {
-    if (ship.second > 0) {
+    if (ship.first > 0) {
       return false;
     }
   }

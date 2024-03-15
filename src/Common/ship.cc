@@ -106,6 +106,13 @@ void Ship::setSunk(bool is_sunk) {
 //     _ship_cells = ship_cells;
 // }
 
+bool Ship::translate(int x, int y) {
+    for (auto &c: _coordinates) {
+        c.set(c.x() + x, c.y() + y);
+    }
+    return true;
+}
+
 void Ship::notify(const BoardCoordinates &coords) {
     // (void) coords;
     // // Check if ship is sunk
