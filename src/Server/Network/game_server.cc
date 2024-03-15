@@ -127,7 +127,11 @@ void GameServer::handleGet(http_request request) {
                 // Use sessionId to query the game state
                 auto gameSession = sessionManager.getSession(to_utf8(sessionId));
                 njson gameState = gameSession->getGameState(userId);
-                response["gameState"] = gameState;
+                njson gameDetails;
+
+                gameDetails["gameState"] = gameState;
+                gameDetails["participants"] = gameSession->getParticipants();
+                response["gameDetails"] = gameDetails;
                 request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
                 // Handle missing parameters
@@ -340,7 +344,6 @@ void GameServer::handleGet(http_request request) {
             dbManager.getUserFriends(userId);
             request.reply(status_codes::OK, response.dump(), "application/json");
         }
-
 
             // Handle unmatched paths
         else {
@@ -648,6 +651,7 @@ void GameServer::handlePost(http_request request) {
             request.reply(status_codes::BadRequest, response.dump(),
                           "application/json");
           }
+
         })
         .then([](pplx::task<void> errorHandler) {
           try {
