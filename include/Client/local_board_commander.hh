@@ -6,7 +6,7 @@
 #include <map>
 #include <iostream>
 #include <cstdint>
-#include <nlohmann/json.hpp>
+// #include <nlohmann/json.hpp>
 
 #include "board_coordinates.hh"
 #include "cell.hh"
@@ -39,7 +39,11 @@ class LocalBoardCommander : public GameView {
     void fire();
 
   public:
-    LocalBoardCommander(Player player);
+    LocalBoardCommander(Player player): _player{player},
+      _is_finished{false},
+      _is_victory{false},
+      _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
+      _their_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))} {}
     
     virtual ~LocalBoardCommander() override = default;
 
@@ -92,7 +96,7 @@ class LocalBoardCommander : public GameView {
 
     static CellType string_to_celltype(std::string& type);
 
-    void update_board(const nlohmann::json& new_board);
+    // void update_board(const nlohmann::json& new_board);
 
     bool isInBoard(BoardCoordinates coord) const;
 };
