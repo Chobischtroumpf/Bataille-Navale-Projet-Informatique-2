@@ -85,7 +85,7 @@ void Driver::displayMainMenuScreen() {
 
 void Driver::displayChatScreen(std::string username) {
   if (_display_type == CONSOLE) {
-    _display = std::make_shared<ChatConsole>("me",username, getClient());
+    _display = std::make_shared<ChatConsole>(username, getClient());
     _current_screen = ReturnInput::Screen::CHAT;
   } else {
     throw NotImplementedError("GUI not implemented yet");
