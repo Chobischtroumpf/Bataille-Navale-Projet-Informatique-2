@@ -54,6 +54,7 @@ class GameConsole : public Console {
     InputStatus _last_input = OK;  //< True if the last input was valid
     GamePhase _phase = PLACE_SHIP;  //< The current phase of the game
     std::unique_ptr<ShipClassic> _possible_ships = nullptr; //< The ships that can be placed
+    bool _ship_selected = false;  //< True if a boat has been selected
 
     // Place ship variables
     int _ship_size = 0;  //< The size of the ship to place, 0 means no selected ship
@@ -109,6 +110,7 @@ class GameConsole : public Console {
     [[nodiscard]] std::vector<string> createMapKey() const;
 
     [[nodiscard]] std::vector<string> createBoatsKey() const;
+    std::vector<string> createPlaceShipKey() const;
 
     /** Create coordinates prompt, each string is a line without ending '\n'.
      * Empty lines are added in the beginning of the prompt so it can be printed next to the
@@ -130,6 +132,7 @@ class GameConsole : public Console {
 
     void handleShipSize();
     void handleShipSelection();
+    void handleShipPlacement();
 
     std::vector<string> createSelectShipSizePrompt(InputStatus status) const;
     std::vector<string> createSelectNextRotateKey(InputStatus status) const;

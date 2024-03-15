@@ -240,6 +240,18 @@ std::vector<string> GameConsole::createSelectNextRotateKey(InputStatus status) c
   return action_key;
 }
 
+std::vector<string> GameConsole::createPlaceShipKey() const {
+  std::vector<string> action_key(_map_key.size()-8, "");
+  action_key.emplace_back(" >> SELECTED BOAT <<");
+  auto ship = _possible_ships->getShip().to_string();
+  ship.at(0).at(0) = 'X';
+  for (auto &line : ship) {
+    action_key.emplace_back(line);
+  }
+  action_key.emplace_back(">> X is the anchor <<");
+  return action_key;
+}
+
 std::vector<string> GameConsole::createSelectShipPositionPrompt(InputStatus status) const {
   std::vector<string> prompt(_map_key.size()-4, "");  // Add padding
   prompt.emplace_back("");
@@ -281,7 +293,11 @@ void GameConsole::updatePlaceShip(InputStatus status) {
   if (_ship_size == 0) {
     printSideBySide(createBoatsKey() ,createSelectShipSizePrompt(status));
   } else {
-    print(createSelectNextRotateKey(status));
+    if (_ship_selected) {
+      printSideBySide(createPlaceShipKey(), createSelectShipPositionPrompt(status));
+    } else {
+      print(createSelectNextRotateKey(status));
+    }
   }
   _out << std::flush;
 }
@@ -440,7 +456,7 @@ void GameConsole::handleShipSelection() {
   _in >> shipbuf;
   _out << "\x1b[0m";
   if (shipbuf == "P") {
-      _control->placeShip(_possible_ships->getShip());
+    _ship_selected = true;
   } else if (shipbuf == "Q") {
       _ship_size = 0;
       _possible_ships.release();
@@ -453,17 +469,48 @@ void GameConsole::handleShipSelection() {
   }
 }
 
+void GameConsole::handleShipPlacement() {
+  std::string buf;
+  _out << "\x1b[32;49;1m";
+  _in >> buf;
+  _out << "\x1b[0m";
+  Ship ship = _possible_ships->getShip();
+  if (buf.at(0) < 'A' || buf.at(0) > 'J' || buf.at(1) < '0' || buf.at(1) > '9') {
+    _last_input = ERR;
+  } else {
+    for (auto &coord : ship.getCoordinates()) {
+      coord.set(coord.x() + (buf.at(0) - 'A'), coord.y() + (buf.at(1) - '0'));
+    }
+    if (_control->placeShip(ship)) {
+      _ship_size = 0;
+      _ship_selected = false;
+      _possible_ships.release();
+    } else {
+      _last_input = ERR;
+    }
+  }
+}
+
+
 ReturnInput GameConsole::handlePlaceShip() {
   if (_ship_size == 0) {
     handleShipSize();
   } else {
-    handleShipSelection();
+    if (_ship_selected) {
+      handleShipPlacement();
+    } else {
+      handleShipSelection();
+    }
   }
       if (std::cin.eof()) {
           _out << std::endl;
           _control->quit();
           return {};
       }
+      if (_board->allBoatsPlaced()) {
+        _control->sendShips(_board->getPlacedShips());
+        _phase = GAME;
+     } 
   return {};
 }
 
