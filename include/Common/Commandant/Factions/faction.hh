@@ -27,8 +27,9 @@ class Faction {
     Faction() = default;
     Faction(std::string name, PossibleShips possible_ships, SpecialAbilities special_abilities): _name{name}, _possible_ships{possible_ships}, _special_abilities{special_abilities} {};
 
+    // Getters
     virtual std::string getName() { return _name; };
     virtual PossibleShips getPossibleShips() { return _possible_ships; };
-    virtual SpecialAbilities getSpecialAbilities() { return _special_abilities; };
+    virtual SpecialAbilities getSpecialAbilities() { return _special_abilities; };    
     virtual ~Faction() = default;
 };
