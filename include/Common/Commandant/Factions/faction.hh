@@ -27,6 +27,9 @@ class Faction {
     Faction() = default;
     Faction(std::string name, PossibleShips possible_ships, SpecialAbilities special_abilities);
 
+    // Operators
+    bool operator==(const SpecialAbility &other) const
+
     virtual std::string getName() const;
     virtual PossibleShips getPossibleShips() const;
     virtual SpecialAbilities getSpecialAbilities() const;

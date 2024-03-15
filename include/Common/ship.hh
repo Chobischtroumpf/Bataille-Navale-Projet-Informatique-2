@@ -25,9 +25,13 @@ class Ship {
   public:
     Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board = nullptr);
 
+    // Constructors
+    Ship(vector<BoardCoordinates> coordinates);
     Ship(const Ship &other);
 
+    // Operators
     Ship &operator=(const Ship &other);
+    bool operator==(const Ship &other) const;
 
     // Does a 90° rotation of the ship
     void rotate();
