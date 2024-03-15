@@ -1,7 +1,7 @@
-#include "ship.hh"
-#include "local_board_commander.hh"
 #include <cassert>
 #include <iostream>
+#include "local_board_commander.hh"
+#include "ship.hh"
 
 void testShip() {
     std::cout << "Testing Ship" << std::endl;
@@ -19,8 +19,8 @@ void testShip() {
     std::cout << "Constructor with coordinates passed" << std::endl;
 
     // // Test constructor with coordinates and board
-    std::shared_ptr<LocalBoardCommander> board = std::move(std::make_shared<LocalBoardCommander>(Player()));
-    Ship ship2(coordinates, board);
+    // std::shared_ptr<LocalBoardCommander> board = std::move(std::make_shared<LocalBoardCommander>(Player()));
+    Ship ship2(coordinates);
     assert(ship2.getCoordinates() == coordinates);
     assert(ship2.getTopLeft() == BoardCoordinates(0, 0));
     assert(ship2.getType() == UNDAMAGED_SHIP);

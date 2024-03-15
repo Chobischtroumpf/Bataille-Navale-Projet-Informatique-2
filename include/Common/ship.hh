@@ -51,6 +51,7 @@ class Ship {
     //Setter
 
     // void setShipCells(const vector<vector<Cell>> &ship_cells);
+    void setType(CellType new_type);
 
     // Notifies the Ship that a tile has been hit, allowing it to check if it has been sunk
     void notify(const BoardCoordinates &coords);
@@ -58,8 +59,4 @@ class Ship {
 
     // Print the ship
     std::vector<std::string> to_string();
-    std::vector<BoardCoordinates> getCoordinates();
-    BoardCoordinates getTopLeft();
-    int getNumberOfCase();
-    void setType(CellType new_type);
 };

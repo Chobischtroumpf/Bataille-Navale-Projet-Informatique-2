@@ -3,8 +3,8 @@
 Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates(coordinates) {
     for (auto &c: coordinates) {
         _length++;
-        if (c.x() > _size_x) { _size_x = c.x(); }
-        if (c.y() > _size_y) { _size_y = c.y(); }
+        if (c.x() >= _size_x) { _size_x = c.x()+1; }
+        if (c.y() >= _size_y) { _size_y = c.y()+1; }
     }
     // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
 }
