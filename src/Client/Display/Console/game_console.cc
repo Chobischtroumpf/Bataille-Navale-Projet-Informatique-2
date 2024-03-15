@@ -164,18 +164,31 @@ std::vector<string> GameConsole::createMapKey() const {
 
 std::vector<string> GameConsole::createBoatsKey() const {
     std::vector<string> boat_key;
-    std::array<std::pair<ShipType, uint8_t>, 4> remaining_ships = _board->shipsToPlace();
-    uint8_t remaining_destroyer = remaining_ships.at(DESTROYER-2).second;
-    uint8_t remaining_submarine = remaining_ships.at(SUBMARINE-2).second;
-    uint8_t remaining_battleship = remaining_ships.at(BATTLESHIP-2).second;
-    uint8_t remaining_carrier = remaining_ships.at(CARRIER-2).second;
+    std::vector<PossibleShip> remaining_ships = _board->shipsToPlace();
     std::array<std::string, 3> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m"};
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
-    boat_key.emplace_back(color_code.at(remaining_destroyer) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        Destroyer  (×" + std::to_string(remaining_destroyer) + ") <" + color_code.at(1));
-    boat_key.emplace_back(color_code.at(remaining_submarine) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      Submarine  (×"+ std::to_string(remaining_submarine) +") <" + color_code.at(1));
-    boat_key.emplace_back(color_code.at(remaining_battleship) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    Battleship (×"+ std::to_string(remaining_battleship) +") <" + color_code.at(1));
-    boat_key.emplace_back(color_code.at(remaining_carrier) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  Carrier    (×"+ std::to_string(remaining_carrier) +") <" + color_code.at(1));
+    for (auto &ship : remaining_ships) {
+      switch (ship.second) {
+        case 1:
+          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_MINE) * 1 + "          Mine     (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          break;
+        case 2:
+          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        Destroyer  (×" + std::to_string(ship.first) + ") <" + color_code.at(1));
+          break;
+        case 3:
+          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      Submarine  (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          break;
+        case 4:
+          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    Battleship (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          break;
+        case 5:
+          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  Carrier    (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          break;
+        default:
+          break;
+      }
+    }
     return boat_key;
   }
 
@@ -186,10 +199,45 @@ std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
   return prompt;
 }
 
-std::vector<string> GameConsole::createPlaceShipPrompt(InputStatus status) const {
+std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) const {
+  std::vector<string> prompt(_map_key.size()-4, "");  // Add padding 
+  prompt.emplace_back("");
+  return prompt;
+}
+
+std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) const {
   std::vector<string> prompt(_map_key.size()-4, "");  // Add padding
   prompt.emplace_back("");
-  prompt.emplace_back("Enter the Ship ID, the H or V for horizontal or vertical, then X and Y coordinates (e.g. 4 V C4):");
+  prompt.emplace_back("Select the size of the boat you want to place");
+  if (status == OK) {
+    prompt.emplace_back("");
+  } else {
+    prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
+  }
+  prompt.emplace_back(">> BOAT SIZE <<");
+  prompt.emplace_back(">> ");
+  return prompt;
+}
+
+std::vector<string> GameConsole::createSelectNextRotateKey(InputStatus status) const {
+  std::vector<string> action_key(_map_key.size()-6, "");
+  action_key.emplace_back("");
+  action_key.emplace_back("> 1 - Next boat shape <");
+  action_key.emplace_back("> 2 - Rotate boat     <");
+  action_key.emplace_back("> 3 - Select boat     <");
+  if (status == OK) {
+    prompt.emplace_back("");
+  } else {
+    prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
+  }
+  prompt.emplace_back(">> SELECT ACTION <<");
+  prompt.emplace_back(">> ");
+}
+
+std::vector<string> GameConsole::createSelectShipPositionPrompt(InputStatus status) const {
+  std::vector<string> prompt(_map_key.size()-4, "");  // Add padding
+  prompt.emplace_back("");
+  prompt.emplace_back("Select the position where you want to place de boat (the position selected is the top left corner of the boat)");
   if (status == OK) {
     prompt.emplace_back("");
   } else {

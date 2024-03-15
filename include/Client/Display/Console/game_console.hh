@@ -60,14 +60,18 @@ class GameConsole : public Console {
           return " ";
         case OCEAN:
           return "╳";
+        case SCANNED:
         case UNDAMAGED_SHIP:
           return "█";
         case HIT_SHIP:
           return "▒";
-        case HIT_MINE:
-          return "⚑";
         case SUNK_SHIP:
           return "░";
+        case UNDAMAGED_MINE:
+        case SCANNED_MINE:
+          return "¤"
+        case HIT_MINE:
+          return "⚑";
         default:
           throw NotImplementedError("ConsoleBoardDisplay unknown CellType");
       }

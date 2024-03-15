@@ -19,18 +19,20 @@ void Ship::rotate() {
     }
 }
 
-void Ship::print() {
-    vector<vector<std::string>> to_print(_size_y, vector<std::string>(_size_x, "  "));
+std::vector<std::string> Ship::to_string() {
+    std::vector<std::string> to_return;
+    std::vector<std::vector<std::string>> ship_string(_size_y, vector<std::string>(_size_x, "  "));
 
     for (auto &c: _coordinates) {
-        to_print[c.y()][c.x()] = "██";
+        ship_string.at(c.y()).at(c.x()) = "██";
     }
 
-    for (auto &to_print2: to_print) {
-        for (auto &p: to_print2) {
-            std::cout << p;
+    for (auto &line_string: ship_string) {
+        std::string line;
+        for (auto &s: line_string) {
+            line += s;
         }
-        std::cout << std::endl;
+        to_return.push_back(line);
     }
 }
 
