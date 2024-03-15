@@ -29,5 +29,6 @@ class Player {
     void setFleet(std::vector<Ship> fleet); // Cette méthode est peut etre inutile ?
     void addShip(Ship ship);
     void setTurn(bool is_turn);
-    void setEnergyPoints(int energy_points);
+    void addEnergyPoints(int energy_points);
+    void removeEnergyPoints(int energy_points);
 };

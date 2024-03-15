@@ -83,6 +83,16 @@ std::vector<std::string> Ship::to_string() {
     return to_return;
 }
 
+nlohmann::json Ship::to_json() {
+    nlohmann::json j;
+    j["anchor"] = _top_left.to_json();
+    j["coordinates"] = nlohmann::json::array();
+    for (auto &c: _coordinates) {
+        j["coordinates"].push_back(c.to_json());
+    }
+    j["type"] = _type;
+}
+
 std::vector<BoardCoordinates> Ship::getCoordinates() const {
     return _coordinates;
 }
@@ -119,16 +129,16 @@ void Ship::setSunk(bool is_sunk) {
     _is_sunk = is_sunk;
 }
 
-// void Ship::setShipCells(const std::vector<std::vector<Cell>> &ship_cells) {
-//     _ship_cells = ship_cells;
-// }
+void Ship::setTopLeft(BoardCoordinates top_left) {
+    _top_left = top_left;
+}
 
 void Ship::notify(const BoardCoordinates &coords) {
     // Check if ship is sunk
     for (auto &c: _coordinates) {
-    if (_board->cellType(true,_top_left+c) != HIT_SHIP) {
-        return;
-    }
+        if (_board->cellType(true,_top_left+c) != HIT_SHIP) {
+            return;
+        }
     }
     setSunk(true);
 }

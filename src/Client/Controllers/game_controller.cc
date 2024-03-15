@@ -7,7 +7,21 @@ GameController::GameController(std::shared_ptr<LocalBoardCommander> board) : _bo
 
 bool GameController::fire(SpecialAbility ability, BoardCoordinates coord) const {
     // Sends POST request to fire to the gameServer
-    return true;
+    if (_board->cellType(false, coord) == CellType::WATER) {
+        if (_board->mode() == GameMode::CLASSIC) {
+            _board->fire(ability, coord);
+        } else if  (_board->mode() == GameMode::COMMANDER) {
+            if (ability.getEnergyCost() == 0) {
+                _board->fire(ability, coord);
+                return true;
+                }
+            if (_board->player().getEnergyPoints() >= ability.getEnergyCost()) {
+                _board->player().removeEnergyPoints(ability.getEnergyCost());
+                _board->fire(ability, coord);
+            }
+        }
+    }
+    return false;
 }
 
 bool GameController::checkShipPosition(Ship ship) const {
