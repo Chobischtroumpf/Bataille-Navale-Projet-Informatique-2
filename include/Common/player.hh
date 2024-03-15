@@ -8,7 +8,7 @@
 class Player {
   private:
     Faction _faction;
-    std::vector<Ship&> _fleet;
+    std::vector<Ship> _fleet;
     bool _is_turn;
     int _energy_points;
   

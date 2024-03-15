@@ -1,5 +1,4 @@
-#include "../../../../include/client/Display/Console/game_setting_console.hh"
-
+#include "game_setting_console.hh"
 GameSettingConsole::GameSettingConsole(std::shared_ptr<GameSettingView> view): _view(view) {}
 
 void GameSettingConsole::displayTitle() {
@@ -346,7 +345,7 @@ ReturnInput GameSettingConsole::handleInput() {
                     invalid_input = false;
                 }
                 else {
-                    return;
+                    return {};
                 }
             }
             catch (const std::exception& e) {}

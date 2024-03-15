@@ -1,10 +1,10 @@
 #include "game_console.hh"
-#include "local_board.hh"
+#include "local_board_commander.hh"
 
 using std::string;
 
 GameConsole::GameConsole(std::ostream& out, std::istream& in,
-                         std::shared_ptr<LocalBoard> board,
+                         std::shared_ptr<LocalBoardCommander> board,
                          std::shared_ptr<GameController> control)
     : _out{out},
       _in{in},
@@ -200,12 +200,6 @@ std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
 }
 
 std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) const {
-  std::vector<string> prompt(_map_key.size()-4, "");  // Add padding 
-  prompt.emplace_back("");
-  return prompt;
-}
-
-std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) const {
   std::vector<string> prompt(_map_key.size()-4, "");  // Add padding
   prompt.emplace_back("");
   prompt.emplace_back("Select the size of the boat you want to place");
@@ -226,12 +220,13 @@ std::vector<string> GameConsole::createSelectNextRotateKey(InputStatus status) c
   action_key.emplace_back("> 2 - Rotate boat     <");
   action_key.emplace_back("> 3 - Select boat     <");
   if (status == OK) {
-    prompt.emplace_back("");
+    action_key.emplace_back("");
   } else {
-    prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
+    action_key.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
   }
-  prompt.emplace_back(">> SELECT ACTION <<");
-  prompt.emplace_back(">> ");
+  action_key.emplace_back(">> SELECT ACTION <<");
+  action_key.emplace_back(">> ");
+  return action_key;
 }
 
 std::vector<string> GameConsole::createSelectShipPositionPrompt(InputStatus status) const {
@@ -347,7 +342,7 @@ void GameConsole::handleFire() {
 
 void GameConsole::handlePlaceShip() {
   if (_board->myTurn()) {
-        ShipCoordinates coordinates{};
+        BoardCoordinates coordinates{};
         _out << "\x1b[32;49;1m";
         _in >> coordinates;
         _out << "\x1b[0m";
@@ -359,7 +354,7 @@ void GameConsole::handlePlaceShip() {
         }
         if (_in && coordinates.x() < _board->width() &&
               coordinates.y() < _board->height()) {
-          _control->placeShip(coordinates);
+          // _control->placeShip(coordinates);
           _valid_last_input = true;
         } else {
           _valid_last_input = false;

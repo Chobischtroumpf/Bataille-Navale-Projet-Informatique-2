@@ -1,9 +1,6 @@
 #include <iostream>
 #include <memory>
 
-#include "game_controller.hh"
-#include "game_console.hh"
-#include "local_board.hh"
 #include "driver.hh" 
 
 

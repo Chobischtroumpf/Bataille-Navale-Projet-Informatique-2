@@ -43,7 +43,8 @@ void Driver::run(ReturnInput::Screen base_screen) {
 
 void Driver::displayGameScreen() {
   if (_display_type == CONSOLE) {
-    std::shared_ptr<LocalBoard> board = std::make_shared<LocalBoard>();
+    Player player1 = Player();
+    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(player1);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller);
   } else {
@@ -90,7 +91,8 @@ void Driver::displayLobbyScreen() {}
 
 void Driver::displayGameCreationScreen() {
   if (_display_type == CONSOLE) {
-    _display = std::make_shared<GamePlayerConsole>();
+    std::shared_ptr<GamePlayerView> _view = std::make_shared<GamePlayerView>();
+    _display = std::make_shared<GamePlayerConsole>(_view);
 
   } else {
     throw NotImplementedError("GUI not implemented yet");

@@ -19,13 +19,15 @@
 #include "register_console.hh"
 #include "main_menu_console.hh"
 #include "chat_console.hh"
+#include "game_player_console.hh"
 
 // Views
-#include "local_board.hh"
+#include "local_board_commander.hh"
 #include "login_view.hh"
 #include "register_view.hh"
 #include "main_menu_view.hh"
 #include "chat_view.hh"
+#include "game_player_view.hh"
 
 
 enum DisplayType {

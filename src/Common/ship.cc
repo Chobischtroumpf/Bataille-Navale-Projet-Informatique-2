@@ -1,4 +1,4 @@
-#include "Common/ship.hh"
+#include "ship.hh"
 
 Ship::Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board): _coordinates(coordinates), _board(std::move(board)) {
     for (auto &c: coordinates) {
@@ -6,7 +6,7 @@ Ship::Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> 
         if (c.x() > _size_x) { _size_x = c.x(); }
         if (c.y() > _size_y) { _size_y = c.y(); }
     }
-    // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
+    // _ship_cells(std::vector<std::vector<Cell>>(_size_y, std::vector<Cell>(_size_x))
 }
 
 void Ship::rotate() {
@@ -21,7 +21,7 @@ void Ship::rotate() {
 
 std::vector<std::string> Ship::to_string() {
     std::vector<std::string> to_return;
-    std::vector<std::vector<std::string>> ship_string(_size_y, vector<std::string>(_size_x, "  "));
+    std::vector<std::vector<std::string>> ship_string(_size_y, std::vector<std::string>(_size_x, "  "));
 
     for (auto &c: _coordinates) {
         ship_string.at(c.y()).at(c.x()) = "██";
@@ -36,7 +36,7 @@ std::vector<std::string> Ship::to_string() {
     }
 }
 
-vector<BoardCoordinates> Ship::getCoordinates() const {
+std::vector<BoardCoordinates> Ship::getCoordinates() const {
     return _coordinates;
 }
 
@@ -48,7 +48,7 @@ CellType Ship::getType() const {
     return _type;
 }
 
-// const vector<vector<Cell>> Ship::getShipCells() const {
+// const std::vector<std::vector<Cell>> Ship::getShipCells() const {
 //     return _ship_cells;
 // }
 
@@ -72,7 +72,7 @@ void Ship::setSunk(bool is_sunk) {
     _is_sunk = is_sunk;
 }
 
-// void Ship::setShipCells(const vector<vector<Cell>> &ship_cells) {
+// void Ship::setShipCells(const std::vector<std::vector<Cell>> &ship_cells) {
 //     _ship_cells = ship_cells;
 // }
 
@@ -81,8 +81,7 @@ void Ship::notify(const BoardCoordinates &coords) {
     // Check if ship is sunk
     auto board_coordinate = _top_left;
 
-    if (
-    for (auto &c = _coordinates; c != _coordinates.end(); c++) {
+    for (auto c = _coordinates.begin(); c != _coordinates.end(); c++) {
         
     }
 

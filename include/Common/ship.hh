@@ -9,11 +9,9 @@
 #include "game_view.hh"
 #include "cell.hh"
 
-using std::vector;
-
 class Ship {
   private:
-    vector<BoardCoordinates> _coordinates;
+    std::vector<BoardCoordinates> _coordinates;
     BoardCoordinates _top_left;
     CellType _type = UNDAMAGED_SHIP;
     std::shared_ptr<GameView> _board;
@@ -25,7 +23,7 @@ class Ship {
     void setSunk(bool is_sunk);
 
   public:
-    Ship(vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board = nullptr);
+    Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board = nullptr);
 
     Ship(const Ship &other);
 
@@ -35,9 +33,9 @@ class Ship {
     void rotate();
 
     // Getters
-    vector<BoardCoordinates> getCoordinates() const;
+    std::vector<BoardCoordinates> getCoordinates() const;
     BoardCoordinates getTopLeft() const;
-    // const vector<vector<Cell>> getShipCells() const;
+    // const std::vector<std::vector<Cell>> getShipCells() const;
     CellType getType() const;
     int getLength() const;
     int getSizeX() const;
@@ -46,7 +44,7 @@ class Ship {
 
     //Setter
 
-    // void setShipCells(const vector<vector<Cell>> &ship_cells);
+    // void setShipCells(const std::vector<std::vector<Cell>> &ship_cells);
 
     // Notifies the Ship that a tile has been hit, allowing it to check if it has been sunk
     void notify(const BoardCoordinates &coords);

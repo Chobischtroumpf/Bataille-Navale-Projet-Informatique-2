@@ -14,6 +14,7 @@
 #include "ship_commander.hh"
 #include "game_view.hh"
 #include "player.hh"
+#include "ship.hh"
 
 
 /*
@@ -90,7 +91,7 @@ class LocalBoardCommander : public GameView {
 
     CellType best(CellType lhs, CellType rhs);
 
-    static CellType string_to_celltype(std::string& type);
+    static CellType string_to_celltype(const std::string& type);
 
     void update_board(const nlohmann::json& new_board);
 
