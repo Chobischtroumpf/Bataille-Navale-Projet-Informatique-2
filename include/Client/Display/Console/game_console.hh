@@ -116,8 +116,8 @@ class GameConsole : public Console {
     void clearBadPlaceShipInput(bool placed);
 
     std::vector<string> createSelectShipSizePrompt(InputStatus status) const;
-std::vector<string> createSelectNextRotateKey(InputStatus status) const;
-std::vector<string> createSelectShipPositionPrompt(InputStatus status) const;
+    std::vector<string> createSelectNextRotateKey(InputStatus status) const;
+    std::vector<string> createSelectShipPositionPrompt(InputStatus status) const;
 
   public:
 

@@ -192,6 +192,8 @@ std::vector<string> GameConsole::createBoatsKey() const {
     return boat_key;
   }
 
+std::vector<string> GameConsole::createPlaceShipPrompt(InputStatus status) const { return {}; } // WARNING: TODO
+
 std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
   std::vector<string> prompt(_map_key.size() - 2, "");  // Add padding
   prompt.emplace_back(">> SELECT TARGET <<");
@@ -241,6 +243,23 @@ std::vector<string> GameConsole::createSelectShipPositionPrompt(InputStatus stat
   prompt.emplace_back(">> PLACE SHIP <<");
   prompt.emplace_back(">> ");
   return prompt;
+}
+
+void GameConsole::updatePlaceShip(InputStatus status) {
+  //methode d'affichage d'ecran temporaire pour le changement de tour
+  std::system("clear");  // Do not use std::system in other contexts
+  _out << createGameHeader();
+  printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
+  _out << '\n';
+  printSideBySide(createGrid(true), createGrid(false));
+  _out << '\n';
+  if (_board->myTurn()) {
+    printSideBySide(createBoatsKey(), createPlaceShipPrompt(status));
+    handlePlaceShip();
+  } else {
+    print(createBoatsKey());
+  }
+  _out << std::flush;
 }
 
 void GameConsole::print(const std::vector<string>& lines) {
@@ -381,22 +400,6 @@ void GameConsole::updateGame(InputStatus status) {
   _out << std::flush;
 }
 
-void GameConsole::updatePlaceShip(InputStatus status) {
-  //methode d'affichage d'ecran temporaire pour le changement de tour
-  std::system("clear");  // Do not use std::system in other contexts
-  _out << createGameHeader();
-  printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
-  _out << '\n';
-  printSideBySide(createGrid(true), createGrid(false));
-  _out << '\n';
-  if (_board->myTurn()) {
-    printSideBySide(createBoatsKey(), createPlaceShipPrompt(status));
-    handlePlaceShip();
-  } else {
-    print(createBoatsKey());
-  }
-  _out << std::flush;
-}
 
 void GameConsole::waitGame() {
   std::system("clear");

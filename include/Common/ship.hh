@@ -23,10 +23,9 @@ class Ship {
     void setSunk(bool is_sunk);
 
   public:
-    Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board = nullptr);
-
     // Constructors
     Ship(std::vector<BoardCoordinates> coordinates);
+    Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
     Ship(const Ship &other);
 
     // Operators
@@ -48,6 +47,7 @@ class Ship {
 
     //Setter
 
+    void setType(CellType new_type);
     // void setShipCells(const std::vector<std::vector<Cell>> &ship_cells);
 
     // Notifies the Ship that a tile has been hit, allowing it to check if it has been sunk
@@ -56,8 +56,4 @@ class Ship {
 
     // Print the ship
     std::vector<std::string> to_string();
-    std::vector<BoardCoordinates> getCoordinates();
-    BoardCoordinates getTopLeft();
-    int getNumberOfCase();
-    void setType(CellType new_type);
 };
