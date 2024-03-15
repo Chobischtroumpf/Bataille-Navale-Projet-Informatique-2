@@ -47,8 +47,8 @@ class Ship {
 
     //Setter
 
+    // void setShipCells(const vector<vector<Cell>> &ship_cells);
     void setType(CellType new_type);
-    // void setShipCells(const std::vector<std::vector<Cell>> &ship_cells);
 
     // Notifies the Ship that a tile has been hit, allowing it to check if it has been sunk
     void notify(const BoardCoordinates &coords);
