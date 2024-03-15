@@ -27,6 +27,8 @@ private:
   bool mode_commandant;
   GameTimer game_timer;
   std::unordered_map<Turn, unsigned int> ship_placements;
+  bool update_player1;
+  bool update_player2;
 
   void start_timer();
   

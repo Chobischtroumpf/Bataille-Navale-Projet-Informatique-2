@@ -34,7 +34,7 @@ bool GameState::handle_place_ship(PlayerRole player, const nlohmann::json& move)
         //handle the number of placement is incorrect
         return false;
     }*/
-    for (const auto& obj : move) {
+    for (const auto& obj : move["ships"]) {
         std::string x = obj["anchor"]["x"].get<std::string>();
         size_t y = obj["anchor"]["y"];
         int length = obj["length"];

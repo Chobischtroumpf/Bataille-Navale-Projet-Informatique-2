@@ -18,6 +18,7 @@
 #include "game_controller.hh"
 #include "not_implemented_error.hh"
 #include "console.hh"
+#include "game_client.hh"
 
 enum InputStatus {
   OK,

@@ -5,8 +5,7 @@
 
 
 int main() {
-    Driver app(CONSOLE); 
-
+    Driver app(CONSOLE);
     // Lancement de l'application
     app.launchApp();
 

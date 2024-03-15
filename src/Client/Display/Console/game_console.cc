@@ -4,8 +4,9 @@
 using std::string;
 
 GameConsole::GameConsole(std::ostream& out, std::istream& in,
-                         std::shared_ptr<LocalBoardCommander> board,
-                         std::shared_ptr<GameController> control)
+                         std::shared_ptr<LocalBoard> board,
+                         std::shared_ptr<GameController> control,
+                         std::shared_ptr<GameClient> client)
     : _out{out},
       _in{in},
       _board{std::move(board)},
@@ -20,7 +21,9 @@ GameConsole::GameConsole(std::ostream& out, std::istream& in,
       _grid_width{_number_width + 1 +
                   (1 + _letter_width) * _board->width() + 1},
       _width{_grid_width * 2 + _gap.size()},
-      _map_key{createMapKey()} {}
+      _map_key{createMapKey()},
+      _game_client(client) {}
+
 
 inline string operator*(const string& lhs, size_t rhs) {
   string result;

@@ -74,7 +74,21 @@ int main() {
     // Correctly wait for the future to get the result and print it
     auto userId = getUserIdFuture.get(); // This blocks until the future is ready and gets the result
     cout << "UserId received: " << userId << "\n";
+
+
+    waitForEnter("Ready to send message.");
+    // Asynchronously 
+    auto messageSentFuture = gameClient.SendMessage("1","Hello");
+    // Correctly wait for the future to get the result and print it
+    auto result = messageSentFuture.get(); // This blocks until the future is ready and gets the result
+    cout << "Message sent: " << result << "\n";
     
+    waitForEnter("Ready to get messages.");
+    // Asynchronously 
+    auto messagesFuture = gameClient.GetMessages("1");
+    // Correctly wait for the future to get the result and print it
+    auto result2 = messagesFuture.get(); // This blocks until the future is ready and gets the result
+    cout << "Messages retrieved: " << result2 << "\n";
     cout << "All requests were processed. Check your server for the responses.\n";
 
     return 0;
