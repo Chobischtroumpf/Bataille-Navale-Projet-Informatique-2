@@ -1,7 +1,7 @@
 #include "login_controller.hh"
 
-LoginController::LoginController(const std::string& baseUri) 
-    : gameClient(std::make_shared<GameClient>(baseUri)) {}
+LoginController::LoginController(std::shared_ptr<GameClient> gameClient)
+    : gameClient(gameClient) {}
 
 std::future<bool> LoginController::attemptLogin(const std::string& username, const std::string& password) const {
     return gameClient->Login(username, password);

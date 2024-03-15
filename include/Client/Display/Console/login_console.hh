@@ -10,9 +10,11 @@
 #include "login_controller.hh"
 #include "display.hh"
 
+#include "game_client.hh"
+
 class LoginConsole : public Console {
 public:
-  explicit LoginConsole(const std::string& baseUri);
+  explicit LoginConsole(std::shared_ptr<GameClient> gameClient);
   ReturnInput handleInput() override;                       
   virtual void display() override {}
   virtual void displayError() override {}
