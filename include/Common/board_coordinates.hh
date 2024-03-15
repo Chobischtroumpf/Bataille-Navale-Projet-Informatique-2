@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <nlohmann/json.hpp>
 
 #include "not_implemented_error.hh"
 
@@ -106,6 +107,14 @@ public:
   [[nodiscard]] virtual inline string yToString() const {
     return std::to_string(_y + 1);
   }
+
+  nlohmann::json to_json() const {
+    nlohmann::json j;
+    j["x"] = _x;
+    j["y"] = _y;
+    return j;
+  }
+
 };
 
 /** Put bc.toString() on os */

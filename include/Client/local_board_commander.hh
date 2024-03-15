@@ -6,15 +6,17 @@
 #include <map>
 #include <iostream>
 #include <cstdint>
+#include <memory>
 #include <nlohmann/json.hpp>
 
-#include "board_coordinates.hh"
-#include "cell.hh"
 #include "not_implemented_error.hh"
+#include "board_coordinates.hh"
 #include "ship_commander.hh"
+#include "game_client.hh"
 #include "game_view.hh"
 #include "player.hh"
 #include "ship.hh"
+#include "cell.hh"
 
 typedef enum {
   CLASSIC,
@@ -28,9 +30,12 @@ class LocalBoardCommander : public GameView {
   private:
     Player _player;
     GameMode _mode;
+    std::string _game_id;
 
     std::vector<std::vector<Cell>> _my_board;
     std::vector<std::vector<Cell>> _their_board;
+
+    std::shared_ptr<GameClient> _client;
 
     // bool _my_turn;
     bool _is_finished;
@@ -42,10 +47,9 @@ class LocalBoardCommander : public GameView {
     Ship &shipId(bool my_side, BoardCoordinates position);
     bool check();
     //void placeShip(ShipCoordinates coordinates, bool my_fleet);
-    // void fire(SpecialAbility ability, BoardCoordinates coordinates);
 
   public:
-    LocalBoardCommander(Player player, GameMode mode);
+    LocalBoardCommander(std::shared_ptr<GameClient> client, Player player, GameMode mode);
     
     virtual ~LocalBoardCommander() override = default;
 
@@ -56,6 +60,7 @@ class LocalBoardCommander : public GameView {
     std::size_t width() const override;
     std::size_t height() const override;
     GameMode mode() const;
+    Player player() const;
 
     /*
     * Get the cell type at the given coordinates
@@ -64,8 +69,7 @@ class LocalBoardCommander : public GameView {
     */
     CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
 
-    /* WARNING : NOT FULLY IMPLEMENTED 
-    * Check if two cells are part of the same ship*/
+    /* Check if two cells are part of the same ship */
     bool isSameShip(bool my_side, BoardCoordinates first,
                     BoardCoordinates second) const override;
 
@@ -84,7 +88,7 @@ class LocalBoardCommander : public GameView {
     /* Returns the ships that have been placed */
     std::vector<Ship> getPlacedShips() const;
 
-    /* Add a placed ship (locally) */
+    /* places a ship */
     void placeShip(Ship ship);
 
     /* Polls the server to wait the beggining of the game */
@@ -103,4 +107,7 @@ class LocalBoardCommander : public GameView {
     void update_board(const nlohmann::json& new_board);
 
     bool isInBoard(BoardCoordinates coord) const;
+
+    // sends the fire request to the server
+    void fire(SpecialAbility ability, BoardCoordinates coordinates);
 };

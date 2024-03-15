@@ -3,7 +3,7 @@
 // #include <iostream>
 
 
-LocalBoardCommander::LocalBoardCommander(Player player, GameMode mode)
+LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,Player player, GameMode mode)
     : _player{player},
       _mode{mode},
       _is_finished{false},
@@ -15,10 +15,12 @@ bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }
 
 bool LocalBoardCommander::isFinished() const { return _is_finished; }
 bool LocalBoardCommander::isVictory() const { return _is_victory; }
-GameMode LocalBoardCommander::mode() const { return _mode; }
 
 std::size_t LocalBoardCommander::width() const { return _my_board.at(0).size(); }
 std::size_t LocalBoardCommander::height() const { return _my_board.size(); }
+
+GameMode LocalBoardCommander::mode() const { return _mode; }
+Player LocalBoardCommander::player() const { return _player; }
 
 CellType LocalBoardCommander::cellType(bool my_side, BoardCoordinates coordinates) const {
   return get(my_side, coordinates).type();
@@ -26,10 +28,10 @@ CellType LocalBoardCommander::cellType(bool my_side, BoardCoordinates coordinate
 
 bool LocalBoardCommander::isSameShip(bool my_side, BoardCoordinates first,
                             BoardCoordinates second) const {
-  if (get(my_side, first).type() != UNDAMAGED_SHIP || get(my_side, second).type() != UNDAMAGED_SHIP) {
+  if (get(true, first).type() != UNDAMAGED_SHIP || get(true, second).type() != UNDAMAGED_SHIP) {
     return false;
   }
-  return get(my_side, first).ship() == get(my_side, second).ship();
+  return get(true, first).ship() == get(true, second).ship();
 }
 
 std::vector<Cell> LocalBoardCommander::getNeighbors(BoardCoordinates coord) const {
@@ -91,6 +93,10 @@ void LocalBoardCommander::placeShip(Ship ship) {
       _my_board.at(top_left.y() + coord.y()).at(top_left.x() + coord.x()).setType(ship.getType());
       _my_board.at(top_left.y() + coord.y()).at(top_left.x() + coord.x()).setShip(ship);
   }
+  _player.addShip(ship);
+
+  // if all ships are placed, send the ships to the server
+
 }
 
 bool LocalBoardCommander::allShipsPlaced() const {
@@ -185,4 +191,17 @@ void LocalBoardCommander::update_board(const nlohmann::json& new_board){
 
 bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {
   return coord.x() >= 0 && coord.x() < 10 && coord.y() >= 0 && coord.y() < 10;
+}
+
+void LocalBoardCommander::fire(SpecialAbility ability, BoardCoordinates coordinates) {
+  nlohmann::json move_request;
+  nlohmann::json fire_request;
+
+  fire_request["ability"] = ability.getType();
+  fire_request["anchor"] = coordinates.to_json();
+
+  move_request["fire"] = fire_request;
+
+  _client->MakeMove(_game_id, move_request);
+
 }
