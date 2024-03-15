@@ -167,7 +167,7 @@ std::vector<string> GameConsole::createMapKey() const {
 std::vector<string> GameConsole::createBoatsKey() const {
     std::vector<string> boat_key;
     std::vector<PossibleShip> remaining_ships = _board->shipsToPlace();
-    std::array<std::string, 3> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m"};
+    std::array<std::string, 5> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m"};
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
     for (auto &ship : remaining_ships) {
@@ -210,7 +210,13 @@ std::vector<string> GameConsole::createPlaceShipPrompt(InputStatus status) const
  }
 
 std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
-  std::vector<string> prompt(_map_key.size() - 2, "");  // Add padding
+  std::vector<string> prompt(_map_key.size() - 4, "");  // Add padding
+  prompt.emplace_back(">> Put first the ability and then the coordinate (ex: 4 F2) <<");
+  if (status == OK) {
+    prompt.emplace_back("");
+  } else {
+    prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
+  }
   prompt.emplace_back(">> SELECT TARGET <<");
   prompt.emplace_back(">> ");
   return prompt;
@@ -319,29 +325,6 @@ void GameConsole::print(const std::vector<string>& lines) {
   }
 }
 
-void GameConsole::clearBadGameInput(bool placed) {
-  std::cin.clear();
-  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-  if (placed) {
-    updateGame(OK);
-  } else {
-    updateGame(ERR);
-  }
-}
-
-void GameConsole::clearBadPlaceShipInput(bool placed) {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    if (placed) {
-      if (_board->allBoatsPlaced()) {
-        _control->sendShips(_board->getPlacedShips());
-      } else {
-        updatePlaceShip(OK);
-      }
-    } else {
-      updatePlaceShip(ERR);
-    }
-}
 
 void GameConsole::printSideBySide(std::vector<string> left, std::vector<string> right) {
   size_t left_width = std::max(
@@ -426,24 +409,75 @@ void GameConsole::printChangeTurn() {
 }
 
 ReturnInput GameConsole::handleFire() {
-    for (bool fired = false; !fired; clearBadGameInput(fired)) {
-      BoardCoordinates coordinates{_board->width(), _board->height()};
-      _in >> coordinates;
+  std::string buf;
+  _out << "\x1b[32;49;1m";
+  getline(_in, buf);
+  _out << "\x1b[0m";
+  
+  // Check if user wants to quit
+  if (buf == "Q") {
+    _control->quit();
+    std::cerr << "quit" << std::endl;
+    return {ReturnInput::Screen::MAIN_MENU, ""};
+    
+  }
+  
+  // Validate input length
+  if (buf.size() != 4) {
+    std::cerr << "Invalid input length\n";
+    std::cerr << "buf: " << buf << std::endl;
+    _last_input = ERR;
+    return {ReturnInput::Screen::GAME, ""};
+  }
+  
+  // Validate input format
+  if (!isValidInputFormat(buf)) {
+    std::cerr << "buf: " << buf << std::endl;
+    return {ReturnInput::Screen::GAME, ""};
+  }
 
-      if (std::cin.eof()) {
-        _out << std::endl;
-        _control->quit();
-        return {};
-      }
-      if (!(_in && coordinates.x() < _board->width() &&
-                        coordinates.y() < _board->height())) {
-        continue;
-      }
+  // Parse input
+  int ability = std::stoi(buf.substr(0, 1));
+  char row = buf.at(2);
+  int col = std::stoi(buf.substr(3, 1));
+  
+  // Validate ability index
+  if (ability < 0 || ability >= _board->getPlayer().getFaction().getSpecialAbilities().size()) {
+    std::cerr << "Invalid ability index\n";
+    _last_input = ERR;
+    return {ReturnInput::Screen::GAME, ""};
+  }
 
-      fired = _control->fire(coordinates);
-    }
-  return {};
+  // Validate coordinates
+  if (!isValidCoordinates(row, col)) {
+    _last_input = ERR;
+    return {ReturnInput::Screen::GAME, ""};
+  }
+
+  // Fire action
+  BoardCoordinates coord{row - 'A', col};
+  _control->fire(_board->getPlayer().getFaction().getSpecialAbilities().at(ability), coord);
+  _last_input = OK;
+
+  std::cin.clear();
+
+  return {ReturnInput::Screen::GAME, ""};
 }
+
+bool GameConsole::isValidInputFormat(const std::string& input) const {
+  // Check if input matches the expected format: [0-9] [A-J][0-9]
+  return (input.size() == 4 &&
+          isdigit(input[0]) &&
+          input[1] == ' ' &&
+          input[2] >= 'A' && input[2] <= 'J' &&
+          isdigit(input[3]));
+}
+
+bool GameConsole::isValidCoordinates(char row, int col) const {
+  // Check if coordinates are within the board bounds
+  return (row >= 'A' && row <= 'J' && col >= 0 && col <= 9);
+}
+
 
 void GameConsole::handleShipSize() {
       std::string sizebuf;
@@ -453,7 +487,7 @@ void GameConsole::handleShipSize() {
       if (sizebuf.at(0) < '1' || sizebuf.at(0) > '5') {
         _last_input = ERR;
       } else {
-        uint8_t size = std::atoi(&sizebuf.at(0));
+        int size = sizebuf.at(0) - '0';
         _ship_size = size;
         _possible_ships = std::make_unique<ShipCommander>(size);
       }
@@ -476,6 +510,7 @@ void GameConsole::handleShipSelection() {
   } else {
       _last_input = ERR;
   }
+  std::cin.clear();
 }
 
 void GameConsole::handleShipPlacement() {
@@ -483,6 +518,7 @@ void GameConsole::handleShipPlacement() {
   _out << "\x1b[32;49;1m";
   _in >> buf;
   _out << "\x1b[0m";
+  std::cerr << "buf: " << buf << std::endl;
   Ship ship = _possible_ships->getShip();
   if (buf.at(0) < 'A' || buf.at(0) > 'J' || buf.at(1) < '0' || buf.at(1) > '9') {
     _last_input = ERR;
@@ -498,6 +534,7 @@ void GameConsole::handleShipPlacement() {
       _last_input = ERR;
     }
   }
+  std::cin.clear();
 }
 
 
@@ -520,7 +557,8 @@ ReturnInput GameConsole::handlePlaceShip() {
         _control->sendShips(_board->getPlacedShips());
         _phase = GAME;
      } 
-  return {};
+   std::cin.clear();
+  return {ReturnInput::Screen::GAME, ""};
 }
 
 void GameConsole::updateGame(InputStatus status) {
@@ -532,8 +570,6 @@ void GameConsole::updateGame(InputStatus status) {
   printThreeElements(createGrid(true), createGrid(false), createAvailableAbilities(status));
   _out << '\n';
   printSideBySide(createMapKey(), createGamePrompt(status));
-  handleFire();
-  
   _out << std::flush;
 }
 
@@ -562,16 +598,18 @@ void GameConsole::display() {
 }
 void GameConsole::displayError() {}
 void GameConsole::update() {}
+
 ReturnInput GameConsole::handleInput() {
   if (_phase == PLACE_SHIP) {
     handlePlaceShip();
   } else {
     if (_board->myTurn()) {
-      handleFire();
+      return handleFire();
     } else {
       _board->waitGame();
     }
   }
+  return {ReturnInput::Screen::GAME, ""};
 }
 
 constexpr size_t GameConsole::length(const string& s) {

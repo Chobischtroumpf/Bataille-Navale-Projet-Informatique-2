@@ -27,7 +27,7 @@ public:
   /** Inform that the player chose to fire on this cell.
    * Return true if the action is valid (this cell was not targeted previously).
    */
-  virtual bool fire(BoardCoordinates coord) const;
+  virtual bool fire(SpecialAbility ability, BoardCoordinates coord) const;
 
   /* Handle the placement of a ship */
   virtual bool placeShip(Ship ship) const;

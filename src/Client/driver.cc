@@ -52,6 +52,7 @@ void Driver::displayGameScreen() {
     std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(player1);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());
+    _current_screen = ReturnInput::Screen::GAME;
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }

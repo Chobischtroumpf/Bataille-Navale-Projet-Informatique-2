@@ -5,7 +5,7 @@
 
 GameController::GameController(std::shared_ptr<LocalBoardCommander> board) : _board{std::move(board)} {}
 
-bool GameController::fire(BoardCoordinates coord) const {
+bool GameController::fire(SpecialAbility ability, BoardCoordinates coord) const {
     // Sends POST request to fire to the gameServer
     return true;
 }

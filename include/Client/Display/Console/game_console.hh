@@ -123,16 +123,15 @@ class GameConsole : public Console {
     /** Print a vector of lines adding '\n' at the end of each line */
     void print(const std::vector<string>& lines);
 
-    // Input methods
-    /** clear fail bits of _in, ignore until next '\n', redraw  with the code status*/
-    void clearBadGameInput(bool placed);
-
     /** clear fail bits of _in, ignore until next '\n', redraw with the code status*/
     void clearBadPlaceShipInput(bool placed);
 
     void handleShipSize();
     void handleShipSelection();
     void handleShipPlacement();
+
+    bool isValidInputFormat(const std::string& input) const;
+    bool isValidCoordinates(char row, int col) const;
 
     std::vector<string> createSelectShipSizePrompt(InputStatus status) const;
     std::vector<string> createSelectNextRotateKey(InputStatus status) const;
