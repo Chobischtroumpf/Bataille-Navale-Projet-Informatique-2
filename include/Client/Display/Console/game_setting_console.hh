@@ -17,8 +17,7 @@ public:
     void update() override;
     ReturnInput handleInput() override;
 private:
-    std::shared_ptr<GameSettingController> _controller;
-    int _friendlist_position = 4;
+    std::shared_ptr<GameClient> gameClient;
     void displayTitle();
     void displayParameter();
     void displayParameter(std::string game_name);

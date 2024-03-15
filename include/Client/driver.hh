@@ -21,6 +21,7 @@
 #include "main_menu_console.hh"
 #include "chat_console.hh"
 #include "game_player_console.hh"
+#include "game_setting_console.hh"
 
 // Views
 #include "local_board_commander.hh"
