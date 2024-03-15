@@ -3,7 +3,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "board_coordinates.hh"
 #include "cell_type.hh"
@@ -54,7 +53,7 @@ class Ship {
 
 
     // Print the ship
-    void print();
+    std::vector<std::string> to_string();
     std::vector<BoardCoordinates> getCoordinates();
     BoardCoordinates getTopLeft();
     int getNumberOfCase();
