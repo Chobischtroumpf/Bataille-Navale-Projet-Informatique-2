@@ -9,11 +9,9 @@
 #include "game_view.hh"
 #include "cell.hh"
 
-using std::vector;
-
 class Ship {
   private:
-    vector<BoardCoordinates> _coordinates;
+    std::vector<BoardCoordinates> _coordinates;
     BoardCoordinates _top_left;
     CellType _type = UNDAMAGED_SHIP;
     std::shared_ptr<GameView> _board;
@@ -25,10 +23,9 @@ class Ship {
     void setSunk(bool is_sunk);
 
   public:
-
     // Constructors
-    Ship(vector<BoardCoordinates> coordinates);
-    Ship(vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
+    Ship(std::vector<BoardCoordinates> coordinates);
+    Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
     Ship(const Ship &other);
 
     // Operators
@@ -39,9 +36,9 @@ class Ship {
     void rotate();
 
     // Getters
-    vector<BoardCoordinates> getCoordinates() const;
+    std::vector<BoardCoordinates> getCoordinates() const;
     BoardCoordinates getTopLeft() const;
-    // const vector<vector<Cell>> getShipCells() const;
+    // const std::vector<std::vector<Cell>> getShipCells() const;
     CellType getType() const;
     int getLength() const;
     int getSizeX() const;

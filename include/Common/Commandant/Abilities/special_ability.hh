@@ -28,24 +28,20 @@ class SpecialAbility
     int _energy_cost;
     SpecialAbilityType _type;
   protected:
-    void    setName(std::string new_name) { this->_name = new_name; };
-    void    setDescription(std::string new_description) { this->_description = new_description; };
-    void    setEnergyCost(int new_cost) { this->_energy_cost = new_cost; };
-    void    setType(SpecialAbilityType new_type) { this->_type = new_type; };
+    void    setName(std::string new_name);
+    void    setDescription(std::string new_description);
+    void    setEnergyCost(int new_cost);
+    void    setType(SpecialAbilityType new_type);
   public:
 
     // Constructors
     SpecialAbility() = delete;
-    SpecialAbility(std::string name, std::string description="", int energy_cost=0, SpecialAbilityType type=NONE) : _name{name}, _description{description}, _energy_cost{energy_cost}, _type{type} {};
-    
-    // Operators
-    bool operator==(const SpecialAbility &other) const { return this->_name == other._name && this->_description == other._description && this->_energy_cost == other._energy_cost && this->_type == other._type;};
-
-    // Getters
-    std::string getName() { return _name; };
-    std::string getDescription() { return _description; };
-    int     getEnergyCost() { return _energy_cost; };
-    SpecialAbilityType getType() { return _type; };
+    SpecialAbility(std::string name, std::string description="", int energy_cost=0, SpecialAbilityType type=NONE);
+    bool operator==(const SpecialAbility &other) const;
+    std::string getName();
+    std::string getDescription();
+    int     getEnergyCost();
+    SpecialAbilityType getType();
 
     virtual ~SpecialAbility() = default;
 };

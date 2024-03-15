@@ -33,7 +33,7 @@ class GameConsole : public Console {
     /** ConsoleBoardDisplay's methods must check they support this */
     std::ostream&                          _out;      //< Where to print
     std::istream&                          _in;       //< Where to read
-    std::shared_ptr<LocalBoard> const _board;    //< What to print
+    std::shared_ptr<LocalBoardCommander> const _board;    //< What to print
     std::shared_ptr<GameController> const    _control;  //< Who to inform of user actions
 
     uint8_t const _letter_width;  //< Number of character in a column name
@@ -69,7 +69,7 @@ class GameConsole : public Console {
           return "░";
         case UNDAMAGED_MINE:
         case SCANNED_MINE:
-          return "¤"
+          return "¤";
         case HIT_MINE:
           return "⚑";
         default:
@@ -115,6 +115,10 @@ class GameConsole : public Console {
     /** clear fail bits of _in, ignore until next '\n', redraw with the code status*/
     void clearBadPlaceShipInput(bool placed);
 
+    std::vector<string> createSelectShipSizePrompt(InputStatus status) const;
+    std::vector<string> createSelectNextRotateKey(InputStatus status) const;
+    std::vector<string> createSelectShipPositionPrompt(InputStatus status) const;
+
   public:
 
     /** @param out: where to print
@@ -125,7 +129,7 @@ class GameConsole : public Console {
      * WARNING: ConsoleBoardDisplay does not support a change in board->height()
      * or board->width() after construction. */
     GameConsole(std::ostream &out, std::istream &in,
-                std::shared_ptr<LocalBoard> board,
+                std::shared_ptr<LocalBoardCommander> board,
                 std::shared_ptr<GameController> control);
 
     GameConsole(const GameConsole &) = default;

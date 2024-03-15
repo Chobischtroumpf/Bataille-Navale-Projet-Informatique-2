@@ -8,9 +8,8 @@
 #include "display.hh"
 #include "controller.hh"
 #include "local_board_commander.hh"
-#include "ship_coordinates.hh"
 #include "board_coordinates.hh"
-#include "cell_type.hh"
+#include "ship.hh"
 
 /** Interface to implement to receive events from the display */
 class GameController : public Controller {
@@ -31,10 +30,10 @@ public:
   virtual bool fire(BoardCoordinates coord) const;
 
   /* Handle the placement of a ship */
-  virtual bool placeShip(ShipCoordinates coord) const;
+  virtual bool placeShip(Ship ship) const;
 
   /* Send the ships to the server */
-  virtual void sendShips(std::vector<ShipCoordinates> boats);
+  virtual void sendShips(std::vector<Ship> boats);
 
   virtual void connectServer();
 
@@ -49,7 +48,7 @@ private:
   std::shared_ptr<LocalBoardCommander> _board;
   std::shared_ptr<Display> _display;
 
-  virtual bool checkShipPosition(ShipCoordinates coord) const;
-  bool sendRequest(ShipCoordinates coord);
+  virtual bool checkShipPosition(Ship coord) const;
+  bool sendRequest(Ship coord);
   bool sendRequest(BoardCoordinates coord);
 };

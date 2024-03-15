@@ -18,21 +18,20 @@ class Faction {
     SpecialAbilities _special_abilities;
 
   protected:
-    virtual void setName(std::string name) { this->_name = name;};
-    virtual void setPossibleShips(PossibleShips possible_ships) { this->_possible_ships = possible_ships;};
-    virtual void addSpecialAbility(SpecialAbility new_ability) { this->_special_abilities.push_back(new_ability);};
-    virtual void setSpecialAbilities(SpecialAbilities abilities) { this->_special_abilities = abilities;};
+    virtual void setName(std::string name);
+    virtual void setPossibleShips(PossibleShips possible_ships);
+    virtual void addSpecialAbility(SpecialAbility new_ability);
+    virtual void setSpecialAbilities(SpecialAbilities abilities);
 
   public:
     Faction() = default;
-    Faction(std::string name, PossibleShips possible_ships, SpecialAbilities special_abilities): _name{name}, _possible_ships{possible_ships}, _special_abilities{special_abilities} {};
+    Faction(std::string name, PossibleShips possible_ships, SpecialAbilities special_abilities);
 
-    //Operators
-    virtual bool operator==(const Faction& other) { return _name == other._name && _possible_ships == other._possible_ships && _special_abilities == other._special_abilities;};
+    // Operators
+    bool operator==(const Faction &other) const;
 
-    // Getters
-    virtual std::string getName() { return _name; };
-    virtual PossibleShips getPossibleShips() { return _possible_ships; };
-    virtual SpecialAbilities getSpecialAbilities() { return _special_abilities; };    
+    virtual std::string getName() const;
+    virtual PossibleShips getPossibleShips() const;
+    virtual SpecialAbilities getSpecialAbilities() const;
     virtual ~Faction() = default;
 };
