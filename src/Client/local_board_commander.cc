@@ -3,8 +3,9 @@
 // #include <iostream>
 
 
-LocalBoardCommander::LocalBoardCommander(Player player)
+LocalBoardCommander::LocalBoardCommander(Player player, GameMode mode)
     : _player{player},
+      _mode{mode},
       _is_finished{false},
       _is_victory{false},
       _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},

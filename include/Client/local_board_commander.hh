@@ -45,7 +45,7 @@ class LocalBoardCommander : public GameView {
     // void fire(SpecialAbility ability, BoardCoordinates coordinates);
 
   public:
-    LocalBoardCommander(Player player);
+    LocalBoardCommander(Player player, GameMode mode);
     
     virtual ~LocalBoardCommander() override = default;
 
