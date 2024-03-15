@@ -1,4 +1,5 @@
 #include "driver.hh"
+#include "faction_sonar.hh"
 
 Driver::Driver(DisplayType display_type) : _display_type{display_type}, _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
 
@@ -47,7 +48,7 @@ std::shared_ptr<GameClient> Driver::getClient() {
 
 void Driver::displayGameScreen() {
   if (_display_type == CONSOLE) {
-    Player player1 = Player();
+    Player player1 = Player(FactionSonar());
     std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(player1);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());

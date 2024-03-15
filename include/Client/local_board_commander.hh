@@ -27,7 +27,7 @@ class LocalBoardCommander : public GameView {
     // std::vector<Ship> _placed_ships;
     std::vector<std::vector<Cell>> _their_board;
     // std::array<uint8_t, > _ships_to_place;
-    bool _my_turn;
+    bool _my_turn = true;
     bool _is_finished;
     bool _is_victory;
 
@@ -50,6 +50,7 @@ class LocalBoardCommander : public GameView {
     bool isVictory() const override;
     std::size_t width() const override;
     std::size_t height() const override;
+    Player getPlayer() const;
 
     /*
     * Get the cell type at the given coordinates

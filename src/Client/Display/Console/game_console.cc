@@ -275,10 +275,21 @@ std::vector<string> GameConsole::createAvailableBoats(InputStatus status) const 
 
 std::vector<string> GameConsole::createAvailableAbilities(InputStatus status) const {
   std::vector<string> abilities;
-  abilities.emplace_back("1 - Fire");
-  abilities.emplace_back("2 - Scan");
-  abilities.emplace_back("3 - Mine");
-  abilities.emplace_back("4 - Quit");
+  int width = 25;
+  SpecialAbilities special_abilities = _board->getPlayer().getFaction().getSpecialAbilities();
+  abilities.emplace_back("╔════════════════════╗");
+  abilities.emplace_back("║ Your abilities     ║");
+  abilities.emplace_back("╠════════════════════╩══════╗");
+  int count = 0;
+  std::string normal_color = "\x1B[0m";
+  for (auto &ability: special_abilities) {
+    std::string color = ability.getEnergyCost() > _board->getPlayer().getEnergyPoints() ? "\x1B[2m" : "\x1B[0m";
+    abilities.emplace_back("║" + color + " ("+ std::to_string(count) + ") " + ability.getName() + std::string(width - (ability.getName().size() + std::to_string(ability.getEnergyCost()).size()) - 4, ' ') + std::to_string(ability.getEnergyCost()) + normal_color + " ║");
+    count++;
+  }
+  abilities.emplace_back("║                           ║");
+  abilities.emplace_back("║ Energy: " + std::to_string(_board->getPlayer().getEnergyPoints()) + std::string(width - std::to_string(_board->getPlayer().getEnergyPoints()).size() - 7, ' ') + "║");
+  abilities.emplace_back("╚═══════════════════════════╝");
   return abilities;
 }
 
@@ -415,7 +426,6 @@ void GameConsole::printChangeTurn() {
 }
 
 ReturnInput GameConsole::handleFire() {
-  if (_board->myTurn()) {
     for (bool fired = false; !fired; clearBadGameInput(fired)) {
       BoardCoordinates coordinates{_board->width(), _board->height()};
       _in >> coordinates;
@@ -432,7 +442,6 @@ ReturnInput GameConsole::handleFire() {
 
       fired = _control->fire(coordinates);
     }
-  }
   return {};
 }
 
@@ -520,15 +529,11 @@ void GameConsole::updateGame(InputStatus status) {
   _out << createGameHeader();
   printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
   _out << '\n';
-  printSideBySide(createGrid(true), createGrid(false));
+  printThreeElements(createGrid(true), createGrid(false), createAvailableAbilities(status));
   _out << '\n';
-  if (_board->myTurn()) {
-    printSideBySide(createMapKey(), createGamePrompt(status));
-    handleFire();
-  } else {
-    print(createMapKey());
-    _board->waitGame(); // Wait for the other player to play
-  }
+  printSideBySide(createMapKey(), createGamePrompt(status));
+  handleFire();
+  
   _out << std::flush;
 }
 
@@ -548,7 +553,11 @@ void GameConsole::display() {
   if (_phase == PLACE_SHIP) {
     updatePlaceShip(_last_input);
   } else {
-    updateGame(_last_input);
+    if (_board->myTurn()) {
+      updateGame(_last_input);
+    } else {
+      displayWaitGame();
+    }
   }
 }
 void GameConsole::displayError() {}

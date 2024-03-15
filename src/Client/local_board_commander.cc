@@ -92,6 +92,10 @@ bool LocalBoardCommander::addPlacedShip(Ship ship) {
   return true;
 }
 
+Player LocalBoardCommander::getPlayer() const {
+  return _player;
+}
+
 bool LocalBoardCommander::allBoatsPlaced() const {
   for (auto &ship: _player.getFaction().getPossibleShips()) {
     if (ship.second > 0) {
