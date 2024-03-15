@@ -26,7 +26,7 @@ class Ship {
     Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board = nullptr);
 
     // Constructors
-    Ship(vector<BoardCoordinates> coordinates);
+    Ship(std::vector<BoardCoordinates> coordinates);
     Ship(const Ship &other);
 
     // Operators

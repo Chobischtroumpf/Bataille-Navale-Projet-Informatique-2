@@ -119,8 +119,6 @@ void Ship::notify(const BoardCoordinates &coords) {
 
 }
 
-bool Ship::operator==(const SpecialAbility &other) const { return this->_name == other._name && this->_description == other._description && this->_energy_cost == other._energy_cost && this->_type == other._type;};
-
 void Ship::setType(CellType new_type) {
     _type = new_type;
 }

@@ -1,13 +1,17 @@
 #include "special_ability.hh"
 
-SpecialAbility::SpecialAbility(std::string name, std::string description, int energy_cost, SpecialAbilityType type) : name_{name}, description_{description}, energy_cost_{energy_cost}, type_{type} {}
+SpecialAbility::SpecialAbility(std::string name, std::string description, int energy_cost, SpecialAbilityType type) : _name{name}, _description{description}, _energy_cost{energy_cost}, _type{type} {}
 
-void SpecialAbility::setName(std::string new_name) { this->name_ = new_name; };
-void SpecialAbility::setDescription(std::string new_description) { this->description_ = new_description; };
-void SpecialAbility::setEnergyCost(int new_cost) { this->energy_cost_ = new_cost; };
-void SpecialAbility::setType(SpecialAbilityType new_type) { this->type_ = new_type; };
+bool SpecialAbility::operator==(const SpecialAbility &other) const { 
+    return this->_name == other._name && this->_description == other._description && this->_energy_cost == other._energy_cost && this->_type == other._type;
+}
 
-std::string SpecialAbility::getName() { return name_; };
-std::string SpecialAbility::getDescription() { return description_; };
-int SpecialAbility::getEnergyCost() { return energy_cost_; };
-SpecialAbilityType SpecialAbility::getType() { return type_; };
+void SpecialAbility::setName(std::string new_name) { this->_name = new_name; };
+void SpecialAbility::setDescription(std::string new_description) { this->_description = new_description; };
+void SpecialAbility::setEnergyCost(int new_cost) { this->_energy_cost = new_cost; };
+void SpecialAbility::setType(SpecialAbilityType new_type) { this->_type = new_type; };
+
+std::string SpecialAbility::getName() { return _name; };
+std::string SpecialAbility::getDescription() { return _description; };
+int SpecialAbility::getEnergyCost() { return _energy_cost; };
+SpecialAbilityType SpecialAbility::getType() { return _type; };

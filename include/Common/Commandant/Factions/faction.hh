@@ -28,7 +28,7 @@ class Faction {
     Faction(std::string name, PossibleShips possible_ships, SpecialAbilities special_abilities);
 
     // Operators
-    bool operator==(const SpecialAbility &other) const
+    bool operator==(const Faction &other) const;
 
     virtual std::string getName() const;
     virtual PossibleShips getPossibleShips() const;
