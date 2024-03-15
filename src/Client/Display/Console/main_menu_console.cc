@@ -64,7 +64,8 @@ void MainMenuConsole::displayOptions(int mode) {
             std::cout << "║ (2) Add a friend ⌘" << std::endl;
             std::cout << "║ (3) Refresh ⌛" << std::endl;
             std::cout << "║ (4) Show more friends ☳" << std::endl;
-            std::cout << "║ (5) Log out ↆ" << std::endl;
+            std::cout << "║ (5) Chat with a friend ✍" << std::endl;
+            std::cout << "║ (6) Log out ↆ" << std::endl;
             std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
             break;
         case 1:
@@ -77,7 +78,7 @@ void MainMenuConsole::displayOptions(int mode) {
             std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
             break;
         case 3:
-            std::cout << "║ Enter a username to send a friend request!" << std::endl;
+            std::cout << "║ Enter a username to send a request!" << std::endl;
             std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
             break;
         case 4:
@@ -86,7 +87,8 @@ void MainMenuConsole::displayOptions(int mode) {
             std::cout << "║ (2) Add a friend ⌘" << std::endl;
             std::cout << "║ (3) Refresh ⌛" << std::endl;
             std::cout << "║ (4) Show more friends ☳" << std::endl;
-            std::cout << "║ (5) Log out ↆ" << std::endl;
+            std::cout << "║ (5) Chat with a friend" << std::endl;
+            std::cout << "║ (6) Log out ↆ" << std::endl;
             std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
     }
 }
@@ -147,7 +149,15 @@ ReturnInput MainMenuConsole::handleInput() {
             _friendlist_position += 4;
             break;
         }
-        case 5:
+        case 5: {// Chat with a friend
+            _current_option = 3;
+            if (_friendlist_position == 0) {resetFriendListPosition();}
+            display();
+            _current_option = 0;
+            std::cin >> username;
+            return {ReturnInput::CHAT,username};
+        }
+        case 6:
             std::system("clear");
             return {ReturnInput::LOGIN, ""};
     }
