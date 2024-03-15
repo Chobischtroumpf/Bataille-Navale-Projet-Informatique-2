@@ -4,10 +4,9 @@
 using std::string;
 
 GameConsole::GameConsole(std::ostream& out, std::istream& in,
-                         std::shared_ptr<LocalBoard> board,
+                         std::shared_ptr<LocalBoardCommander> board,
                          std::shared_ptr<GameController> control,
-                         std::shared_ptr<GameClient> client)
-    : _out{out},
+                         std::shared_ptr<GameClient> client) : _out{out},
       _in{in},
       _board{std::move(board)},
       _control{std::move(control)},

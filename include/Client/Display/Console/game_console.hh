@@ -36,6 +36,7 @@ class GameConsole : public Console {
     std::istream&                          _in;       //< Where to read
     std::shared_ptr<LocalBoardCommander> const _board;    //< What to print
     std::shared_ptr<GameController> const    _control;  //< Who to inform of user actions
+    std::shared_ptr<GameClient> const        _game_client;   //< Who to inform of user actions
 
     uint8_t const _letter_width;  //< Number of character in a column name
     uint8_t const _number_width;  //< Number of character in a row name
@@ -131,7 +132,8 @@ class GameConsole : public Console {
      * or board->width() after construction. */
     GameConsole(std::ostream &out, std::istream &in,
                 std::shared_ptr<LocalBoardCommander> board,
-                std::shared_ptr<GameController> control);
+                std::shared_ptr<GameController> control,
+                std::shared_ptr<GameClient> client);
 
     GameConsole(const GameConsole &) = default;
     GameConsole() = delete;
