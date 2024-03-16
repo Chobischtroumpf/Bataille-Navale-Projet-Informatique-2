@@ -96,7 +96,16 @@ void LocalBoardCommander::placeShip(Ship ship) {
   _player.addShip(ship);
 
   // if all ships are placed, send the ships to the server
+  if (allShipsPlaced()) {
+    nlohmann::json move_request;
 
+    move_request["move"] = "placeShip";
+    move_request["ships"] = nlohmann::json::array();
+    for (auto &ship: _player.getFleet()) {
+      move_request["ships"].push_back(ship.to_json());
+    }
+    _client->MakeMove(_game_id, move_request);
+  }
 }
 
 bool LocalBoardCommander::allShipsPlaced() const {
@@ -200,6 +209,7 @@ void LocalBoardCommander::fire(SpecialAbility ability, BoardCoordinates coordina
   fire_request["ability"] = ability.getType();
   fire_request["anchor"] = coordinates.to_json();
 
+  move_request["move"] = "fire"; 
   move_request["fire"] = fire_request;
 
   _client->MakeMove(_game_id, move_request);
