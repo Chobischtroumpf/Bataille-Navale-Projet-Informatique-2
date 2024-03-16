@@ -4,8 +4,8 @@
 #include "board_coordinates.hh"
 
 class GameView {
-public:
-    virtual ~GameView() override {}
+  public:
+    virtual ~GameView() {}
 
     virtual bool myTurn() const =0;
     virtual bool isFinished() const =0;

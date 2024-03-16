@@ -1,59 +1,59 @@
 #include "game_timer.hh"
 
 GameTimer::GameTimer()
-    : game_timer{}, player1_timer{},
-      player2_timer{}, turn{PLAYERONE}, finished{false}, winner{0} {}
+    : _game_timer{}, _player1_timer{},
+      _player2_timer{}, _turn{PLAYERONE}, _finished{false}, _winner{0} {}
 
-void GameTimer::start_timer() {
-  game_timer.start();
-  player1_timer.start();
+void GameTimer::startTimer() {
+  _game_timer.start();
+  _player1_timer.start();
 }
 
-void GameTimer::switch_turn() {
-  if (!finished) {
-    if (turn == PLAYERONE) {
-      player1_timer.stop();
-      player1_timer.reset();
-      player2_timer.start();
+void GameTimer::switchTurn() {
+  if (!_finished) {
+    if (_turn == PLAYERONE) {
+      _player1_timer.stop();
+      _player1_timer.reset();
+      _player2_timer.start();
     } else {
-      player2_timer.stop();
-      player2_timer.reset();
-      player1_timer.start();
+      _player2_timer.stop();
+      _player2_timer.reset();
+      _player1_timer.start();
     }
-    turn = (turn == PLAYERONE) ? PLAYERTWO : PLAYERONE;
+    _turn = (_turn == PLAYERONE) ? PLAYERTWO : PLAYERONE;
   }
 }
 
-bool GameTimer::is_finished() const { return finished; }
+bool GameTimer::isFinished() const { return _finished; }
 
-int GameTimer::get_player1_timer() const { return player1_timer.get_time(); }
+int GameTimer::getPlayer1Timer() const { return _player1_timer.get_time(); }
 
-int GameTimer::get_player2_timer() const { return player2_timer.get_time(); }
+int GameTimer::getPlayer2Timer() const { return _player2_timer.get_time(); }
 
-int GameTimer::get_game_timer() const { return game_timer.get_time(); }
+int GameTimer::getGameTimer() const { return _game_timer.get_time(); }
 
-void GameTimer::player_time_runout() {
-  if (!finished) {
-    finished = true;
-    if (turn == PLAYERONE) {
-      winner = 2;
+void GameTimer::playerTimeRunout() {
+  if (!_finished) {
+    _finished = true;
+    if (_turn == PLAYERONE) {
+      _winner = 2;
     } else {
-      winner = 1;
+      _winner = 1;
     }
   }
 }
 
 void GameTimer::set(int game_time, int player_time) {
-  game_timer.set(game_time, [this]() { game_time_runout(); });
-  player1_timer.set(player_time, [this]() { player_time_runout(); });
-  player2_timer.set(player_time, [this]() { player_time_runout(); });
+  _game_timer.set(game_time, [this]() { gameTimeRunout(); });
+  _player1_timer.set(player_time, [this]() { playerTimeRunout(); });
+  _player2_timer.set(player_time, [this]() { playerTimeRunout(); });
 }
 
-int GameTimer::get_winner() const { return winner; }
+int GameTimer::getWinner() const { return _winner; }
 
-void GameTimer::game_time_runout() {
-  if (!finished) {
-    finished = true;
-    winner = 0;
+void GameTimer::gameTimeRunout() {
+  if (!_finished) {
+    _finished = true;
+    _winner = 0;
   }
 }

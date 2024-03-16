@@ -5,10 +5,8 @@
 #include "player.hh"
 #include "cell.hh"
 #include "board_coordinates.hh"
-// #include "ship_coordinates.hh"
 #include "ship.hh"
 #include "turn.hh"
-// #include "ship_types.hh"
 #include "player_role.hh"
 
 
@@ -22,49 +20,7 @@ using json = nlohmann::json;
  */
 class Board: public GameView {
 
-  /** The cell type and an optional ship identifier */
-  class Fleet {
-  public:
-    // Constructor to initialize the Fleet with ships
-    Fleet(std::vector<std::vector<Cell>> &board) : _board{board}, _player{}, _state{true} {}
-    Fleet(std::vector<std::vector<Cell>> &board, Player& player):_board{board}, _player{player}, _state{true} {}
-
-    // Method to notify the Fleet that a Ship has sunk
-    void notify(const BoardCoordinates &coords) {
-      // Check if any ship in the fleet is operational      
-
-      for (Ship &ship : _player.getFleet()) {
-        ship.notify(coords);
-      }
-      
-
-      for (const Ship &ship : _player.getFleet()) {
-        // std::cout << "Here's the ship state : " << ship.getState() <<
-        // std::endl;
-        if (!ship.isSunk()) {
-          _state = true;
-          return;
-        }
-      }
-      _state = false;
-    }
-    // Method to get the state of the fleet (true if operational, false if sunk)
-    bool getState() const { return _state; }
-
-    // Method to add a ship to the fleet
-    void addShip(const Ship ship) {
-      //_ships.push_back(Ship{ship.getTopLeft(), _board});
-      _player.addShip(ship);
-    }
-
-  private:
-    const std::vector<std::vector<Cell>> &_board;
-    Player _player;
-    bool _state;
-  };*/
-
-
-  bool _turn{true}; // true if it s it s playerone turn, false if it s not
+  bool _turn{true}; // true if it's playerone turn, false if it's not
   Player _player1{};
   Player _player2{};
   bool _fleetA_state{true};
@@ -103,30 +59,30 @@ public:
   Board &operator=(Board &&) = delete;
   ~Board() = default;
 
-  bool my_turn() const {return _turn;}
+  bool myTurn() const {return _turn;}
 
   size_t width() const override{ return _player1_side.at(0).size(); }
   size_t height() const  override{ return _player1_side.size(); }
 
-  void change_turn(){
+  void changeTurn(){
     _turn = !_turn;
   }
 
-  bool is_finished() const {
+  bool isFinished() const {
     return !(_fleetA_state && _fleetB_state);
   }
 
-  bool is_victory() const { return _fleetA_state; }
+  bool isVictory() const { return _fleetA_state; }
 
-  Turn whose_turn() const {
-    if (my_turn()){
+  Turn whoseTurn() const {
+    if (myTurn()){
       return PLAYERONE;
     }else{
       return PLAYERTWO;
     }
   }
 
-  void place_ship(Ship &ship, bool side) {
+  void placeShip(Ship &ship, bool side) {
     if (side) {
       for (auto& board_coordinates:ship.getCoordinates()){
         _player1_side[board_coordinates.y()][board_coordinates.x()].setType(UNDAMAGED_SHIP);
@@ -142,14 +98,9 @@ public:
 
   }
 
-  void notify(){
-    Player& current_player = my_turn() ? _player1:_player2;
-
-  }
-
   void notify(const BoardCoordinates &coords) {
     // Iterate over the enemy ships
-    Player& current_player = my_turn() ? _player2:_player1;
+    Player& current_player = myTurn() ? _player2:_player1;
 
     for (Ship &ship : current_player.getFleet()) {
       ship.notify(coords);
@@ -157,25 +108,23 @@ public:
         return;
       }
     }
-    if (my_turn()){
+    if (myTurn()){
       _fleetB_state = false;
     } else{
       _fleetA_state = false;
     }
   }
 
-  void fire(BoardCoordinates co){};
-
   void fire(SpecialAbility ability, BoardCoordinates coords) {
 
-    Player& current_player = my_turn() ? _player1 : _player2;
+    Player& current_player = myTurn() ? _player1 : _player2;
     if (current_player.getEnergyPoints() < ability.getEnergyCost()) {
         return; // Not enough energy points to use the ability
     }
 
-    current_player.setEnergyPoints(current_player.getEnergyPoints() - ability.getEnergyCost());
+    current_player.removeEnergyPoints(ability.getEnergyCost());
 
-    Cell &cell = my_turn() ? _player2_side[coords.y()][coords.x()]
+    Cell &cell = myTurn() ? _player2_side[coords.y()][coords.x()]
                           : _player1_side[coords.y()][coords.x()];
     if (cell.type() == UNDAMAGED_SHIP) {
       cell.setType(HIT_SHIP);
@@ -184,9 +133,6 @@ public:
     }
 
     notify(coords);
-
-    /*_fleetA.notify(coords);
-    _fleetB.notify(coords);*/
   }
 
 
@@ -256,13 +202,6 @@ public:
     return boardJson;
   }
 
-
-  bool myTurn() const override {return my_turn();};
-  bool isFinished() const override {return is_finished();}
-  bool isVictory() const override {return is_victory();};
-
-  
-
   Cell get(bool my_side, BoardCoordinates position) const {
     if (my_side) {
       return _player1_side.at(position.y()).at(position.x());
@@ -276,19 +215,15 @@ public:
     return get(my_side, position).type();
   }
 
-  std::optional<int> shipId(bool my_side,
+  std::optional<Ship> shipId(bool my_side,
                                           BoardCoordinates position) const {
-    return get(my_side, position).shipId();
+    return get(my_side, position).ship();
   }
 
   bool isSameShip(bool my_side, BoardCoordinates first,
                                 BoardCoordinates second) const  override {
     return shipId(my_side, first).has_value() &&
-           shipId(my_side, first) == shipId(my_side, second);}
-
-    /*virtual CellType cellType(bool, BoardCoordinates) const = 0;
-    virtual bool isSameShip(bool, BoardCoordinates, BoardCoordinates) const =0;*/
-  
-  void update() override { throw NotImplementedError("Update"); }
+           shipId(my_side, first) == shipId(my_side, second);
+  }
 
 };
