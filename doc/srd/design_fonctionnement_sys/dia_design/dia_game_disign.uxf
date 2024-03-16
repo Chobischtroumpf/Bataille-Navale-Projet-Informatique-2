@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <help_text>Space for diagram notes</help_text>
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1330</x>
+      <y>120</y>
+      <w>320</w>
+      <h>430</h>
+    </coordinates>
+    <panel_attributes>Board
+--
+-_my_turn:bool
+-_is_finished:bool
+-_is_victory:bool
+-_my_side:vector&lt;vector&lt;Cell&gt;&gt;
+-_their_side:vector&lt;vector&lt;Cell&gt;&gt;
+-_fleetA:Fleet
+-_fleetB:Fleet
+--
++countShips(isA: bool): map&lt;ShipType, int&gt;
++placeShip(shipCoords: ShipCoordinates&amp;, isA: bool = true): void
++fire(coords: BoardCoordinates): void
++simplePrint(board: vector&lt;vector&lt;Cell&gt;&gt;): void
++myTurn(): bool
++isFinished(): bool
++isVictory(): bool
++width(): size_t
++height(): size_t
++cellType(my_side: bool, position: BoardCoordinates): CellType
++isSameShip(my_side: bool, first: BoardCoordinates, second: BoardCoordinates): bool
++getNeighbors(coord: BoardCoordinates): vector&lt;Cell&gt;
++changeTurn(): void
++whoseTurn(): Turn
++static toString(type: CellType): string
++toJson(player: PlayerRole): json
+-get(my_side: bool, position: BoardCoordinates): Cell
+-shipId(my_side: bool, position: BoardCoordinates): optional&lt;int&gt;
+-check(): bool</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2030</x>
+      <y>390</y>
+      <w>310</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>Ship
+--
+-_state:bool
+-_type:ShipType
+-_board:const vector&lt;vector&lt;Cell&gt;&gt;&amp;
+-static constexpr MAX_TILES:size_t
+-tiles:BoardCoordinates[MAX_TILES]
+--
++notify(coords:BoardCoordinates&amp;):void
++Ship(coords:ShipCoordinates&amp;, board:const vector&lt;vector&lt;Cell&gt;&gt;&amp;)
++getState():bool
++getType():ShipType</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1690</x>
+      <y>390</y>
+      <w>280</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Boat::Fleet
+--
+-_board: const vector&lt;vector&lt;Cell&gt;&gt;
+-_ships: vector&lt;Ship&gt;
+-_state: bool
+--
++Fleet(board: vector&lt;vector&lt;Cell&gt;&gt;&amp;)
++notify(coords: BoardCoordinates): void
++getNumShips(): map&lt;ShipType, int&gt;
++getState(): bool
++addShip(shipCoord: ShipCoordinates): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1960</x>
+      <y>450</y>
+      <w>90</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1640</x>
+      <y>300</y>
+      <w>130</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0;110.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1330</x>
+      <y>590</y>
+      <w>270</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>BoardCoordinate
+--
+-x: size_t
+-y: size_t
+--
++constexpr inline x(): size_t
++constexpr inline y(): size_t
++set(size_t, size_t): void
++operator==(const BoardCoordinates &amp;): bool
++isalpha(char): bool
++parseX(const string &amp;): optional&lt;size_t&gt;
++parseY(const string &amp;): optional&lt;size_t&gt;
++toString(): string
++xToString(): string
++yToString(): string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1700</x>
+      <y>630</y>
+      <w>410</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>ShipCoordinate
+--
+-_orientation:Orientation
+-_ship_id:ShipType
+--
++orientation():Orientation
++ship_id():ShipType
++set(x:size_t, y:size_t, orientation:Orientation, ship_id:ShipType)
++parseShipId(ship_id_string:string):std::optional&lt;ShipType&gt;
++parseOrientation(orientation_string:string):std::optional&lt;Orientation&gt;
++toString():string
++orientationToString():string
++shipIdToString():string
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2070</x>
+      <y>140</y>
+      <w>270</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>CellType
+--
+IS_SHIP = 0b001
+IS_KNOWN = 0b010
+IS_SUNK = 0b100
+WATER = 0
+OCEAN = 0b010
+UNDAMAGED = 0b001
+HIT = 0b011
+SUNK = 0b111
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1750</x>
+      <y>150</y>
+      <w>270</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Cell
+--
+-_type:CellType
+-_ship_id:optional&lt;int&gt;
+--
++setType(newType:CellType):void
++type():CellType
++shipId():optional&lt;int&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2240</x>
+      <y>650</y>
+      <w>110</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>ShipType
+--
+NONE = 0
+CARRIER = 5
+BATTLESHIP = 4
+SUBMARINE = 3
+DESTROYER = 2
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1590</x>
+      <y>710</y>
+      <w>130</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1590</x>
+      <y>550</y>
+      <w>500</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>480.0;10.0;480.0;60.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2290</x>
+      <y>550</y>
+      <w>30</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2100</x>
+      <y>550</y>
+      <w>80</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>60.0;10.0;60.0;110.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2100</x>
+      <y>680</y>
+      <w>160</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2010</x>
+      <y>190</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1970</x>
+      <y>260</y>
+      <w>170</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;70.0;150.0;70.0;150.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1640</x>
+      <y>190</y>
+      <w>130</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>850</x>
+      <y>120</y>
+      <w>390</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>Game
+--
++is_finished(): bool
+-_board: std::shared_ptr&lt;Board&gt;
+-mode_commandant: bool
+-game_timer: GameTimer
+-required_ship_placements: size_t
+-ship_placements: unordered_map&lt;Turn, unsigned int&gt;
+-update_player1: bool
+-update_player2: bool
+--
++handle_place_ship(turn: Turn, ship_coordinates: ShipCoordinates): bool
++handle_fire(turn: Turn, board_coordinates: BoardCoordinates): bool
++get_state(player: PlayerRole): nlohmann::json
++start_timer(): void
++set_game(gameDetails: nlohmann::json): void
++initialize_ship_placements(): void
++ship_placements_finished(): bool
++change_turn(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>120</y>
+      <w>210</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>GameTimer
+--
++start_timer(): void
++switch_turn(): void
++is_finished(): bool
++get_player1_timer(): int
++get_player2_timer(): int
++get_timer(): int
++set(switch_time: int, player_time: 
++winner(): int
+-update_time(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1090</x>
+      <y>600</y>
+      <w>210</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+_user: shared_ptr&lt;ConnectedUser&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>870</x>
+      <y>640</y>
+      <w>80</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>PlayerRole
+--
+Leader
+Opponent
+Spectator</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>620</x>
+      <y>310</y>
+      <w>180</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Timer
+--
+-int limit_seconds
+-atomic&lt;int&gt; current_time
+-atomic&lt;bool&gt; is_running
+-function&lt;void()&gt; callback
+--
++is_finished():bool
++start():void
++reset():void
++stop():void
++get_time():int
++get_original_time():int
++set(int,function&lt;void()&gt;):void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>170</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>50.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>280</y>
+      <w>30</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>870</x>
+      <y>460</y>
+      <w>390</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>GameState
+--
+game:shared_ptr&lt;Game&gt; 
+--
++makeMove(player: PlayerRole, move: nlohmann::json): bool
++getGameState(player: PlayerRole): nlohmann::json
+-handle_place_ship(player: PlayerRole, move: nlohmann::json): bool
+-handle_fire(player: PlayerRole, move: nlohmann::json): bool
+-role_to_turn(player: PlayerRole): Turn</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1050</x>
+      <y>390</y>
+      <w>30</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>480</x>
+      <y>540</y>
+      <w>320</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>Game_session
+--
+-sessionId:string
+-gameDetails:json
+-leaderId:string
+-opponentId:string
+-spectators:vector&lt;string&gt;
+-participantRoles:unordered_map&lt;string, PlayerRole&gt;
+-gameState: GameState
+--
++startSession(): void
++endSession(): void
++addParticipant(participantId:string):void
++removeParticipant(participantId:string):void
++getParticipantRole(participantId:string):PlayerRole
++makeMove(userId:string, move:string):bool
++getGameState(userId:string):json
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>80</x>
+      <y>580</y>
+      <w>360</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Session_manager
+--
+-sessionsMutex: mutex
+-sessions: unordered_map&lt;string, shared_ptr&lt;GameSession&gt;&gt;
+--
++getInstance(): SessionManager&amp;
++createSession(userId:string, gameDetails:njson): string
++getSession(sessionId:string): shared_ptr&lt;GameSession&gt;
++sessionExists(sessionId: const string&amp;): bool
++endSession(sessionId: const string&amp;): void
+-SessionManager()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>240</x>
+      <y>130</y>
+      <w>290</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Tolken_handler
+--
+-valid_tokens:map&lt;string, pair&lt;string, TimePoint&gt;&gt; 
+--
++generateToken(user_id: string): string
++removeToken(token: string): bool
++validateToken(token: string): bool
++updateTokenValidity(token: string, update_validity: int): bool
++getUserID(token: string): string
+-findToken(user_id: string): string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>260</y>
+      <w>30</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>630</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>50.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>480</y>
+      <w>30</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>330</y>
+      <w>210</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Game_server
+--
+-database:shared_ptr&lt;DataBase&gt;
+-dbManager:Queries 
+-istener:http_listener
+-tokenHandler:TokenHandler
+--
++verifyAuthToken(request:http):str
++initialize():void
++handleGet(request:http): void
++handlePost(request:http):void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>790</x>
+      <y>660</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1130</x>
+      <y>700</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ConnectedUser
+--
+ -int _user_id:unsigned
+ -socket_fd:int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>790</x>
+      <y>560</y>
+      <w>130</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>110.0;10.0;110.0;70.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>910</x>
+      <y>560</y>
+      <w>30</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1200</x>
+      <y>650</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1230</x>
+      <y>280</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+  </element>
+</diagram>

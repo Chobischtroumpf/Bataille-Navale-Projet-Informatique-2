@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <help_text/>
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>80</x>
+      <y>30</y>
+      <w>460</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Tolken_handler
+--
+-valid_tokens:map&lt;string, pair&lt;string, TimePoint&gt;&gt; 
+--
++generateToken(user_id: string): string
++removeToken(token: string): bool
++validateToken(token: string): bool
++updateTokenValidity(token: string, update_validity: int): bool
++getUserID(token: string): string
+-findToken(user_id: string): string
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>180</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>290</x>
+      <y>230</y>
+      <w>260</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Game_server
+--
+-database:shared_ptr&lt;DataBase&gt;
+-dbManager:Queries 
+-istener:http_listener
+-tokenHandler:TokenHandler
+--
++verifyAuthToken(request:http):str
++initialize():void
++handleGet(request:http): void
++handlePost(request:http):void
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>400</y>
+      <w>30</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>480</y>
+      <w>450</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Session_manager
+--
+-sessionsMutex: mutex
+-sessions: unordered_map&lt;string, shared_ptr&lt;GameSession&gt;&gt;
+--
++getInstance(): SessionManager&amp;
++createSession(userId:string, gameDetails:njson): string
++getSession(sessionId:string): shared_ptr&lt;GameSession&gt;
++sessionExists(sessionId: const string&amp;): bool
++endSession(sessionId: const string&amp;): void
+-SessionManager()
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>530</y>
+      <w>50</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>30.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>470</x>
+      <y>440</y>
+      <w>390</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>Game_session
+--
+-sessionId:string
+-gameDetails:json
+-leaderId:string
+-opponentId:string
+-spectators:vector&lt;string&gt;
+-participantRoles:unordered_map&lt;string, PlayerRole&gt;
+-gameState: GameState
+--
++startSession(): void
++endSession(): void
++addParticipant(participantId:string):void
++removeParticipant(participantId:string):void
++getParticipantRole(participantId:string):PlayerRole
++makeMove(userId:string, move:string):bool
++getGameState(userId:string):json
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>850</x>
+      <y>560</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>930</x>
+      <y>540</y>
+      <w>80</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>PlayerRole
+--
+Leader
+Opponent
+Spectator
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>850</x>
+      <y>480</y>
+      <w>110</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>90.0;10.0;90.0;30.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>970</x>
+      <y>480</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>210</y>
+      <w>250</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>Timer
+--
+-int limit_seconds
+-atomic&lt;int&gt; current_time
+-atomic&lt;bool&gt; is_running
+-function&lt;void()&gt; callback
+--
++is_finished():bool
++start():void
++reset():void
++stop():void
++get_time():int
++get_original_time():int
++set(int,function&lt;void()&gt;):void
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>0</y>
+      <w>250</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>GameTimer
+--
++start_timer(): void
++switch_turn(): void
++is_finished(): bool
++get_player1_timer(): int
++get_player2_timer(): int
++get_timer(): int
++set(switch_time: int, player_time: 
++winner(): int
+-update_time(): void
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>710</x>
+      <y>180</y>
+      <w>30</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>70</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>50.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>860</x>
+      <y>0</y>
+      <w>530</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>Game
+--
++is_finished(): bool
+-_board: std::shared_ptr&lt;Board&gt;
+-mode_commandant: bool
+-game_timer: GameTimer
+-required_ship_placements: size_t
+-ship_placements: unordered_map&lt;Turn, unsigned int&gt;
+-update_player1: bool
+-update_player2: bool
+--
++handle_place_ship(turn: Turn, ship_coordinates: ShipCoordinates): bool
++handle_fire(turn: Turn, board_coordinates: BoardCoordinates): bool
++get_state(player: PlayerRole): nlohmann::json
++start_timer(): void
++set_game(gameDetails: nlohmann::json): void
++initialize_ship_placements(): void
++ship_placements_finished(): bool
++change_turn(): void
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>880</x>
+      <y>340</y>
+      <w>490</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>GameState
+--
+game:shared_ptr&lt;Game&gt; 
+--
++makeMove(player: PlayerRole, move: nlohmann::json): bool
++getGameState(player: PlayerRole): nlohmann::json
+-handle_place_ship(player: PlayerRole, move: nlohmann::json): bool
+-handle_fire(player: PlayerRole, move: nlohmann::json): bool
+-role_to_turn(player: PlayerRole): Turn
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1060</x>
+      <y>290</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1380</x>
+      <y>80</y>
+      <w>110</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Board</panel_attributes>
+    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>260</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Database, Queries</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>300</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>GameClient</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+</diagram>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>430</x>
+      <y>390</y>
+      <w>300</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>Driver
+--
+-_display:shared_ptr&lt;Display&gt;
+-_display_type:DisplayType
+-_current_screen:ReturnInput::Screen
+-_game_client:shared_ptr&lt;GameClient&gt;
+--
++launchApp()
++run(base_screen:ReturnInput::Screen)
++getClient():shared_ptr&lt;GameClient&gt;
+-displayGameScreen()
+-displayLoginScreen()
+-displayRegisterScreen()
+-displayMainMenuScreen()
+-displayChatScreen(username:string)
+-displayLobbyScreen()
+-displayGameCreationScreen()
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>100</y>
+      <w>210</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Abstract:Display
+--
+display(): void
+displayError(): void
+update(): void
+handleInput(): ReturnInput
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>260</x>
+      <y>480</y>
+      <w>130</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Enum:Screen
+--
+MAIN_MENU
+GAME
+CHAT
+LOBBY
+LOGIN
+REGISTER
+GAME_CREATION
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>780</x>
+      <y>340</y>
+      <w>480</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>GameClient
+--
+-client: unique_ptr&lt;http_client&gt;
+-authToken: string
+--
++GameClient(baseUri: string)
++CreateGame(gameDetails: njson): future&lt;string&gt;
++JoinGame(sessionId: string): future&lt;njson&gt;
++MakeMove(sessionId: string, move: string): future&lt;bool&gt;
++Login(userId: string, password: string): future&lt;bool&gt;
++Register(userId: string, password: string): future&lt;bool&gt;
++GetUserId(username: string): future&lt;string&gt;
++GetUsername(userId: string): future&lt;string&gt;
++GetGames(): future&lt;string&gt;
++QueryGameState(sessionId: string): future&lt;njson&gt;
++SendMessage(targetId: string, message: string): future&lt;bool&gt;
++GetMessages(recipientId: string): future&lt;njson&gt;
++AddFriend(username: string): future&lt;bool&gt;
++GetFriends(): future&lt;njson&gt;
+-TestRequest(): void
+-TestRequest2(): future&lt;void&gt;
+-TestRequest3(): future&lt;void&gt;
+-AddAuthHeader(request: http_request): void
+-PostRequest(path: string, data: njson): task&lt;njson&gt;
+-GetRequest(path: string): task&lt;njson&gt;
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>260</x>
+      <y>390</y>
+      <w>110</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Enum:DisplayType
+--
+GUI
+CONSOLE
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>400</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>290</y>
+      <w>30</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>530</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>50.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>490</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>250</y>
+      <w>130</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Abstract:Console
+--
+
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>190</y>
+      <w>120</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;100.0;30.0;10.0;30.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>180</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Abstract:View
+--
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>250</y>
+      <w>130</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Abstract:Gui
+--
+
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>530</x>
+      <y>190</y>
+      <w>130</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0;110.0;30.0;110.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>290</y>
+      <w>30</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>210</y>
+      <w>70</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;80.0;50.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>210</y>
+      <w>310</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;130.0;290.0;130.0;290.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>160</y>
+      <w>220</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Abstract:Controller
+--
++sendData(data:string): void
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>200</y>
+      <w>300</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;100.0;10.0;160.0;280.0;160.0;280.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>200</y>
+      <w>70</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;80.0;50.0;80.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>850</x>
+      <y>200</y>
+      <w>30</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>130</y>
+      <w>140</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>240</y>
+      <w>140</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0;120.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>90</y>
+      <w>270</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Cell
+--
+-_type:CellType
+-_ship_id:optional&lt;int&gt;
+--
++setType(newType:CellType):void
++type():CellType
++shipId():optional&lt;int&gt;
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>590</x>
+      <y>330</y>
+      <w>350</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Boat::Fleet
+--
+-_board: const vector&lt;vector&lt;Cell&gt;&gt;
+-_ships: vector&lt;Ship&gt;
+-_state: bool
+--
++Fleet(board: vector&lt;vector&lt;Cell&gt;&gt;&amp;)
++notify(coords: BoardCoordinates): void
++getNumShips(): map&lt;ShipType, int&gt;
++getState(): bool
++addShip(shipCoord: ShipCoordinates): void
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1000</x>
+      <y>80</y>
+      <w>270</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>CellType
+--
+IS_SHIP = 0b001
+IS_KNOWN = 0b010
+IS_SUNK = 0b100
+WATER = 0
+OCEAN = 0b010
+UNDAMAGED = 0b001
+HIT = 0b011
+SUNK = 0b111
+bg=blue
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>940</x>
+      <y>130</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>900</x>
+      <y>200</y>
+      <w>170</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;70.0;150.0;70.0;150.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>320</y>
+      <w>500</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Ship
+--
+-_state:bool
+-_type:ShipType
+-_board:const vector&lt;vector&lt;Cell&gt;&gt;&amp;
+-static constexpr MAX_TILES:size_t
+-tiles:BoardCoordinates[MAX_TILES]
+--
++notify(coords:BoardCoordinates&amp;):void
++Ship(coords:ShipCoordinates&amp;, board:const vector&lt;vector&lt;Cell&gt;&gt;&amp;)
++getState():bool
++getType():ShipType
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>930</x>
+      <y>390</y>
+      <w>80</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>490</y>
+      <w>530</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>510.0;10.0;510.0;60.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>570</y>
+      <w>510</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>ShipCoordinate
+--
+-_orientation:Orientation
+-_ship_id:ShipType
+--
++orientation():Orientation
++ship_id():ShipType
++set(x:size_t, y:size_t, orientation:Orientation, ship_id:ShipType)
++parseShipId(ship_id_string:string):std::optional&lt;ShipType&gt;
++parseOrientation(orientation_string:string):std::optional&lt;Orientation&gt;
++toString():string
++orientationToString():string
++shipIdToString():string
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1110</x>
+      <y>490</y>
+      <w>30</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1130</x>
+      <y>620</y>
+      <w>60</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;40.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1170</x>
+      <y>590</y>
+      <w>110</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>ShipType
+--
+NONE = 0
+CARRIER = 5
+BATTLESHIP = 4
+SUBMARINE = 3
+DESTROYER = 2
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1220</x>
+      <y>490</y>
+      <w>30</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>530</y>
+      <w>360</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>BoardCoordinate
+--
+-x: size_t
+-y: size_t
+--
++constexpr inline x(): size_t
++constexpr inline y(): size_t
++set(size_t, size_t): void
++operator==(const BoardCoordinates &amp;): bool
++isalpha(char): bool
++parseX(const string &amp;): optional&lt;size_t&gt;
++parseY(const string &amp;): optional&lt;size_t&gt;
++toString(): string
++xToString(): string
++yToString(): string
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>650</y>
+      <w>130</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>60</y>
+      <w>510</w>
+      <h>430</h>
+    </coordinates>
+    <panel_attributes>Board
+--
+-_turn: bool
+-_player1: Player
+-_player2: Player
+-_fleetA_state: bool
+-_fleetB_state: bool
+-_player1_side: vector&lt;vector&lt;Cell&gt;&gt;
+-_player2_side: vector&lt;vector&lt;Cell&gt;&gt;
+--
++myTurn(): bool
++width(): size_t
++height(): size_t
++changeTurn(): void
++isFinished(): bool
++isVictory(): bool
++whoseTurn(): Turn
++placeShip(ship: Ship&amp;, side: bool): void
++notify(coords: BoardCoordinates): void
++fire(ability: SpecialAbility, coords: BoardCoordinates): void
++to_json(player: PlayerRole) const: nlohmann::json
++to_string(type: CellType): string
++get(my_side: bool, position: BoardCoordinates): Cell
++cellType(my_side: bool, position: BoardCoordinates): CellType
++shipId(my_side: bool, position: BoardCoordinates): optional&lt;Ship&gt;
++isSameShip(my_side: bool, first: BoardCoordinates, second: BoardCoordinates): bool
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>0</x>
+      <y>240</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Game</panel_attributes>
+    <additional_attributes>60.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+</diagram>

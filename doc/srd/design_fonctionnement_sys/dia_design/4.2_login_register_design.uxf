@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>90</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>LoginView
+--
++update(): void
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>40</y>
+      <w>320</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>LoginGui
+--
+-_view:shared_ptr&lt;LoginView&gt;
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>850</x>
+      <y>80</y>
+      <w>540</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>LoginController
+--
+- gameClient:shared_ptr&lt;GameClient&gt;
+--
++ LoginController(gameClient:shared_ptr&lt;GameClient&gt;)
++ attemptLogin(username:string&amp;, password:string&amp;): future&lt;bool&gt;
++ attemptRegister(username: string&amp;, password:string&amp;): future&lt;bool&gt;
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>130</y>
+      <w>400</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>LoginConsole
+--
+-_view: shared_ptr&lt;LoginView&gt;
+-loginController: LoginController
+--
++handleInput(): ReturnInput
++display(): void
++displayError(): void
++update(): void
++seConnecter(loginController: LoginController): bool
++sEnregistrer(loginController: LoginController): bool
+-demanderNomUtilisateur(): string
+-demanderMotDePasse(): string
+-demanderMotDePasseEnregistrement(): string
+-validCin(choix: int): bool
+-contientMajuscule(str: const string&amp;): bool
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>390</y>
+      <w>320</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>RegisterGui
+--
+_view:shared_ptr&lt;RegisterView&gt; 
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>470</y>
+      <w>320</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>RegisterConsole
+--
+-_view: shared_ptr&lt;LoginView&gt;
+--
++display(): void
++displayError(): void
++update(): void
++handleInput(): ReturnInput
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>750</x>
+      <y>410</y>
+      <w>480</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>RegisterController
+--
+gameClient:shared_ptr&lt;GameClient&gt;
+--
++attemptRegister(username: std::string, password:string): bool
+-checkValidity(username: std::string, password:string): bool
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>430</y>
+      <w>130</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>RegisterView
+--
++update(): void
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>80</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>120</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>420</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>460</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>70</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>130</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>410</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>470</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1380</x>
+      <y>130</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>GameCLient</panel_attributes>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1220</x>
+      <y>450</y>
+      <w>110</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>GameCLient</panel_attributes>
+    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
+  </element>
+</diagram>
