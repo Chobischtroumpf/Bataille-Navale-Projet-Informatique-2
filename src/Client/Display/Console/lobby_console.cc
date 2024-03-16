@@ -98,6 +98,7 @@ ReturnInput LobbyConsole::handleInput() {
     break;
   }
   } else {
+    _view->waitGameStart(_session_id);
   }
   return {ReturnInput::LOBBY, _session_id};
 }
