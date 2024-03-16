@@ -7,7 +7,7 @@ LobbyConsole::LobbyConsole(const std::string& sessionId, std::shared_ptr<GameCli
 }
 
 void LobbyConsole::display() {
-    //std::system("clear");
+    std::system("clear");
     displayFriends();
     displayOptions(_current_option);
 }
@@ -15,7 +15,10 @@ void LobbyConsole::display() {
 void LobbyConsole::displayFriends() {
     std::cout << "╔════════════╗\n║Player List ║\n╠════"
                  "════════╩════════════════════════════════════════════════════════════════════╪\n║\n║ ";
-    for (auto user: _view->getUserInGame(sessionId)) { std::cout<< user << std::endl;}
+    for (auto user: _view->getUserInGame(sessionId)) { 
+        std::cout<< "║ ";
+        std::cout<< user << std::endl;
+    }
     std::cout << "╠════════════════════════════════════════════════════════════════════╪\n";
 }
 

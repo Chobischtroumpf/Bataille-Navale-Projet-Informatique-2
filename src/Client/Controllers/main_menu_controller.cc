@@ -9,7 +9,6 @@ bool MainMenuController::createGame(int mode, int friend_id) {
 
 void MainMenuController::joinGame(const std::string& game_id) {
     auto resultFuture = gameClient->JoinGame(game_id);
-    auto result = resultFuture.get();
 }
 
 void MainMenuController::addFriend(const std::string& username) {
