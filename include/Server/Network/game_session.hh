@@ -29,9 +29,14 @@ public:
     
     nlohmann::json getGameState(const std::string& userId) const;
 
+    nlohmann::json getSessionState() const;
+
 private:
     // Unique identifier for the session
     std::string sessionId;
+
+    // Bool indicating session state
+    bool hasStarted;
 
     // Game details (e.g., game type, rules)
     nlohmann::json gameDetails;
