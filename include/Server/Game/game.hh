@@ -21,6 +21,8 @@ public:
 
   nlohmann::json getState(PlayerRole player);
 
+  void launchGame();
+
 private:
   const size_t _required__ship_placements = 5; // Number of ship placements required
   std::shared_ptr<Board> _board;
@@ -29,6 +31,7 @@ private:
   std::unordered_map<Turn, unsigned int> _ship_placements;
   bool _update_player1;
   bool _update_player2;
+  bool _is_started; //< True if the player leaves the lobby
 
   void startTimer();
   

@@ -1,15 +1,18 @@
 #include "main_menu_controller.hh"
 
-MainMenuController::MainMenuController(std::shared_ptr<GameClient> client)
-    : _game_client(client) {}
+MainMenuController::MainMenuController(std::shared_ptr<GameClient> _game_client)
+    : _game_client(_game_client) {}
 
 bool MainMenuController::createGame(int mode, int friend_id) {
   // Communiquer avec le serveur pour créer une game (normal, commandant) +
   // inviter un ami
 }
 
-void MainMenuController::joinGame(const std::string &game_id) {
+bool MainMenuController::joinGame(const std::string &game_id) {
   auto resultFuture = _game_client->JoinGame(game_id);
+  auto result = resultFuture.get();
+  if (result == "") return false;
+  else return true;
 }
 
 void MainMenuController::addFriend(const std::string &username) {
@@ -22,4 +25,13 @@ void MainMenuController::addFriend(const std::string &username) {
   } else {
     std::cout << "Failed to add friend :(" << std::endl;
   }
+}
+
+bool MainMenuController::validUser(const std::string& username){
+    auto resultFuture = _game_client->GetUserId(username);
+    auto result = resultFuture.get();
+    if (result == "")
+        return false;
+    else
+        return true;
 }
