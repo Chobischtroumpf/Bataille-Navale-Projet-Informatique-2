@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <help_text>Space for diagram notes</help_text>
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>900</x>
+      <y>80</y>
+      <w>320</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>MainMenuController
+--
+-gameClient: shared_ptr&lt;GameClient&gt;
+--
++createGame(mode: int, friend_id: int): bool
++joinGame(game_id: const string&amp;): void
++addFriend(username: const string&amp;): void
++manageProfile(): void
++quit(): void
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>170</y>
+      <w>340</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>MainMenuConsole
+--
+-_view: shared_ptr&lt;MainMenuView&gt;
+-_controller: shared_ptr&lt;MainMenuController&gt;
+-_friendlist_position: int
+-_current_option: short
+--
++display(): void
++displayError(): void
++update(): void
++handleInput(): ReturnInput
++displayFriends(): void
++displayNotifications(): void
++displayOptions(mode: int): void
++resetFriendListPosition(): void
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>40</y>
+      <w>340</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>MainMenuGui
+--
+-_view: shared_ptr&lt;MainMenuView&gt;
+-_controller: shared_ptr&lt;MainMenuController&gt;
+-_friendlist_position: int
+-_current_option: short
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>110</x>
+      <y>80</y>
+      <w>360</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>MainMenuView
+--
+-_notifications: vector&lt;string&gt;
+-_friends: vector&lt;tuple&lt;string, int&gt;&gt;
+-_gameClient: shared_ptr&lt;GameClient&gt;
+--
++getNotifications(): vector&lt;string&gt;
++getFriends(): vector&lt;tuple&lt;string, int&gt;&gt;
++addNotification(new_notification: string): void
++addFriend(name: string, status: int): void
++update(): void
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>850</x>
+      <y>70</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>890</x>
+      <y>180</y>
+      <w>30</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>70</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>180</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>0</x>
+      <y>110</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>GameClient</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1210</x>
+      <y>120</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>GameClient</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+</diagram>

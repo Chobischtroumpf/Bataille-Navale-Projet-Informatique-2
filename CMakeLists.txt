@@ -43,13 +43,13 @@ add_executable(battleship ${COMMON_SOURCES} ${CLIENT_SOURCES})
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
 # Define an executable target built from `client.cpp` and its dependencies
-add_executable(client 
-test/test_client.cc 
-src/Client/Network/game_client.cc
-)
+# add_executable(client 
+# test/test_client.cc 
+# src/Client/Network/game_client.cc
+# )
 
 # Define include directories for target 'client' 
-target_include_directories(client PRIVATE include/Client/Network)
+# target_include_directories(client PRIVATE include/Client/Network)
 
 # Define include directories for target 'server'
 target_include_directories(server PRIVATE include/Server include/Server/Database include/Server/Game include/Server/Network include/Common include/Common/Commandant/Abilities include/Common/Commandant/Factions)
@@ -60,7 +60,7 @@ target_include_directories(battleship PRIVATE include/Client include/Client/Netw
 # Specifies libraries for targets
 target_link_libraries(server PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(battleship PRIVATE nlohmann_json::nlohmann_json)
-target_link_libraries(client PRIVATE nlohmann_json::nlohmann_json)
+# target_link_libraries(client PRIVATE nlohmann_json::nlohmann_json)
 
 # using libraries like cpprestsdk, link with both executables
 find_package(cpprestsdk REQUIRED)
@@ -70,7 +70,7 @@ if(NOT cpprestsdk_FOUND)
 endif()
 
 target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
-target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)
+# target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(battleship PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(server PRIVATE SQLite::SQLite3)
 target_link_libraries(server PRIVATE sodium)
