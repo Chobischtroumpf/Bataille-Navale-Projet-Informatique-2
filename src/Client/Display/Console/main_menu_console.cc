@@ -33,6 +33,10 @@ void MainMenuConsole::displayFriends() {
         break;
       case 3:
         status = "○ offline";
+      case 4:
+        status = "";
+        color = "";
+        break;
       }
       // On affiche le pseudo & son statut
       std::cout << get<0>(i) << " " << color << status << "\033[0m । ";
@@ -49,14 +53,24 @@ void MainMenuConsole::displayFriends() {
 void MainMenuConsole::resetFriendListPosition() { _friendlist_position = 4; }
 
 void MainMenuConsole::displayNotifications() {
-    std::cout << "╠═════════════╗\n║Notifications║\n╠══"
-                 "═══════════╩═══════════════════════════════════════════════════════════════════╪\n";
-    _view->NewGameNotification();
-    for (const auto& msg: _view->getNotifications()) {
-        std::string text = msg.getText();
-        std::cout << "║ \033[1m" << msg.getSender() << "\033[0m: " << text << std::endl;
-
+  std::cout << "╠═════════════╗\n║Notifications║\n╠══"
+               "═══════════╩═══════════════════════════════════════════════════"
+               "════════════════╪\n";
+  for (auto i : _view->getNotifications()) {
+    int start = 0;
+    int end = 1;
+    std::cout << "║ \033[0;33m◈\033[0m ";
+    while (i.length() > start*78) {
+      std::string partial_i = i.substr(start*78, end*78);
+      std::cout << partial_i;
+      if (i.length() > (start+1)*78) {
+          std::cout << "\n║ ";
+      }
+      start++; end++;
     }
+    std::cout << "\n╠══════════════════════════════════════════════════════════"
+                    "═══════════════════════╪\n";
+  }
 }
 
 void MainMenuConsole::displayOptions(int mode) {

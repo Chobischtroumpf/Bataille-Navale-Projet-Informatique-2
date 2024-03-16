@@ -12,3 +12,8 @@ std::future<bool> LoginController::attemptRegister(const std::string &username,
                                  const std::string &password) const {
   return _game_client->Register(username, password);
 }
+
+std::future<bool> LoginController::addNotification(const std::string &username,
+                                  const std::string &new_notification) {
+  return _game_client->AddNotification(username, new_notification);
+}
