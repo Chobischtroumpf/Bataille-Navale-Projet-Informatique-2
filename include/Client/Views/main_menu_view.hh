@@ -5,12 +5,14 @@
 #include <tuple>
 
 #include "view.hh"
+#include "message.hh"
 
 #include "game_client.hh"
 
 class MainMenuView: public View {
 public:
     MainMenuView(std::shared_ptr<GameClient> gameClient);
+
     std::vector<std::string> getNotifications();
     std::vector<std::tuple<std::string, int>> getFriends();
     void addNotification(const std::string& username, const std::string& new_notification);

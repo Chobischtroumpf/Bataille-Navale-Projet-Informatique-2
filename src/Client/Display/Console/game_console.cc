@@ -121,15 +121,13 @@ std::vector<string> GameConsole::createGrid(bool my_side) const {
       string              border  = "│";
       CellType content = _board->cellType(my_side, {j, i});
 
-    if (_board->myTurn() && !my_side && content == UNDAMAGED_SHIP){
-        oss << border << toString(WATER);
-      }else if (!_board->myTurn() && my_side && content == UNDAMAGED_SHIP){
+    if (content == UNDAMAGED_SHIP){
         oss << border << toString(WATER);
       }else{
         if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
           CellType previous = _board->cellType(my_side, {j - 1, i});
           
-          if ((previous == UNDAMAGED_SHIP) && ((_board->myTurn() && !my_side) || (!_board->myTurn() && my_side))) {
+          if ((previous == WATER)) {
             border  = "│";
           }else{
             border = toString(_board->best(content, previous));
@@ -167,25 +165,25 @@ std::vector<string> GameConsole::createMapKey() const {
 std::vector<string> GameConsole::createBoatsKey() const {
     std::vector<string> boat_key;
     PossibleShips remaining_ships = _board->shipsToPlace();
-    std::array<std::string, 6> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m"};
+    std::array<std::string, 2> color_code = {"\x1B[2m", "\x1B[0m"};
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
     for (auto &ship : remaining_ships) {
-      switch (ship.second) {
+      switch (ship.first) {
         case 1:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_MINE) * 1 + "          1. Mine     (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second == 0 ? 0 : 1) + " > " + toString(UNDAMAGED_MINE) * 1 + "          1. Mine     (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 2:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        2. Small Ship   (×" + std::to_string(ship.first) + ") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second== 0 ? 0 : 1) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        2. Small Ship   (×" + std::to_string(ship.second) + ") <" + color_code.at(1));
           break;
         case 3:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      3. Medium Ship  (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second== 0 ? 0 : 1) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      3. Medium Ship  (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 4:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    4. Large Ship   (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second== 0 ? 0 : 1) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    4. Large Ship   (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 5:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  5. Mega Ship    (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second== 0 ? 0 : 1) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  5. Mega Ship    (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         default:
           break;
@@ -504,14 +502,13 @@ void GameConsole::handleShipPlacement() {
   if (_in && coordinates.x() < _board->width() &&
       coordinates.y() < _board->height()) {
     Ship ship = _possible_ships->getShip();
-    ship.translate(coordinates.x(), coordinates.y());
+    ship.setTopLeft(coordinates);
     if (_control->placeShip(ship)) {
       _ship_size = 0;
       _ship_selected = false;
       _possible_ships.release();
       _last_input = OK;
       if (_board->allShipsPlaced()) {
-        _control->sendShips(_board->getPlacedShips());
         _phase = WAIT_GAME;
       }
     } else {
@@ -523,7 +520,6 @@ void GameConsole::handleShipPlacement() {
   std::cin.clear();
 }
 
-
 ReturnInput GameConsole::handlePlaceShip() {
   if (_ship_size == 0) {
     handleShipSize();
@@ -534,16 +530,16 @@ ReturnInput GameConsole::handlePlaceShip() {
       handleShipSelection();
     }
   }
-      if (std::cin.eof()) {
-          _out << std::endl;
-          _control->quit();
-          return {};
-      }
-      if (_board->allShipsPlaced()) {
-        _control->sendShips(_board->getPlacedShips());
-        _phase = WAIT_GAME;
-     } 
-   std::cin.clear();
+  if (std::cin.eof()) {
+    _out << std::endl;
+    _control->quit();
+    return {};
+  }
+  if (_board->allShipsPlaced()) {
+    _control->sendShips(_board->getPlacedShips());
+    _phase = WAIT_GAME;
+  }
+  std::cin.clear();
   return {ReturnInput::Screen::GAME, ""};
 }
 

@@ -20,9 +20,10 @@ LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
   auto futureMessages = _client->QueryGameState(sessionId);
   auto messagesJson = futureMessages.get();
   auto usersID = messagesJson["participants"];
-  _my_username = _client->getUsername();
-  _player.setPlayerOne(_my_username == usersID.at(0));
-  _their_username = _player.isPlayerOne() ? usersID.at(1) : usersID.at(0);
+  _my_username = _client->getClientUsername();
+  std::string my_id = _client->GetUserId(_my_username).get();
+  _player.setPlayerOne(my_id == usersID.at(0));
+  _their_username = _player.isPlayerOne() ? _client->GetUsername(usersID.at(1)).get() : _client->GetUsername(usersID.at(0)).get();
 }
 
 bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }
@@ -138,7 +139,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
 
 bool LocalBoardCommander::allShipsPlaced() const {
   for (auto &ship : _player.getFaction().getPossibleShips()) {
-    if (ship.first > 0) {
+    if (ship.second > 0) {
       return false;
     }
   }
@@ -195,9 +196,9 @@ Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {
                  : _their_board.at(position.y()).at(position.x());
 }
 
-Ship &LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) {}
+// Ship &LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) {}
 
-bool LocalBoardCommander::check() {}
+// bool LocalBoardCommander::check() {}
 
 // void LocalBoardCommander::placeShip(ShipCoordinates coordinates, bool
 // my_fleet) {}
@@ -248,6 +249,20 @@ void LocalBoardCommander::update_board(const nlohmann::json &new_board) {
       }
     }
   }
+
+  if (new_board["Finished"] == "true"){
+    _is_finished = true;
+    if((new_board["Winner"] == "PLAYERONE" && _player.isPlayerOne()) || (new_board["Winner"] == "PLAYERTWO" && !_player.isPlayerOne())){
+      _is_victory = true;
+    }else{
+      _is_victory = false;
+    }
+  }else{
+    _is_finished = false;
+  }
+
+
+
 }
 
 bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {

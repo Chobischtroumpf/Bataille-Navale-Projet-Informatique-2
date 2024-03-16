@@ -4,12 +4,13 @@
 GameSession::GameSession(const std::string& leaderId, const nlohmann::json& gameDetails)
     : leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
     participantRoles[leaderId] = PlayerRole::Leader;
+    hasStarted = false;
 }
 
 GameSession::~GameSession() {}
 
 void GameSession::startSession() {
-    // Initialize or start game logic - TBA
+    this->hasStarted = true;
 }
 
 void GameSession::endSession() {
@@ -70,8 +71,20 @@ nlohmann::json GameSession::getGameState(const std::string& userId) const {
 }
 
 // Method that sends a move to the game state
-bool GameSession::makeMove(const std::string& userId, const std::string& move) {
+bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move) {
     auto playerRole = getParticipantRole(userId);
 
     return gameState.makeMove(playerRole, move);
+}
+
+nlohmann::json GameSession::getSessionState() const {
+
+    nlohmann::json sessionState;
+
+    sessionState["participants"] = getParticipants();
+
+    sessionState["hasStarted"] = this->hasStarted;
+    
+    return sessionState;
+
 }

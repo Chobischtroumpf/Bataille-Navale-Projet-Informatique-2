@@ -21,6 +21,8 @@ class GameState {
 
     bool handleFire(PlayerRole player, const nlohmann::json& move);
 
+    void handleLaunch();
+
     Turn role_to_turn(PlayerRole player);
 
   public:

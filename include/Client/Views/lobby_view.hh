@@ -14,7 +14,7 @@ class LobbyView {
 public:
     explicit LobbyView(std::shared_ptr<GameClient> gameClient);
     std::vector<std::string> getUserInGame(const std::string& sessionId);
-    bool isGameStarted(const std::string& sessionId);
+    bool waitGameStart(const std::string& sessionId);
 
 private:
     std::shared_ptr<GameClient> gameClient; // Client de jeu pour interagir avec le serveur

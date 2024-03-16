@@ -55,6 +55,6 @@ public:
   std::future<bool> AddNotification(const std::string &username, const std::string &message);
   std::future<njson> GetFriends();
 
-  std::string getUsername() const;
   std::future<njson> getNotificationsFromServer();
+  std::string getClientUsername() const;
 };

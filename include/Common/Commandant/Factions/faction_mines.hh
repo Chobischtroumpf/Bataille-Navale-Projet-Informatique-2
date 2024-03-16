@@ -13,7 +13,7 @@ class FactionMines : public Faction
   public:
     // Constructor
     FactionMines(): Faction() { // creates a Faction with preset values for the Mines faction
-        setName("Sonar");
+        setName("Mines");
         PossibleShips ships;
         ships[1] = 1;
         ships[2] = 2;
