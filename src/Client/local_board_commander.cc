@@ -249,6 +249,20 @@ void LocalBoardCommander::update_board(const nlohmann::json &new_board) {
       }
     }
   }
+
+  if (new_board["Finished"] == "true"){
+    _is_finished = true;
+    if((new_board["Winner"] == "PLAYERONE" && _player.isPlayerOne()) || (new_board["Winner"] == "PLAYERTWO" && !_player.isPlayerOne())){
+      _is_victory = true;
+    }else{
+      _is_victory = false;
+    }
+  }else{
+    _is_finished = false;
+  }
+
+
+
 }
 
 bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {
