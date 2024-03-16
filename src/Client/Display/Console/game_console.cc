@@ -504,7 +504,7 @@ void GameConsole::handleShipPlacement() {
   if (_in && coordinates.x() < _board->width() &&
       coordinates.y() < _board->height()) {
     Ship ship = _possible_ships->getShip();
-    ship.translate(coordinates.x(), coordinates.y());
+    ship.setTopLeft(coordinates);
     if (_control->placeShip(ship)) {
       _ship_size = 0;
       _ship_selected = false;
@@ -523,7 +523,6 @@ void GameConsole::handleShipPlacement() {
   std::cin.clear();
 }
 
-
 ReturnInput GameConsole::handlePlaceShip() {
   if (_ship_size == 0) {
     handleShipSize();
@@ -534,16 +533,16 @@ ReturnInput GameConsole::handlePlaceShip() {
       handleShipSelection();
     }
   }
-      if (std::cin.eof()) {
-          _out << std::endl;
-          _control->quit();
-          return {};
-      }
-      if (_board->allShipsPlaced()) {
-        _control->sendShips(_board->getPlacedShips());
-        _phase = WAIT_GAME;
-     } 
-   std::cin.clear();
+  if (std::cin.eof()) {
+    _out << std::endl;
+    _control->quit();
+    return {};
+  }
+  if (_board->allShipsPlaced()) {
+    _control->sendShips(_board->getPlacedShips());
+    _phase = WAIT_GAME;
+  }
+  std::cin.clear();
   return {ReturnInput::Screen::GAME, ""};
 }
 
