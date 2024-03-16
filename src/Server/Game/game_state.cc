@@ -22,9 +22,10 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
 }
 
 bool GameState::handleFire(PlayerRole player, const nlohmann::json& move){
-    std::string x = move["anchor"]["x"].get<std::string>();
-    size_t y = move["anchor"]["y"];
-    BoardCoordinates board_coordinates{BoardCoordinates::parseX(x).value(),y-1};
+    int ability = move["fire"]["ability"];
+    size_t x = move["fire"]["anchor"][0];
+    size_t y = move["fire"]["anchor"][1];
+    BoardCoordinates board_coordinates{x,y};
     return game->handleFire(role_to_turn(player),board_coordinates);
 
 }
@@ -34,26 +35,32 @@ bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& move){
         //handle the number of placement is incorrect
         return false;
     }*/
-    for (const auto& obj : move["ships"]) {
+
+    for (const auto& obj_ship : move["ships"]) {
+
+        size_t x = obj_ship["anchor"][0];
+        size_t y = obj_ship["anchor"][1];
+
+        BoardCoordinates top_left{x,y};
+
         std::vector<BoardCoordinates> coords{};
-        for(const auto& obj_coord:obj["ship"]){
-            std::string x = obj["anchor"]["x"].get<std::string>();
-            size_t y = obj["anchor"]["y"];
-            BoardCoordinates board_coordinates{BoardCoordinates::parseX(x).value(),y-1};
+        for (const auto& obj_coord : obj_ship["coordinates"]) {
+            size_t i = obj_coord[0];
+            size_t j = obj_coord[1];
+            BoardCoordinates board_coordinates{i,j};
             coords.push_back(board_coordinates);
         }
-
-        Ship ship{coords};
+        Ship ship{top_left, coords};
+        ship.setType(obj_ship["type"]);
 
         bool result = game->handlePlaceShip(role_to_turn(player),ship);
         if (!result){
             //error in placing ship gotta be handeled
             return false;
-        }
+        }        
     }
     return true;
 }
-
 
 Turn GameState::role_to_turn(PlayerRole player) {
     if (player == PlayerRole::Leader) {
