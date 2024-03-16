@@ -7,39 +7,53 @@
 AJOUTER SESSIONID DANS LE CONSTRUCTEUR
 
 */
-LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,Player player, GameMode mode, const std::string& sessionId)
-    : _player{player},
-      _mode{mode},
-      _is_finished{false},
-      _is_victory{false},
-      _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
-      _their_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
-      sessionId{sessionId} {}
+LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
+                                         Player player, GameMode mode,
+                                         const std::string &sessionId)
+    : _player{player}, _mode{mode}, _is_finished{false},
+      _is_victory{false}, _my_board{std::vector<std::vector<Cell>>(
+                              10, std::vector<Cell>(10, Cell()))},
+      _their_board{
+          std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
+      _session_id{sessionId},
+      _client{client} {
+  auto futureMessages = _client->QueryGameState(sessionId);
+  auto messagesJson = futureMessages.get();
+  auto usersID = messagesJson["participants"];
+  _my_username = _client->getUsername();
+  _player.setPlayerOne(_my_username == usersID.at(0));
+  _their_username = _player.isPlayerOne() ? usersID.at(1) : usersID.at(0);
+}
 
 bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }
 
 bool LocalBoardCommander::isFinished() const { return _is_finished; }
 bool LocalBoardCommander::isVictory() const { return _is_victory; }
 
-std::size_t LocalBoardCommander::width() const { return _my_board.at(0).size(); }
+std::size_t LocalBoardCommander::width() const {
+  return _my_board.at(0).size();
+}
 std::size_t LocalBoardCommander::height() const { return _my_board.size(); }
 
 GameMode LocalBoardCommander::mode() const { return _mode; }
 Player LocalBoardCommander::player() const { return _player; }
 
-CellType LocalBoardCommander::cellType(bool my_side, BoardCoordinates coordinates) const {
+CellType LocalBoardCommander::cellType(bool my_side,
+                                       BoardCoordinates coordinates) const {
   return get(my_side, coordinates).type();
 }
 
 bool LocalBoardCommander::isSameShip(bool my_side, BoardCoordinates first,
-                            BoardCoordinates second) const {
-  if (get(true, first).type() != UNDAMAGED_SHIP || get(true, second).type() != UNDAMAGED_SHIP) {
+                                     BoardCoordinates second) const {
+  if (get(true, first).type() != UNDAMAGED_SHIP ||
+      get(true, second).type() != UNDAMAGED_SHIP) {
     return false;
   }
   return get(true, first).ship() == get(true, second).ship();
 }
 
-std::vector<Cell> LocalBoardCommander::getNeighbors(BoardCoordinates coord) const {
+std::vector<Cell>
+LocalBoardCommander::getNeighbors(BoardCoordinates coord) const {
   std::vector<Cell> neighbors;
   if (coord.x() > 0) {
     neighbors.push_back(get(true, BoardCoordinates(coord.x() - 1, coord.y())));
@@ -54,16 +68,20 @@ std::vector<Cell> LocalBoardCommander::getNeighbors(BoardCoordinates coord) cons
     neighbors.push_back(get(true, BoardCoordinates(coord.x(), coord.y() + 1)));
   }
   if (coord.x() > 0 && coord.y() > 0) {
-    neighbors.push_back(get(true, BoardCoordinates(coord.x() - 1, coord.y() - 1)));
+    neighbors.push_back(
+        get(true, BoardCoordinates(coord.x() - 1, coord.y() - 1)));
   }
   if (coord.x() > 0 && coord.y() < height() - 1) {
-    neighbors.push_back(get(true, BoardCoordinates(coord.x() - 1, coord.y() + 1)));
+    neighbors.push_back(
+        get(true, BoardCoordinates(coord.x() - 1, coord.y() + 1)));
   }
   if (coord.x() < width() - 1 && coord.y() > 0) {
-    neighbors.push_back(get(true, BoardCoordinates(coord.x() + 1, coord.y() - 1)));
+    neighbors.push_back(
+        get(true, BoardCoordinates(coord.x() + 1, coord.y() - 1)));
   }
   if (coord.x() < width() - 1 && coord.y() < height() - 1) {
-    neighbors.push_back(get(true, BoardCoordinates(coord.x() + 1, coord.y() + 1)));
+    neighbors.push_back(
+        get(true, BoardCoordinates(coord.x() + 1, coord.y() + 1)));
   }
   return neighbors;
 }
@@ -73,20 +91,21 @@ std::vector<Ship> LocalBoardCommander::getPlacedShips() const {
 }
 
 bool LocalBoardCommander::isShipAvailable(int size) const {
-  
+
   int count = 0;
-  
-  for (auto &ship: _player.getFleet()) { // counts how many ships of the given size are already placed
+
+  for (auto &ship : _player.getFleet()) { // counts how many ships of the given
+                                          // size are already placed
     if (ship.getLength() == size) {
       count++;
     }
   }
 
-  // if the number of ships of the given size is less than the number of ships of that size that can be placed, return true
+  // if the number of ships of the given size is less than the number of ships
+  // of that size that can be placed, return true
   if (count < _player.getFaction().getPossibleShips()[size]) {
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
@@ -94,9 +113,13 @@ bool LocalBoardCommander::isShipAvailable(int size) const {
 void LocalBoardCommander::placeShip(Ship ship) {
   BoardCoordinates top_left = ship.getTopLeft();
 
-  for (auto &coord: ship.getCoordinates()) {
-      _my_board.at(top_left.y() + coord.y()).at(top_left.x() + coord.x()).setType(ship.getType());
-      _my_board.at(top_left.y() + coord.y()).at(top_left.x() + coord.x()).setShip(ship);
+  for (auto &coord : ship.getCoordinates()) {
+    _my_board.at(top_left.y() + coord.y())
+        .at(top_left.x() + coord.x())
+        .setType(ship.getType());
+    _my_board.at(top_left.y() + coord.y())
+        .at(top_left.x() + coord.x())
+        .setShip(ship);
   }
   _player.addShip(ship);
 
@@ -106,7 +129,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
 
     move_request["move"] = "placeShip";
     move_request["ships"] = nlohmann::json::array();
-    for (auto &ship: _player.getFleet()) {
+    for (auto &ship : _player.getFleet()) {
       move_request["ships"].push_back(ship.to_json());
     }
     _client->MakeMove(_game_id, move_request);
@@ -114,7 +137,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
 }
 
 bool LocalBoardCommander::allShipsPlaced() const {
-  for (auto &ship: _player.getFaction().getPossibleShips()) {
+  for (auto &ship : _player.getFaction().getPossibleShips()) {
     if (ship.first > 0) {
       return false;
     }
@@ -124,7 +147,7 @@ bool LocalBoardCommander::allShipsPlaced() const {
 
 PossibleShips LocalBoardCommander::shipsToPlace() const {
   PossibleShips ships = _player.getFaction().getPossibleShips();
-  for (auto &ship: _player.getFleet()) {
+  for (auto &ship : _player.getFleet()) {
     ships[ship.getLength()]--;
   }
   return ships;
@@ -141,94 +164,112 @@ CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
 
 bool LocalBoardCommander::waitGame() {
   bool shipPlacementsFinished = false;
+  std::string turn;
   while (!shipPlacementsFinished) {
-    auto FutureGameState = _client->QueryGameState(sessionId);
+    auto FutureGameState = _client->QueryGameState(_session_id);
     auto result = FutureGameState.get();
     auto gameState = result["gameState"];
+    turn = gameState["turn"];
     shipPlacementsFinished = gameState["ship_placements_finished"];
     sleep(1);
   }
-  return true;
+  return true ? turn == "PLAYERONE" && _player.isPlayerOne()
+              || turn == "PLAYERTWO" && !_player.isPlayerOne() : false;
 }
 
 void LocalBoardCommander::waitTurn() {
-  sleep(1);
+  bool my_turn = false;
+  while (!my_turn) {
+    auto FutureGameState = _client->QueryGameState(_session_id);
+    auto result = FutureGameState.get();
+    // Update the board if needed
+    auto gameState = result["gameState"];
+    my_turn = gameState["turn"] == "PLAYERONE" && _player.isPlayerOne() ||
+              gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne();
+    sleep(1);
+  }
 }
 
 Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {
-  return my_side ? _my_board.at(position.y()).at(position.x()) : _their_board.at(position.y()).at(position.x());
+  return my_side ? _my_board.at(position.y()).at(position.x())
+                 : _their_board.at(position.y()).at(position.x());
 }
 
 Ship &LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) {}
 
 bool LocalBoardCommander::check() {}
 
-//void LocalBoardCommander::placeShip(ShipCoordinates coordinates, bool my_fleet) {}
+// void LocalBoardCommander::placeShip(ShipCoordinates coordinates, bool
+// my_fleet) {}
 
 // void LocalBoardCommander::fire(BoardCoordinates coordinates) {
 
 // }
 
-
-CellType LocalBoardCommander::string_to_celltype(const std::string& type) {
-    if (type == "WATER") {
-        return WATER;
-    } else if (type == "OCEAN") {
-        return OCEAN;
-    } else if (type == "UNDAMAGED_MINE") {
-        return UNDAMAGED_MINE;
-    } else if (type == "SCANNED_MINE") {
-        return SCANNED_MINE;
-    } else if (type == "HIT_MINE") {
-        return HIT_MINE;
-    } else if (type == "UNDAMAGED_SHIP") {
-        return UNDAMAGED_SHIP;
-    } else if (type == "SCANNED_SHIP") {
-        return SCANNED_SHIP;
-    } else if (type == "HIT_SHIP") {
-        return HIT_SHIP;
-    } else if (type == "SUNK_SHIP") {
-        return SUNK_SHIP;
-    } else {
-        throw std::runtime_error("Unknown CellType: " + type);
-    }
+CellType LocalBoardCommander::string_to_celltype(const std::string &type) {
+  if (type == "WATER") {
+    return WATER;
+  } else if (type == "OCEAN") {
+    return OCEAN;
+  } else if (type == "UNDAMAGED_MINE") {
+    return UNDAMAGED_MINE;
+  } else if (type == "SCANNED_MINE") {
+    return SCANNED_MINE;
+  } else if (type == "HIT_MINE") {
+    return HIT_MINE;
+  } else if (type == "UNDAMAGED_SHIP") {
+    return UNDAMAGED_SHIP;
+  } else if (type == "SCANNED_SHIP") {
+    return SCANNED_SHIP;
+  } else if (type == "HIT_SHIP") {
+    return HIT_SHIP;
+  } else if (type == "SUNK_SHIP") {
+    return SUNK_SHIP;
+  } else {
+    throw std::runtime_error("Unknown CellType: " + type);
+  }
 }
 
-void LocalBoardCommander::update_board(const nlohmann::json& new_board){
+void LocalBoardCommander::update_board(const nlohmann::json &new_board) {
   auto fleetA = new_board["fleetA"];
   auto fleetB = new_board["fleetB"];
 
-  if (!(fleetA.is_string() && fleetA.get<std::string>() == "None")){
-    for(int i = 0; i < _my_board.size(); i++){
-      for(int j = 0; j < _my_board.at(0).size(); j++){
+  if (!(fleetA.is_string() && fleetA.get<std::string>() == "None")) {
+    for (int i = 0; i < _my_board.size(); i++) {
+      for (int j = 0; j < _my_board.at(0).size(); j++) {
         _my_board[i][j].setType(string_to_celltype(fleetA[i][j]["type"]));
       }
     }
   }
-  if (!(fleetB.is_string() && fleetB.get<std::string>() == "None")){
-    for(int i = 0; i < _their_board.size(); i++){
-      for(int j = 0; j < _their_board.at(0).size(); j++){
+  if (!(fleetB.is_string() && fleetB.get<std::string>() == "None")) {
+    for (int i = 0; i < _their_board.size(); i++) {
+      for (int j = 0; j < _their_board.at(0).size(); j++) {
         _their_board[i][j].setType(string_to_celltype(fleetB[i][j]["type"]));
       }
     }
   }
-
 }
 
 bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {
   return coord.x() >= 0 && coord.x() < 10 && coord.y() >= 0 && coord.y() < 10;
 }
 
-void LocalBoardCommander::fire(SpecialAbility ability, BoardCoordinates coordinates) {
+void LocalBoardCommander::fire(SpecialAbility ability,
+                               BoardCoordinates coordinates) {
   nlohmann::json move_request;
   nlohmann::json fire_request;
 
   fire_request["ability"] = ability.getType();
   fire_request["anchor"] = coordinates.to_json();
 
-  move_request["move"] = "fire"; 
+  move_request["move"] = "fire";
   move_request["fire"] = fire_request;
 
   _client->MakeMove(_game_id, move_request);
+}
 
+std::string LocalBoardCommander::getMyUsername() const { return _my_username; }
+
+std::string LocalBoardCommander::getTheirUsername() const {
+  return _their_username;
 }

@@ -11,6 +11,7 @@ class Player {
     std::vector<Ship> _fleet;
     bool _is_turn;
     int _energy_points;
+    bool _is_player_one;
   
   public:
     Player();
@@ -24,6 +25,7 @@ class Player {
     std::vector<Ship> getFleet() const;
     bool isTurn() const;
     int getEnergyPoints() const;
+    bool isPlayerOne() const;
 
     void setFaction(Faction faction);
     void setFleet(std::vector<Ship> fleet); // Cette méthode est peut etre inutile ?
@@ -31,4 +33,5 @@ class Player {
     void setTurn(bool is_turn);
     void addEnergyPoints(int energy_points);
     void removeEnergyPoints(int energy_points);
+    void setPlayerOne(bool is_player_one);
 };

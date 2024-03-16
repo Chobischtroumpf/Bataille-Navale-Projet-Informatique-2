@@ -89,8 +89,8 @@ string GameConsole::createPlaceShipHeader() const {
 }
 
 string GameConsole::createGridLabel(bool my_side) const {
-  string your        = "Player 1";
-  string their       = "Player 2";
+  string your        = _board->getMyUsername();
+  string their       = _board->getTheirUsername();
   size_t label_size  = std::max(length(your), length(their));
   size_t margin_size = label_size > _grid_width ? 0 : (_grid_width - label_size) / 2;
   string margin(margin_size, ' ');
@@ -167,7 +167,7 @@ std::vector<string> GameConsole::createMapKey() const {
 std::vector<string> GameConsole::createBoatsKey() const {
     std::vector<string> boat_key;
     PossibleShips remaining_ships = _board->shipsToPlace();
-    std::array<std::string, 5> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m"};
+    std::array<std::string, 6> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m"};
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
     for (auto &ship : remaining_ships) {
