@@ -9,3 +9,10 @@ void LobbyController::sendIDGame(const std::string& destination, const std::stri
 
     std::future<bool> resultFuture = _game_client->SendMessage(userID, message);
 }
+
+void LobbyController::launchGame(const std::string& sessionId) {
+  nlohmann::json req;
+  req["session_id"] = sessionId;
+  req["move"] = "start";
+  _game_client->MakeMove(sessionId, req);
+}

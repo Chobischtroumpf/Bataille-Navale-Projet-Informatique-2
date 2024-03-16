@@ -121,15 +121,13 @@ std::vector<string> GameConsole::createGrid(bool my_side) const {
       string              border  = "│";
       CellType content = _board->cellType(my_side, {j, i});
 
-    if (_board->myTurn() && !my_side && content == UNDAMAGED_SHIP){
-        oss << border << toString(WATER);
-      }else if (!_board->myTurn() && my_side && content == UNDAMAGED_SHIP){
+    if (content == UNDAMAGED_SHIP){
         oss << border << toString(WATER);
       }else{
         if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
           CellType previous = _board->cellType(my_side, {j - 1, i});
           
-          if ((previous == UNDAMAGED_SHIP) && ((_board->myTurn() && !my_side) || (!_board->myTurn() && my_side))) {
+          if ((previous == WATER)) {
             border  = "│";
           }else{
             border = toString(_board->best(content, previous));
@@ -167,25 +165,25 @@ std::vector<string> GameConsole::createMapKey() const {
 std::vector<string> GameConsole::createBoatsKey() const {
     std::vector<string> boat_key;
     PossibleShips remaining_ships = _board->shipsToPlace();
-    std::array<std::string, 6> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m"};
+    std::array<std::string, 2> color_code = {"\x1B[2m", "\x1B[0m"};
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
     for (auto &ship : remaining_ships) {
       switch (ship.first) {
         case 1:
-          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_MINE) * 1 + "          1. Mine     (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second == 0 ? 0 : 1) + " > " + toString(UNDAMAGED_MINE) * 1 + "          1. Mine     (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 2:
-          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        2. Small Ship   (×" + std::to_string(ship.second) + ") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second== 0 ? 0 : 1) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        2. Small Ship   (×" + std::to_string(ship.second) + ") <" + color_code.at(1));
           break;
         case 3:
-          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      3. Medium Ship  (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second== 0 ? 0 : 1) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      3. Medium Ship  (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 4:
-          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    4. Large Ship   (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second== 0 ? 0 : 1) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    4. Large Ship   (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 5:
-          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  5. Mega Ship    (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second== 0 ? 0 : 1) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  5. Mega Ship    (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         default:
           break;

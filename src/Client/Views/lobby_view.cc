@@ -18,9 +18,12 @@ std::vector<std::string> LobbyView::getUserInGame(const std::string& sessionId){
 }
 
 bool LobbyView::waitGameStart(const std::string& sessionId){
-    auto futureMessages = gameClient->QueryGameState(sessionId);
-    auto messagesJson = futureMessages.get();
-    sleep(10);
-    // return if the game has started
-    return false;
+    bool started = false;
+    while (!started) {
+      auto futureMessages = gameClient->QueryGameState(sessionId);
+      auto messagesJson = futureMessages.get();
+      if (messagesJson["started"] == "true") started = true;
+      sleep(1);
+    }
+    return true;
 }

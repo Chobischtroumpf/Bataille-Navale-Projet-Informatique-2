@@ -86,6 +86,7 @@ ReturnInput LobbyConsole::handleInput() {
     if (_view->getUserInGame(_session_id).size() < 2) {
       break;
     }
+    _controller->launchGame(_session_id);
     return {ReturnInput::Screen::GAME, _session_id};
     break;
   case 3: // Refresh Player List
@@ -99,8 +100,8 @@ ReturnInput LobbyConsole::handleInput() {
   }
   } else {
     _view->waitGameStart(_session_id);
+    return {ReturnInput::Screen::GAME, _session_id};
   }
-  return {ReturnInput::LOBBY, _session_id};
 }
 
 void LobbyConsole::addPlayer() {
