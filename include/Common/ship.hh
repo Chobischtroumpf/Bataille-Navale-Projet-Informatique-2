@@ -14,7 +14,7 @@ class Ship {
     std::vector<BoardCoordinates> _coordinates;
     BoardCoordinates _top_left;
     CellType _type = UNDAMAGED_SHIP;
-    std::shared_ptr<GameView> _board;
+    GameView *_board;
     int _length = 0;
     int _size_x = 0;
     int _size_y = 0;
@@ -26,8 +26,8 @@ class Ship {
     // Constructors
     Ship(std::vector<BoardCoordinates> coordinates);
     Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates);
-    Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
-    Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
+    Ship(std::vector<BoardCoordinates> coordinates, GameView *board);
+  Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, GameView *board);
     Ship(const Ship &other);
 
     // Operators
@@ -62,4 +62,7 @@ class Ship {
     // Print the ship
     std::vector<std::string> to_string();
     nlohmann::json to_json();
+
+    // Destructor
+    ~Ship();
 };

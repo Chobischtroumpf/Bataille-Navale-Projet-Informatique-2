@@ -9,7 +9,7 @@ class FactionClassique : public Faction
   public:
     // Constructor
     FactionClassique(): Faction() { // creates a Faction with preset values for the Classic faction
-      setName("Sonar");
+      setName("Classic");
       PossibleShips ships;
       ships[2]=1;
       ships[3]=2;
