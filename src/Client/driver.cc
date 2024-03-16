@@ -29,7 +29,10 @@ void Driver::run(ReturnInput::Screen base_screen) {
           displayChatScreen(input.arg);
           break;
         case ReturnInput::Screen::LOBBY:
-          displayLobbyScreen(input.arg);
+          if (_current_screen == ReturnInput::Screen::GAME_CREATION)
+            displayLobbyScreen(input.arg, true);
+          else
+            displayLobbyScreen(input.arg, false);
           break;
         case ReturnInput::Screen::LOGIN:
           displayLoginScreen();
@@ -97,7 +100,7 @@ void Driver::displayChatScreen(std::string username) {
   }
 }
 
-void Driver::displayLobbyScreen(std::string gameId) {
+void Driver::displayLobbyScreen(std::string gameId, bool admin) {
   if (_display_type == CONSOLE) {
     _display = std::make_shared<LobbyConsole>(gameId, getClient());
     _current_screen = ReturnInput::Screen::LOBBY;

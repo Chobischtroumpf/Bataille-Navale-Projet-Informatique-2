@@ -15,6 +15,7 @@ private:
   std::shared_ptr<GameClient> _game_client;
   std::shared_ptr<LobbyView> _view;
   std::shared_ptr<LobbyController> _controller;
+  bool _admin;
   short _current_option = 0;
   void displayOptions(int mode);
   // void startGame();
@@ -22,11 +23,12 @@ private:
 
 public:
   explicit LobbyConsole(const std::string &sessionId,
-                        std::shared_ptr<GameClient> client);
+                        std::shared_ptr<GameClient> client, bool admin = false);
 
   void displayFriends();
   void display() override;
   void displayError() override {}
   void update() override {}
+  void wait();
   ReturnInput handleInput() override;
 };

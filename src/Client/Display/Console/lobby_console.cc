@@ -1,8 +1,9 @@
 #include "lobby_console.hh"
 
 LobbyConsole::LobbyConsole(const std::string &sessionId,
-                           std::shared_ptr<GameClient> client)
-    : _session_id(sessionId) {
+                           std::shared_ptr<GameClient> client,
+                           bool admin)
+    : _session_id(sessionId) , _admin(admin) {
   _view = std::make_shared<LobbyView>(client);
   _controller = std::make_shared<LobbyController>(client);
 }
@@ -10,7 +11,9 @@ LobbyConsole::LobbyConsole(const std::string &sessionId,
 void LobbyConsole::display() {
   std::system("clear");
   displayFriends();
-  displayOptions(_current_option);
+  if (_admin) {
+    displayOptions(_current_option);
+  }
 }
 
 void LobbyConsole::displayFriends() {
@@ -54,7 +57,15 @@ void LobbyConsole::displayOptions(int mode) {
   }
 }
 
+void LobbyConsole::wait() {
+  bool game_started = false;
+  while (!game_started) {
+  }
+  std::cout << "Game is starting!" << std::endl;
+}
+
 ReturnInput LobbyConsole::handleInput() {
+  if (_admin) {
   int input;
   std::cin >> input;
 
@@ -72,7 +83,10 @@ ReturnInput LobbyConsole::handleInput() {
     addPlayer();
     break;
   case 2: // Start Game
-    // startGame();
+    if (_view->getUserInGame(_session_id).size() < 2) {
+      break;
+    }
+    return {ReturnInput::Screen::GAME, _session_id};
     break;
   case 3: // Refresh Player List
     _current_option = 0;
@@ -82,6 +96,8 @@ ReturnInput LobbyConsole::handleInput() {
     std::cout << "Invalid option. Please choose again.\n";
     display();
     break;
+  }
+  } else {
   }
   return {ReturnInput::LOBBY, _session_id};
 }

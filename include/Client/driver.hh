@@ -42,7 +42,7 @@ private:
   void displayRegisterScreen();
   void displayMainMenuScreen();
   void displayChatScreen(std::string username);
-  void displayLobbyScreen(std::string gameId);
+  void displayLobbyScreen(std::string gameId, bool admin);
   void displayGameCreationScreen();
 
   std::shared_ptr<Display> _display;

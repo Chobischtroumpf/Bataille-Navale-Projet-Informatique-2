@@ -167,7 +167,7 @@ std::vector<string> GameConsole::createMapKey() const {
 std::vector<string> GameConsole::createBoatsKey() const {
     std::vector<string> boat_key;
     PossibleShips remaining_ships = _board->shipsToPlace();
-    std::array<std::string, 5> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m"};
+    std::array<std::string, 6> color_code = {"\x1B[2m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m", "\x1B[0m"};
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
     for (auto &ship : remaining_ships) {
