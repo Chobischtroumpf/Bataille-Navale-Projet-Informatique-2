@@ -379,28 +379,24 @@ void GameServer::handlePost(http_request request) {
             // If userId is empty, the token is invalid or missing
             if (userId.empty()) {
               response["error"] = "Invalid or missing AuthToken";
-              request.reply(status_codes::Unauthorized, response.dump(),
-                            "application/json");
+              request.reply(status_codes::Unauthorized, response.dump(), "application/json");
               return; // Stop further processing
             }
-            cout << "data: " << requestBody.serialize() << endl;
+
             // Check if "gameDetails" exists in the requestBody
             if (!requestBody.has_field(U("gameDetails"))) {
               response["error"] = "Missing gameDetails";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
+              request.reply(status_codes::BadRequest, response.dump(), "application/json");
               return;
             }
 
             // Extract game details from request body
-            njson gameDetails =
-                njson::parse(requestBody[U("gameDetails")].serialize());
+            njson gameDetails = njson::parse(requestBody[U("gameDetails")].serialize());
 
             // Create a new session
             auto sessionId = sessionManager.createSession(userId, gameDetails);
             response["sessionId"] = sessionId;
-            request.reply(status_codes::OK, response.dump(),
-                          "application/json");
+            request.reply(status_codes::OK, response.dump(),"application/json");
           }
 
           // Handle the case for "/api/games/move" - Make a move in a game
