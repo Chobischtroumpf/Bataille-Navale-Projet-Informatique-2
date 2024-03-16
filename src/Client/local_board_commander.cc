@@ -96,7 +96,6 @@ void LocalBoardCommander::placeShip(Ship ship) {
   _player.addShip(ship);
 
   // if all ships are placed, send the ships to the server
-  return true;
 
 }
 

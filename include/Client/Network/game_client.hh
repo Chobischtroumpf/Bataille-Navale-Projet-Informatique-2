@@ -21,7 +21,7 @@ public:
     
     std::future<std::string> CreateGame(const njson& gameDetails);
     std::future<njson> JoinGame(const std::string& sessionId);
-    std::future<bool> MakeMove(const std::string& sessionId, const njson& move);
+    std::future<bool> MakeMove(const std::string& sessionId, const std::string& move);
     std::future<bool> Login(const std::string& userId, const std::string& password);
     std::future<bool> Register(const std::string& userId, const std::string& password);
     std::future<std::string> GetUserId(const std::string& username);

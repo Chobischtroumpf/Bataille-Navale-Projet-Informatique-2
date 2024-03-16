@@ -16,11 +16,11 @@ class FactionBombardement : public Faction
     FactionBombardement(): Faction() { // creates a Faction with preset values for the Bombardement faction
       setName("Sonar");
       PossibleShips ships;
-      ships.push_back(std::make_pair(1, 1));
-      ships.push_back(std::make_pair(1, 2));
-      ships.push_back(std::make_pair(1, 3));
-      ships.push_back(std::make_pair(2, 4));
-      ships.push_back(std::make_pair(1, 5));
+      ships[1]=1;
+      ships[2]=1;
+      ships[3]=2;
+      ships[4]=2;
+      ships[5]=1;
       setPossibleShips(ships);
       setSpecialAbilities({Torpedo(), PiercingTorpedo(), BigTorpedo(), Sonar(), AerialStrike(7)});
     };

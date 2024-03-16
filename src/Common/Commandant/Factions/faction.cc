@@ -16,13 +16,8 @@ PossibleShips Faction::getPossibleShips() const { return _possible_ships; };
 SpecialAbilities Faction::getSpecialAbilities() const { return _special_abilities; };
 
 void Faction::removeShip(Amount amount) {
-    for (auto it = _possible_ships.begin(); it != _possible_ships.end(); it++) {
-        if (it->second == amount) {
-            it->first--;
-            if (it->second < 0) {
-                _possible_ships.erase(it);
-            }
-            break;
-        }
+    _possible_ships[amount]--;
+    if (_possible_ships[amount] == 0) {
+        _possible_ships.erase(amount);
     }
 }

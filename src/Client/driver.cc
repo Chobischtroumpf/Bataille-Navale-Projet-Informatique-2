@@ -103,7 +103,7 @@ void Driver::displayLobbyScreen() {
 
 void Driver::displayGameCreationScreen() {
   if (_display_type == CONSOLE) {
-    _display = std::make_shared<GameSettingConsole>();
+    _display = std::make_shared<GameSettingConsole>(getClient());
     _current_screen = ReturnInput::Screen::GAME_CREATION;
 
   } else {

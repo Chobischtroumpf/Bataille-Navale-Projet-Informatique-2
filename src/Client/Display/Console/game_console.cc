@@ -270,19 +270,19 @@ std::vector<string> GameConsole::createAvailableBoats(InputStatus status) const 
 std::vector<string> GameConsole::createAvailableAbilities(InputStatus status) const {
   std::vector<string> abilities;
   int width = 25;
-  SpecialAbilities special_abilities = _board->getPlayer().getFaction().getSpecialAbilities();
+  SpecialAbilities special_abilities = _board->player().getFaction().getSpecialAbilities();
   abilities.emplace_back("╔════════════════════╗");
   abilities.emplace_back("║ Your abilities     ║");
   abilities.emplace_back("╠════════════════════╩══════╗");
   int count = 0;
   std::string normal_color = "\x1B[0m";
   for (auto &ability: special_abilities) {
-    std::string color = ability.getEnergyCost() > _board->getPlayer().getEnergyPoints() ? "\x1B[2m" : "\x1B[0m";
+    std::string color = ability.getEnergyCost() > _board->player().getEnergyPoints() ? "\x1B[2m" : "\x1B[0m";
     abilities.emplace_back("║" + color + " ("+ std::to_string(count) + ") " + ability.getName() + std::string(width - (ability.getName().size() + std::to_string(ability.getEnergyCost()).size()) - 4, ' ') + std::to_string(ability.getEnergyCost()) + normal_color + " ║");
     count++;
   }
   abilities.emplace_back("║                           ║");
-  abilities.emplace_back("║ Energy: " + std::to_string(_board->getPlayer().getEnergyPoints()) + std::string(width - std::to_string(_board->getPlayer().getEnergyPoints()).size() - 7, ' ') + "║");
+  abilities.emplace_back("║ Energy: " + std::to_string(_board->player().getEnergyPoints()) + std::string(width - std::to_string(_board->player().getEnergyPoints()).size() - 7, ' ') + "║");
   abilities.emplace_back("╚═══════════════════════════╝");
   return abilities;
 }
@@ -424,7 +424,7 @@ ReturnInput GameConsole::handleFire() {
   int col = std::stoi(buf.substr(3, 2));
   
   // Validate ability index
-  if (ability < 0 || ability >= _board->getPlayer().getFaction().getSpecialAbilities().size()) {
+  if (ability < 0 || ability >= _board->player().getFaction().getSpecialAbilities().size()) {
     _last_input = ERR;
     return {ReturnInput::Screen::GAME, ""};
   }
@@ -437,7 +437,7 @@ ReturnInput GameConsole::handleFire() {
 
   // Fire action
   BoardCoordinates coord{row - 'A', col};
-  _control->fire(_board->getPlayer().getFaction().getSpecialAbilities().at(ability), coord);
+  _control->fire(_board->player().getFaction().getSpecialAbilities().at(ability), coord);
   _last_input = OK;
 
 
@@ -510,7 +510,7 @@ void GameConsole::handleShipPlacement() {
       _ship_selected = false;
       _possible_ships.release();
       _last_input = OK;
-      if (_board->allBoatsPlaced()) {
+      if (_board->allShipsPlaced()) {
         _control->sendShips(_board->getPlacedShips());
         _phase = GAME;
       }
@@ -539,7 +539,7 @@ ReturnInput GameConsole::handlePlaceShip() {
           _control->quit();
           return {};
       }
-      if (_board->allBoatsPlaced()) {
+      if (_board->allShipsPlaced()) {
         _control->sendShips(_board->getPlacedShips());
         _phase = GAME;
      } 
