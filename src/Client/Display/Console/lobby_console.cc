@@ -29,32 +29,28 @@ void LobbyConsole::displayFriends() {
 }
 
 void LobbyConsole::displayOptions(int mode) {
-  std::cout
-      << "║\n║\n╠════════════════════════╗\n║What do you want to do ?║\n╠══"
-         "══════════════════════╩══════════════════════════════════════════════"
-         "══════════╪\n";
-  switch (mode) {
-  case 0:
-    std::cout << "║ (1) Add Player to Lobby ⌨" << std::endl;
-    std::cout << "║ (2) Start Game ⚑" << std::endl;
-    std::cout << "║ (3) Refresh Player List ⌛" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "══════════════╪\n";
-    break;
-  case 1:
-    std::cout << "║ Enter a username to send a request!" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "═════════════════════╪\n";
-    break;
-  default:
-    std::cout << "║ Invalid option! Choose from the list below" << std::endl;
-    std::cout << "║ (1) Add Player to Lobby ⌨" << std::endl;
-    std::cout << "║ (2) Start Game ⚑" << std::endl;
-    std::cout << "║ (3) Refresh Player List ⌛" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "══════════════╪\n";
-    break;
-  }
+    switch (mode) {
+        case 0:
+            std::cout << "║ (1) Add Player to Lobby ⌨" << std::endl;
+            std::cout << "║ (2) Start Game ⚑" << std::endl;
+            std::cout << "║ (3) Refresh Player List ⌛" << std::endl;
+            std::cout << "║ (4) Back to the Main Menu ☝" << std::endl;
+            std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
+            break;
+        case 1:
+            std::cout << "║ Enter a username to send a request" << std::endl;
+            std::cout << "║ Type :'./exit' to back to the lobby"<< std::endl;
+            std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
+            break;
+        default:
+            std::cout << "║ Invalid option! Choose from the list below" << std::endl;
+            std::cout << "║ (1) Add Player to Lobby ⌨" << std::endl;
+            std::cout << "║ (2) Start Game ⚑" << std::endl;
+            std::cout << "║ (3) Refresh Player List ⌛" << std::endl;
+            std::cout << "║ (4) Back to the Main Menu ☝" << std::endl;
+            std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
+            break;
+    }
 }
 
 void LobbyConsole::wait() {
@@ -67,6 +63,7 @@ void LobbyConsole::wait() {
 ReturnInput LobbyConsole::handleInput() {
   if (_admin) {
   int input;
+  std::cout << "Please enter your choice: ";
   std::cin >> input;
 
   if (std::cin.fail()) {
@@ -75,16 +72,36 @@ ReturnInput LobbyConsole::handleInput() {
     displayOptions(_current_option);
   }
 
-  switch (input) {
-  case 1: // Add Player to Lobby
-    _current_option = 1;
-    display();
-    _current_option = 0;
-    addPlayer();
-    break;
-  case 2: // Start Game
-    if (_view->getUserInGame(_session_id).size() < 2) {
-      break;
+    switch (input) {
+        case 1: {// Add Player to Lobby
+            _current_option = 1;
+            display();
+            _current_option = 0;
+            std::string playerName;
+            std::cout << "Please enter your text: ";
+            std::cin >> playerName;
+            if (playerName =="./exit")
+                break;
+            else
+                addPlayer(playerName);
+            break;
+        }
+        case 2: // Start Game
+            if (_view->getUserInGame(_session_id).size() < 2) {
+                break;
+            }
+            return {ReturnInput::Screen::GAME, _session_id};
+            break;
+        case 3: // Refresh Player List
+            _current_option = 0;
+            display();
+            break;
+        case 4: // back to the Main Menu
+            return {ReturnInput::MAIN_MENU,""};
+        default:
+            std::cout << "Invalid option. Please choose again.\n";
+            display();
+            break;
     }
     _controller->launchGame(_session_id);
     return {ReturnInput::Screen::GAME, _session_id};
@@ -104,12 +121,7 @@ ReturnInput LobbyConsole::handleInput() {
   }
 }
 
-void LobbyConsole::addPlayer() {
-  std::string playerName;
-  std::cout << "Type the name: ";
-  std::cin >> playerName;
-
-  std::string message = "sessionID: " + _session_id + "\n";
-  std::cout << "le test : " << message << std::endl;
-  _controller->sendIDGame(playerName, message);
+void LobbyConsole::addPlayer(const std::string& playerName) {
+    std::string message = "sessionID: " + sessionId;
+    _controller->sendIDGame(playerName, message);
 }

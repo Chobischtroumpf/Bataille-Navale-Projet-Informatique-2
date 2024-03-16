@@ -23,3 +23,12 @@ void MainMenuController::addFriend(const std::string &username) {
     std::cout << "Failed to add friend :(" << std::endl;
   }
 }
+
+bool MainMenuController::validUser(const std::string& username){
+    auto resultFuture = gameClient->GetUserId(username);
+    auto result = resultFuture.get();
+    if (result == "")
+        return false;
+    else
+        return true;
+}

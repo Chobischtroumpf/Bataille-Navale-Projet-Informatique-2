@@ -22,7 +22,7 @@ LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
   auto usersID = messagesJson["participants"];
   _my_username = _client->getClientUsername();
   std::string my_id = _client->GetUserId(_my_username).get();
-  _player.setPlayerOne(my_id == usersID.at(0));
+  _player.setPlayerOne(usersID.at(0) == my_id);
   _their_username = _player.isPlayerOne() ? _client->GetUsername(usersID.at(1)).get() : _client->GetUsername(usersID.at(0)).get();
 }
 

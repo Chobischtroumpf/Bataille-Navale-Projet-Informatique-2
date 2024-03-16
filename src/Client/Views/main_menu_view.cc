@@ -2,7 +2,7 @@
 
 MainMenuView::MainMenuView(std::shared_ptr<GameClient> gameClient) : _gameClient(gameClient) {}
 
-std::vector<std::string> MainMenuView::getNotifications() const {
+std::vector<Message> MainMenuView::getNotifications() const {
     return _notifications;
 }
 
@@ -20,7 +20,7 @@ std::vector<std::tuple<std::string, int>> MainMenuView::getFriends() {
     return _friends;
 }
 
-void MainMenuView::addNotification(std::string new_notification) {
+void MainMenuView::addNotification(Message new_notification) {
     _notifications.push_back(new_notification);
 }
 
@@ -31,4 +31,29 @@ void MainMenuView::addFriend(std::string name, int status) {
 
 void MainMenuView::update() {
     // Updates friends list and notifications queue (try to keep only recent ones ?)
+}
+
+void MainMenuView::NewGameNotification(){
+    _notifications.clear();
+    for (auto myfriend : getFriends()){
+        std::vector<Message> convertedMessages;
+        const std::string& pseudo = std::get<0>(myfriend);
+        auto userIDFuture = _gameClient->GetUserId(pseudo);
+        auto userID = userIDFuture.get();
+        auto futureMessages = _gameClient->GetMessages(userID);
+        auto messagesJson = futureMessages.get();
+        for (const auto& jsonMsg : messagesJson) {
+            std::string text = jsonMsg["message"];
+            std::string sender = jsonMsg["sender"];
+            auto userNAMEFuture = _gameClient->GetUsername(sender);
+            std::string userNAME = userNAMEFuture.get();
+            if (text.find("sessionID: ") != std::string::npos){
+                convertedMessages.emplace_back(Message{text,userNAME}); //push_back
+            }
+        }
+        if (!convertedMessages.empty()) {
+            Message lastMessage = convertedMessages.back();
+            addNotification(lastMessage);
+        }
+    }
 }
