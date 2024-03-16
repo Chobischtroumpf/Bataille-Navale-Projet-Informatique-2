@@ -8,4 +8,5 @@ void LobbyController::sendIDGame(const std::string& destination, const std::stri
     auto userID = userIDFuture.get();
 
     std::future<bool> resultFuture = _game_client->SendMessage(userID, message);
+    _game_client->AddNotification(destination, "N/A sent you a game request, "  + message.substr(0, message.length()-1));
 }

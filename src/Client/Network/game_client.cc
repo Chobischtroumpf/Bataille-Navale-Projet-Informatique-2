@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 #include "game_client.hh"
 
 using namespace std;
@@ -518,6 +520,44 @@ future<bool> GameClient::SendMessage(const string &recipientId,
   return promise->get_future();
 }
 
+future<bool> GameClient::AddNotification(const std::string &username, const std::string &message) {
+
+    // Use a promise to return the result asynchronously
+    auto promise = std::make_shared<std::promise<bool>>();
+    auto resultFuture = promise->get_future();
+
+    // Prepare the JSON object with data
+    njson friendData = {{"Username", username }, {"Message", message}};
+
+    // Send the POST request to the add notification endpoint
+    PostRequest("/api/user/add/notification", friendData)
+            .then([promise](njson response) {
+                // Check the response to see if adding the friend was successful
+                if (!response.contains("error")) {
+                    // cout << "Notification added successfully." << endl;
+                    promise->set_value(true);
+                } else {
+                    // If the response indicates failure or the expected success message
+                    // is not present
+                    cout << "Failed to add notification." << endl;
+                    promise->set_value(false);
+                }
+            })
+            .then([promise](pplx::task<void> errorHandler) {
+                try {
+                    // Attempt to catch exceptions if any
+                    errorHandler.get();
+                } catch (const std::exception &e) {
+                    // In case of exception, indicate failure
+                    cerr << "Exception caught while adding notification: " << e.what() << endl;
+                    promise->set_value(false); // Indicate failure due to exception
+                }
+            });
+
+    // cout << "Notification add request sent." << endl;
+    return resultFuture;
+}
+
 future<bool> GameClient::AddFriend(const string &username) {
   // cout << "Attempting to add user " << username << " as a friend..." << endl;
 
@@ -595,6 +635,45 @@ future<njson> GameClient::GetFriends() {
 
   // cout << "Friend list request sent." << endl;
   return resultFuture;
+}
+
+
+future<njson> GameClient::getNotificationsFromServer() {
+
+    // Use a promise to return the result asynchronously
+    auto promise = std::make_shared<std::promise<njson>>();
+    auto resultFuture = promise->get_future();
+
+    GetRequest("/api/notification/get")
+            .then([promise](njson jsonResponse) {
+                // Check if the response contains a 'gameDetails' key
+                if (!jsonResponse.empty() &&
+                    jsonResponse.find("notifications") != jsonResponse.end()) {
+                    // Success path: Extract game details from jsonResponse
+                    auto Notifications = jsonResponse["notifications"].get<njson>();
+                    //cout << "Notifications retrieved" << endl;
+                    promise->set_value(Notifications);
+                } else {
+                    // Error or info not provided, set a default error value (empty
+                    // object)
+                    promise->set_value(njson{});
+                }
+            })
+            .then([promise](pplx::task<void> errorHandler) {
+                try {
+                    // Attempt to catch exceptions if any
+                    errorHandler.get();
+                } catch (const exception &e) {
+                    // In case of exception, indicate failure
+                    cerr << "Exception caught while fetching notifications: " << e.what()
+                         << endl;
+                    promise->set_value(njson{});
+                    ; // Indicate failure due to exception
+                }
+            });
+
+    //cout << "Notifications query request sent." << endl;
+    return resultFuture;
 }
 
 future<njson> GameClient::GetMessages(const std::string &recipientId) {

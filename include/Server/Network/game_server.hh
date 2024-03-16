@@ -4,6 +4,8 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <cpprest/http_listener.h>
+#include <unordered_map>
+#include <vector>
 
 #include "session_manager.hh" // Include SessionManager header
 #include "token_handler.hh"
@@ -31,5 +33,6 @@ private:
     http_listener listener_; // HTTP listener
     TokenHandler tokenHandler; // TokenHandler instance
     std::shared_ptr<DataBase> database; // DataBase instance
+    std::unordered_map<std::string, std::vector<std::string>> users_notifications;
     Queries dbManager; // Database interface instance
 };

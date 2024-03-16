@@ -32,6 +32,7 @@ ReturnInput LoginConsole::handleInput() {
       if (sEnregistrer(_login_controller)) {
         std::cout << "Enregistrement réussi.\n";
         continuer = false;
+        _login_controller.addNotification("", "Welcome new user!");
         return {ReturnInput::MAIN_MENU, ""};
       } else {
         std::cout << "Échec de l'enregistrement. Veuillez réessayer.\n";

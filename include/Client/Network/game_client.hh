@@ -52,7 +52,9 @@ public:
                                 const std::string &message);
   std::future<njson> GetMessages(const std::string &recipientId);
   std::future<bool> AddFriend(const std::string &username);
+  std::future<bool> AddNotification(const std::string &username, const std::string &message);
   std::future<njson> GetFriends();
 
   std::string getUsername() const;
+  std::future<njson> getNotificationsFromServer();
 };

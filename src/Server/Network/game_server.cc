@@ -325,21 +325,29 @@ void GameServer::handleGet(http_request request) {
             }
         }
 
-        // Handle the case for "/api/friend" - Returns the user's friend list
-        else if (path == U("/api/friend")) {
+        // Handle the case for "/api/notification/get" - Retrieving the user's notifications -- Protected
+        else if (path == U("/api/notification/get")) {
 
             // First, verify the AuthToken and retrieve the userId
             auto userId = verifyAuthToken(request);
 
-            // If userId is empty, the token is invalid or missing
             if (userId.empty()) {
                 response["error"] = "Invalid or missing AuthToken";
                 request.reply(status_codes::Unauthorized, response.dump(), "application/json");
                 return; // Stop further processing
             }
 
-            // Getting the friend list
-            dbManager.getUserFriends(userId);
+            QueryResult username = dbManager.getUsername(userId);
+            std::string real_username = username.getFirst();
+
+            std::vector<std::string> notificationsVector = users_notifications[real_username];
+
+            // Successfully retrieved user's notifications
+            nlohmann::json notifsJson = nlohmann::json::array();
+            for (const auto& notification : notificationsVector) {
+                notifsJson.push_back(notification);
+            }
+            response["notifications"] = notifsJson;
             request.reply(status_codes::OK, response.dump(), "application/json");
         }
 
@@ -619,7 +627,7 @@ void GameServer::handlePost(http_request request) {
               return; // Stop further processing
             }
 
-            // Extract recipientId and message from request body
+            // Extract the friend's username from the request body
             auto friendUsername = requestBody[U("friend")].as_string();
 
             // Add the friend to the user's friend list
@@ -637,6 +645,55 @@ void GameServer::handlePost(http_request request) {
               request.reply(status_codes::BadRequest, response.dump(),
                             "application/json");
             }
+          }
+
+          else if (path.find(U("/api/user/add/notification")) != wstring::npos) {
+              // Protected route - verify the AuthToken and retrieve the userId
+              auto userId = verifyAuthToken(request);
+
+              // If userId is empty, the token is invalid or missing
+              if (userId.empty()) {
+                  response["error"] = "Invalid or missing AuthToken";
+                  request.reply(status_codes::Unauthorized, response.dump(),
+                                "application/json");
+                  return; // Stop further processing
+              }
+
+              // Extract the username and the message from the request body
+              auto username = requestBody[U("Username")].as_string();
+              auto message = requestBody[U("Message")].as_string();
+
+              std::string parsed_message = message.substr(0, 3);
+              std::string user_that_added;
+
+              if (parsed_message == "N/A") {
+                  QueryResult result = dbManager.getUsername(userId);
+                  user_that_added = result.getFirst();
+                  message = user_that_added + message.substr(3);
+              }
+
+              if (to_utf8(username).empty()) {
+                  QueryResult query = dbManager.getUsername(to_utf8(userId));
+                  username = query.getFirst();
+              }
+
+              QueryResult query = dbManager.checkUserName(to_utf8(username));
+
+              if (query.isOk()) {
+                  // Nofitication added successfully
+                  if (users_notifications[username].size() >= 5) {
+                      users_notifications.clear();
+                  }
+                  users_notifications[username].push_back(message);
+                  response["status"] = "Notification added successfully";
+                  request.reply(status_codes::OK, response.dump(),
+                                "application/json");
+              } else {
+                  // Failed to add notification
+                  response["error"] = "Failed to add notification";
+                  request.reply(status_codes::BadRequest, response.dump(),
+                                "application/json");
+              }
           }
 
           else {
