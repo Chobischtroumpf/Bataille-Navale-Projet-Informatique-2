@@ -9,8 +9,8 @@ Driver::~Driver() {}
 
 void Driver::launchApp() {
   //std::string user = "slectedUser";
-  displayGameScreen();
-  run(ReturnInput::Screen::GAME);
+  displayLoginScreen();
+  run(ReturnInput::Screen::LOGIN);
 }
 
 void Driver::run(ReturnInput::Screen base_screen) {
@@ -50,7 +50,7 @@ std::shared_ptr<GameClient> Driver::getClient() {
 
 void Driver::displayGameScreen() {
   if (_display_type == CONSOLE) {
-    Player player1 = Player(FactionMines());
+    Player player1 = Player(FactionMines()); //> To change in function of the faction selected
     std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(player1);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());

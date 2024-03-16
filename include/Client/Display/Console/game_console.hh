@@ -56,6 +56,9 @@ class GameConsole : public Console {
     std::unique_ptr<ShipClassic> _possible_ships = nullptr; //< The ships that can be placed
     bool _ship_selected = false;  //< True if a boat has been selected
 
+    std::string _round_time = ""; //< The time of the round
+    std::string _game_time = ""; //< The time of the game
+
     // Place ship variables
     int _ship_size = 0;  //< The size of the ship to place, 0 means no selected ship
     int _ship_id = 0;  //< The id of the ship to place
@@ -116,7 +119,6 @@ class GameConsole : public Console {
      * Empty lines are added in the beginning of the prompt so it can be printed next to the
      * map key. */
     [[nodiscard]] std::vector<string> createGamePrompt(InputStatus status) const;
-    [[nodiscard]] std::vector<string> createPlaceShipPrompt(InputStatus status) const;
 
     // Print methods
 
@@ -126,6 +128,7 @@ class GameConsole : public Console {
     /** clear fail bits of _in, ignore until next '\n', redraw with the code status*/
     void clearBadPlaceShipInput(bool placed);
 
+    /** handle respectively the selection of the ship size, the ship selection and the ship placement*/
     void handleShipSize();
     void handleShipSelection();
     void handleShipPlacement();

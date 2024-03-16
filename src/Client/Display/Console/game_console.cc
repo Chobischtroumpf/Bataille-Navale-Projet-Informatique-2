@@ -156,8 +156,8 @@ std::vector<string> GameConsole::createMapKey() const {
   map_key.emplace_back(" > " + toString(OCEAN) + " Ocean          <");
   map_key.emplace_back(" > " + toString(UNDAMAGED_SHIP) + " UNDAMAGED ship <");
   map_key.emplace_back(" > " + toString(UNDAMAGED_MINE) + " UNDAMAGED mine <");
-  map_key.emplace_back(" > " + toString(SCANNED_SHIP) + " SCANNED ship <");
-  map_key.emplace_back(" > " + toString(SCANNED_MINE) + " SCANNED mine <");
+  map_key.emplace_back(" > " + toString(SCANNED_SHIP) + " SCANNED ship   <");
+  map_key.emplace_back(" > " + toString(SCANNED_MINE) + " SCANNED mine   <");
   map_key.emplace_back(" > " + toString(HIT_SHIP) + " Hit ship       <");
   map_key.emplace_back(" > " + toString(HIT_MINE) + " Hit mine       <");
   map_key.emplace_back(" > " + toString(SUNK_SHIP) + " Sunk ship      <");
@@ -194,23 +194,11 @@ std::vector<string> GameConsole::createBoatsKey() const {
     return boat_key;
   }
 
-std::vector<string> GameConsole::createPlaceShipPrompt(InputStatus status) const {
-    std::vector<string> prompt(_map_key.size()-8, "");  // Add padding
-  prompt.emplace_back("");
-  prompt.emplace_back("Enter the Ship ID, the H or V for horizontal or vertical, then X and Y coordinates (e.g. 4 V C4):");
-  if (status == OK) {
-    prompt.emplace_back("");
-  } else {
-    prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
-  }
-  prompt.emplace_back(">> PLACE SHIP <<");
-  prompt.emplace_back(">> ");
-  return prompt;
-
- }
-
 std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
-  std::vector<string> prompt(_map_key.size() - 4, "");  // Add padding
+  std::vector<string> prompt(_map_key.size() - 7, "");  // Add padding
+  prompt.emplace_back(">> Round Time remaining: " + _round_time);
+  prompt.emplace_back(">> Game Time remaining:" + _game_time);
+  prompt.emplace_back("");
   prompt.emplace_back(">> Put first the ability and then the coordinate (ex: 4 F2) <<");
   if (status == OK) {
     prompt.emplace_back("");
