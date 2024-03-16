@@ -8,30 +8,32 @@ public:
 
   GameTimer();
 
-  GameTimer(int switch_time, int game_time);
-
   void start_timer();
 
   void switch_turn();
 
   bool is_finished() const;
 
-  int get_player1_timer();
+  int get_player1_timer() const;
 
-  int get_player2_timer();
+  int get_player2_timer() const;
 
-  int get_timer() const;
+  int get_game_timer() const;
 
-  void set(int switch_time, int player_time, std::function<void()> callback_function);
+  void set(int game_time, int player_time);
 
-  int winner() const;
+  int get_winner() const;
 
 private:
-  Timer timer;
-  std::atomic<int> player1_timer;
-  std::atomic<int> player2_timer;
+  Timer game_timer;
+  Timer player1_timer;
+  Timer player2_timer;
   Turn turn;
   std::atomic<bool> finished;
+  int winner;
 
-  void update_time();
+  void player_time_runout();
+
+  void game_time_runout();
 };
+
