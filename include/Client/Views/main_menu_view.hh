@@ -12,14 +12,14 @@
 class MainMenuView: public View {
 public:
     MainMenuView(std::shared_ptr<GameClient> gameClient);
-    std::vector<Message> getNotifications() const;
+
+    std::vector<std::string> getNotifications();
     std::vector<std::tuple<std::string, int>> getFriends();
-    void NewGameNotification();
-    void addNotification(Message new_notification);
+    void addNotification(const std::string& username, const std::string& new_notification);
     void addFriend(std::string name, int status);
     void update() override;
 private:
-    std::vector<Message> _notifications;
+    std::vector<std::string> _notifications;
     std::vector<std::tuple<std::string, int>> _friends;
     std::shared_ptr<GameClient> _gameClient;
 };

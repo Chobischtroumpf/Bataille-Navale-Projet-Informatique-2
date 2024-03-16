@@ -18,4 +18,6 @@ public:
                                  const std::string &password) const;
   std::future<bool> attemptRegister(const std::string &username,
                                     const std::string &password) const;
+  std::future<bool> addNotification(const std::string &username,
+                                    const std::string &new_notification);
 };

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>828</x>
+      <y>342</y>
+      <w>387</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>LobbyController
+--
+-gameClient: shared_ptr&lt;GameClient&gt;
+--
++sendIDGame(destination: string, message: const string&amp;)
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>522</x>
+      <y>378</y>
+      <w>288</w>
+      <h>243</h>
+    </coordinates>
+    <panel_attributes>LobbyConsole
+--
+-playersInLobby: vector&lt;string&gt;
+-sessionId: string
+-client: shared_ptr&lt;GameClient&gt;
+-_view: shared_ptr&lt;LobbyView&gt;
+-_controller: shared_ptr&lt;LobbyController&gt;
+-_current_option: short
+--
++displayFriends(): void
++display(): void
++displayError(): void
++update(): void
++handleInput(): ReturnInput
++displayOptions(mode: int): void
++addPlayer(): void
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>90</x>
+      <y>342</y>
+      <w>387</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>LobbyView
+--
+-gameClient: shared_ptr&lt;GameClient&gt;
+-messages: nlohmann::json
+--
++getUserInGame(sessionId: const string&amp;): vector&lt;string&gt;
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>522</x>
+      <y>234</y>
+      <w>288</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>LobbyGui
+--
+-playersInLobby: vector&lt;string&gt;
+-sessionId: string
+-client: shared_ptr&lt;GameClient&gt;
+-_view: shared_ptr&lt;LobbyView&gt;
+-_controller: shared_ptr&lt;LobbyController&gt;
+-_current_option: short
+--
++handleInput():ReturnInput
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>342</y>
+      <w>72</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>387</y>
+      <w>72</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>333</y>
+      <w>45</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;30.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>378</y>
+      <w>45</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;30.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1206</x>
+      <y>351</y>
+      <w>126</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>GameCLient</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>270</y>
+      <w>126</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>GameCLient</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>495</y>
+      <w>117</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>GameCLient</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>0</x>
+      <y>360</y>
+      <w>108</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>GameCLient</panel_attributes>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+  </element>
+</diagram>

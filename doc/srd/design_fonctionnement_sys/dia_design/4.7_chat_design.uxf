@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <help_text>Space for diagram notes</help_text>
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>480</x>
+      <y>340</y>
+      <w>560</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>ChatConsole
+--
+-_view: shared_ptr&lt;ChatView&gt;
+-_controller: shared_ptr&lt;ChatController&gt;
+-_gameClient: shared_ptr&lt;GameClient&gt;
+-sender: string
+-destination: string
+--
++handleInput(): ReturnInput override
+-displayMessage(messages: vector&lt;Message&gt;&amp;, selectedUser: string)
+-diviserEnLignes(text:string, maxLineLength:size_t, senderNameLength:size_t)
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>570</y>
+      <w>350</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>ChatController
+--
+-messages_: vector&lt;Message&gt;
+--
++sendMsgToServer(message: Message): void
++getMessages(): vector&lt;Message&gt;
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>310</x>
+      <y>210</y>
+      <w>540</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>ChatView
+--
+-messages_: std::vector&lt;Message&gt;
+--
++getMessages(messages: std::vector&lt;Message&gt;): std::vector&lt;Message&gt;
++update(): void override
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>120</x>
+      <y>340</y>
+      <w>310</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>ChatGUI
+--
+-_view: shared_ptr&lt;ChatView&gt;
+-_controller: shared_ptr&lt;ChatController&gt;
+-_gameClient: shared_ptr&lt;GameClient&gt;
+-sender: string
+-destination: string
+--
++handleInput(): ReturnInput override
+bg=green
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>560</y>
+      <w>270</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Message
+--
+-_text:string
+-_sender:string
+-_destination:string
+--
++getText():string
++getSender():string
++getDestination():string
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>290</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>550</x>
+      <y>290</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>490</y>
+      <w>30</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>530</x>
+      <y>520</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>600</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>70.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>890</x>
+      <y>600</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>GameClient</panel_attributes>
+    <additional_attributes>130.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+</diagram>
