@@ -171,6 +171,15 @@ void GameServer::handleGet(http_request request) {
               // Verifying both sessionId and userId are provided
               if (sessionIdIt != queryParams.end() ) {
                   auto sessionId = sessionIdIt->second;
+                  
+                  //Check if session exists
+                  if( !sessionManager.sessionExists(to_utf8(sessionId)) ) {
+                      // Return error
+                      response["error"] = "Session could not be found";
+                      request.reply(status_codes::BadRequest, response.dump(), "application/json");
+                      return;
+                  }
+
                   // Use sessionId and userId to add player to the game 
                   auto gameSession = sessionManager.getSession(to_utf8(sessionId));
                   gameSession->addParticipant(userId);
