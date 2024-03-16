@@ -173,9 +173,9 @@ Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {
                  : _their_board.at(position.y()).at(position.x());
 }
 
-Ship &LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) {}
+// Ship &LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) {}
 
-bool LocalBoardCommander::check() {}
+// bool LocalBoardCommander::check() {}
 
 // void LocalBoardCommander::placeShip(ShipCoordinates coordinates, bool
 // my_fleet) {}

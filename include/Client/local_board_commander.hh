@@ -42,10 +42,6 @@ private:
   /* Get the cell in one of the board*/
   Cell get(bool my_side, BoardCoordinates position) const;
 
-  Ship &shipId(bool my_side, BoardCoordinates position);
-  bool check();
-  // void placeShip(ShipCoordinates coordinates, bool my_fleet);
-
 public:
   LocalBoardCommander(std::shared_ptr<GameClient> client, Player player,
                       GameMode mode, const std::string &sessionId);
@@ -96,7 +92,7 @@ public:
   /* Polls the server to wait the turn */
   void waitTurn();
 
-  void update() override { throw NotImplementedError("Update"); }
+  // void update() override { throw NotImplementedError("Update"); }
 
   // returns the
   CellType best(CellType lhs, CellType rhs);
