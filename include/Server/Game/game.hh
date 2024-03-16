@@ -6,37 +6,37 @@
 #include "board.hh"
 #include "game_timer.hh"
 #include "player_role.hh"
-#include "ship_coordinates.hh"
+#include "ship.hh"
 
 // Class that handles the game between 2 players
 class Game {
 public:
   Game(const nlohmann::json& game_details);
 
-  bool is_finished() const;
+  bool isFinished() const;
 
-  bool handle_place_ship(Turn turn, ShipCoordinates ship_coordinates);
+  bool handlePlaceShip(Turn turn, Ship ship);
 
-  bool handle_fire(Turn turn, BoardCoordinates board_coordinates);
+  bool handleFire(Turn turn, BoardCoordinates board_coordinates);
 
-  nlohmann::json get_state(PlayerRole player);
+  nlohmann::json getState(PlayerRole player);
 
 private:
-  const size_t required_ship_placements = 5; // Number of ship placements required
+  const size_t _required__ship_placements = 5; // Number of ship placements required
   std::shared_ptr<Board> _board;
-  bool mode_commandant;
-  GameTimer game_timer;
-  std::unordered_map<Turn, unsigned int> ship_placements;
-  bool update_player1;
-  bool update_player2;
+  bool _mode_commandant;
+  GameTimer _game_timer;
+  std::unordered_map<Turn, unsigned int> _ship_placements;
+  bool _update_player1;
+  bool _update_player2;
 
-  void start_timer();
+  void startTimer();
   
-  void set_game(const nlohmann::json& gameDetails);
+  void setGame(const nlohmann::json& gameDetails);
 
-  void initialize_ship_placements();
+  void initializeShipPlacements();
 
-  bool ship_placements_finished() const;
+  bool shipPlacementsFinished() const;
 
-  void change_turn();
+  void changeTurn();
 };

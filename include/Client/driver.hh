@@ -25,7 +25,7 @@
 #include "lobby_console.hh"
 
 // Views
-#include "local_board.hh"
+#include "local_board_commander.hh"
 #include "login_view.hh"
 #include "register_view.hh"
 #include "main_menu_view.hh"

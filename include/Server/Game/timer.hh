@@ -13,7 +13,7 @@ public:
 
   Timer(int limit_seconds, std::function<void()> callback);
 
-  bool is_finished() const;
+  bool isFinished() const;
 
   // Method to start the timer
   void start();
