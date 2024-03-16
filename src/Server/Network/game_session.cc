@@ -84,5 +84,7 @@ nlohmann::json GameSession::getSessionState() const {
     sessionState["participants"] = getParticipants();
 
     sessionState["hasStarted"] = this->hasStarted;
+    
+    return sessionState;
 
 }
