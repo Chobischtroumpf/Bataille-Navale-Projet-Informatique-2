@@ -246,7 +246,8 @@ std::vector<string> GameConsole::createSelectNextRotateKey(InputStatus status) c
 }
 
 std::vector<string> GameConsole::createPlaceShipKey() const {
-  std::vector<string> action_key(_map_key.size()-8, "");
+  std::vector<string> action_key;
+  action_key.emplace_back("");
   action_key.emplace_back(" >> SELECTED BOAT <<");
   auto ship = _possible_ships->getShip().to_string();
   ship.at(0).at(0) = 'X';
@@ -258,7 +259,7 @@ std::vector<string> GameConsole::createPlaceShipKey() const {
 }
 
 std::vector<string> GameConsole::createSelectShipPositionPrompt(InputStatus status) const {
-  std::vector<string> prompt(_map_key.size()-4, "");  // Add padding
+  std::vector<string> prompt; 
   prompt.emplace_back("");
   prompt.emplace_back("Select the position where you want to place de boat (the position selected is the top left corner of the boat)");
   if (status == OK) {
