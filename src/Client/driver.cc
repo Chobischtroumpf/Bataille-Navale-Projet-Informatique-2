@@ -102,7 +102,7 @@ void Driver::displayChatScreen(std::string username) {
 
 void Driver::displayLobbyScreen(std::string gameId, bool admin) {
   if (_display_type == CONSOLE) {
-    _display = std::make_shared<LobbyConsole>(gameId, getClient());
+    _display = std::make_shared<LobbyConsole>(gameId, getClient(), admin);
     _current_screen = ReturnInput::Screen::LOBBY;
   } else {
     throw NotImplementedError("GUI not implemented yet");
