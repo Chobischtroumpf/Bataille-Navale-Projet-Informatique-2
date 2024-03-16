@@ -111,20 +111,13 @@ nlohmann::json Game::get_state(PlayerRole player) {
 }
 
 void Game::set_game(const nlohmann::json &game_details) {
-  std::string str_bool_commandant =
-      game_details.at("mode_commandant").get<std::string>();
-  if (str_bool_commandant == "true") {
-    mode_commandant = true;
-  } else if (str_bool_commandant == "false") {
-    mode_commandant = false;
-  } else {
-    // handle error properly
-    mode_commandant = false;
-  }
+  
+  mode_commandant = !(game_details["gamemode"].get<std::string>() == "Classic");
+  
   int switch_time =
-      std::stoi(game_details.at("switch_time").get<std::string>());
+      game_details.at("turnTimeLimit").get<int>();
   int player_time =
-      std::stoi(game_details.at("player_time").get<std::string>());
+      game_details.at("playerTimeLimit").get<int>();
   game_timer.set(switch_time, player_time, [this]() { change_turn(); });
   // player_timer.set(std::stoi(game_details.at("player_timer").get<std::string>()));
   // game_timer.set(std::stoi(game_details.at("game_timer").get<std::string>()));
