@@ -22,9 +22,10 @@ int main() {
     // Create a fictional njson object with game details
     njson gameDetails = {
         {"name", "New Room"},
-        {"type", "Classic"},
+        {"gamemode", "Classic"},
         {"gameTimeLimit", 30},
         {"turnTimeLimit", 2},
+        {"playerTimeLimit", 2},
         {"maxPlayers", 8}
     };
 
@@ -45,7 +46,8 @@ int main() {
     // Create Game
     waitForEnter("Ready to create game. ");
     auto createGameFuture = gameClient.CreateGame(gameDetails);
-    cout << "Game created with session ID: " << createGameFuture.get() << "\n";
+    auto sessionId = createGameFuture.get();
+    cout << "Game created with session ID: " << sessionId << "\n";
 
     // Get Games Information
     waitForEnter("Ready to get game list. ");
@@ -54,7 +56,7 @@ int main() {
 
     // Query Game State
     waitForEnter("Ready to query game state. ");
-    auto queryGameStateFuture = gameClient.QueryGameState("exampleSessionId");
+    auto queryGameStateFuture = gameClient.QueryGameState(sessionId);
     cout << "Game state for session 'exampleSessionId': " << queryGameStateFuture.get().dump() << "\n";
 
     // Add a Friend
