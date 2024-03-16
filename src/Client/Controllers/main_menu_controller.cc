@@ -8,8 +8,11 @@ bool MainMenuController::createGame(int mode, int friend_id) {
   // inviter un ami
 }
 
-void MainMenuController::joinGame(const std::string &game_id) {
+bool MainMenuController::joinGame(const std::string &game_id) {
   auto resultFuture = _game_client->JoinGame(game_id);
+  auto result = resultFuture.get();
+  if (result == "") return false;
+  else return true;
 }
 
 void MainMenuController::addFriend(const std::string &username) {

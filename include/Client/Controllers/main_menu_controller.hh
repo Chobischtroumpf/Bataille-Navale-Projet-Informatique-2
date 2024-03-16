@@ -17,7 +17,7 @@ public:
     explicit MainMenuController(std::shared_ptr<GameClient> client);
     bool validUser(const std::string& username);
     bool createGame(int mode, int friend_id);
-    void joinGame(const std::string& game_id);
+    bool joinGame(const std::string& game_id);
     void addFriend(const std::string& username);
     void manageProfile();
     void quit();

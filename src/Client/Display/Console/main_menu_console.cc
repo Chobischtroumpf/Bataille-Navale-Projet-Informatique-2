@@ -109,61 +109,6 @@ void MainMenuConsole::displayOptions(int mode) {
             std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
             break;
     }
-  std::cout
-      << "║\n║\n╠════════════════════════╗\n║What do you want to do ?║\n╠══"
-         "══════════════════════╩══════════════════════════════════════════════"
-         "══════════╪\n";
-  switch (mode) {
-  case 0:
-    std::cout << "║ (1) Create a new game ⌨" << std::endl;
-    std::cout << "║ (2) Add a friend ⌘" << std::endl;
-    std::cout << "║ (3) Refresh ⌛" << std::endl;
-    std::cout << "║ (4) Show more friends ☳" << std::endl;
-    std::cout << "║ (5) Chat with a friend ✍" << std::endl;
-    std::cout << "║ (6) Join game" << std::endl;
-    std::cout << "║ (7) Log out ↆ" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "═════════════════════╪\n";
-    break;
-  case 1:
-    std::cout << "║ (1) Choose game mode 1" << std::endl;
-    std::cout << "║ (2) Choose game mode 2" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "═════════════════════╪\n";
-    break;
-  case 2:
-    std::cout << "║ Enter a friend ID to send a game request!" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "═════════════════════╪\n";
-    break;
-  case 3:
-    std::cout << "║ Enter a username to send a request!" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "═════════════════════╪\n";
-    break;
-  case 4:
-    std::cout << "║ Enter a gameId to join a game!" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "═════════════════════╪\n";
-    break;
-  case 5:
-    std::cout << "║ Invalid option! Choose from the list below" << std::endl;
-    std::cout << "║ (1) Create a new game ⌨" << std::endl;
-    std::cout << "║ (2) Add a friend ⌘" << std::endl;
-    std::cout << "║ (3) Refresh ⌛" << std::endl;
-    std::cout << "║ (4) Show more friends ☳" << std::endl;
-    std::cout << "║ (5) Chat with a friend" << std::endl;
-    std::cout << "║ (6) Join game" << std::endl;
-    std::cout << "║ (7) Log out ↆ" << std::endl;
-    std::cout << "╚════════════════════════════════════════════════════════════"
-                 "═════════════════════╪\n";
-    case 6:
-        std::cout << "║ Enter a username to send a message!" << std::endl;
-        std::cout << "║ Type :'./exit' to back to the main menu"<< std::endl;
-        std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
-        break;
-    
-  }
 }
 
 
@@ -251,8 +196,10 @@ ReturnInput MainMenuConsole::handleInput() {
             std::cin >> gameId;
             if (username =="./exit")
                 break;
-            _controller->joinGame(gameId);
-            return {ReturnInput::LOBBY, gameId};
+            if (_controller->joinGame(gameId))
+                return {ReturnInput::LOBBY, gameId};
+            else
+                break;
         }
         case 7: // log out
             std::system("clear");
