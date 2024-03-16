@@ -449,7 +449,7 @@ void GameServer::handlePost(http_request request) {
 
             // Extract sessionId and move details from request body
             auto sessionId = requestBody[U("sessionId")].as_string();
-            njson move = requestBody[U("move")];
+            njson move = njson::parse(requestBody[U("move")].serialize());
 
             // Retrieve the session and make the move
             auto gameSession = sessionManager.getSession(to_utf8(sessionId));

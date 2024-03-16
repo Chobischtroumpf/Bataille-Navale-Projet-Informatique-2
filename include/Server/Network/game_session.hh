@@ -25,7 +25,7 @@ public:
     std::vector<std::string> getParticipants() const;
 
     // Game Logic 
-    bool makeMove( const std::string& userId, const std::string& move );
+    bool makeMove( const std::string& userId, const nlohmann::json& move );
     
     nlohmann::json getGameState(const std::string& userId) const;
 

@@ -71,7 +71,7 @@ nlohmann::json GameSession::getGameState(const std::string& userId) const {
 }
 
 // Method that sends a move to the game state
-bool GameSession::makeMove(const std::string& userId, const njson& move) {
+bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move) {
     auto playerRole = getParticipantRole(userId);
 
     return gameState.makeMove(playerRole, move);
