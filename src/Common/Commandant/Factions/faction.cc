@@ -1,4 +1,5 @@
-#include "faction.hh"
+//#include "faction.hh"
+#include "../../include/Common/Commandant/Factions/faction.hh"
 
 Faction::Faction(std::string name, PossibleShips possible_ships, SpecialAbilities special_abilities): _name{name}, _possible_ships{possible_ships}, _special_abilities{special_abilities} {}
 

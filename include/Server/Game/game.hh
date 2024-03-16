@@ -6,6 +6,8 @@
 #include "board.hh"
 #include "game_timer.hh"
 #include "player_role.hh"
+//#include "ship_coordinates.hh"
+#include "ship.hh"
 // #include "ship_coordinates.hh"
 
 // Class that handles the game between 2 players
@@ -15,7 +17,7 @@ public:
 
   bool is_finished() const;
 
-  bool handle_place_ship(Turn turn, ShipCoordinates ship_coordinates);
+  bool handle_place_ship(Turn turn, Ship ship);
 
   bool handle_fire(Turn turn, BoardCoordinates board_coordinates);
 

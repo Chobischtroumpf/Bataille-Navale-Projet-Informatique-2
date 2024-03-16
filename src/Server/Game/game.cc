@@ -7,7 +7,7 @@ Game::Game(const nlohmann::json &game_details)
 }
 
 bool Game::is_finished() const {
-  return _board->isFinished() || game_timer.is_finished();
+  return _board->is_finished() || game_timer.is_finished();
 }
 
 void Game::start_timer() {
@@ -16,13 +16,13 @@ void Game::start_timer() {
   // player_timer.start(std::bind(&Game::player_timer_finished, this));
 }
 
-bool Game::handle_place_ship(Turn turn, ShipCoordinates ship_coordinates) {
+bool Game::handle_place_ship(Turn turn, Ship ship) {
   if (!ship_placements_finished()) {
     if (turn == PLAYERONE) {
-      _board->placeShip(ship_coordinates, true);
+      _board->place_ship(ship, true);
       ship_placements.at(PLAYERONE)++;
     } else {
-      _board->placeShip(ship_coordinates, false);
+      _board->place_ship(ship, false);
       ship_placements.at(PLAYERTWO)++;
       
     }
@@ -38,7 +38,7 @@ bool Game::handle_place_ship(Turn turn, ShipCoordinates ship_coordinates) {
 }
 
 bool Game::handle_fire(Turn turn, BoardCoordinates board_coordinates) {
-  if (_board->whoseTurn() == turn) {
+  if (_board->whose_turn() == turn) {
     _board->fire(board_coordinates);
     change_turn();
     update_player1 = true;
@@ -53,18 +53,18 @@ bool Game::handle_fire(Turn turn, BoardCoordinates board_coordinates) {
 
 nlohmann::json Game::get_state(PlayerRole player) {
 
-  json game_json;
+  nlohmann::json game_json;
   
   if (player == PlayerRole::Leader && update_player1){
-    game_json = _board->toJson(player);
+    game_json = _board->to_json(player);
     update_player1 = false;
 
   }else if(player == PlayerRole::Opponent && update_player2){
-    game_json = _board->toJson(player);
+    game_json = _board->to_json(player);
     update_player2 = false;
     
   }else if(player == PlayerRole::Spectator){
-    game_json = _board->toJson(player);
+    game_json = _board->to_json(player);
   }
   else{
     game_json["fleetA"] = "None";
@@ -142,7 +142,7 @@ bool Game::ship_placements_finished() const {
 }
 
 void Game::change_turn(){
-  _board->changeTurn();
+  _board->change_turn();
   game_timer.switch_turn();
 }
 
