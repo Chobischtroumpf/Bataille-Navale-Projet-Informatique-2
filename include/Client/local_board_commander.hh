@@ -92,7 +92,7 @@ class LocalBoardCommander : public GameView {
     void placeShip(Ship ship);
 
     /* Polls the server to wait the beggining of the game */
-    void waitGame();
+    bool waitGame();
 
     /* Polls the server to wait the turn */
     void waitTurn();

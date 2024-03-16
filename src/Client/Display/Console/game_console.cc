@@ -512,7 +512,7 @@ void GameConsole::handleShipPlacement() {
       _last_input = OK;
       if (_board->allShipsPlaced()) {
         _control->sendShips(_board->getPlacedShips());
-        _phase = GAME;
+        _phase = WAIT_GAME;
       }
     } else {
       _last_input = ERR;
@@ -541,7 +541,7 @@ ReturnInput GameConsole::handlePlaceShip() {
       }
       if (_board->allShipsPlaced()) {
         _control->sendShips(_board->getPlacedShips());
-        _phase = GAME;
+        _phase = WAIT_GAME;
      } 
    std::cin.clear();
   return {ReturnInput::Screen::GAME, ""};
@@ -571,15 +571,26 @@ void GameConsole::displayWaitGame() {
   _out << std::flush;
 }
 
+void GameConsole::displayWaitTurn() {
+  std::system("clear");
+  _out << createGameHeader();
+  printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
+  _out << '\n';
+  printSideBySide(createGrid(true), createGrid(false));
+  _out << '\n';
+  _out << "\x1b[34;1m Turn of the other player \x1b[0m";
+  _out << std::flush;
+}
+
 void GameConsole::display() {
   if (_phase == PLACE_SHIP) {
     updatePlaceShip(_last_input);
+  } else if (_phase == GAME) {
+    updateGame(_last_input);
+  } else if (_phase == WAIT_GAME) {
+    displayWaitGame();
   } else {
-    if (_board->myTurn()) {
-      updateGame(_last_input);
-    } else {
-      displayWaitGame();
-    }
+    displayWaitTurn();
   }
 }
 void GameConsole::displayError() {}
@@ -588,12 +599,14 @@ void GameConsole::update() {}
 ReturnInput GameConsole::handleInput() {
   if (_phase == PLACE_SHIP) {
     handlePlaceShip();
-  } else {
-    if (_board->myTurn()) {
-      return handleFire();
-    } else {
-      _board->waitGame();
-    }
+  } else if (_phase == GAME) {
+    handleFire();
+    _phase = WAIT_TURN;
+  } else if (_phase == WAIT_GAME) {
+    _phase = _board->waitGame() ? GAME : WAIT_TURN;
+  } else if (_phase == WAIT_TURN) {
+    _board->waitTurn();
+    _phase = GAME;
   }
   return {ReturnInput::Screen::GAME, ""};
 }
