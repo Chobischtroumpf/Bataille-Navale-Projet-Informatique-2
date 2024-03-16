@@ -20,6 +20,6 @@ private:
     std::shared_ptr<GameClient> gameClient; // Client de jeu pour interagir avec le serveur
     std::string recipientId; // Identifiant du destinataire pour la récupération des messages
     nlohmann::json messages; // Stockage des messages récupérés
-    std::vector<Message> messagesClasse;
+    std::vector<Message> messageClasse;
     std::vector<Message> convertJsonToMessages();
 };

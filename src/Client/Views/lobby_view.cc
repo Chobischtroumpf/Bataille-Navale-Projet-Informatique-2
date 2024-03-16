@@ -1,0 +1,16 @@
+#include "lobby_view.hh"
+
+LobbyView::LobbyView(std::shared_ptr<GameClient> gameClient)
+    : gameClient(gameClient) {}
+
+
+std::vector<std::string> LobbyView::getUserInGame(const std::string& sessionId){
+    std::vector<std::string> convertedMessages;
+    auto futureMessages = gameClient->QueryGameState(sessionId);
+    auto messagesJson = futureMessages.get();
+    auto usersID = messagesJson["participants"];
+    for (const auto& userId : usersID) {
+        convertedMessages.emplace_back(userId);
+    }
+    return convertedMessages;
+}

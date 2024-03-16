@@ -26,7 +26,7 @@ void Driver::run(ReturnInput::Screen base_screen) {
           displayChatScreen(input.arg);
           break;
         case ReturnInput::Screen::LOBBY:
-          displayLobbyScreen();
+          displayLobbyScreen(input.arg);
           break;
         case ReturnInput::Screen::LOGIN:
           displayLoginScreen();
@@ -92,15 +92,20 @@ void Driver::displayChatScreen(std::string username) {
   }
 }
 
-void Driver::displayLobbyScreen() {
-    // Need to create lobby
+void Driver::displayLobbyScreen(std::string gameId) {
+  if (_display_type == CONSOLE) {
+    _display = std::make_shared<LobbyConsole>(gameId, getClient());
+    _current_screen = ReturnInput::Screen::LOBBY;
+  } else {
+    throw NotImplementedError("GUI not implemented yet");
+  }
 }
 
 void Driver::displayGameCreationScreen() {
-    /*
-     * (1) Move game_parameter.cpp from /test to /display
-     * (2) Make it a class with a view and a controller
-     * (3) Adapt the code here, and add as a constructor parameter (from game_parameter_console) the driver's gameClient
-     * by calling "getClient()" (just like the other display do);
-     */
+  if (_display_type == CONSOLE) {
+    _display = std::make_shared<GameSettingConsole>(getClient());
+    _current_screen = ReturnInput::Screen::GAME_CREATION;
+  } else {
+    throw NotImplementedError("GUI not implemented yet");
+  }
 }
