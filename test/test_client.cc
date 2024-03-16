@@ -93,5 +93,15 @@ int main() {
     cout << "Messages retrieved: " << result2 << "\n";
     cout << "All requests were processed. Check your server for the responses.\n";
 
+
+    njson startGameMove = {
+        {"moveType", "StartGame"},
+    };
+
+    // Call the MakeMove method
+    waitForEnter("Ready to test the StartGame move. ");
+    auto makeMoveFuture = gameClient.MakeMove(sessionId, startGameMove);
+    cout << "Move result: " << makeMoveFuture.get() << "\n";
+
     return 0;
 }
