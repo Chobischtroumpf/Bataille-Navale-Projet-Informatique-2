@@ -1,7 +1,7 @@
 #include "main_menu_controller.hh"
 
-MainMenuController::MainMenuController(std::shared_ptr<GameClient> client)
-    : _game_client(client) {}
+MainMenuController::MainMenuController(std::shared_ptr<GameClient> _game_client)
+    : _game_client(_game_client) {}
 
 bool MainMenuController::createGame(int mode, int friend_id) {
   // Communiquer avec le serveur pour créer une game (normal, commandant) +
@@ -25,7 +25,7 @@ void MainMenuController::addFriend(const std::string &username) {
 }
 
 bool MainMenuController::validUser(const std::string& username){
-    auto resultFuture = gameClient->GetUserId(username);
+    auto resultFuture = _game_client->GetUserId(username);
     auto result = resultFuture.get();
     if (result == "")
         return false;

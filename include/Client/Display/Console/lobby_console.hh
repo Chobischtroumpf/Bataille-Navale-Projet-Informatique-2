@@ -19,7 +19,7 @@ private:
   short _current_option = 0;
   void displayOptions(int mode);
   // void startGame();
-  void addPlayer();
+  void addPlayer(const std::string& playerName);
 
 public:
   explicit LobbyConsole(const std::string &sessionId,

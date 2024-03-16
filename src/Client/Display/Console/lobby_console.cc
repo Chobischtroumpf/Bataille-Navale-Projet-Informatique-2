@@ -106,10 +106,10 @@ ReturnInput LobbyConsole::handleInput() {
   } else {
     _view->waitGameStart(_session_id);
   }   
-    return {ReturnInput::LOBBY, sessionId};
+    return {ReturnInput::LOBBY, _session_id};
 }
 
 void LobbyConsole::addPlayer(const std::string& playerName) {
-    std::string message = "sessionID: " + sessionId;
+    std::string message = "sessionID: " + _session_id;
     _controller->sendIDGame(playerName, message);
 }
