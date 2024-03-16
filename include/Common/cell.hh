@@ -3,30 +3,35 @@
 #include <optional>
 #include <stdexcept>
 
+#include "ship.hh"
 #include "cell_type.hh"
 
 /*
  * Case dans le tableau
  */
-class Cell {
-  CellType _type{WATER};
-  std::optional<int> _ship_id{std::nullopt};
 
-public:
-  /** Default constructor: creates an unkown/Water cell */
-  constexpr Cell() = default;
-  constexpr Cell(CellType type, std::optional<int> ship_id)
-      : _type{type}, _ship_id{std::forward<std::optional<int>>(ship_id)} {
-    if (type & IS_SHIP && !_ship_id) {
-      throw std::logic_error("Cell with ship but no ship_id");
-    } else if (!(type & IS_SHIP) && _ship_id) {
-      throw std::logic_error("Cell without ship but with ship_id");
+class Cell {
+  private:
+    CellType _type{WATER};
+    std::optional<Ship> _ship{std::nullopt};
+
+  public:
+    /** Default constructor: creates an unkown/Water cell */
+    Cell() = default;
+    Cell(CellType type, std::optional<Ship> ship)
+        : _type{type}, _ship{std::forward<std::optional<Ship>>(ship)} {
+      if (type & UNDAMAGED_SHIP && !_ship) {
+        throw std::logic_error("Cell with ship but no ship_id");
+      } else if (!(type & UNDAMAGED_SHIP) && _ship) {
+        throw std::logic_error("Cell without undamaged ship but with ship_id");
+      }
     }
-  }
-  // Public method to set the type of the cell
-  void setType(CellType newType) { _type = newType; }
-  [[nodiscard]] constexpr inline CellType type() const { return _type; }
-  [[nodiscard]] constexpr inline std::optional<int> shipId() const {
-    return _ship_id;
-  }
+
+    //Getters
+    std::optional<Ship> ship() const { return _ship; }
+    constexpr inline CellType type() const { return _type; }
+
+    //Setters
+    void setShip(Ship ship) { _ship = ship; }
+    void setType(CellType newType) { _type = newType; }
 };

@@ -50,8 +50,8 @@ std::shared_ptr<GameClient> Driver::getClient() {
 
 void Driver::displayGameScreen() {
   if (_display_type == CONSOLE) {
-    Player player1 = Player(FactionMines()); //> To change in function of the faction selected
-    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(player1);
+    Player player1 = Player();
+    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, GameMode::CLASSIC);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());
     _current_screen = ReturnInput::Screen::GAME;
@@ -103,8 +103,8 @@ void Driver::displayLobbyScreen() {
 
 void Driver::displayGameCreationScreen() {
   if (_display_type == CONSOLE) {
-    std::shared_ptr<GamePlayerView> _view = std::make_shared<GamePlayerView>();
-    _display = std::make_shared<GamePlayerConsole>(_view);
+    _display = std::make_shared<GameSettingConsole>();
+    _current_screen = ReturnInput::Screen::GAME_CREATION;
 
   } else {
     throw NotImplementedError("GUI not implemented yet");

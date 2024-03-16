@@ -12,7 +12,8 @@
 class FactionBombardement : public Faction
 {
   public:
-    FactionBombardement(): Faction() {
+    // Constructor
+    FactionBombardement(): Faction() { // creates a Faction with preset values for the Bombardement faction
       setName("Sonar");
       PossibleShips ships;
       ships.push_back(std::make_pair(1, 1));

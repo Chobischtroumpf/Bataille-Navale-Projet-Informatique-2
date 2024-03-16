@@ -11,13 +11,14 @@
 class FactionMines : public Faction
 {
   public:
-    FactionMines(): Faction() {
+    // Constructor
+    FactionMines(): Faction() { // creates a Faction with preset values for the Mines faction
         setName("Sonar");
         PossibleShips ships;
-        ships.push_back(std::make_pair(1, 1));
-        ships.push_back(std::make_pair(2, 2));
-        ships.push_back(std::make_pair(2, 3));
-        ships.push_back(std::make_pair(1, 4));
+        ships[1] = 1;
+        ships[2] = 2;
+        ships[3] = 2;
+        ships[4] = 1;
         setPossibleShips(ships);
         setSpecialAbilities({Torpedo(), PiercingTorpedo(), Sonar(), AerialStrike(), Mine()});
     };

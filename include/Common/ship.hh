@@ -3,11 +3,11 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "board_coordinates.hh"
 #include "cell_type.hh"
 #include "game_view.hh"
-#include "cell.hh"
 
 class Ship {
   private:
@@ -25,7 +25,9 @@ class Ship {
   public:
     // Constructors
     Ship(std::vector<BoardCoordinates> coordinates);
+    Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates);
     Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
+    Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board);
     Ship(const Ship &other);
 
     // Operators
@@ -49,6 +51,7 @@ class Ship {
 
     // void setShipCells(const vector<vector<Cell>> &ship_cells);
     void setType(CellType new_type);
+    void setTopLeft(BoardCoordinates top_left);
 
     // Notifies the Ship that a tile has been hit, allowing it to check if it has been sunk
     void notify(const BoardCoordinates &coords);
@@ -58,4 +61,5 @@ class Ship {
 
     // Print the ship
     std::vector<std::string> to_string();
+    nlohmann::json to_json();
 };

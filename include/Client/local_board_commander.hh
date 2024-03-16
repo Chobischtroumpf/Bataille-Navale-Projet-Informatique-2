@@ -6,16 +6,22 @@
 #include <map>
 #include <iostream>
 #include <cstdint>
+#include <memory>
 #include <nlohmann/json.hpp>
 
-#include "board_coordinates.hh"
-#include "cell.hh"
 #include "not_implemented_error.hh"
+#include "board_coordinates.hh"
 #include "ship_commander.hh"
+#include "game_client.hh"
 #include "game_view.hh"
 #include "player.hh"
 #include "ship.hh"
+#include "cell.hh"
 
+typedef enum {
+  CLASSIC,
+  COMMANDER
+} GameMode;
 
 /*
  * Local board view
@@ -23,24 +29,27 @@
 class LocalBoardCommander : public GameView {
   private:
     Player _player;
+    GameMode _mode;
+    std::string _game_id;
+
     std::vector<std::vector<Cell>> _my_board;
-    // std::vector<Ship> _placed_ships;
     std::vector<std::vector<Cell>> _their_board;
-    // std::array<uint8_t, > _ships_to_place;
-    bool _my_turn = true;
+
+    std::shared_ptr<GameClient> _client;
+
+    // bool _my_turn;
     bool _is_finished;
     bool _is_victory;
 
     /* Get the cell in one of the board*/
     Cell get(bool my_side, BoardCoordinates position) const;
 
-    int shipId(bool my_side, BoardCoordinates position);
+    Ship &shipId(bool my_side, BoardCoordinates position);
     bool check();
     //void placeShip(ShipCoordinates coordinates, bool my_fleet);
-    void fire();
 
   public:
-    LocalBoardCommander(Player player);
+    LocalBoardCommander(std::shared_ptr<GameClient> client, Player player, GameMode mode);
     
     virtual ~LocalBoardCommander() override = default;
 
@@ -50,7 +59,8 @@ class LocalBoardCommander : public GameView {
     bool isVictory() const override;
     std::size_t width() const override;
     std::size_t height() const override;
-    Player getPlayer() const;
+    GameMode mode() const;
+    Player player() const;
 
     /*
     * Get the cell type at the given coordinates
@@ -59,28 +69,27 @@ class LocalBoardCommander : public GameView {
     */
     CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
 
-    /* WARNING : NOT FULLY IMPLEMENTED 
-    * Check if two cells are part of the same ship*/
+    /* Check if two cells are part of the same ship */
     bool isSameShip(bool my_side, BoardCoordinates first,
                     BoardCoordinates second) const override;
 
     /* Get the neighbors of a cell */
     std::vector<Cell> getNeighbors(BoardCoordinates coord) const;
 
-    /* Returns the ships that needs can be placed */
+    /* Returns the ships that still need to be placed */
     PossibleShips shipsToPlace() const;
 
     /* Returns true if all boats are placed */
-    bool allBoatsPlaced() const;
+    bool allShipsPlaced() const;
 
-    /* Returns true if the ship is remaining */
-    bool isRemainingShip(int number_of_case) const;
+    /* Returns true if the ship is still available */
+    bool isShipAvailable(int size) const;
 
     /* Returns the ships that have been placed */
     std::vector<Ship> getPlacedShips() const;
 
-    /* Add a placed ship (locally) */
-    bool addPlacedShip(Ship ship);
+    /* places a ship */
+    void placeShip(Ship ship);
 
     /* Polls the server to wait the beggining of the game */
     void waitGame();
@@ -90,6 +99,7 @@ class LocalBoardCommander : public GameView {
 
     void update() override { throw NotImplementedError("Update"); }
 
+    // returns the 
     CellType best(CellType lhs, CellType rhs);
 
     static CellType string_to_celltype(const std::string& type);
@@ -97,4 +107,7 @@ class LocalBoardCommander : public GameView {
     void update_board(const nlohmann::json& new_board);
 
     bool isInBoard(BoardCoordinates coord) const;
+
+    // sends the fire request to the server
+    void fire(SpecialAbility ability, BoardCoordinates coordinates);
 };

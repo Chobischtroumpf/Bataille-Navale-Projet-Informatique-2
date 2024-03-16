@@ -7,13 +7,14 @@
 class FactionClassique : public Faction
 {
   public:
-    FactionClassique(): Faction() {
+    // Constructor
+    FactionClassique(): Faction() { // creates a Faction with preset values for the Classic faction
       setName("Sonar");
       PossibleShips ships;
-      ships.push_back(std::make_pair(1, 2));
-      ships.push_back(std::make_pair(2, 3));
-      ships.push_back(std::make_pair(1, 4));
-      ships.push_back(std::make_pair(1, 5));
+      ships[2]=1;
+      ships[3]=2;
+      ships[4]=1;
+      ships[5]=1;
       setPossibleShips(ships);
       setSpecialAbilities({Torpedo()});
     };
