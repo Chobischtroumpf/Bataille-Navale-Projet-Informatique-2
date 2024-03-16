@@ -1,9 +1,13 @@
+
 #include "game_setting_console.hh"
 
 GameSettingConsole::GameSettingConsole(std::shared_ptr<GameClient> gameClient): gameClient(gameClient) {
 }
 
+
+
 void GameSettingConsole::displayTitle() {
+    system("clear");
     std::cout << "╔═══════════════════════════════════╗" << std::endl;
     std::cout << "║ Select the properties of the game ║" << std::endl;
     std::cout << "╠═══════════════════════════════════╩═══════════════════════╪\n║" << std::endl;
@@ -134,7 +138,7 @@ void GameSettingConsole::displayParameter(std::string game_name, bool game_mode_
 }
 
 void GameSettingConsole::displayOptions(int mode) {
-    std::cout << "\n║\n╠════════════════════════════════════════╗" << std::endl;
+    std::cout << "║\n╠════════════════════════════════════════╗" << std::endl;
     switch (mode) {
       case 0:
         std::cout << "║ Choose a game name                     ║" << std::endl;
@@ -183,7 +187,6 @@ void GameSettingConsole::displayOptions(int mode) {
 }
 
 void GameSettingConsole::display() {
-    displayParameter();
 }
 
 void GameSettingConsole::displayError() {
@@ -209,7 +212,6 @@ ReturnInput GameSettingConsole::handleInput() {
         displayParameter();
         
         if (input_error) {
-            std::cout << "Invalid Input !" << std::endl;
         }
         else {
             std::cout << std::endl;
@@ -234,7 +236,7 @@ ReturnInput GameSettingConsole::handleInput() {
         displayParameter(game_name);
         
         if (input_error) {
-            std::cout << "Invalid Input !" << std::endl;
+            std::cout << "Invalid Input ! 240" << std::endl;
         }
         else {
             std::cout << std::endl;
@@ -268,7 +270,7 @@ ReturnInput GameSettingConsole::handleInput() {
         displayParameter(game_name, game_mode_classic);
         
         if (input_error) {
-            std::cout << "Invalid Input !" << std::endl;
+            std::cout << "Invalid Input ! 274" << std::endl;
         }
         else {
             std::cout << std::endl;
@@ -296,7 +298,7 @@ ReturnInput GameSettingConsole::handleInput() {
         displayParameter(game_name, game_mode_classic, time_per_turn);
         
         if (input_error) {
-            std::cout << "Invalid Input !" << std::endl;
+            std::cout << "Invalid Input ! 302" << std::endl;
         }
         else {
             std::cout << std::endl;
@@ -324,7 +326,7 @@ ReturnInput GameSettingConsole::handleInput() {
         displayParameter(game_name, game_mode_classic, time_per_turn, time_per_game);
         
         if (input_error) {
-            std::cout << "Invalid Input !" << std::endl;
+            std::cout << "Invalid Input !330" << std::endl;
         }
         else {
             std::cout << std::endl;
@@ -352,7 +354,7 @@ ReturnInput GameSettingConsole::handleInput() {
         displayParameter(game_name, game_mode_classic, time_per_turn, time_per_game, game_time);
         
         if (input_error) {
-            std::cout << "Invalid Input !";
+            std::cout << "Invalid Input ! 358";
         }
         std::cout << std::endl;
 		
@@ -394,33 +396,36 @@ ReturnInput GameSettingConsole::handleInput() {
         std::getline(std::cin, answer);
         if (!answer.empty()) {
             try {
-                if (stoi(answer) == 1) {
-                    invalid_input = false;
-                }
-                else {
-                    return {};
+                switch (stoi(answer)) {
+                    case 1:{
+                        njson gameDetails = {
+                            {"name", game_name},
+                            {"gamemode", "Classic"},
+                            {"gameTimeLimit", game_time},
+                            {"playerTimeLimit", time_per_game},
+                            {"turnTimeLimit", time_per_turn},
+                            {"maxPlayers", 2}
+                        };
+
+                        if (!game_mode_classic) {
+                            gameDetails["gamemode"] = "Commander";
+                        }
+                        if (spectator_allowed) {
+                            gameDetails["maxPlayers"] = 8;
+                        }
+                        auto resultFuture = gameClient->CreateGame(gameDetails);
+                        auto gameID = resultFuture.get();
+                        std::cout << "ceci est le game ID: "<<gameID << std::endl;
+                        return {ReturnInput::LOBBY,gameID};
+                    }
+                    case 2:
+                        return {ReturnInput::MAIN_MENU,""};
+                    default:
+                        break;
                 }
             }
             catch (const std::exception& e) {}
         }
-	}
-
-    njson gameDetails = {
-        {"name", game_name},
-        {"gamemode", "Classic"},
-        {"gameTimeLimit", game_time},
-        {"playerTimeLimit", time_per_game},
-        {"turnTimeLimit", time_per_turn},
-        {"maxPlayers", 2}
-    };
-
-    if (!game_mode_classic) {
-        gameDetails["gamemode"] = "Commander";
     }
-    if (spectator_allowed) {
-        gameDetails["maxPlayers"] = 8;
-    }
-    auto resultFuture = gameClient->CreateGame(gameDetails);
-    auto gameID = resultFuture.get();
-    return {ReturnInput::LOBBY,gameID};
+    return {ReturnInput::MAIN_MENU,""};
 }

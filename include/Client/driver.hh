@@ -12,6 +12,7 @@
 #include "register_controller.hh"
 #include "main_menu_controller.hh"
 #include "chat_controller.hh"
+#include "lobby_controller.hh"
 
 // Displays
 #include "display.hh"
@@ -20,8 +21,8 @@
 #include "register_console.hh"
 #include "main_menu_console.hh"
 #include "chat_console.hh"
-#include "game_player_console.hh"
 #include "game_setting_console.hh"
+#include "lobby_console.hh"
 
 // Views
 #include "local_board_commander.hh"
@@ -29,7 +30,7 @@
 #include "register_view.hh"
 #include "main_menu_view.hh"
 #include "chat_view.hh"
-#include "game_player_view.hh"
+#include "lobby_view.hh"
 
 
 enum DisplayType {
@@ -58,7 +59,7 @@ private:
     void displayRegisterScreen();
     void displayMainMenuScreen();
     void displayChatScreen(std::string username);
-    void displayLobbyScreen();
+    void displayLobbyScreen(std::string gameId);
     void displayGameCreationScreen();
 
     std::shared_ptr<Display> _display;

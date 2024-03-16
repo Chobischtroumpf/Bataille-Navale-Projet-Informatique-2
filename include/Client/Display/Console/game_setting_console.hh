@@ -6,7 +6,6 @@
 #include "game_client.hh"
 #include "display.hh"
 #include "console.hh"
-#include "game_setting_controller.hh"
 
 
 class GameSettingConsole : public Console {

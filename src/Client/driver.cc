@@ -29,7 +29,7 @@ void Driver::run(ReturnInput::Screen base_screen) {
           displayChatScreen(input.arg);
           break;
         case ReturnInput::Screen::LOBBY:
-          displayLobbyScreen();
+          displayLobbyScreen(input.arg);
           break;
         case ReturnInput::Screen::LOGIN:
           displayLoginScreen();
@@ -90,22 +90,26 @@ void Driver::displayMainMenuScreen() {
 
 void Driver::displayChatScreen(std::string username) {
   if (_display_type == CONSOLE) {
-    _display = std::make_shared<ChatConsole>("me",username, getClient());
+    _display = std::make_shared<ChatConsole>(username, getClient());
     _current_screen = ReturnInput::Screen::CHAT;
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }
 }
 
-void Driver::displayLobbyScreen() {
-    // Need to create lobby
+void Driver::displayLobbyScreen(std::string gameId) {
+  if (_display_type == CONSOLE) {
+    _display = std::make_shared<LobbyConsole>(gameId, getClient());
+    _current_screen = ReturnInput::Screen::LOBBY;
+  } else {
+    throw NotImplementedError("GUI not implemented yet");
+  }
 }
 
 void Driver::displayGameCreationScreen() {
   if (_display_type == CONSOLE) {
     _display = std::make_shared<GameSettingConsole>(getClient());
     _current_screen = ReturnInput::Screen::GAME_CREATION;
-
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }

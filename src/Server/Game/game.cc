@@ -73,18 +73,23 @@ nlohmann::json Game::get_state(PlayerRole player) {
 
   if (is_finished()) {
       game_json["Finished"] = "true";
-      if (game_timer.winner() == 0){
+      if (!game_timer.is_finished()){
         if (_board->isVictory()){
           game_json["Winner"] = "PLAYERONE";
         } else{
           game_json["Winner"] = "PLAYERTWO";
         }
+      }else{
+        if (game_timer.get_winner() == 0){
+          game_json["Winner"] = "INDECISIVE";
+        }
+        if (game_timer.get_winner() == 1) {
+          game_json["Winner"] = "PLAYERONE";
+        } else {
+          game_json["Winner"] = "PLAYERTWO";
+        }
       }
-      if (game_timer.winner() == 1) {
-        game_json["Winner"] = "PLAYERONE";
-      } else {
-        game_json["Winner"] = "PLAYERTWO";
-      }
+      
   } else {
       game_json["Finished"] = "false";
       game_json["Winner"] = "None";
@@ -99,7 +104,7 @@ nlohmann::json Game::get_state(PlayerRole player) {
 
   game_json["player1_timer"] = std::to_string(game_timer.get_player1_timer());
   game_json["player2_timer"] = std::to_string(game_timer.get_player2_timer());
-  game_json["timer"] = std::to_string(game_timer.get_timer());
+  game_json["game_timer"] = std::to_string(game_timer.get_game_timer());
   if (_board->whoseTurn() == PLAYERONE){
     game_json["turn"] = "PLAYERONE";
   }else{
@@ -111,21 +116,14 @@ nlohmann::json Game::get_state(PlayerRole player) {
 }
 
 void Game::set_game(const nlohmann::json &game_details) {
-  std::string str_bool_commandant =
-      game_details.at("mode_commandant").get<std::string>();
-  if (str_bool_commandant == "true") {
-    mode_commandant = true;
-  } else if (str_bool_commandant == "false") {
-    mode_commandant = false;
-  } else {
-    // handle error properly
-    mode_commandant = false;
-  }
-  int switch_time =
-      std::stoi(game_details.at("switch_time").get<std::string>());
+  
+  mode_commandant = !(game_details["gamemode"].get<std::string>() == "Classic");
+  
+  int game_time =
+      game_details.at("turnTimeLimit").get<int>();
   int player_time =
-      std::stoi(game_details.at("player_time").get<std::string>());
-  game_timer.set(switch_time, player_time, [this]() { change_turn(); });
+      game_details.at("playerTimeLimit").get<int>();
+  game_timer.set(game_time, player_time);
   // player_timer.set(std::stoi(game_details.at("player_timer").get<std::string>()));
   // game_timer.set(std::stoi(game_details.at("game_timer").get<std::string>()));
 }

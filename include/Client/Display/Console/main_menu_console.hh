@@ -12,7 +12,7 @@
 
 class MainMenuConsole : public Console {
 public:
-    MainMenuConsole(std::shared_ptr<GameClient> client);
+    explicit MainMenuConsole(std::shared_ptr<GameClient> client);
     void display() override;
     void displayError() override;
     void update() override;

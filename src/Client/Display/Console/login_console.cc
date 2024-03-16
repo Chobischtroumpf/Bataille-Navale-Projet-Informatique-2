@@ -71,8 +71,7 @@ std::string LoginConsole::demanderNomUtilisateur() {
   return nomUtilisateur;
 }
 
-std::string
-LoginConsole::demanderMotDePasse() { // Ajouter des conditions sur le mdp?
+std::string LoginConsole::demanderMotDePasse() { // Ajouter des conditions sur le mdp?
   std::string motDePasse;
   std::cout << "Mot de passe: ";
   if (std::cin.peek() == '\n')

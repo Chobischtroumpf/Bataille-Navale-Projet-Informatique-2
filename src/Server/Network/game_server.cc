@@ -127,7 +127,11 @@ void GameServer::handleGet(http_request request) {
                 // Use sessionId to query the game state
                 auto gameSession = sessionManager.getSession(to_utf8(sessionId));
                 njson gameState = gameSession->getGameState(userId);
-                response["gameState"] = gameState;
+                njson gameDetails;
+
+                gameDetails["gameState"] = gameState;
+                gameDetails["participants"] = gameSession->getParticipants();
+                response["gameDetails"] = gameDetails;
                 request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
                 // Handle missing parameters
@@ -341,7 +345,6 @@ void GameServer::handleGet(http_request request) {
             request.reply(status_codes::OK, response.dump(), "application/json");
         }
 
-
             // Handle unmatched paths
         else {
             response["error"] = "Unknown path";
@@ -376,28 +379,24 @@ void GameServer::handlePost(http_request request) {
             // If userId is empty, the token is invalid or missing
             if (userId.empty()) {
               response["error"] = "Invalid or missing AuthToken";
-              request.reply(status_codes::Unauthorized, response.dump(),
-                            "application/json");
+              request.reply(status_codes::Unauthorized, response.dump(), "application/json");
               return; // Stop further processing
             }
-            cout << "data: " << requestBody.serialize() << endl;
+
             // Check if "gameDetails" exists in the requestBody
             if (!requestBody.has_field(U("gameDetails"))) {
               response["error"] = "Missing gameDetails";
-              request.reply(status_codes::BadRequest, response.dump(),
-                            "application/json");
+              request.reply(status_codes::BadRequest, response.dump(), "application/json");
               return;
             }
 
             // Extract game details from request body
-            njson gameDetails =
-                njson::parse(requestBody[U("gameDetails")].serialize());
+            njson gameDetails = njson::parse(requestBody[U("gameDetails")].serialize());
 
             // Create a new session
             auto sessionId = sessionManager.createSession(userId, gameDetails);
             response["sessionId"] = sessionId;
-            request.reply(status_codes::OK, response.dump(),
-                          "application/json");
+            request.reply(status_codes::OK, response.dump(),"application/json");
           }
 
           // Handle the case for "/api/games/move" - Make a move in a game
@@ -649,6 +648,7 @@ void GameServer::handlePost(http_request request) {
             request.reply(status_codes::BadRequest, response.dump(),
                           "application/json");
           }
+
         })
         .then([](pplx::task<void> errorHandler) {
           try {

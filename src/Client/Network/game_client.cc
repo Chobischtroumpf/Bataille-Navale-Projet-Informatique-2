@@ -231,7 +231,7 @@ future<njson> GameClient::JoinGame(const string& sessionId) {
     return resultFuture;
 }
 
-std::future<bool> GameClient::MakeMove(const std::string& sessionId, const std::string& move) {
+std::future<bool> GameClient::MakeMove(const std::string& sessionId, const njson& move) {
     cout << "Sending move to game session: " << sessionId << " ..." << endl;
 
     // Use a promise to return the result asynchronously

@@ -45,7 +45,8 @@ CMakeCache.txt
 *.bat
 windows
 build
-*.db
+
+users.db
 
 # Build folder
 build/*
