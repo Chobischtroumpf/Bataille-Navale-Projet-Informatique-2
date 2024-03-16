@@ -157,19 +157,17 @@ void GameServer::handleGet(http_request request) {
             // Parsing query parameters
             auto queryParams = uri::split_query(request.request_uri().query());
             // Extracting sessionId from query parameters
-            auto sessionIdIt = queryParams.find(U("sessionid"));
+            auto sessionIdIt = queryParams.find(U("sessionId"));
         
 
             // Verifying both sessionId and userId are provided
             if (sessionIdIt != queryParams.end() ) {
                 auto sessionId = sessionIdIt->second;
-            
-
                 // Use sessionId and userId to add player to the game 
                 auto gameSession = sessionManager.getSession(to_utf8(sessionId));
                 gameSession->addParticipant(userId);
 
-                response["gameDetails"] = {}; // Not implemented
+                response["isSuccessful"] = true; 
                 request.reply(status_codes::OK, response.dump(), "application/json");
             } else {
                 // Handle missing parameters
