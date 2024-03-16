@@ -643,7 +643,6 @@ void GameServer::handlePost(http_request request) {
 
           else {
             // Handle unmatched paths
-        else {
             response["error"] = "Unknown path";
             request.reply(status_codes::BadRequest, response.dump(),
                           "application/json");

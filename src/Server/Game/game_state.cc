@@ -13,7 +13,7 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
     std::string str_move = move.at("move").get<std::string>() ;
     if (str_move == "fire"){
         return handle_fire(player, move);
-    }else if (str_move == "placeship"){
+    }else if (str_move == "placeShips"){
         return handle_place_ship(player, move);
     }else{
         //handle error
@@ -35,21 +35,17 @@ bool GameState::handle_place_ship(PlayerRole player, const nlohmann::json& move)
         return false;
     }*/
     for (const auto& obj : move["ships"]) {
-        std::string x = obj["anchor"]["x"].get<std::string>();
-        size_t y = obj["anchor"]["y"];
-        int length = obj["length"];
-        bool vertical = obj["vertical"];
-
-        // Create ShipCoordinates object using the extracted values
-        ShipCoordinates ship_coordinates;
-
-        if (vertical){
-            ship_coordinates.set(BoardCoordinates::parseX(x).value(),y-1,VERTICAL,static_cast<ShipType>(length));
-        } else{
-            ship_coordinates.set(BoardCoordinates::parseX(x).value(),y-1,HORIZONTAL,static_cast<ShipType>(length));
+        std::vector<BoardCoordinates> coords{};
+        for(const auto& obj_coord:obj["ship"]){
+            std::string x = obj["anchor"]["x"].get<std::string>();
+            size_t y = obj["anchor"]["y"];
+            BoardCoordinates board_coordinates{BoardCoordinates::parseX(x).value(),y-1};
+            coords.push_back(board_coordinates);
         }
 
-        bool result = game->handle_place_ship(role_to_turn(player),ship_coordinates);
+        Ship ship{coords};
+
+        bool result = game->handle_place_ship(role_to_turn(player),ship);
         if (!result){
             //error in placing ship gotta be handeled
             return false;

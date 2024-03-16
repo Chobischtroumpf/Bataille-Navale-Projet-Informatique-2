@@ -1,4 +1,5 @@
-#include "special_ability.hh"
+//#include "special_ability.hh"
+#include "../../include/Common/Commandant/Abilities/special_ability.hh"
 
 SpecialAbility::SpecialAbility(std::string name, std::string description, int energy_cost, SpecialAbilityType type) : _name{name}, _description{description}, _energy_cost{energy_cost}, _type{type} {}
 
