@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "profile_view.hh"
 #include "console.hh"
+#include "profile_view.hh"
 
 class ProfileConsole : public Console {
 private:

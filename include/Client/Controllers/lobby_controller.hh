@@ -1,17 +1,17 @@
 #pragma once
 
-#include <string>
 #include <future>
+#include <string>
 
-#include "game_client.hh"
 #include "controller.hh"
+#include "game_client.hh"
 
 class LobbyController : public Controller {
 private:
-    std::shared_ptr<GameClient> gameClient;
+  std::shared_ptr<GameClient> _game_client;
 
 public:
-    explicit LobbyController(std::shared_ptr<GameClient> gameClient);
+  explicit LobbyController(std::shared_ptr<GameClient> gameClient);
 
-    void sendIDGame(const std::string& destination, const std::string& message);
+  void sendIDGame(const std::string &destination, const std::string &message);
 };

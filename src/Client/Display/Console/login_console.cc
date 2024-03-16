@@ -1,13 +1,12 @@
 #include "login_console.hh"
 
 /*
-Dans la classe LoginController à quoi correspond checkValidity
+Dans la classe _login_controller à quoi correspond checkValidity
 Faut il donc une autre méthode pour Ajouter le compte nouvellememnt créé à la BD
-Attention il n y a pas encore de fichier.cpp pour LoginController
+Attention il n y a pas encore de fichier.cpp pour _login_controller
 */
 LoginConsole::LoginConsole(std::shared_ptr<GameClient> gameClient)
-    : loginController(gameClient) {
-}
+    : _login_controller(gameClient) {}
 
 ReturnInput LoginConsole::handleInput() {
   int choix;
@@ -22,7 +21,7 @@ ReturnInput LoginConsole::handleInput() {
 
   while (continuer) {
     if (choix == 1) {
-      if (seConnecter(loginController)) {
+      if (seConnecter(_login_controller)) {
         std::cout << "Connexion réussie!\n";
         continuer = false;
         return {ReturnInput::MAIN_MENU, ""};
@@ -30,7 +29,7 @@ ReturnInput LoginConsole::handleInput() {
         std::cout << "Échec de la connexion. Veuillez réessayer.\n";
       }
     } else if (choix == 2) {
-      if (sEnregistrer(loginController)) {
+      if (sEnregistrer(_login_controller)) {
         std::cout << "Enregistrement réussi.\n";
         continuer = false;
         return {ReturnInput::MAIN_MENU, ""};
@@ -44,21 +43,21 @@ ReturnInput LoginConsole::handleInput() {
   return {ReturnInput::Screen::LOGIN, ""};
 }
 
-bool LoginConsole::seConnecter(LoginController &loginController) {
-  //system("clear");
+bool LoginConsole::seConnecter(LoginController &_login_controller) {
+  // system("clear");
   std::cout << "Se connecter\n";
   std::string username = demanderNomUtilisateur();
   std::string password = demanderMotDePasse();
-  auto registerFuture = loginController.attemptLogin(username, password);
+  auto registerFuture = _login_controller.attemptLogin(username, password);
   return (registerFuture.get());
 }
 
-bool LoginConsole::sEnregistrer(LoginController &loginController) {
-  //system("clear");
+bool LoginConsole::sEnregistrer(LoginController &_login_controller) {
+  // system("clear");
   std::cout << "Enregistrement\n";
   std::string username = demanderNomUtilisateur();
   std::string password = demanderMotDePasseEnregistrement();
-  auto registerFuture = loginController.attemptRegister(username, password);
+  auto registerFuture = _login_controller.attemptRegister(username, password);
   return (registerFuture.get());
 }
 
@@ -71,7 +70,8 @@ std::string LoginConsole::demanderNomUtilisateur() {
   return nomUtilisateur;
 }
 
-std::string LoginConsole::demanderMotDePasse() { // Ajouter des conditions sur le mdp?
+std::string
+LoginConsole::demanderMotDePasse() { // Ajouter des conditions sur le mdp?
   std::string motDePasse;
   std::cout << "Mot de passe: ";
   if (std::cin.peek() == '\n')
