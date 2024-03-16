@@ -27,7 +27,9 @@ enum InputStatus {
 
 enum GamePhase {
   PLACE_SHIP,
-  GAME
+  WAIT_GAME,
+  GAME,
+  WAIT_TURN
 };
 
 /** BoardDisplay using text.
@@ -180,6 +182,7 @@ class GameConsole : public Console {
     void updatePlaceShip(InputStatus status);
     void updateGame(InputStatus);
     void displayWaitGame();
+    void displayWaitTurn();
 
     /** Parse coordinates provided by user, check boundaries and call
      * BoardControl::fire. */

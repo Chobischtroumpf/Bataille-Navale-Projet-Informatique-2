@@ -134,7 +134,12 @@ CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
   return lhs <= rhs ? lhs : rhs;
 }
 
-void LocalBoardCommander::waitGame() {
+bool LocalBoardCommander::waitGame() {
+  sleep(1);
+  return true;
+}
+
+void LocalBoardCommander::waitTurn() {
   sleep(1);
 }
 
