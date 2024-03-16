@@ -31,7 +31,7 @@ class LocalBoardCommander : public GameView {
     Player _player;
     GameMode _mode;
     std::string _game_id;
-    const std::string& sessionId
+    const std::string& sessionId;
 
     std::vector<std::vector<Cell>> _my_board;
     std::vector<std::vector<Cell>> _their_board;

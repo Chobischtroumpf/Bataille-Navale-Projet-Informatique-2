@@ -14,7 +14,7 @@ LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,Play
       _is_victory{false},
       _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
       _their_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
-      sessionId{sessionID} {}
+      sessionId{sessionId} {}
 
 bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }
 
