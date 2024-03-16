@@ -105,6 +105,7 @@ class Board: public GameView {
       }
     }
 
+    // updates the board after a cell has been hit
     void setHit(BoardCoordinates coords) {
       Cell &cell = myTurn() ? _player2_side[coords.y()][coords.x()]
                             : _player1_side[coords.y()][coords.x()];
@@ -125,6 +126,7 @@ class Board: public GameView {
       }
     }
 
+    // updates the board after it has been scanned
     void setScanned(BoardCoordinates coords) {
       Cell &cell = myTurn() ? _player2_side[coords.y()][coords.x()]
                             : _player1_side[coords.y()][coords.x()];
@@ -137,33 +139,37 @@ class Board: public GameView {
       }
     }
 
+    // updates the board after a one of the torpedos has been fired
     void fireTorpedo(SpecialAbility ability, BoardCoordinates coords) {
       std::vector<std::vector<Cell>> &board = myTurn() ? _player2_side : _player1_side;
 
       if (ability.getType() == TORPEDO) {
         setHit(coords);
       } else if (ability.getType() == BIG_TORPEDO) {
-        for (int i =0; i<2; i++) {
-          for (int j =0; j<2; j++) {
+        for (int i =0; i<2 && coords.x() + i < width()-1; i++) {
+          for (int j =0; j<2 && coords.y() + j < height()-1; j++) {
             setHit(BoardCoordinates(coords.x() + i, coords.y() + j));
           }
         }
       } else if (ability.getType() == PIERCING_TORPEDO) {
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4 && coords.y() + i < height(); i++){
           setHit(BoardCoordinates(coords.x(), coords.y() + i));
         }
       } else if (ability.getType() == AERIAL_STRIKE) {
-          for (int i = 0; i < 4; i++) {
+          for (int i = 0; i < 4 && coords.x() + i < width(); i++) {
             setHit(BoardCoordinates(coords.x() + i, coords.y()));
-            setHit(BoardCoordinates(coords.x() + i, coords.y() + 3));
+            if (coords.y() + 3 < height())
+              setHit(BoardCoordinates(coords.x() + i, coords.y() + 3));
           }
-          for (int j = 1; j < 3; j++) {
+          for (int j = 1; j < 3 && coords.y() + j < height(); j++) {
             setHit(BoardCoordinates(coords.x(), coords.y() + j));
-            setHit(BoardCoordinates(coords.x() + 3, coords.y() + j));
+            if (coords.x() + 3 < width())
+              setHit(BoardCoordinates(coords.x() + 3, coords.y() + j));
         }
       }
     }
 
+    // 
     void fireSonar(SpecialAbility ability, BoardCoordinates coords) {
       std::vector<std::vector<Cell>> &board = myTurn() ? _player1_side : _player2_side;
       if (ability.getType() == SONAR) {
@@ -279,18 +285,15 @@ class Board: public GameView {
       }
     }
 
-    CellType cellType(bool my_side,
-                                    BoardCoordinates position) const {
+    CellType cellType(bool my_side, BoardCoordinates position) const {
       return get(my_side, position).type();
     }
 
-    std::optional<Ship> shipId(bool my_side,
-                                            BoardCoordinates position) const {
+    std::optional<Ship> shipId(bool my_side, BoardCoordinates position) const {
       return get(my_side, position).ship();
     }
 
-    bool isSameShip(bool my_side, BoardCoordinates first,
-                                  BoardCoordinates second) const  override {
+    bool isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const  override {
       return shipId(my_side, first).has_value() &&
             shipId(my_side, first) == shipId(my_side, second);
     }
