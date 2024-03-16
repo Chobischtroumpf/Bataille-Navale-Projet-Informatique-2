@@ -20,9 +20,10 @@ LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
   auto futureMessages = _client->QueryGameState(sessionId);
   auto messagesJson = futureMessages.get();
   auto usersID = messagesJson["participants"];
-  _my_username = _client->getUsername();
-  _player.setPlayerOne(_my_username == usersID.at(0));
-  _their_username = _player.isPlayerOne() ? usersID.at(1) : usersID.at(0);
+  _my_username = _client->getClientUsername();
+  std::string my_id = _client->GetUserId(_my_username).get();
+  _player.setPlayerOne(my_id == usersID.at(0));
+  _their_username = _player.isPlayerOne() ? _client->GetUsername(usersID.at(1)).get() : _client->GetUsername(usersID.at(0)).get();
 }
 
 bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }

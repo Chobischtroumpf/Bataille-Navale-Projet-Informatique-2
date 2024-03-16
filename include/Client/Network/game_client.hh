@@ -54,5 +54,5 @@ public:
   std::future<bool> AddFriend(const std::string &username);
   std::future<njson> GetFriends();
 
-  std::string getUsername() const;
+  std::string getClientUsername() const;
 };
