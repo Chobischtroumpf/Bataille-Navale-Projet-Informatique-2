@@ -171,21 +171,21 @@ std::vector<string> GameConsole::createBoatsKey() const {
     //std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " " << std::endl;
     boat_key.emplace_back("");
     for (auto &ship : remaining_ships) {
-      switch (ship.second) {
+      switch (ship.first) {
         case 1:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_MINE) * 1 + "          1. Mine     (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_MINE) * 1 + "          1. Mine     (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 2:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        2. Small Ship   (×" + std::to_string(ship.first) + ") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_SHIP) * 3 + "        2. Small Ship   (×" + std::to_string(ship.second) + ") <" + color_code.at(1));
           break;
         case 3:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      3. Medium Ship  (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_SHIP) * 5 + "      3. Medium Ship  (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 4:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    4. Large Ship   (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_SHIP) * 7 + "    4. Large Ship   (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         case 5:
-          boat_key.emplace_back(color_code.at(ship.first) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  5. Mega Ship    (×"+ std::to_string(ship.first) +") <" + color_code.at(1));
+          boat_key.emplace_back(color_code.at(ship.second) + " > " + toString(UNDAMAGED_SHIP) * 9 + "  5. Mega Ship    (×"+ std::to_string(ship.second) +") <" + color_code.at(1));
           break;
         default:
           break;

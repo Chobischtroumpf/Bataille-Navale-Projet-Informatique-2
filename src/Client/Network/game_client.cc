@@ -775,6 +775,6 @@ pplx::task<njson> GameClient::GetRequest(const string &path) {
 }
 
 
-std::string GameClient::getUsername() const {
+std::string GameClient::getClientUsername() const {
   return _client_username;
 }
