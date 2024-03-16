@@ -80,11 +80,15 @@ ReturnInput LobbyConsole::handleInput() {
       std::string playerName;
       std::cout << "Please enter your text: ";
       std::cin >> playerName;
-      if (playerName == "./exit")
+      if (playerName == "./exit"){
+        return {ReturnInput::Screen::LOBBY, _session_id};
         break;
-      else
+      }
+      else{
         addPlayer(playerName);
-      break;
+        return {ReturnInput::Screen::LOBBY, _session_id};
+      }
+        break;
     }
     case 2: // Start Game
       if (_view->getUserInGame(_session_id).size() < 2) {

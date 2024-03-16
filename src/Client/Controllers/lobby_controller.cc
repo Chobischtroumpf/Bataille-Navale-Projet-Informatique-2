@@ -8,8 +8,10 @@ void LobbyController::sendIDGame(const std::string& destination, const std::stri
     auto userId = userIDFuture.get();
     if (userId == "")
         std::cout << "pseudo invalide!" << std::endl;
-    else
+    else{
+        std::cout << "fail"<< std::endl;
         std::future<bool> resultFuture = _game_client->SendMessage(userId, message);
+    }
 }
 
 
