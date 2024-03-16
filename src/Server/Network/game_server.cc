@@ -209,6 +209,7 @@ void GameServer::handleGet(http_request request) {
                       // Handle missing parameters
                       response["error"] = "Error on parameter query : " + query.getError();
                       request.reply(status_codes::InternalError, response.dump(), "application/json");
+                      return;
                   }
 
                   string userId = query.getFirst();

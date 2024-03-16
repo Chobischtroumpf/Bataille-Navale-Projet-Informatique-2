@@ -74,6 +74,8 @@ nlohmann::json GameSession::getGameState(const std::string& userId) const {
 bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move) {
     auto playerRole = getParticipantRole(userId);
 
+    std::string moveType = move["moveType"];
+
     return gameState.makeMove(playerRole, move);
 }
 
@@ -86,5 +88,4 @@ nlohmann::json GameSession::getSessionState() const {
     sessionState["hasStarted"] = this->hasStarted;
     
     return sessionState;
-
 }
