@@ -31,7 +31,7 @@ ReturnInput LoginConsole::handleInput() {
       }
     } else if (choix == 2) {
       if (sEnregistrer(loginController)) {
-        std::cout << "Enregistrement réussi.";
+        std::cout << "Enregistrement réussi.\n";
         continuer = false;
         return {ReturnInput::MAIN_MENU, ""};
       } else {

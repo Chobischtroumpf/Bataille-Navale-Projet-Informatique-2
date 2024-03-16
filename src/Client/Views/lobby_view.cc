@@ -10,7 +10,9 @@ std::vector<std::string> LobbyView::getUserInGame(const std::string& sessionId){
     auto messagesJson = futureMessages.get();
     auto usersID = messagesJson["participants"];
     for (const auto& userId : usersID) {
-        convertedMessages.emplace_back(userId);
+        auto futureName = gameClient->GetUsername(userId);
+        auto name = futureName.get();
+        convertedMessages.emplace_back(name);
     }
     return convertedMessages;
 }
