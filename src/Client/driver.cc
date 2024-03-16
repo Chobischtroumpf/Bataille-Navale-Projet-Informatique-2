@@ -17,7 +17,7 @@ void Driver::run(ReturnInput::Screen base_screen) {
       if (_current_screen != input.screen)
       switch (input.screen) {
         case ReturnInput::Screen::MAIN_MENU:
-          displayMainMenuScreen();
+          displayMainMenuScreen(input.arg);
           break;
         case ReturnInput::Screen::GAME:
           displayGameScreen();
@@ -45,7 +45,7 @@ std::shared_ptr<GameClient> Driver::getClient() {
     return _game_client;
 }
 
-void Driver::displayGameScreen() {
+void Driver::displayGameScreen(std::string gameId) {
   if (_display_type == CONSOLE) {
     std::shared_ptr<LocalBoard> board = std::make_shared<LocalBoard>();
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);

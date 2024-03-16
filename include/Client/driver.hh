@@ -54,7 +54,7 @@ public:
 
 private:
     // Display a specific screen
-    void displayGameScreen();
+    void displayGameScreen(std::string gameId);
     void displayLoginScreen();
     void displayRegisterScreen();
     void displayMainMenuScreen();
