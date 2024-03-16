@@ -14,10 +14,11 @@ private:
   std::shared_ptr<GameClient> _game_client;
 
 public:
-  explicit MainMenuController(std::shared_ptr<GameClient> client);
-  bool createGame(int mode, int friend_id);
-  void joinGame(const std::string &game_id);
-  void addFriend(const std::string &username);
-  void manageProfile();
-  void quit();
+    explicit MainMenuController(std::shared_ptr<GameClient> client);
+    bool validUser(const std::string& username);
+    bool createGame(int mode, int friend_id);
+    void joinGame(const std::string& game_id);
+    void addFriend(const std::string& username);
+    void manageProfile();
+    void quit();
 };
