@@ -42,6 +42,7 @@ void Player::setFleet(std::vector<Ship> fleet) {
 
 void Player::addShip(Ship ship) {
   _fleet.push_back(ship);
+  _faction.removeShip(ship.getLength());
 }
 
 void Player::setTurn(bool is_turn) {

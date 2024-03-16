@@ -40,4 +40,6 @@ class Faction {
     
     // Destructor
     virtual ~Faction() = default;
+
+    virtual void removeShip(Amount amount);
 };

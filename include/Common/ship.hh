@@ -56,6 +56,8 @@ class Ship {
     // Notifies the Ship that a tile has been hit, allowing it to check if it has been sunk
     void notify(const BoardCoordinates &coords);
 
+    // Translate the ship by x and y   
+    bool translate(int x, int y);
 
     // Print the ship
     std::vector<std::string> to_string();

@@ -101,7 +101,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
 
 bool LocalBoardCommander::allShipsPlaced() const {
   for (auto &ship: _player.getFaction().getPossibleShips()) {
-    if (ship.second > 0) {
+    if (ship.first > 0) {
       return false;
     }
   }
@@ -126,7 +126,7 @@ CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
 }
 
 void LocalBoardCommander::waitGame() {
-  // Wait for the game to start
+  sleep(1);
 }
 
 Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {

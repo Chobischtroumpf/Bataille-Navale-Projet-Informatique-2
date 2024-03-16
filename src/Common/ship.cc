@@ -133,6 +133,13 @@ void Ship::setTopLeft(BoardCoordinates top_left) {
     _top_left = top_left;
 }
 
+bool Ship::translate(int x, int y) {
+    for (auto &c: _coordinates) {
+        c.set(c.x() + x, c.y() + y);
+    }
+    return true;
+}
+
 void Ship::notify(const BoardCoordinates &coords) {
     // Check if ship is sunk
     for (auto &c: _coordinates) {
