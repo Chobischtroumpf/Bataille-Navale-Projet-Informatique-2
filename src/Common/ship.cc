@@ -17,32 +17,32 @@ Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates)
     // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
 }
 
-Ship::Ship(std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board): _coordinates(coordinates), _board(std::move(board)) {
+Ship::Ship(std::vector<BoardCoordinates> coordinates, GameView *board): _coordinates(coordinates), _board(board) {
     for (auto &c: coordinates) {
         _length++;
-        if (c.x() > _size_x) { _size_x = c.x(); }
-        if (c.y() > _size_y) { _size_y = c.y(); }
+        if (c.x() >= _size_x) { _size_x = c.x()+1; }
+        if (c.y() >= _size_y) { _size_y = c.y()+1; }
     }
     // _ship_cells(std::vector<std::vector<Cell>>(_size_y, std::vector<Cell>(_size_x))
 }
 
-Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, std::shared_ptr<GameView> board): _coordinates(coordinates), _board(std::move(board)) {
+Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, GameView *board): _coordinates(coordinates), _board(board) {
     for (auto &c: coordinates) {
         _length++;
-        if (c.x() > _size_x) { _size_x = c.x(); }
-        if (c.y() > _size_y) { _size_y = c.y(); }
+        if (c.x() >= _size_x) { _size_x = c.x()+1; }
+        if (c.y() >= _size_y) { _size_y = c.y()+1; }
     }
     // _ship_cells(std::vector<std::vector<Cell>>(_size_y, std::vector<Cell>(_size_x))
 }
 
-Ship::Ship(const Ship &other): _coordinates(other._coordinates), _top_left(other._top_left), _type(other._type), _board(std::move(other._board)), _length(other._length), _size_x(other._size_x), _size_y(other._size_y), _is_sunk(other._is_sunk) {}
+Ship::Ship(const Ship &other): _coordinates(other._coordinates), _top_left(other._top_left), _type(other._type), _board(other._board), _length(other._length), _size_x(other._size_x), _size_y(other._size_y), _is_sunk(other._is_sunk) {}
 
 Ship &Ship::operator=(const Ship &other) {
     if (this != &other) {
         _coordinates = other._coordinates;
         _top_left = other._top_left;
         _type = other._type;
-        _board = std::move(_board);
+        _board = _board;
         _length = other._length;
         _size_x = other._size_x;
         _size_y = other._size_y;
@@ -91,6 +91,7 @@ nlohmann::json Ship::to_json() {
         j["coordinates"].push_back(c.to_json());
     }
     j["type"] = _type;
+    return j;
 }
 
 std::vector<BoardCoordinates> Ship::getCoordinates() const {
@@ -152,4 +153,8 @@ void Ship::notify(const BoardCoordinates &coords) {
 
 void Ship::setType(CellType new_type) {
     _type = new_type;
+}
+
+Ship::~Ship() {
+    _board = nullptr;
 }

@@ -14,7 +14,7 @@ class FactionBombardement : public Faction
   public:
     // Constructor
     FactionBombardement(): Faction() { // creates a Faction with preset values for the Bombardement faction
-      setName("Sonar");
+      setName("Bombardement");
       PossibleShips ships;
       ships[1]=1;
       ships[2]=1;

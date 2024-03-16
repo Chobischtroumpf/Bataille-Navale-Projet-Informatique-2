@@ -36,7 +36,7 @@ void GameSettingConsole::displayParameter() {
 
 void GameSettingConsole::displayParameter(std::string game_name) {
   displayTitle();
-  std::cout << "║ Game name : " << game_name << std::endl;
+  std::cout << "║ Game name : " << "\033[0;33m" << game_name << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
   std::cout << "║ Game mode : " << std::endl;
@@ -58,14 +58,14 @@ void GameSettingConsole::displayParameter(std::string game_name) {
 void GameSettingConsole::displayParameter(std::string game_name,
                                           bool game_mode_classic) {
   displayTitle();
-  std::cout << "║ Game name : " << game_name << std::endl;
+  std::cout << "║ Game name : " << "\033[0;33m" << game_name << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Game mode : ";
+  std::cout << "║ Game mode : " << "\033[0;33m";
   if (game_mode_classic) {
-    std::cout << "classic" << std::endl;
+    std::cout << "classic" << "\033[0m" << std::endl;
   } else {
-    std::cout << "commander" << std::endl;
+    std::cout << "commander" << "\033[0m" << std::endl;
   }
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
@@ -86,18 +86,18 @@ void GameSettingConsole::displayParameter(std::string game_name,
                                           bool game_mode_classic,
                                           int time_per_turn) {
   displayTitle();
-  std::cout << "║ Game name : " << game_name << std::endl;
+  std::cout << "║ Game name : " << "\033[0;33m" << game_name << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Game mode : ";
+  std::cout << "║ Game mode : " << "\033[0;33m";
   if (game_mode_classic) {
-    std::cout << "classic" << std::endl;
+    std::cout << "classic" << "\033[0m" << std::endl;
   } else {
-    std::cout << "commander" << std::endl;
+    std::cout << "commander" << "\033[0m" << std::endl;
   }
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time per turn of the player : " << time_per_turn << std::endl;
+  std::cout << "║ Time per turn of the player : " << "\033[0;33m" << time_per_turn << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
   std::cout << "║ Time per game of the player : " << std::endl;
@@ -115,21 +115,21 @@ void GameSettingConsole::displayParameter(std::string game_name,
                                           int time_per_turn,
                                           int time_per_game) {
   displayTitle();
-  std::cout << "║ Game name : " << game_name << std::endl;
+  std::cout << "║ Game name : " << "\033[0;33m" << game_name << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Game mode : ";
+  std::cout << "║ Game mode : " << "\033[0;33m";
   if (game_mode_classic) {
-    std::cout << "classic" << std::endl;
+    std::cout << "classic" << "\033[0m" << std::endl;
   } else {
-    std::cout << "commander" << std::endl;
+    std::cout << "commander" << "\033[0m" << std::endl;
   }
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time per turn of the player : " << time_per_turn << std::endl;
+  std::cout << "║ Time per turn of the player : " << "\033[0;33m" << time_per_turn << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time per game of the player : " << time_per_game << std::endl;
+  std::cout << "║ Time per game of the player : " << "\033[0;33m" << time_per_game << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
   std::cout << "║ Time of the game : " << std::endl;
@@ -144,24 +144,24 @@ void GameSettingConsole::displayParameter(std::string game_name,
                                           int time_per_turn, int time_per_game,
                                           int game_time) {
   displayTitle();
-  std::cout << "║ Game name : " << game_name << std::endl;
+  std::cout << "║ Game name : " << "\033[0;33m" << game_name << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Game mode : ";
+  std::cout << "║ Game mode : " << "\033[0;33m";
   if (game_mode_classic) {
-    std::cout << "classic" << std::endl;
+    std::cout << "classic" << "\033[0m" << std::endl;
   } else {
-    std::cout << "commander" << std::endl;
+    std::cout << "commander" << "\033[0m" << std::endl;
   }
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time per turn of the player : " << time_per_turn << std::endl;
+  std::cout << "║ Time per turn of the player : " << "\033[0;33m" << time_per_turn << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time per game of the player : " << time_per_game << std::endl;
+  std::cout << "║ Time per game of the player : " << "\033[0;33m" << time_per_game << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time of the game : " << game_time << std::endl;
+  std::cout << "║ Time of the game : " << "\033[0;33m" << game_time << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
   std::cout << "║ Spectator allowed : " << std::endl;
@@ -174,31 +174,31 @@ void GameSettingConsole::displayParameter(std::string game_name,
                                           int game_time,
                                           bool spectator_allowed) {
   displayTitle();
-  std::cout << "║ Game name : " << game_name << std::endl;
+  std::cout << "║ Game name : " << "\033[0;33m" << game_name << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Game mode : ";
+  std::cout << "║ Game mode : " << "\033[0;33m";
   if (game_mode_classic) {
-    std::cout << "classic" << std::endl;
+    std::cout << "classic" << "\033[0m" << std::endl;
   } else {
-    std::cout << "commander" << std::endl;
+    std::cout << "commander" << "\033[0m" << std::endl;
   }
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time per turn of the player : " << time_per_turn << std::endl;
+  std::cout << "║ Time per turn of the player : " << "\033[0;33m" << time_per_turn << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time per game of the player : " << time_per_game << std::endl;
+  std::cout << "║ Time per game of the player : " << "\033[0;33m" << time_per_game << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time of the game : " << game_time << std::endl;
+  std::cout << "║ Time of the game : " << "\033[0;33m" << game_time << " seconds" << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Spectator allowed : ";
+  std::cout << "║ Spectator allowed : " << "\033[0;33m";
   if (spectator_allowed) {
-    std::cout << "yes" << std::endl;
+    std::cout << "yes" << "\033[0m" << std::endl;
   } else {
-    std::cout << "no" << std::endl;
+    std::cout << "no" << "\033[0m" << std::endl;
   }
   displayOptions(6);
 }
@@ -239,7 +239,7 @@ void GameSettingConsole::displayOptions(int mode) {
     std::cout << "╠════════════════════════════════════════╩══════════════════╪"
               << std::endl;
     std::cout << "║" << std::endl;
-    std::cout << "║ (60 - 2000)" << std::endl;
+    std::cout << "║ (60 - 2000) seconds" << std::endl;
     break;
   case 5:
     std::cout << "║ Choose if spectator are allowed        ║" << std::endl;
@@ -277,13 +277,16 @@ ReturnInput GameSettingConsole::handleInput() {
   int game_time;
   bool spectator_allowed;
 
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
   while (invalid_input) {
     displayParameter();
 
     if (input_error) {
-    } else {
-      std::cout << std::endl;
+      std::cout << "Invalid Input !";
     }
+    std::cout << std::endl;
+    std::cout << ">> ";
 
     input_error = true;
     std::getline(std::cin, game_name);
@@ -304,10 +307,10 @@ ReturnInput GameSettingConsole::handleInput() {
     displayParameter(game_name);
 
     if (input_error) {
-      std::cout << "Invalid Input ! 240" << std::endl;
-    } else {
-      std::cout << std::endl;
+      std::cout << "Invalid Input !";
     }
+    std::cout << std::endl;
+    std::cout << ">> ";
 
     input_error = true;
     std::getline(std::cin, answer);
@@ -337,10 +340,10 @@ ReturnInput GameSettingConsole::handleInput() {
     displayParameter(game_name, game_mode_classic);
 
     if (input_error) {
-      std::cout << "Invalid Input ! 274" << std::endl;
-    } else {
-      std::cout << std::endl;
+      std::cout << "Invalid Input !";
     }
+    std::cout << std::endl;
+    std::cout << ">> ";
 
     input_error = true;
     std::getline(std::cin, answer);
@@ -363,10 +366,10 @@ ReturnInput GameSettingConsole::handleInput() {
     displayParameter(game_name, game_mode_classic, time_per_turn);
 
     if (input_error) {
-      std::cout << "Invalid Input ! 302" << std::endl;
-    } else {
-      std::cout << std::endl;
+      std::cout << "Invalid Input !";
     }
+    std::cout << std::endl;
+    std::cout << ">> ";
 
     input_error = true;
     std::getline(std::cin, answer);
@@ -390,10 +393,10 @@ ReturnInput GameSettingConsole::handleInput() {
                      time_per_game);
 
     if (input_error) {
-      std::cout << "Invalid Input !330" << std::endl;
-    } else {
-      std::cout << std::endl;
+      std::cout << "Invalid Input !";
     }
+    std::cout << std::endl;
+    std::cout << ">> ";
 
     input_error = true;
     std::getline(std::cin, answer);
@@ -417,9 +420,10 @@ ReturnInput GameSettingConsole::handleInput() {
                      game_time);
 
     if (input_error) {
-      std::cout << "Invalid Input ! 358";
+      std::cout << "Invalid Input !";
     }
     std::cout << std::endl;
+    std::cout << ">> ";
 
     input_error = true;
     std::getline(std::cin, answer);
@@ -450,10 +454,10 @@ ReturnInput GameSettingConsole::handleInput() {
                      game_time, spectator_allowed);
 
     if (input_error) {
-      std::cout << "Invalid Input !" << std::endl;
-    } else {
-      std::cout << std::endl;
+      std::cout << "Invalid Input !";
     }
+    std::cout << std::endl;
+    std::cout << ">> ";
 
     input_error = true;
     std::getline(std::cin, answer);
@@ -480,7 +484,7 @@ ReturnInput GameSettingConsole::handleInput() {
           return {ReturnInput::LOBBY, gameID};
         }
         case 2:
-          return {ReturnInput::MAIN_MENU, ""};
+          invalid_input = false;
         default:
           break;
         }

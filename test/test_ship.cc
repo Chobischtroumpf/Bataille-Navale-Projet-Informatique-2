@@ -18,13 +18,15 @@ void testShip() {
     assert(ship1.isSunk() == false);
     std::cout << "Constructor with coordinates passed" << std::endl;
 
-    // // Test constructor with coordinates and board
-    // std::shared_ptr<LocalBoardCommander> board = std::move(std::make_shared<LocalBoardCommander>(Player()));
-    Ship ship2(coordinates);
+    // Test constructor with coordinates and board
+    LocalBoardCommander *board = new LocalBoardCommander(std::make_shared<GameClient>("http://127.0.0.1:8000"), Player(), GameMode::CLASSIC, "session_id");
+    std::vector<BoardCoordinates> coordinates2 = {BoardCoordinates(0, 0), BoardCoordinates(0, 1)};
+    Ship ship2(coordinates2, board);
     assert(ship2.getCoordinates() == coordinates);
     assert(ship2.getTopLeft() == BoardCoordinates(0, 0));
     assert(ship2.getType() == UNDAMAGED_SHIP);
     assert(ship2.getLength() == 2);
+    std::cout << "SizeX: " << ship2.getSizeX() << std::endl;
     assert(ship2.getSizeX() == 1);
     assert(ship2.getSizeY() == 2);
     assert(ship2.isSunk() == false);
