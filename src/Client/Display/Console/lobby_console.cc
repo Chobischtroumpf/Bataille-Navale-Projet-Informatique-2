@@ -62,51 +62,52 @@ void LobbyConsole::wait() {
 
 ReturnInput LobbyConsole::handleInput() {
   if (_admin) {
-  int input;
-  std::cout << "Please enter your choice: ";
-  std::cin >> input;
+    int input;
+    std::cout << "Please enter your choice: ";
+    std::cin >> input;
 
-  if (std::cin.fail()) {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    displayOptions(_current_option);
-  }
+    if (std::cin.fail()) {
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      displayOptions(_current_option);
+    }
 
     switch (input) {
-        case 1: {// Add Player to Lobby
-            _current_option = 1;
-            display();
-            _current_option = 0;
-            std::string playerName;
-            std::cout << "Please enter your text: ";
-            std::cin >> playerName;
-            if (playerName =="./exit")
-                break;
-            else
-                addPlayer(playerName);
-            break;
-        }
-        case 2: // Start Game
-            if (_view->getUserInGame(_session_id).size() < 2) {
-                break;
-            }
-            return {ReturnInput::Screen::GAME, _session_id};
-            break;
-        case 3: // Refresh Player List
-            _current_option = 0;
-            display();
-            break;
-        case 4: // back to the Main Menu
-            return {ReturnInput::MAIN_MENU,""};
-        default:
-            std::cout << "Invalid option. Please choose again.\n";
-            display();
-            break;
+    case 1: { // Add Player to Lobby
+      _current_option = 1;
+      display();
+      _current_option = 0;
+      std::string playerName;
+      std::cout << "Please enter your text: ";
+      std::cin >> playerName;
+      if (playerName == "./exit")
+        break;
+      else
+        addPlayer(playerName);
+      break;
+    }
+    case 2: // Start Game
+      if (_view->getUserInGame(_session_id).size() < 2) {
+        break;
+      }
+      _controller->launchGame(_session_id);
+      return {ReturnInput::Screen::GAME, _session_id};
+      break;
+    case 3: // Refresh Player List
+      _current_option = 0;
+      return {ReturnInput::Screen::LOBBY, _session_id};
+      break;
+    case 4: // back to the Main Menu
+      return {ReturnInput::MAIN_MENU, ""};
+    default:
+      std::cout << "Invalid option. Please choose again.\n";
+      display();
+      break;
     }
   } else {
     _view->waitGameStart(_session_id);
-  }   
-    return {ReturnInput::LOBBY, _session_id};
+    return {ReturnInput::Screen::GAME, _session_id};
+  }
 }
 
 void LobbyConsole::addPlayer(const std::string& playerName) {

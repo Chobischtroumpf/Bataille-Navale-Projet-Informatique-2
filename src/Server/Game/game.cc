@@ -102,6 +102,8 @@ nlohmann::json Game::getState(PlayerRole player) {
     game_json["_ship_placements_finished"] = "false";
   }
 
+  game_json["started"] = _is_started ? "true" : "false";
+
   game_json["player1_timer"] = std::to_string(_game_timer.getPlayer1Timer());
   game_json["player2_timer"] = std::to_string(_game_timer.getPlayer2Timer());
   game_json["_game_timer"] = std::to_string(_game_timer.getGameTimer());
@@ -146,3 +148,5 @@ void Game::changeTurn(){
   _game_timer.switchTurn();
 }
 
+
+void Game::launchGame() {_is_started = true;}

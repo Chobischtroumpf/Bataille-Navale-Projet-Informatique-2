@@ -14,4 +14,6 @@ public:
   explicit LobbyController(std::shared_ptr<GameClient> _game_client);
 
   void sendIDGame(const std::string &destination, const std::string &message);
+
+  void launchGame(const std::string &sessionId);
 };
