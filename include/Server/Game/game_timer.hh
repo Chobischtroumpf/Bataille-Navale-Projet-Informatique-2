@@ -4,36 +4,36 @@
 #include "turn.hh"
 
 class GameTimer {
-public:
+  private:
+    Timer _game_timer;
+    Timer _player1_timer;
+    Timer _player2_timer;
+    Turn _turn;
+    std::atomic<bool> _finished;
+    int _winner;
 
-  GameTimer();
+    void playerTimeRunout();
 
-  void start_timer();
+    void gameTimeRunout();
+  public:
 
-  void switch_turn();
+    GameTimer();
 
-  bool is_finished() const;
+    void startTimer();
 
-  int get_player1_timer() const;
+    void switchTurn();
 
-  int get_player2_timer() const;
+    bool isFinished() const;
 
-  int get_game_timer() const;
+    int getPlayer1Timer() const;
 
-  void set(int game_time, int player_time);
+    int getPlayer2Timer() const;
 
-  int get_winner() const;
+    int getGameTimer() const;
 
-private:
-  Timer game_timer;
-  Timer player1_timer;
-  Timer player2_timer;
-  Turn turn;
-  std::atomic<bool> finished;
-  int winner;
+    void set(int game_time, int player_time);
 
-  void player_time_runout();
+    int getWinner() const;
 
-  void game_time_runout();
 };
 

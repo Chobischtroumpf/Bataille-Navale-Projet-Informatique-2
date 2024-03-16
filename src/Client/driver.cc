@@ -1,4 +1,7 @@
 #include "driver.hh"
+#include "faction_sonar.hh"
+#include "faction_bombardement.hh"
+#include "faction_mines.hh"
 
 Driver::Driver(DisplayType display_type) : _display_type{display_type}, _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
 
@@ -47,9 +50,11 @@ std::shared_ptr<GameClient> Driver::getClient() {
 
 void Driver::displayGameScreen(std::string gameId) {
   if (_display_type == CONSOLE) {
-    std::shared_ptr<LocalBoard> board = std::make_shared<LocalBoard>();
+    Player player1 = Player();
+    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, GameMode::CLASSIC);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());
+    _current_screen = ReturnInput::Screen::GAME;
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }

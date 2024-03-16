@@ -1,12 +1,11 @@
 #pragma once
 
-#include "view.hh"
 #include "cell_type.hh"
 #include "board_coordinates.hh"
 
-class GameView : public View {
-public:
-    virtual ~GameView() override {}
+class GameView {
+  public:
+    virtual ~GameView() {}
 
     virtual bool myTurn() const =0;
     virtual bool isFinished() const =0;
