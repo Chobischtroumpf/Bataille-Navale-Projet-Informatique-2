@@ -19,6 +19,8 @@ private:
   // allowing easier debugging
   std::unique_ptr<web::http::client::http_client> client;
 
+  std::string _client_username;
+
   std::string authToken; // Stores the authToken if the user is logged in
 
   // Test requests to be deleted later
@@ -51,4 +53,6 @@ public:
   std::future<njson> GetMessages(const std::string &recipientId);
   std::future<bool> AddFriend(const std::string &username);
   std::future<njson> GetFriends();
+
+  std::string getUsername() const;
 };

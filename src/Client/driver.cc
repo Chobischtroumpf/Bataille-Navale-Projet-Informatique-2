@@ -50,7 +50,7 @@ std::shared_ptr<GameClient> Driver::getClient() {
 
 void Driver::displayGameScreen(std::string gameId) {
   if (_display_type == CONSOLE) {
-    Player player1 = Player();
+    Player player1 = Player(FactionClassique());
     std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, GameMode::CLASSIC, gameId);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());

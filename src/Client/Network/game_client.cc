@@ -319,6 +319,7 @@ future<bool> GameClient::Login(const string &username, const string &password) {
   njson loginData;
   loginData["username"] = username;
   loginData["password"] = password;
+  this->_client_username = username;
 
   // Send the POST request to the login endpoint
   PostRequest("/api/login", loginData)
@@ -771,4 +772,9 @@ pplx::task<njson> GameClient::GetRequest(const string &path) {
         }
         return previousTask.get(); // Return object from last task
       });
+}
+
+
+std::string GameClient::getUsername() const {
+  return _client_username;
 }

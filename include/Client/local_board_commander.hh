@@ -33,6 +33,9 @@ private:
   std::vector<std::vector<Cell>> _my_board;
   std::vector<std::vector<Cell>> _their_board;
 
+  std::string _my_username;
+  std::string _their_username;
+
   std::shared_ptr<GameClient> _client;
 
   // bool _my_turn;
@@ -109,4 +112,7 @@ public:
 
   // sends the fire request to the server
   void fire(SpecialAbility ability, BoardCoordinates coordinates);
+
+  std::string getMyUsername() const;
+  std::string getTheirUsername() const;
 };

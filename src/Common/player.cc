@@ -56,3 +56,11 @@ void Player::addEnergyPoints(int energy_points) {
 void Player::removeEnergyPoints(int energy_points) {
   _energy_points -= energy_points;
 }
+
+void Player::setPlayerOne(bool is_player_one) {
+  _is_player_one = is_player_one;
+}
+
+bool Player::isPlayerOne() const {
+  return _is_player_one;
+}

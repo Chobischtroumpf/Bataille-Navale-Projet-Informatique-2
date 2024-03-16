@@ -15,7 +15,15 @@ LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
                               10, std::vector<Cell>(10, Cell()))},
       _their_board{
           std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
-      _session_id{sessionId} {}
+      _session_id{sessionId},
+      _client{client} {
+  auto futureMessages = _client->QueryGameState(sessionId);
+  auto messagesJson = futureMessages.get();
+  auto usersID = messagesJson["participants"];
+  _my_username = _client->getUsername();
+  _player.setPlayerOne(_my_username == usersID.at(0));
+  _their_username = _player.isPlayerOne() ? usersID.at(1) : usersID.at(0);
+}
 
 bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }
 
@@ -156,17 +164,31 @@ CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
 
 bool LocalBoardCommander::waitGame() {
   bool shipPlacementsFinished = false;
+  std::string turn;
   while (!shipPlacementsFinished) {
     auto FutureGameState = _client->QueryGameState(_session_id);
     auto result = FutureGameState.get();
     auto gameState = result["gameState"];
+    turn = gameState["turn"];
     shipPlacementsFinished = gameState["ship_placements_finished"];
     sleep(1);
   }
-  return true;
+  return true ? turn == "PLAYERONE" && _player.isPlayerOne()
+              || turn == "PLAYERTWO" && !_player.isPlayerOne() : false;
 }
 
-void LocalBoardCommander::waitTurn() { sleep(1); }
+void LocalBoardCommander::waitTurn() {
+  bool my_turn = false;
+  while (!my_turn) {
+    auto FutureGameState = _client->QueryGameState(_session_id);
+    auto result = FutureGameState.get();
+    // Update the board if needed
+    auto gameState = result["gameState"];
+    my_turn = gameState["turn"] == "PLAYERONE" && _player.isPlayerOne() ||
+              gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne();
+    sleep(1);
+  }
+}
 
 Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {
   return my_side ? _my_board.at(position.y()).at(position.x())
@@ -244,4 +266,10 @@ void LocalBoardCommander::fire(SpecialAbility ability,
   move_request["fire"] = fire_request;
 
   _client->MakeMove(_game_id, move_request);
+}
+
+std::string LocalBoardCommander::getMyUsername() const { return _my_username; }
+
+std::string LocalBoardCommander::getTheirUsername() const {
+  return _their_username;
 }
