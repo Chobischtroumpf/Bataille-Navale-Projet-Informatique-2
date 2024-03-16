@@ -130,8 +130,12 @@ void GameServer::handleGet(http_request request) {
                   njson gameDetails;
 
                   gameDetails["gameState"] = gameState;
-                  gameDetails["participants"] = gameSession->getParticipants();
+                  auto sessionState = gameSession->getSessionState();
+
+                  gameDetails["participants"] = sessionState["participants"];
+                  gameDetails["hasStarted"] = sessionState["hasStarted"];
                   response["gameDetails"] = gameDetails;
+
                   request.reply(status_codes::OK, response.dump(), "application/json");
               } else {
                   // Handle missing parameters
@@ -445,13 +449,13 @@ void GameServer::handlePost(http_request request) {
 
             // Extract sessionId and move details from request body
             auto sessionId = requestBody[U("sessionId")].as_string();
-            auto move = requestBody[U("move")].as_string();
+            njson move = requestBody[U("move")];
 
             // Retrieve the session and make the move
             auto gameSession = sessionManager.getSession(to_utf8(sessionId));
 
             if (gameSession) {
-              bool moveResult = gameSession->makeMove(userId, to_utf8(move));
+              bool moveResult = gameSession->makeMove(userId, move);
 
               // Respond based on the result of the move
               if (moveResult) {
