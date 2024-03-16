@@ -29,10 +29,10 @@ void Driver::run(ReturnInput::Screen base_screen) {
           displayChatScreen(input.arg);
           break;
         case ReturnInput::Screen::LOBBY:
-          if (_current_screen == ReturnInput::Screen::GAME_CREATION)
-            displayLobbyScreen(input.arg, true);
-          else
+          if (_current_screen == ReturnInput::Screen::MAIN_MENU)
             displayLobbyScreen(input.arg, false);
+          else
+            displayLobbyScreen(input.arg, true);
           break;
         case ReturnInput::Screen::LOGIN:
           displayLoginScreen();
