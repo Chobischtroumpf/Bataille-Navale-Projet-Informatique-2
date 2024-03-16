@@ -408,28 +408,31 @@ void GameConsole::printChangeTurn() {
 }
 
 ReturnInput GameConsole::handleFire() {
-  _in.ignore();
-  std::string buf;
   _out << "\x1b[32;49;1m";
+  std::string buf;
   getline(_in, buf);
   _out << "\x1b[0m";
-  
-  // Validate input length
-  if (buf.size() != 4) {
-    std::cerr << "Invalid input length\n";
-    _last_input = ERR;
-    return {ReturnInput::Screen::GAME, ""};
+
+  if (std::cin.eof()) {
+    _out << std::endl;
+    _control->quit();
+    return {};
   }
-  
+
+  if (buf.size() == 2 || buf.size() == 3) {
+    std::string tmp = "0 " + buf;
+    buf = tmp;
+  }
   // Validate input format
   if (!isValidInputFormat(buf)) {
+    _last_input = ERR;
     return {ReturnInput::Screen::GAME, ""};
   }
 
   // Parse input
   int ability = std::stoi(buf.substr(0, 1));
   char row = buf.at(2);
-  int col = std::stoi(buf.substr(3, 1));
+  int col = std::stoi(buf.substr(3, 2));
   
   // Validate ability index
   if (ability < 0 || ability >= _board->getPlayer().getFaction().getSpecialAbilities().size()) {
@@ -448,14 +451,13 @@ ReturnInput GameConsole::handleFire() {
   _control->fire(_board->getPlayer().getFaction().getSpecialAbilities().at(ability), coord);
   _last_input = OK;
 
-  std::cin.clear();
 
   return {ReturnInput::Screen::GAME, ""};
 }
 
 bool GameConsole::isValidInputFormat(const std::string& input) const {
   // Check if input matches the expected format: [0-9] [A-J][0-9]
-  return (input.size() == 4 &&
+  return (input.size() <= 5 &&
           isdigit(input[0]) &&
           input[1] == ' ' &&
           input[2] >= 'A' && input[2] <= 'J' &&
@@ -464,7 +466,7 @@ bool GameConsole::isValidInputFormat(const std::string& input) const {
 
 bool GameConsole::isValidCoordinates(char row, int col) const {
   // Check if coordinates are within the board bounds
-  return (row >= 'A' && row <= 'J' && col >= 0 && col <= 9);
+  return (row >= 'A' && row <= 'J' && col >= 0 && col <= 10);
 }
 
 
