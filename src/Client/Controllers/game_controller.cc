@@ -31,8 +31,8 @@ bool GameController::checkShipPosition(Ship ship) const {
     return false;
   }
   for (auto coord : ship.getCoordinates()) {
-    if (_board->cellType(true, ship.getTopLeft() + coord) != CellType::WATER ||
-        !_board->isInBoard(coord))
+    if (!_board->isInBoard(coord) ||
+    _board->cellType(true,ship.getTopLeft() + coord) != CellType::WATER)
       return false;
     if (_board->mode() == GameMode::CLASSIC) {
       std::vector<Cell> cells = _board->getNeighbors(ship.getTopLeft() + coord);

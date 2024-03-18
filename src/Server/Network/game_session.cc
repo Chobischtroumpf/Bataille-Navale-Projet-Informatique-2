@@ -70,12 +70,29 @@ nlohmann::json GameSession::getGameState(const std::string& userId) const {
     return gameState.getGameState(playerRole);
 }
 
-// Method that sends a move to the game state
 bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move) {
     auto playerRole = getParticipantRole(userId);
 
+    // Check if the move object contains "moveType" 
+    if (!move.contains("moveType")) {
+        // If "moveType" property is missing, return false indicating error
+        std::cerr << "Invalid move protocol: no moveType property on move object" << std::endl;
+        return false;
+    }
+
     std::string moveType = move["moveType"];
 
+    // Check if the moveType is "StartGame" or "EndGame"
+    if (moveType == "StartGame") {
+        // If moveType is "StartGame" or "EndGame", update the hasStarted property accordingly
+        hasStarted = true;
+        return true;
+    } else if ( moveType == "EndGame") {
+        return false;
+        // Nothing yet
+    }
+
+    // Call makeMove on the gameState and return the result
     return gameState.makeMove(playerRole, move);
 }
 
