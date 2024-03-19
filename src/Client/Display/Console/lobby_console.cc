@@ -118,3 +118,9 @@ void LobbyConsole::addPlayer(const std::string& playerName) {
     std::string message = "sessionID: " + _session_id;
     _controller->sendIDGame(playerName, message);
 }
+
+void LobbyConsole::loadParameters(const GameSettingConsole &gameSettingConsole) {
+  _max_players = gameSettingConsole.isSpectatorsAllowed() ? 8 : 2;
+  _game_name = gameSettingConsole.getGameName();
+  _commander_mode = gameSettingConsole.isCommanderMode();
+}

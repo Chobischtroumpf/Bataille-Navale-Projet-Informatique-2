@@ -163,6 +163,31 @@ ReturnInput GameSettingConsole::handleInput() {
       break;
     }
     _option_counter++;
-  }
+    _valid_input = true;
+  } else _valid_input = false;
   return ReturnInput(ReturnInput::Screen::GAME_CREATION, "");
+}
+
+bool GameSettingConsole::isCommanderMode() const {
+  return _commander_mode.value();
+}
+
+bool GameSettingConsole::isSpectatorAllowed() const {
+  return _spectator_allowed.value();
+}
+
+std::string GameSettingConsole::getGameName() const {
+  return _game_name;
+}
+
+int GameSettingConsole::getTimePerTurn() const {
+  return _time_per_turn.value();  
+}
+
+int GameSettingConsole::getTimePerGame() const {
+  return _time_per_game.value();
+}
+
+int GameSettingConsole::getTimeGame() {
+  return _time_game.value();
 }

@@ -62,4 +62,12 @@ public:
   void displayError() override;
   void update() override;
   ReturnInput handleInput() override;
+
+  // Getters
+  bool isCommanderMode() const;
+  bool isSpectatorAllowed() const;
+  std::string getGameName() const;
+  int getTimePerTurn() const;
+  int getTimePerGame() const;
+  int getTimeGame() const;
 };

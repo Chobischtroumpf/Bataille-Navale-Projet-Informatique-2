@@ -17,6 +17,12 @@ private:
   std::shared_ptr<LobbyController> _controller;
   bool _admin;
   short _current_option = 0;
+
+  // Game parameters
+  int _max_players;
+  std::string _game_name;
+  bool _commander_mode;
+
   void displayOptions(int mode);
   // void startGame();
   void addPlayer(const std::string& playerName);
@@ -30,5 +36,6 @@ public:
   void displayError() override {}
   void update() override {}
   void wait();
+  void loadParameters(const GameSettingConsole &gameSettingConsole);
   ReturnInput handleInput() override;
 };
