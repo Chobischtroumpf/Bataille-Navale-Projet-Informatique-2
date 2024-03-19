@@ -188,6 +188,6 @@ int GameSettingConsole::getTimePerGame() const {
   return _time_per_game.value();
 }
 
-int GameSettingConsole::getTimeGame() {
+int GameSettingConsole::getTimeGame() const {
   return _time_game.value();
 }

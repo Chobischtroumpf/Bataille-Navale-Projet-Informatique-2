@@ -7,6 +7,7 @@
 #include "game_client.hh"
 #include "lobby_controller.hh"
 #include "lobby_view.hh"
+#include "game_setting_console.hh"
 
 class LobbyConsole : public Console {
 private:
