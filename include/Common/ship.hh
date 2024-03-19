@@ -27,7 +27,7 @@ class Ship {
     Ship(std::vector<BoardCoordinates> coordinates);
     Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates);
     Ship(std::vector<BoardCoordinates> coordinates, GameView *board);
-  Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, GameView *board);
+    Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, GameView *board);
     Ship(const Ship &other);
 
     // Operators
