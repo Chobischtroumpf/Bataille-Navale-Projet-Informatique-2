@@ -574,7 +574,6 @@ ReturnInput GameConsole::handlePlaceShip() {
     return {};
   }
   if (_board->allShipsPlaced()) {
-    _control->sendShips(_board->getPlacedShips());
     _phase = WAIT_GAME;
   }
   std::cin.clear();
