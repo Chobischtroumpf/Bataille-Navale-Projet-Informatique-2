@@ -34,10 +34,10 @@ void GameSettingConsole::displayParameter() {
   std::cout << "║ Time per turn of the player : " << "\033[0;33m" << (_time_per_turn.has_value() ? (std::to_string(_time_per_turn.value()) + " seconds") : "") << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time per game of the player : " << "\033[0;33m" << (_time_per_game.has_value() ? (_time_per_game.value() + " seconds") : "") << "\033[0m" << std::endl;
+  std::cout << "║ Time per game of the player : " << "\033[0;33m" << (_time_per_game.has_value() ? (std::to_string(_time_per_game.value()) + " seconds") : "") << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
-  std::cout << "║ Time of the game : " << "\033[0;33m" << (_time_game.has_value() ? (_time_game.value() + " seconds") : "") << "\033[0m" << std::endl;
+  std::cout << "║ Time of the game : " << "\033[0;33m" << (_time_game.has_value() ? (std::to_string(_time_game.value()) + " seconds") : "") << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
   std::cout << "║ Spectator allowed : " << "\033[0;33m";

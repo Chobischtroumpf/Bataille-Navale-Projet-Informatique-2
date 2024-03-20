@@ -32,7 +32,7 @@ private:
         return input.size() > 0;
       },
       [](std::string input) -> bool {
-        return input.size() == 1 && (input[0] == '0' || input[0] == '1');
+        return input.size() == 1 && (input[0] == '1' || input[0] == '2');
       },
       [](std::string input) -> bool {
         return input.size() > 0 &&
@@ -52,8 +52,8 @@ private:
                             [](unsigned char c) { return !std::isdigit(c); }) == input.end() &&
                std::stoi(input) > 60 && std::stoi(input) < 2000;
       },
-      [](std::string input) -> bool { return input.size() == 1 && (input[0] == '0' || input[0] == '1');},
-      [](std::string input) -> bool { return input.size() == 1 && (input[0] == '0' || input[0] == '1');}
+      [](std::string input) -> bool { return input.size() == 1 && (input[0] == '1' || input[0] == '2');},
+      [](std::string input) -> bool { return input.size() == 1 && (input[0] == '1' || input[0] == '2');}
   };
 
 public:
