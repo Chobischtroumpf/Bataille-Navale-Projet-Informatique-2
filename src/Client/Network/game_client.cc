@@ -265,12 +265,13 @@ std::future<bool> GameClient::MakeMove(const std::string& sessionId, const njson
 
   // Use a promise to return the result asynchronously
   auto promise = std::make_shared<std::promise<bool>>();
+  auto resultFuture = promise->get_future();
 
   // Prepare the JSON object with sessionId and move
   njson moveData = {{"sessionId", sessionId}, {"move", move}};
 
   // Send the POST request to the game move endpoint
-  PostRequest("/api/games/move", moveData.dump())
+  PostRequest("/api/games/move", moveData)
       .then([promise](njson jsonResponse) {
         // Check if the response contains an 'error' key to determine if the
         // move was unsuccessful
@@ -298,7 +299,7 @@ std::future<bool> GameClient::MakeMove(const std::string& sessionId, const njson
       });
 
     logfile << "Move request sent." << endl;
-    return promise->get_future();
+    return resultFuture;
 }
 
 // Function to perform login using username and password, returning an authToken asynchronously

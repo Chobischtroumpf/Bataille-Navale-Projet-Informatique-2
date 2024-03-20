@@ -13,12 +13,9 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
     std::string str_move = move.at("move").get<std::string>() ;
     if (str_move == "fire"){
         return handleFire(player, move);
-    }else if (str_move == "placeShips"){
+    } else if (str_move == "placeShips"){
         return handlePlaceShip(player, move);
-    } else if (str_move == "start") {
-        handleLaunch();
-        return true;
-    }else{
+    } else{
         //handle error
         return false;
     }
@@ -84,8 +81,4 @@ nlohmann::json GameState::getGameState(PlayerRole player) const {
     // Return a placeholder or current game state
     // For simplicity, we return currentState directly
     return game->getState(player);
-}
-
-void GameState::handleLaunch() {
-    game->launchGame();
 }

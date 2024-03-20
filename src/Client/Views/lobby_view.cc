@@ -22,7 +22,7 @@ bool LobbyView::waitGameStart(const std::string& sessionId){
     while (!started) {
       auto futureMessages = gameClient->QueryGameState(sessionId);
       auto messagesJson = futureMessages.get();
-      if (messagesJson["started"] == "true") started = true;
+      if (messagesJson.at("hasStarted") == true) started = true;
       sleep(1);
     }
     return true;

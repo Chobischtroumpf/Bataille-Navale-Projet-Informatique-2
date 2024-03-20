@@ -18,7 +18,6 @@ void LobbyController::sendIDGame(const std::string& destination, const std::stri
 
 void LobbyController::launchGame(const std::string& sessionId) {
   nlohmann::json req;
-  req["session_id"] = sessionId;
-  req["move"] = "start";
+  req["moveType"] = "StartGame";
   _game_client->MakeMove(sessionId, req);
 }
