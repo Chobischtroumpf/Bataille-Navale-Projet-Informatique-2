@@ -169,9 +169,9 @@ bool LocalBoardCommander::waitGame() {
   while (!shipPlacementsFinished) {
     auto FutureGameState = _client->QueryGameState(_session_id);
     auto result = FutureGameState.get();
-    auto gameState = result["gameState"];
-    turn = gameState["turn"];
-    shipPlacementsFinished = gameState["ship_placements_finished"];
+    auto gameState = result.at("gameState");
+    turn = gameState.at("turn");
+    shipPlacementsFinished = gameState.at("_ship_placements_finished") == "true";
     sleep(1);
   }
   return true ? turn == "PLAYERONE" && _player.isPlayerOne()
