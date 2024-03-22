@@ -138,7 +138,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
 }
 
 bool LocalBoardCommander::allShipsPlaced() const {
-  for (auto &ship : _player.getFaction().getPossibleShips()) {
+  for (auto &ship : shipsToPlace()) {
     if (ship.second > 0) {
       return false;
     }

@@ -505,6 +505,11 @@ void GameConsole::handleShipSize() {
   } else {
     int size = sizebuf.at(0) - '0';
     _ship_size = size;
+    if (!_board->isShipAvailable(size)) {
+      _last_input = ERR;
+      _ship_size = 0;
+      return;
+    }
     _possible_ships = std::make_unique<ShipCommander>(size);
   }
   std::cin.clear();
@@ -519,7 +524,7 @@ void GameConsole::handleShipSelection() {
     _ship_selected = true;
   } else if (shipbuf == "Q") {
     _ship_size = 0;
-    _possible_ships.release();
+    _possible_ships = nullptr;
   } else if (shipbuf == "N") {
     _possible_ships->next();
   } else if (shipbuf == "R") {
@@ -544,7 +549,7 @@ void GameConsole::handleShipPlacement() {
     if (_control->placeShip(ship)) {
       _ship_size = 0;
       _ship_selected = false;
-      _possible_ships.release();
+      _possible_ships = nullptr;
       _last_input = OK;
       if (_board->allShipsPlaced()) {
         _phase = WAIT_GAME;
