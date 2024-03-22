@@ -133,7 +133,8 @@ void LocalBoardCommander::placeShip(Ship ship) {
     for (auto &ship : _player.getFleet()) {
       move_request["ships"].push_back(ship.to_json());
     }
-    _client->MakeMove(_game_id, move_request);
+    std::cerr << move_request.dump() << std::endl;
+    _client->MakeMove(_session_id, move_request);
   }
 }
 

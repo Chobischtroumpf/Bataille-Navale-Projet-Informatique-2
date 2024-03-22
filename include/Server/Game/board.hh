@@ -83,8 +83,8 @@ class Board: public GameView {
       Player &player = side ? _player1 : _player2;
       for (auto& board_coordinates : ship.getCoordinates()){
         board[ship.getTopLeft().y() + board_coordinates.y()][ship.getTopLeft().x() + board_coordinates.x()].setType(ship.getType());
-        player.addShip(ship);
       }
+      player.addShip(ship);
     }
 
     // notifies the opponent's board that the cell in coord has been hit

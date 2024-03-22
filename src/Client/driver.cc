@@ -59,13 +59,13 @@ void Driver::displayGameScreen(std::string gameId) {
         std::static_pointer_cast<LobbyConsole>(_display)->getFaction();
     if (commander_mode)
       switch (faction) {
-      case 1:
+      case 0:
         player1.setFaction(FactionBombardement());
         break;
-      case 2:
+      case 1:
         player1.setFaction(FactionSonar());
         break;
-      case 3:
+      case 2:
         player1.setFaction(FactionMines());
         break;
       }

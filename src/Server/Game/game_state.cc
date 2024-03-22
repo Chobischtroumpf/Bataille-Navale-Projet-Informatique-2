@@ -38,8 +38,8 @@ bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& move){
 
     for (const auto& obj_ship : move["ships"]) {
 
-        size_t x = obj_ship["anchor"][0];
-        size_t y = obj_ship["anchor"][1];
+        size_t x = obj_ship["anchor"]["x"];
+        size_t y = obj_ship["anchor"]["y"];
 
         BoardCoordinates top_left{x,y};
 
