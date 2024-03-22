@@ -60,5 +60,5 @@ string TokenHandler::getUserID(string token){
     if (!token.empty()){
         return this->valid_tokens[token].first;
     }
-    return 0;
+    return "";
 }

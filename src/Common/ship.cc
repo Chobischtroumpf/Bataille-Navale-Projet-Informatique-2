@@ -9,7 +9,7 @@ Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates(coordinates)
     if (_length == 1) setType(UNDAMAGED_MINE);
     // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
 }
-Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates): _top_left(top_left), _coordinates(coordinates) {
+Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates): _coordinates(coordinates), _top_left(top_left) {
     for (auto &c: coordinates) {
         _length++;
         if (c.x() >= _size_x) { _size_x = c.x()+1; }
@@ -29,14 +29,13 @@ Ship::Ship(std::vector<BoardCoordinates> coordinates, GameView *board): _coordin
     // _ship_cells(std::vector<std::vector<Cell>>(_size_y, std::vector<Cell>(_size_x))
 }
 
-Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, GameView *board): _coordinates(coordinates), _board(board) {
+Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, GameView *board): _coordinates(coordinates), _top_left(top_left), _board(board) {
     for (auto &c: coordinates) {
         _length++;
         if (c.x() >= _size_x) { _size_x = c.x()+1; }
         if (c.y() >= _size_y) { _size_y = c.y()+1; }
     }
     if (_length == 1) setType(UNDAMAGED_MINE);
-    // _ship_cells(std::vector<std::vector<Cell>>(_size_y, std::vector<Cell>(_size_x))
 }
 
 Ship::Ship(const Ship &other): _coordinates(other._coordinates), _top_left(other._top_left), _type(other._type), _board(other._board), _length(other._length), _size_x(other._size_x), _size_y(other._size_y), _is_sunk(other._is_sunk) {}
@@ -46,7 +45,7 @@ Ship &Ship::operator=(const Ship &other) {
         _coordinates = other._coordinates;
         _top_left = other._top_left;
         _type = other._type;
-        _board = _board;
+        _board = other._board;
         _length = other._length;
         _size_x = other._size_x;
         _size_y = other._size_y;

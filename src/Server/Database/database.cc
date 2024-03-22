@@ -48,6 +48,8 @@ DbError DataBase::createTables(){
 int DataBase::callback(void *data, int argc, char **argv, char **az_col_name){
     QueryResult *query_result = static_cast<QueryResult*>(data);
     std::vector<std::string> row;
+
+    (void) az_col_name;
     for (int i = 0; i < argc; i++) {
         row.push_back(argv[i] ? argv[i] : "NULL");
     }

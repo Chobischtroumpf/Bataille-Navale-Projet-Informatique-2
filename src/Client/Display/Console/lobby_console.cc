@@ -72,13 +72,6 @@ void LobbyConsole::displayOptions(int mode) {
   std::cout << "╝" << std::endl;
 }
 
-void LobbyConsole::wait() {
-  bool game_started = false;
-  while (!game_started) {
-  }
-  std::cout << "Game is starting!" << std::endl;
-}
-
 ReturnInput LobbyConsole::handleStartGame() {
   if (_view->getUserInGame(_session_id).size() < 2) {
     return {ReturnInput::Screen::LOBBY, _session_id};

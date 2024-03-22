@@ -26,6 +26,21 @@ public:
     _y = other._y;
   };
 
+  // Move constructor
+  BoardCoordinates(BoardCoordinates &&other) noexcept {
+    _x = other._x;
+    _y = other._y;
+  };
+
+  // Copy assignment
+  BoardCoordinates &operator=(const BoardCoordinates &other) {
+    if (this != &other) {
+      _x = other._x;
+      _y = other._y;
+    }
+    return *this;
+  }
+
   // Destructor
   virtual ~BoardCoordinates() = default;
 

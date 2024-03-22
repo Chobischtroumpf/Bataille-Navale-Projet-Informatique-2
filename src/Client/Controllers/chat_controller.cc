@@ -3,8 +3,8 @@
 
 #include "chat_controller.hh"
 
-ChatController::ChatController(std::shared_ptr<GameClient> gameClient)
-    : _game_client(gameClient) {}
+ChatController::ChatController(std::shared_ptr<GameClient>& gameClient)
+    : _game_client(std::move(gameClient)) {}
 
 void ChatController::sendMsgToServer(const std::string &destination,
                                      const std::string &message) {

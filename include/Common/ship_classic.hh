@@ -13,4 +13,6 @@ class ShipClassic {
     void next();
     Ship getShip();
     void rotate();
+
+    virtual ~ShipClassic() = default;
 };

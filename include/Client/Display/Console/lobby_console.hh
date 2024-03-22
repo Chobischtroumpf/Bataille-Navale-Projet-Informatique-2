@@ -52,10 +52,8 @@ public:
   void display() override;
   void displayError() override {}
   void update() override {}
-  void wait();
   void loadParameters(std::shared_ptr<GameSettingConsole> gameSettingConsole);
   ReturnInput handleInput() override;
-
   bool isCommanderMode() const;
   int getFaction() const;
 };

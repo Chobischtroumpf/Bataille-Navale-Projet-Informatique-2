@@ -5,4 +5,5 @@
 class ShipCommander : public ShipClassic {
   public:
     ShipCommander(int number_of_case);
+    ~ShipCommander() override = default;
 };

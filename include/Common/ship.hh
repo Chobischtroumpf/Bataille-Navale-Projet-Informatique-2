@@ -15,9 +15,9 @@ class Ship {
     BoardCoordinates _top_left;
     CellType _type = UNDAMAGED_SHIP;
     GameView *_board;
-    int _length = 0;
-    int _size_x = 0;
-    int _size_y = 0;
+    size_t _length = 0;
+    size_t _size_x = 0;
+    size_t _size_y = 0;
     bool _is_sunk = false; // peut être juste changer le celltype ?
 
     void setSunk(bool is_sunk);

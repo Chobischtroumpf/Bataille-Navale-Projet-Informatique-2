@@ -8,4 +8,5 @@
 class Controller {
 public:
   virtual void sendData(std::string data) {}
+  virtual ~Controller() = default;
 };
