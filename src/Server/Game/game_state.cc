@@ -10,33 +10,33 @@ GameState::~GameState() {
 }
 
 bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
-    std::string str_move = move.at("move").get<std::string>() ;
+    std::string str_move = move.at("moveType").get<std::string>() ;
     if (str_move == "fire"){
-        return handleFire(player, move);
+        return handleFire(player, move.at("fire"));
     } else if (str_move == "placeShips"){
-        return handlePlaceShip(player, move);
+        return handlePlaceShip(player, move.at("ships"));
     } else{
         //handle error
         return false;
     }
 }
 
-bool GameState::handleFire(PlayerRole player, const nlohmann::json& move){
-    int ability = move["fire"]["ability"];
-    size_t x = move["fire"]["anchor"][0];
-    size_t y = move["fire"]["anchor"][1];
+bool GameState::handleFire(PlayerRole player, const nlohmann::json& fire_move){
+    SpecialAbilityType ability_type = fire_move.at("ability").get<SpecialAbilityType>();
+    size_t x = fire_move.at("anchor").at(0).get<size_t>();
+    size_t y = fire_move.at("anchor").at(1).get<size_t>();
     BoardCoordinates board_coordinates{x,y};
     return game->handleFire(role_to_turn(player),board_coordinates);
 
 }
 
-bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& move){
+bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& ships){
     /*if (move.size() != 5){
         //handle the number of placement is incorrect
         return false;
     }*/
 
-    for (const auto& obj_ship : move["ships"]) {
+    for (const auto& obj_ship : ships) {
 
         size_t x = obj_ship["anchor"]["x"];
         size_t y = obj_ship["anchor"]["y"];
@@ -44,14 +44,14 @@ bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& move){
         BoardCoordinates top_left{x,y};
 
         std::vector<BoardCoordinates> coords{};
-        for (const auto& obj_coord : obj_ship["coordinates"]) {
-            size_t i = obj_coord[0];
-            size_t j = obj_coord[1];
+        for (const auto& obj_coord : obj_ship.at("coordinates")) {
+            size_t i = obj_coord.at(0);
+            size_t j = obj_coord.at(1);
             BoardCoordinates board_coordinates{i,j};
             coords.push_back(board_coordinates);
         }
         Ship ship{top_left, coords};
-        ship.setType(obj_ship["type"]);
+        ship.setType(obj_ship.at("type")); // a mon avis ca ca va pas marcher, on a pas de conversion int -> CellType
 
         bool result = game->handlePlaceShip(role_to_turn(player),ship);
         if (!result){

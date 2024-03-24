@@ -128,7 +128,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
   if (allShipsPlaced()) {
     nlohmann::json move_request;
 
-    move_request["move"] = "placeShip";
+    move_request["moveType"] = "placeShip";
     move_request["ships"] = nlohmann::json::array();
     for (auto &ship : _player.getFleet()) {
       move_request["ships"].push_back(ship.to_json());
@@ -148,11 +148,11 @@ bool LocalBoardCommander::allShipsPlaced() const {
 }
 
 PossibleShips LocalBoardCommander::shipsToPlace() const {
-  PossibleShips ships = _player.getFaction().getPossibleShips();
+  PossibleShips placed_ships = _player.getFaction().getPossibleShips();
   for (auto &ship : _player.getFleet()) {
-    ships[ship.getLength()]--;
+    placed_ships[ship.getLength()]--;
   }
-  return ships;
+  return placed_ships;
 }
 
 CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
@@ -278,7 +278,7 @@ void LocalBoardCommander::fire(SpecialAbility ability,
   fire_request["ability"] = ability.getType();
   fire_request["anchor"] = coordinates.to_json();
 
-  move_request["move"] = "fire";
+  move_request["moveType"] = "fire";
   move_request["fire"] = fire_request;
 
   _client->MakeMove(_game_id, move_request);

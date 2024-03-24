@@ -56,13 +56,6 @@ bool GameController::placeShip(Ship ship) const {
   }
 }
 
-void GameController::sendShips(std::vector<Ship> boats) {
-  // POST request to the server to place the boats on the board
-}
-
 void GameController::quit() {}
 
 void GameController::connectServer() {}
-
-bool GameController::sendRequest(Ship ship) { return true; }
-bool GameController::sendRequest(BoardCoordinates coord) { return true; }

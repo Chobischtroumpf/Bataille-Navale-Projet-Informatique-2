@@ -76,11 +76,11 @@ bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move
     // Check if the move object contains "moveType" 
     if (!move.contains("moveType")) {
         // If "moveType" property is missing, return false indicating error
-        std::cerr << "Invalid move protocol: no moveType property on move object" << std::endl;
+        std::cerr << "Invalid move protocol: no move property on move object" << std::endl;
         return false;
     }
 
-    std::string moveType = move["moveType"];
+    std::string moveType = move.at("moveType");
 
     // Check if the moveType is "StartGame" or "EndGame"
     if (moveType == "StartGame") {
