@@ -26,6 +26,8 @@ private:
   std::vector<std::string> _options_classic = {"Add Player to Lobby ⌨", "Start Game ⚑", "Refresh Player List 🔄", "Back to the Main Menu ☝"};
   std::vector<std::string>& _options = _options_classic;
   
+  // Invited player variables
+  bool _faction_chosen = false;
 
   // Game parameters
   int _max_players;
@@ -54,6 +56,8 @@ public:
   void update() override {}
   void wait();
   void loadParameters(std::shared_ptr<GameSettingConsole> gameSettingConsole);
+  void loadParameters(const std::string& session_id);
+
   ReturnInput handleInput() override;
 
   bool isCommanderMode() const;

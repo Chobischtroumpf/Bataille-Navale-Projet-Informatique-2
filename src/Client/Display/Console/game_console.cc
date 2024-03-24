@@ -551,7 +551,7 @@ void GameConsole::handleShipPlacement() {
       _ship_selected = false;
       _possible_ships = nullptr;
       _last_input = OK;
-      _control->sendShips(_board->getPlacedShips());
+      // _control->sendShips(_board->getPlacedShips());
       if (_board->allShipsPlaced()) {
         _phase = WAIT_GAME;
       }

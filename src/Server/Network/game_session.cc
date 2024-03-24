@@ -4,6 +4,7 @@
 GameSession::GameSession(const std::string& leaderId, const nlohmann::json& gameDetails)
     : leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
     participantRoles[leaderId] = PlayerRole::Leader;
+    _session_name = gameDetails.at("name").get<std::string>();
     hasStarted = false;
 }
 
@@ -103,6 +104,8 @@ nlohmann::json GameSession::getSessionState() const {
     sessionState["participants"] = getParticipants();
 
     sessionState["hasStarted"] = this->hasStarted;
+
+    sessionState["sessionName"] = _session_name;
     
     return sessionState;
 }

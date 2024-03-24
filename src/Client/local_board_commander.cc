@@ -128,7 +128,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
   if (allShipsPlaced()) {
     nlohmann::json move_request;
 
-    move_request["moveType"] = "placeShip";
+    move_request["moveType"] = "placeShip"; //< should be "move" ?
     move_request["ships"] = nlohmann::json::array();
     for (auto &ship : _player.getFleet()) {
       move_request["ships"].push_back(ship.to_json());

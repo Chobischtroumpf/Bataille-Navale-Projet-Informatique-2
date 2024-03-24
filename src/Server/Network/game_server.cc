@@ -134,6 +134,7 @@ void GameServer::handleGet(http_request request) {
 
                   gameDetails["participants"] = sessionState["participants"];
                   gameDetails["hasStarted"] = sessionState["hasStarted"];
+                  gameDetails["sessionName"] = sessionState["sessionName"];
                   response["gameDetails"] = gameDetails;
 
                   request.reply(status_codes::OK, response.dump(), "application/json");

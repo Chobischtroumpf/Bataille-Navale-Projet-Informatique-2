@@ -125,7 +125,9 @@ void Driver::displayLobbyScreen(std::string gameId, bool admin) {
       _display = std::move(lobby);
       _current_screen = ReturnInput::Screen::LOBBY;
     } else {
-      _display = std::make_shared<LobbyConsole>(gameId, getClient(), admin);
+      std::shared_ptr<LobbyConsole> lobby = std::make_shared<LobbyConsole>(gameId, getClient(), admin);
+      lobby->loadParameters(gameId);
+      _display = std::move(lobby);
       _current_screen = ReturnInput::Screen::LOBBY;
     }
   } else {

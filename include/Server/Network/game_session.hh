@@ -34,6 +34,7 @@ public:
 private:
     // Unique identifier for the session
     std::string sessionId;
+    std::string _session_name;
 
     // Bool indicating session state
     bool hasStarted;
