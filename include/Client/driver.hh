@@ -12,7 +12,7 @@
 #include "lobby_controller.hh"
 #include "login_controller.hh"
 #include "main_menu_controller.hh"
-#include "register_controller.hh"
+// #include "register_controller.hh"
 
 // Displays
 #include "chat_console.hh"

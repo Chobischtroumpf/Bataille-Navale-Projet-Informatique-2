@@ -8,8 +8,40 @@ then
 echo "Updating the package list..."
 sudo apt-get update
 
+# install gcc-10 and g++-10
+dpkg -s gcc-10 > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "gcc-10 not found. Attempting to install..."
+
+    sudo apt-get install -y gcc-10
+
+    if [ $? -eq 0 ]; then
+        echo "gcc-10 installed successfully."
+    else
+        echo "Failed to install gcc-10. Please install it manually."
+    fi
+else
+    echo "gcc-10 is already installed."
+fi
+
+dpkg -s g++-10 > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "g++-10 not found. Attempting to install..."
+
+    sudo apt-get install -y g++-10
+
+    if [ $? -eq 0 ]; then
+        echo "g++-10 installed successfully."
+    else
+        echo "Failed to install g++-10. Please install it manually."
+    fi
+else
+    echo "g++-10 is already installed."
+fi
+
 # Check if cpprestsdk is installed
-if ! dpkg -s libcpprest-dev &> /dev/null; then
+dpkg -s libcpprest-dev > /dev/null 2>&1
+if [ $? -ne 0 ]; then
     echo "cpprestsdk not found. Attempting to install..."
 
     # Attempt to install cpprestsdk
@@ -25,7 +57,8 @@ else
 fi
 
 # Install SQLite3 SDK
-if ! dpkg -s libsqlite3-dev &> /dev/null; then
+dpkg -s libsqlite3-dev > /dev/null 2>&1
+if [ $? -ne 0 ]; then
     echo "SQLite3 SDK not found. Attempting to install..."
 
     sudo apt-get install -y libsqlite3-dev
@@ -40,7 +73,8 @@ else
 fi
 
 # Install CMake
-if ! dpkg -s cmake &> /dev/null; then
+dpkg -s cmake > /dev/null 2>&1
+if [ $? -ne 0 ]; then
     echo "cmake not found. Attempting to install..."
 
     sudo apt-get install -y cmake
@@ -55,7 +89,8 @@ else
 fi
 
 # Install Sodium
-if ! dpkg -s libsodium-dev &> /dev/null; then
+dpkg -s libsodium-dev > /dev/null 2>&1
+if [ $? -ne 0 ]; then
     echo "Sodium lib not found. Attempting to install..."
 
     sudo apt-get install -y libsodium-dev

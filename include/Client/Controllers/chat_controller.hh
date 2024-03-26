@@ -15,5 +15,5 @@ private:
 public:
   void sendMsgToServer(const std::string &destination,
                        const std::string &message);
-  explicit ChatController(std::shared_ptr<GameClient> gameClients);
+  explicit ChatController(std::shared_ptr<GameClient> &gameClients);
 };
