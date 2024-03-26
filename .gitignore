@@ -33,7 +33,7 @@
 battleship
 
 # Other
-Makefile
+# Makefile
 test.cc
 gen_board.hh
 */*.json
