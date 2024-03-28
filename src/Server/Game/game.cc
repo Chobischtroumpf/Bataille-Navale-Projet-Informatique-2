@@ -3,7 +3,6 @@
 Game::Game(const nlohmann::json &game_details)
     : _board{std::make_shared<Board>()}, _update_player1{true}, _update_player2{true} {
   setGame(game_details);
-  initializeShipPlacements();
 }
 
 bool Game::isFinished() const {
@@ -20,14 +19,12 @@ bool Game::handlePlaceShip(Turn turn, Ship ship) {
   if (!shipPlacementsFinished()) {
     if (turn == PLAYERONE) {
       _board->placeShip(ship, true);
-      _ship_placements.at(PLAYERONE)++;
+      _update_player1 = true;
     } else {
       _board->placeShip(ship, false);
-      _ship_placements.at(PLAYERTWO)++;
-      
+      _update_player2 = true;
     }
-    _update_player1 = true;
-    _update_player2 = true;
+
     // if the ship placements finished then start the timer
     if (shipPlacementsFinished()){
       startTimer();
@@ -37,8 +34,10 @@ bool Game::handlePlaceShip(Turn turn, Ship ship) {
   return false;
 }
 
-bool Game::handleFire(Turn turn, BoardCoordinates board_coordinates) {
+bool Game::handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinates board_coordinates) {
   if (_board->whoseTurn() == turn) {
+    // handle the fire
+    _board->fire(
     // _board->fire(board_coordinates); // TODO: adapter au nouveau fire
     changeTurn();
     _update_player1 = true;
@@ -121,6 +120,30 @@ void Game::setGame(const nlohmann::json &game_details) {
   
   _mode_commandant = !(game_details["gamemode"].get<std::string>() == "Classic");
   
+  // set the factions
+  string faction1 = game_details.at("faction1").get<std::string>();
+  string faction2 = game_details.at("faction2").get<std::string>();
+
+  if (faction1 == "Mines"){
+    _board->getPlayer1().setFaction(FactionMines());
+  }else if (faction1 == "Sonar"){
+    _board->getPlayer1().setFaction(FactionSonar());
+  }else if (faction1 == "Bombardement"){
+    _board->getPlayer1().setFaction(FactionBombardement());
+  }else{
+    _board->getPlayer1().setFaction(FactionClassique());
+  }
+
+  if (faction2 == "Mines"){
+    _board->getPlayer2().setFaction(FactionMines());
+  }else if (faction2 == "Sonar"){
+    _board->getPlayer2().setFaction(FactionSonar());
+  }else if (faction2 == "Bombardement"){
+    _board->getPlayer2().setFaction(FactionBombardement());
+  }else{ 
+    _board->getPlayer2().setFaction(FactionClassique());
+  }
+
   int game_time =
       game_details.at("turnTimeLimit").get<int>();
   int player_time =
@@ -130,17 +153,16 @@ void Game::setGame(const nlohmann::json &game_details) {
   // _game_timer.set(std::stoi(game_details.at("_game_timer").get<std::string>()));
 }
 
-void Game::initializeShipPlacements() {
-  // Clear existing contents if any
-  _ship_placements.clear();
-  _ship_placements.emplace(PLAYERONE, 0);
-  _ship_placements.emplace(PLAYERTWO, 0);
-}
-
 bool Game::shipPlacementsFinished() const {
 
-  return _ship_placements.at(PLAYERONE) == _required__ship_placements &&
-         _ship_placements.at(PLAYERTWO) == _required__ship_placements;
+  Player player1 = _board->getPlayer1();
+  Player player2 = _board->getPlayer2();
+
+  if (player1.getFleet().size() == player1.getFaction().getAmountOfShips() &&
+      player2.getFleet().size() == player2.getFaction().getAmountOfShips()) {
+    return true;
+  }
+  return false;
 }
 
 void Game::changeTurn(){

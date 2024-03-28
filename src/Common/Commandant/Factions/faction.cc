@@ -16,9 +16,10 @@ std::string Faction::getName() const { return _name; };
 PossibleShips Faction::getPossibleShips() const { return _possible_ships; };
 SpecialAbilities Faction::getSpecialAbilities() const { return _special_abilities; };
 
-void Faction::removeShip(Amount amount) {
-    _possible_ships[amount]--;
-    if (_possible_ships[amount] == 0) {
-        _possible_ships.erase(amount);
+Amount Faction::getAmountOfShips() const {
+    Amount amount = 0;
+    for (auto& ship : _possible_ships) {
+        amount += ship.first;
     }
+    return amount;
 }

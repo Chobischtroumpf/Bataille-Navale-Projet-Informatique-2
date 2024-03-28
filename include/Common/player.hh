@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "Commandant/Factions/faction.hh"
-#include "Commandant/Factions/faction_classique.hh"
+#include "faction.hh"
+#include "faction_classique.hh"
 
 class Player {
   private:
@@ -31,6 +31,7 @@ class Player {
     void setFleet(std::vector<Ship> fleet); // Cette méthode est peut etre inutile ?
     void addShip(Ship ship);
     void setTurn(bool is_turn);
+    void swapTurn();
     void addEnergyPoints(int energy_points);
     void removeEnergyPoints(int energy_points);
     void setPlayerOne(bool is_player_one);

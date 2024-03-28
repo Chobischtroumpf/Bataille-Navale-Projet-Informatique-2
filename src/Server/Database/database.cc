@@ -7,10 +7,12 @@
 #include <sstream>
 #include <ctime>
 
-#define DATABASE_DIR "../src/Server/Database/DDL_user_db.sql"
+#ifndef DATABASE_DIR
+# define DATABASE_DIR "./src/Server/Database/DDL_user_db.sql"
+#endif
 
 DbError DataBase::createDb() {
-    int rc = sqlite3_open("../users.db", &this->db);
+    int rc = sqlite3_open("users.db", &this->db);
     if (rc) {
         this->db = nullptr;
         closeConnection();

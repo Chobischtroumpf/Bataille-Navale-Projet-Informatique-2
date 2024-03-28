@@ -1,6 +1,7 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
+#include <optional>
 
 #include "player.hh"
 #include "cell.hh"
@@ -154,7 +155,8 @@ class Board: public GameView {
     }
 
   public:
-    Board(){};
+    // Board(){};
+    Board(Player player1, Player player2): _player1{player1}, _player2{player2} {}
     Board(const Board &) = delete;
     Board(Board &&) = delete;
     Board &operator=(const Board &) = delete;
@@ -166,7 +168,10 @@ class Board: public GameView {
     size_t width() const override{ return _player1_side.at(0).size(); }
     size_t height() const  override{ return _player1_side.size(); }
 
-    void changeTurn(){ _my_turn = !_my_turn; }
+    Player& getPlayer1() { return _player1; }
+    Player& getPlayer2() { return _player2; }
+
+    void changeTurn(){ _my_turn = !_my_turn; _player1.swapTurn();_player2.swapTurn();}
 
     // method that returns true only if one of the player's fleet is set as destroyed
     bool isFinished() const { return !(_fleetA_state && _fleetB_state); }
@@ -200,7 +205,7 @@ class Board: public GameView {
 
       for (Ship &ship : current_player.getFleet()) {
         ship.notify(coords);
-        if (!ship.isSunk()){
+        if (ship.getType() != UNDAMAGED_MINE && !ship.isSunk()) {
           return;
         }
       }

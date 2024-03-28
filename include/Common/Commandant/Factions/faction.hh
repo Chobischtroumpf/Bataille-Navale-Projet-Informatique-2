@@ -37,9 +37,9 @@ class Faction {
     virtual std::string getName() const;
     virtual PossibleShips getPossibleShips() const;
     virtual SpecialAbilities getSpecialAbilities() const;
+
+    virtual Amount getAmountOfShips() const;
     
     // Destructor
     virtual ~Faction() = default;
-
-    virtual void removeShip(Amount amount);
 };

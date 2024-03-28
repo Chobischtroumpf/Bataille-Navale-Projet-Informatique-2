@@ -8,9 +8,11 @@ else
 	CORES := 1
 endif
 
+# DATABASE_DIR := "$(shell pwd)/src/Server/Database/DDL_user_db.sql"
+
 all:
 	@cmake -S . -B build
-	cmake --build build --config Release -- -j$(CORES)
+	cmake --build build --config Release -- -j$(CORES) #DATABASE_DIR=$(DATABASE_DIR)
 
 clean:
 	@rm -rf build

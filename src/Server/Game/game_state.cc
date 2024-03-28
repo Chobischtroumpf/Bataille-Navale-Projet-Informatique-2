@@ -26,7 +26,7 @@ bool GameState::handleFire(PlayerRole player, const nlohmann::json& fire_move){
     size_t x = fire_move.at("anchor").at(0).get<size_t>();
     size_t y = fire_move.at("anchor").at(1).get<size_t>();
     BoardCoordinates board_coordinates{x,y};
-    return game->handleFire(role_to_turn(player),board_coordinates);
+    return game->handleFire(role_to_turn(player), ability_type, board_coordinates);
 
 }
 
@@ -38,8 +38,8 @@ bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& ships){
 
     for (const auto& obj_ship : ships) {
 
-        size_t x = obj_ship["anchor"]["x"];
-        size_t y = obj_ship["anchor"]["y"];
+        size_t x = obj_ship.at("anchor").at("x");
+        size_t y = obj_ship.at("anchor").at("y");
 
         BoardCoordinates top_left{x,y};
 
