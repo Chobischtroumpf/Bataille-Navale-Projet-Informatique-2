@@ -49,6 +49,103 @@ class Board: public GameView {
                                                   {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
                                                   {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}}};
 
+    class BigTorpedoIterator {
+      private:
+        BoardCoordinates _coords;
+        size_t _i;
+        size_t _j;
+
+      public:
+        BigTorpedoIterator(BoardCoordinates coords, size_t width, size_t height)
+            : _coords{coords}, _i{0}, _j{0} {}
+
+        BoardCoordinates operator*() const { return _coords + BoardCoordinates(_i, _j); }
+
+        BigTorpedoIterator &operator++() {
+          if (_j < 1) {
+            ++_j;
+          } else {
+            _j = 0;
+            ++_i;
+          }
+          return *this;
+        }
+
+        bool operator==(const BigTorpedoIterator &other) const {
+          return _i == other._i && _j == other._j;
+        }
+
+        bool operator!=(const BigTorpedoIterator &other) const {
+          return _i + _coords.x() != other._i + other._coords.x() || _j + _coords.y() != other._j + other._coords.y();
+        }
+    };
+
+    class PiercingTorpedoIterator {
+      private:
+        BoardCoordinates _coords;
+        size_t _i;
+
+      public:
+        PiercingTorpedoIterator(BoardCoordinates coords, size_t width, size_t height)
+            : _coords{coords}, _i{0} {}
+
+        BoardCoordinates operator*() const { return _coords + BoardCoordinates(0, _i); }
+
+        PiercingTorpedoIterator &operator++() {
+          ++_i;
+          return *this;
+        }
+
+        bool operator==(const PiercingTorpedoIterator &other) const { return _i == other._i; }
+
+        bool operator!=(const PiercingTorpedoIterator &other) const {
+          return _i + _coords.y() != other._i + other._coords.y();
+        }
+    };
+
+    class AerialStrikeIterator {
+      private:
+        BoardCoordinates _coords;
+        size_t _i;
+        size_t _j;
+        bool _top_right{false};
+
+      public:
+        AerialStrikeIterator(BoardCoordinates coords, size_t width, size_t height)
+            : _coords{coords}, _i{0}, _j{0} {}
+
+        BoardCoordinates operator*() const { return _coords + BoardCoordinates(_i, _j); }
+
+        AerialStrikeIterator &operator++() {
+          if (!_top_right) {
+            if (_i < 3) {
+              _i++;
+            } else if (_j < 2) {
+              _j++;
+            } else {
+              _top_right = true;
+              _i = 0;
+              _j = 1;
+            }
+          } else {
+            if (_j < 3) {
+              _j++;
+            } else {
+              _i++;
+            }
+          }
+          return *this;
+        }
+
+        bool operator==(const AerialStrikeIterator &other) const {
+          return _i == other._i && _j == other._j;
+        }
+
+        bool operator!=(const AerialStrikeIterator &other) const {
+          return _i + _coords.x() != other._i + other._coords.x() || _j + _coords.y() != other._j + other._coords.y();
+        }
+    };
+
     // updates the board after a cell has been hit
     void setHit(BoardCoordinates coords) {
       Cell &cell = _my_turn ? _player2_side[coords.y()][coords.x()]
@@ -72,31 +169,29 @@ class Board: public GameView {
 
     // updates the board after a torpedo has been fired
     void fireBigTorpedo(BoardCoordinates coords) {
-      for (int i =0; i<2 && coords.x() + i < width()-1; i++) {
-        for (int j =0; j<2 && coords.y() + j < height()-1; j++) {
-          setHit(BoardCoordinates(coords.x() + i, coords.y() + j));
-        }
+      for (BigTorpedoIterator it = beginBigTorpedo(coords);
+           it != endBigTorpedo(coords); ++it) {
+            if (isInBoard(*it)){
+              setHit(*it);
+            }
       }
     }
 
     // updates the board after a piercing torpedo has been fired
     void firePiercingTorpedo(BoardCoordinates coords) {
-      for (int i = 0; i < 4 && coords.y() + i < height(); i++){
-        setHit(BoardCoordinates(coords.x(), coords.y() + i));
+      for (PiercingTorpedoIterator it = beginPiercingTorpedo(coords); it != endPiercingTorpedo(coords); ++it) {
+            if (isInBoard(*it)){
+              setHit(*it);
+            }
       }
     }
 
     // updates the board after an aerial strike has been fired
     void fireAerialStrike(BoardCoordinates coords) {
-      for (int i = 0; i < 4 && coords.x() + i < width(); i++) {
-        setHit(BoardCoordinates(coords.x() + i, coords.y()));
-        if (coords.y() + 3 < height())
-          setHit(BoardCoordinates(coords.x() + i, coords.y() + 3));
-      }
-      for (int j = 1; j < 3 && coords.y() + j < height(); j++) {
-        setHit(BoardCoordinates(coords.x(), coords.y() + j));
-        if (coords.x() + 3 < width())
-          setHit(BoardCoordinates(coords.x() + 3, coords.y() + j));
+      for (AerialStrikeIterator it = beginAerialStrike(coords); it != endAerialStrike(coords); ++it) {
+        if (isInBoard(*it)) {
+          setHit(*it);
+        }
       }
     }
 
@@ -327,6 +422,38 @@ class Board: public GameView {
     bool isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const  override {
       return shipId(my_side, first).has_value() &&
             shipId(my_side, first) == shipId(my_side, second);
+    }
+
+    bool isInBoard(BoardCoordinates coord) const {
+      return coord.x() >= 0 && coord.x() < width() && coord.y() >= 0 && coord.y() < height();
+    }
+
+    // Iterators methods
+    // Big Torpedo
+    BigTorpedoIterator beginBigTorpedo(BoardCoordinates coords) {
+      return BigTorpedoIterator(coords, width(), height());
+    }
+
+    BigTorpedoIterator endBigTorpedo(BoardCoordinates coords) {
+      return BigTorpedoIterator(coords + BoardCoordinates(2, 0), width(), height());
+    }
+
+    // Piercing Torpedo
+    PiercingTorpedoIterator beginPiercingTorpedo(BoardCoordinates coords) {
+      return PiercingTorpedoIterator(coords, width(), height());
+    }
+
+    PiercingTorpedoIterator endPiercingTorpedo(BoardCoordinates coords) {
+      return PiercingTorpedoIterator(coords + BoardCoordinates(0, 4), width(), height());
+    }
+
+    // Aerial Strike
+    AerialStrikeIterator beginAerialStrike(BoardCoordinates coords) {
+      return AerialStrikeIterator(coords, width(), height());
+    }
+
+    AerialStrikeIterator endAerialStrike(BoardCoordinates coords) {
+      return AerialStrikeIterator(coords + BoardCoordinates(4, 3), width(), height());
     }
 
 };
