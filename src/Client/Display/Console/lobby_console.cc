@@ -17,7 +17,7 @@ void LobbyConsole::display() {
   if (_admin) {
     displayOptions(_current_option);
   } else {
-    if (!_faction_chosen) {
+    if (!_faction_chosen && _commander_mode) {
       displayOptions(2);
     } else {
       std::cout << "║ Please wait the game to start                            "
@@ -183,7 +183,7 @@ ReturnInput LobbyConsole::handleInput() {
     }
 
   } else {
-    if (!_faction_chosen) {
+    if (!_faction_chosen && _commander_mode) {
       int input;
       std::cin >> input;
       if (std::cin.fail()) {
