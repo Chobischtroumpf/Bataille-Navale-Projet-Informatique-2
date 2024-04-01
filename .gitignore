@@ -31,9 +31,11 @@
 *.out
 *.app
 battleship
+server
 
 # Other
 # Makefile
+gameclientlog.txt
 test.cc
 gen_board.hh
 */*.json
