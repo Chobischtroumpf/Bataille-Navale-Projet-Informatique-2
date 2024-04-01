@@ -35,7 +35,6 @@ server
 
 # Other
 # Makefile
-gameclientlog.txt
 test.cc
 gen_board.hh
 */*.json
@@ -55,8 +54,11 @@ build/*
 !build/linux
 
 
+# log files
+gameclientlog.txt
+*.log
+
 # TeXLive compilation files
-# *.log
 *.aux
 *.toc
 .vscode

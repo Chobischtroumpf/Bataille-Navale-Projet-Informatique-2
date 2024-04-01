@@ -1,5 +1,5 @@
 //#include "faction.hh"
-#include "../../include/Common/Commandant/Factions/faction.hh"
+#include "faction.hh"
 
 Faction::Faction(std::string name, PossibleShips possible_ships, SpecialAbilities special_abilities): _name{name}, _possible_ships{possible_ships}, _special_abilities{special_abilities} {}
 
@@ -19,7 +19,7 @@ SpecialAbilities Faction::getSpecialAbilities() const { return _special_abilitie
 Amount Faction::getAmountOfShips() const {
     Amount amount = 0;
     for (auto& ship : _possible_ships) {
-        amount += ship.first;
+        amount += ship.second;
     }
     return amount;
 }

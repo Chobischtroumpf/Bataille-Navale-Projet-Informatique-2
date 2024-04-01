@@ -42,12 +42,6 @@ add_executable(battleship ${COMMON_SOURCES} ${CLIENT_SOURCES})
 # Create server executable
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
-# Define an executable target built from `client.cpp` and its dependencies
-# add_executable(client 
-# test/test_client.cc 
-# src/Client/Network/game_client.cc
-# )
-
 # Define include directories for target 'client' 
 # target_include_directories(client PRIVATE include/Client/Network)
 
@@ -74,3 +68,4 @@ target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(battleship PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(server PRIVATE SQLite::SQLite3)
 target_link_libraries(server PRIVATE sodium)
+

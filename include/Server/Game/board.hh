@@ -248,9 +248,8 @@ class Board: public GameView {
       Player& current_player = _my_turn ? _player1 : _player2;
       current_player.addShip(Ship(coords, {{0,0}}, this));
     }
-
   public:
-    // Board(){};
+    Board(){};
     Board(Player player1, Player player2): _player1{player1}, _player2{player2} {}
     Board(const Board &) = delete;
     Board(Board &&) = delete;

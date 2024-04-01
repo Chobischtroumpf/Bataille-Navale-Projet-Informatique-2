@@ -11,6 +11,9 @@ GameState::~GameState() {
 
 bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
     std::string str_move = move.at("moveType").get<std::string>() ;
+
+    std::cerr << "move type: " << str_move << std::endl;
+
     if (str_move == "fire"){
         return handleFire(player, move.at("fire"));
     } else if (str_move == "placeShips"){
@@ -38,21 +41,31 @@ bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& ships){
 
     for (const auto& obj_ship : ships) {
 
-        size_t x = obj_ship.at("anchor").at("x");
-        size_t y = obj_ship.at("anchor").at("y");
+        std::cerr << "ship: " << obj_ship << std::endl;
+        size_t top_left_x = obj_ship.at("anchor").at("x");
+        size_t top_left_y = obj_ship.at("anchor").at("y");
 
-        BoardCoordinates top_left{x,y};
+        std::cerr << "create BoardCoordinates at: " << top_left_x << " " << top_left_y << std::endl;
+        BoardCoordinates top_left{top_left_x, top_left_y};
 
+        std::cerr << "create vector of BoardCoordinates" << std::endl;
         std::vector<BoardCoordinates> coords{};
-        for (const auto& obj_coord : obj_ship.at("coordinates")) {
-            size_t i = obj_coord.at(0);
-            size_t j = obj_coord.at(1);
+        const auto arr_coordinates = obj_ship.at("coordinates");
+        std::cerr << "arr_coordinates: " << arr_coordinates << std::endl;
+        for (const auto& elem : arr_coordinates) {
+            size_t i = elem.at("x");
+            size_t j = elem.at("y");
             BoardCoordinates board_coordinates{i,j};
             coords.push_back(board_coordinates);
         }
+
+        std::cerr << "create Ship" << std::endl;
         Ship ship{top_left, coords};
+
+        std::cerr << "set Ship type" << std::endl;
         ship.setType(obj_ship.at("type")); // a mon avis ca ca va pas marcher, on a pas de conversion int -> CellType
 
+        std::cerr << "handlePlaceShip" << std::endl;
         bool result = game->handlePlaceShip(role_to_turn(player),ship);
         if (!result){
             //error in placing ship gotta be handeled

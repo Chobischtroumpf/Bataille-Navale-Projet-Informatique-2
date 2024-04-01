@@ -8,7 +8,7 @@
 
 typedef int Amount; // Amount of ships
 typedef int Size; // Size of ships
-typedef std::pair<Amount, Size> PossibleShip; // defines a type that is a pair containing the amount and size of a ship a faction can have
+typedef std::pair<Size, Amount> PossibleShip; // defines a type that is a pair containing the amount and size of a ship a faction can have
 typedef std::map<Size, Amount> PossibleShips; // defines a type that is a map that contains all the PossibleShip's a faction can have
 typedef std::vector<SpecialAbility> SpecialAbilities; // defines a type that contains all the special abilities a faction has
 
