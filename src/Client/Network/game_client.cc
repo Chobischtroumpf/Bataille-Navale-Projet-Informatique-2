@@ -762,6 +762,7 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
             holder->_RethrowUserException();
           } catch (std::exception &e) {
             cerr << "RequestError, caught exception: " << e.what() << endl;
+            exit(1);
             return njson{}; // return empty object
           }
         }
@@ -817,6 +818,7 @@ pplx::task<njson> GameClient::GetRequest(const string &path) {
             holder->_RethrowUserException();
           } catch (std::exception &e) {
             cerr << "RequestError, caught exception: " << e.what() << endl;
+            exit(1);
             return njson{}; // Return empty object
           }
         }
