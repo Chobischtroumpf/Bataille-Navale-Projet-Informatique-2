@@ -761,13 +761,16 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
           try {
             holder->_RethrowUserException();
           } catch (std::exception &e) {
-            cerr << "RequestError, caught exception: " << e.what()
-                 << endl;
-            cerr << "Please do check if you entered the right server address, "
-                    "if the server is running and if you have an active "
-                    "internet connection. Leaving the application now."
-                 << endl;
-            exit(1);
+            std::string error = e.what();
+            cerr << "RequestError, caught exception: " << error << endl;
+            if (error == "Failed to connect to any resolved endpoint") {
+              cerr
+                  << "Please do check if you entered the right server address, "
+                     "if the server is running and if you have an active "
+                     "internet connection. Leaving the application now."
+                  << endl;
+              exit(1);
+            }
             return njson{}; // return empty object
           }
         }
@@ -822,12 +825,16 @@ pplx::task<njson> GameClient::GetRequest(const string &path) {
           try {
             holder->_RethrowUserException();
           } catch (std::exception &e) {
-            cerr << "RequestError, caught exception: " << e.what() << endl;
-            cerr << "Please do check if you entered the right server address, "
-                    "if the server is running and if you have an active "
-                    "internet connection. Leaving the application now."
-                 << endl;
-            exit(1);
+            std::string error = e.what();
+            cerr << "RequestError, caught exception: " << error << endl;
+            if (error == "Failed to connect to any resolved endpoint") {
+              cerr
+                  << "Please do check if you entered the right server address, "
+                     "if the server is running and if you have an active "
+                     "internet connection. Leaving the application now."
+                  << endl;
+              exit(1);
+            }
             return njson{}; // Return empty object
           }
         }
