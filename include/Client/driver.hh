@@ -52,7 +52,7 @@ private:
   std::shared_ptr<GameClient> _game_client;
 
 public:
-  Driver(DisplayType display_type);
+  Driver(DisplayType display_type, std::string server_address = "http://localhost:8080");
   ~Driver();
 
   // Launchers
