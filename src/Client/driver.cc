@@ -3,7 +3,7 @@
 #include "faction_bombardement.hh"
 #include "faction_mines.hh"
 
-Driver::Driver(DisplayType display_type) : _display_type{display_type}, _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
+Driver::Driver(DisplayType display_type, std::string server_address) : _display_type{display_type}, _game_client{std::make_shared<GameClient>(server_address)} {}
 
 Driver::~Driver() {}
 
