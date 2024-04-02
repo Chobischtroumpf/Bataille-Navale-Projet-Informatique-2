@@ -27,7 +27,7 @@ bool Game::handlePlaceShip(Turn turn, Ship ship) {
 
     // if the ship placements finished then start the timer
     if (shipPlacementsFinished()){
-      startTimer();
+        startTimer();
     }
     return true;
   }

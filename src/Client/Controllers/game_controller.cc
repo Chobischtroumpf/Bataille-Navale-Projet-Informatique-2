@@ -57,5 +57,3 @@ bool GameController::placeShip(Ship ship) const {
 }
 
 void GameController::quit() {}
-
-void GameController::connectServer() {}

@@ -37,11 +37,6 @@ class GameController : public Controller {
     /* Handle the placement of a ship */
     virtual bool placeShip(Ship ship) const;
 
-    // /* Send the ships to the server */
-    // virtual void sendShips(std::vector<Ship> boats);
-
-    virtual void connectServer();
-
     /** Inform that the player quit the game. */
     virtual void quit();
 

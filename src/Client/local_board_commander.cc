@@ -8,15 +8,11 @@ AJOUTER SESSIONID DANS LE CONSTRUCTEUR
 
 */
 LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
-                                         Player player, GameMode mode,
-                                         const std::string &sessionId)
-    : _player{player}, _mode{mode}, _is_finished{false},
-      _is_victory{false}, _my_board{std::vector<std::vector<Cell>>(
-                              10, std::vector<Cell>(10, Cell()))},
-      _their_board{
-          std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
-      _session_id{sessionId},
-      _client{client} {
+    Player player, GameMode mode, const std::string &sessionId) :
+      _player{player}, _mode{mode}, _is_finished{false}, _is_victory{false},
+      _my_board{10, std::vector<Cell>{10, {}}}, _their_board{10, std::vector<Cell>{10, {}}},
+      _session_id{sessionId}, _client{client} {
+
   auto futureMessages = _client->QueryGameState(sessionId);
   auto messagesJson = futureMessages.get();
   auto usersID = messagesJson["participants"];
