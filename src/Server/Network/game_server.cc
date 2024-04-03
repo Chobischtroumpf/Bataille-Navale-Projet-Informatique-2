@@ -1,4 +1,5 @@
 #include "game_server.hh"
+#include <iostream>
 
 using namespace web;
 using namespace web::http;
@@ -454,6 +455,7 @@ void GameServer::handlePost(http_request request) {
             auto userId = verifyAuthToken(request);
 
             // If userId is empty, the token is invalid or missing
+            std::cerr << "user : " << userId << std::endl;
             if (userId.empty()) {
               response["error"] = "Invalid or missing AuthToken";
               request.reply(status_codes::Unauthorized, response.dump(),
@@ -461,6 +463,7 @@ void GameServer::handlePost(http_request request) {
               return; // Stop further processing
             }
 
+            std::cerr << "request : " << requestBody << std::endl;
             // Extract sessionId and move details from request body
             auto sessionId = requestBody[U("sessionId")].as_string();
             njson move = njson::parse(requestBody[U("move")].serialize());

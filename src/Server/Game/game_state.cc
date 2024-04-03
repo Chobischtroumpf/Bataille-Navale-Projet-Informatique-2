@@ -1,4 +1,5 @@
 #include "game_state.hh"
+#include <iostream>
 
 GameState::GameState(const nlohmann::json& gameDetails) : game{std::make_shared<Game>(gameDetails)} {
     /*// Initialize currentState with some default value or based on gameDetails
@@ -14,9 +15,10 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
 
     std::cerr << "move type: " << str_move << std::endl;
 
-    if (str_move == "fire"){
+    if (str_move == "fire") {
+        std::cerr << "fire move" << std::endl;
         return handleFire(player, move.at("fire"));
-    } else if (str_move == "placeShips"){
+    } else if (str_move == "placeShips") {
         return handlePlaceShip(player, move.at("ships"));
     } else{
         //handle error
@@ -82,9 +84,7 @@ Turn GameState::role_to_turn(PlayerRole player) {
         return Turn::PLAYERTWO;
     } else {
         // Spectator has no turn
-        // You might handle this case differently based on your requirements
-        // For example, you can throw an exception or return a default turn
-        // Here, I'll just return PLAYERONE as default
+        // Return a default value
         return Turn::PLAYERONE;
     }
 }

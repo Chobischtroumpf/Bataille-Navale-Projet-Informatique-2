@@ -61,4 +61,7 @@ gameclientlog.txt
 # TeXLive compilation files
 *.aux
 *.toc
+
+# Visual Studio Code
 .vscode
+.cache

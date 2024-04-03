@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "ship.hh"
 #include "faction.hh"
 #include "faction_classique.hh"
 

@@ -5,11 +5,13 @@
 
 #include "player.hh"
 #include "cell.hh"
-#include "board_coordinates.hh"
 #include "ship.hh"
 #include "turn.hh"
 #include "player_role.hh"
-
+#include "board_coordinates.hh"
+#include "big_torpedo_iterator.hh"
+#include "aerial_strike_iterator.hh"
+#include "piercing_torpedo_iterator.hh"
 
 using std::map;
 using std::nullopt;
@@ -62,15 +64,13 @@ class Board: public GameView {
 
   public:
     Board();
-    Board(Player player1, Player player2): _player1{player1}, _player2{player2} {}
+    Board(Player player1, Player player2);
     Board(const Board &) = delete;
     Board(Board &&) = delete;
     Board &operator=(const Board &) = delete;
     Board &operator=(Board &&) = delete;
     ~Board() = default;
 
-
-    // bool myTurn() const { return _my_turn; }
     size_t width() const override;
     size_t height() const  override;
 
@@ -81,10 +81,10 @@ class Board: public GameView {
     void changeTurn();
 
     // method that returns true only if one of the player's fleet is set as destroyed
-    bool isFinished() const;
+    bool isFinished() const override;
 
     // method to call only at the end of the game, true if playerone won, false if playertwo won
-    bool isVictory() const;
+    bool isVictory() const override;
 
     // returns the player whose turn it is
     Turn whoseTurn() const;
@@ -99,7 +99,33 @@ class Board: public GameView {
     void fire(SpecialAbility ability, BoardCoordinates coords);
 
     // converts a CellType to a string
-    static string to_string(CellType type);
+    static string to_string(CellType type) {
+      switch (type) {
+      case WATER:
+        return "WATER";
+      case OCEAN:
+        return "OCEAN";
+      case SCANNED:
+        return "SCANNED";
+      case UNDAMAGED_MINE:
+        return "UNDAMAGED_MINE";
+      case SCANNED_MINE:
+        return "SCANNED_MINE";
+      case HIT_MINE:
+        return "HIT_MINE";
+      case UNDAMAGED_SHIP:
+        return "UNDAMAGED_SHIP";
+      case SCANNED_SHIP:
+        return "SCANNED_SHIP";
+      case HIT_SHIP:
+        return "HIT_SHIP";
+      case SUNK_SHIP:
+        return "SUNK_SHIP";
+      default:
+        throw NotImplementedError("Board unknown CellType");
+      }
+    }
+
 
     // converts the board to a json object
     nlohmann::json to_json(PlayerRole role) const;

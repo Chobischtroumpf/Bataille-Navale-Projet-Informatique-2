@@ -94,12 +94,12 @@ void Board::setMine(SpecialAbility ability, BoardCoordinates coords) {
 }
 
 Board::Board(): _my_turn{true}, _player1{}, _player2{}, _fleetA_state{true}, _fleetB_state{true},
-                _player1_side{10, std::vector<Cell>{10, {}}}, _player2_side{10, std::vector<Cell>{10, {}}} {
+                _player1_side{10, {10, Cell()}}, _player2_side{10, {10, Cell()}} {
 }
 
 Board::Board(Player player1, Player player2): _my_turn{true}, _player1{player1}, _player2{player2},
-      _fleetA_state{true}, _fleetB_state{true}, _player1_side{10, std::vector<Cell>{10, {}}},
-       _player2_side{10, std::vector<Cell>{10, {}}} {
+      _fleetA_state{true}, _fleetB_state{true}, _player1_side{10, {10, Cell()}},
+       _player2_side{10, {10, Cell()}} {
 }
 
 size_t Board::width() const {
@@ -176,37 +176,9 @@ void Board::fire(SpecialAbility ability, BoardCoordinates coords) {
   } else if (ability.getType() & IS_SONAR) {
     fireSonar(coords);
   } else if (ability.getType() & MINE) {
-    setMine(ability, coords);        
+    setMine(ability, coords);
   }
   notify(coords);
-}
-
-// converts a CellType to a string
-static string Board::to_string(CellType type) {
-  switch (type) {
-  case WATER:
-    return "WATER";
-  case OCEAN:
-    return "OCEAN";
-  case SCANNED:
-    return "SCANNED";
-  case UNDAMAGED_MINE:
-    return "UNDAMAGED_MINE";
-  case SCANNED_MINE:
-    return "SCANNED_MINE";
-  case HIT_MINE:
-    return "HIT_MINE";
-  case UNDAMAGED_SHIP:
-    return "UNDAMAGED_SHIP";
-  case SCANNED_SHIP:
-    return "SCANNED_SHIP";
-  case HIT_SHIP:
-    return "HIT_SHIP";
-  case SUNK_SHIP:
-    return "SUNK_SHIP";
-  default:
-    throw NotImplementedError("Board unknown CellType");
-  }
 }
 
 // converts the board to a json object
@@ -270,7 +242,7 @@ std::optional<Ship> Board::shipId(bool my_side, BoardCoordinates position) const
 }
 
 // returns true if the two given positions are part of the same ship
-bool Board::isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const  override {
+bool Board::isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const {
   return shipId(my_side, first).has_value() &&
         shipId(my_side, first) == shipId(my_side, second);
 }

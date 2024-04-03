@@ -3,7 +3,6 @@
 #include <vector>
 #include <map>
 
-#include "ship.hh"
 #include "special_ability.hh"
 
 typedef int Amount; // Amount of ships

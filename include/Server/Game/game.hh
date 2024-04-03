@@ -1,22 +1,18 @@
 #pragma once
 
-#include <vector>
-
 #include "ship.hh"
 #include "turn.hh"
 #include "board.hh"
 #include "game_timer.hh"
 #include "player_role.hh"
-#include "faction_mines.hh"
-#include "faction_sonar.hh"
-#include "faction_classique.hh"
-#include "faction_bombardement.hh"
+
 
 
 // Class that handles the game between 2 players
 class Game {
   private:
     std::shared_ptr<Board> _board;
+    bool _game_started;
     bool _mode_commandant;
     GameTimer _game_timer;
     bool _update_player1;
