@@ -12,9 +12,9 @@ void Faction::setPossibleShips(PossibleShips possible_ships) { this->_possible_s
 void Faction::addSpecialAbility(SpecialAbility new_ability) { this->_special_abilities.push_back(new_ability);}
 void Faction::setSpecialAbilities(SpecialAbilities abilities) { this->_special_abilities = abilities;}
 
-std::string Faction::getName() const { return _name; };
-PossibleShips Faction::getPossibleShips() const { return _possible_ships; };
-SpecialAbilities Faction::getSpecialAbilities() const { return _special_abilities; };
+std::string Faction::getName() const { return _name; }
+PossibleShips Faction::getPossibleShips() const { return _possible_ships; }
+SpecialAbilities Faction::getSpecialAbilities() const { return _special_abilities; }
 
 Amount Faction::getAmountOfShips() const {
     Amount amount = 0;
