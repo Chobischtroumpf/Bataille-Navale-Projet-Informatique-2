@@ -27,7 +27,6 @@ class LocalBoardCommander : public GameView {
 private:
   Player _player;
   GameMode _mode;
-  std::string _game_id;
   const std::string _session_id;
 
   std::vector<std::vector<Cell>> _my_board;

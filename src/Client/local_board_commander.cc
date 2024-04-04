@@ -277,7 +277,7 @@ void LocalBoardCommander::fire(SpecialAbility ability,
   move_request["moveType"] = "fire";
   move_request["fire"] = fire_request;
 
-  _client->MakeMove(_game_id, move_request);
+  _client->MakeMove(_session_id, move_request);
 }
 
 std::string LocalBoardCommander::getMyUsername() const { return _my_username; }
