@@ -21,22 +21,22 @@ string SessionManager::createSession(const string& userId, const njson& gameDeta
         ss << hex << rd();
     }
 
-    string sessionId = ss.str();
+    string session_id = ss.str();
 
     // Create and store the new session
-    sessions[sessionId] = make_shared<GameSession>(userId, gameDetails);
+    sessions[session_id] = make_shared<GameSession>(userId, gameDetails);
 
-    return sessionId;
+    return session_id;
 }
-bool SessionManager::sessionExists(const string& sessionId) {
-    auto it = sessions.find(sessionId);
+bool SessionManager::sessionExists(const string& session_id) {
+    auto it = sessions.find(session_id);
     return it != sessions.end();
 }
 
-shared_ptr<GameSession> SessionManager::getSession(const string& sessionId) {
+shared_ptr<GameSession> SessionManager::getSession(const string& session_id) {
     lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
 
-    auto it = sessions.find(sessionId);
+    auto it = sessions.find(session_id);
     if (it != sessions.end()) {
         return it->second;
     } else {
@@ -45,10 +45,10 @@ shared_ptr<GameSession> SessionManager::getSession(const string& sessionId) {
     }
 }
 
-void SessionManager::endSession(const string& sessionId) {
+void SessionManager::endSession(const string& session_id) {
     lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
 
-    auto it = sessions.find(sessionId);
+    auto it = sessions.find(session_id);
     if (it != sessions.end()) {
         // Properly end the session
         it->second->endSession(); 

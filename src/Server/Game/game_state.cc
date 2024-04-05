@@ -1,7 +1,7 @@
 #include "game_state.hh"
 #include <iostream>
 
-GameState::GameState(const nlohmann::json& gameDetails) : game{std::make_shared<Game>(gameDetails)} {
+GameState::GameState(const nlohmann::json& gameDetails) : _game{std::make_shared<Game>(gameDetails)} {
     /*// Initialize currentState with some default value or based on gameDetails
     currentState = nlohmann::json::object();*/
 }
@@ -20,7 +20,10 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
         return handleFire(player, move.at("fire"));
     } else if (str_move == "placeShips") {
         return handlePlaceShip(player, move.at("ships"));
-    } else{
+    } else if (str_move == "chooseFaction") {
+        //handle faction choice
+        return true;
+    }else{
         //handle error
         return false;
     }
@@ -31,7 +34,7 @@ bool GameState::handleFire(PlayerRole player, const nlohmann::json& fire_move){
     size_t x = fire_move.at("anchor").at(0).get<size_t>();
     size_t y = fire_move.at("anchor").at(1).get<size_t>();
     BoardCoordinates board_coordinates{x,y};
-    return game->handleFire(role_to_turn(player), ability_type, board_coordinates);
+    return _game->handleFire(role_to_turn(player), ability_type, board_coordinates);
 
 }
 
@@ -68,7 +71,7 @@ bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& ships){
         ship.setType(obj_ship.at("type")); // a mon avis ca ca va pas marcher, on a pas de conversion int -> CellType
 
         std::cerr << "handlePlaceShip" << std::endl;
-        bool result = game->handlePlaceShip(role_to_turn(player),ship);
+        bool result = _game->handlePlaceShip(role_to_turn(player),ship);
         if (!result){
             //error in placing ship gotta be handeled
             return false;
@@ -93,5 +96,5 @@ Turn GameState::role_to_turn(PlayerRole player) {
 nlohmann::json GameState::getGameState(PlayerRole player) const {
     // Return a placeholder or current game state
     // For simplicity, we return currentState directly
-    return game->getState(player);
+    return _game->getState(player);
 }
