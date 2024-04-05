@@ -156,6 +156,13 @@ ReturnInput GameSettingConsole::handleInput() {
 
         auto resultFuture = gameClient->CreateGame(gameDetails);
         auto gameID = resultFuture.get();
+        // send the default faction
+        if (_commander_mode.value()) {
+          nlohmann::json req;
+          req["moveType"] = "chooseFaction";
+          req["faction"] = 0;
+          gameClient->MakeMove(gameID, req);
+        }
         return ReturnInput(ReturnInput::Screen::LOBBY, gameID);
       } else {
         return ReturnInput(ReturnInput::Screen::MAIN_MENU, "");
