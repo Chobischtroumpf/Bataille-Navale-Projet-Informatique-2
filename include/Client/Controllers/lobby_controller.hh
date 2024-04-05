@@ -16,4 +16,6 @@ public:
   void sendIDGame(const std::string &destination, const std::string &message);
 
   void launchGame(const std::string &sessionId);
+
+  void sendFaction(const std::string &session_id, int faction);
 };

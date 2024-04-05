@@ -125,6 +125,7 @@ ReturnInput LobbyConsole::handleChoseFaction(int faction) {
   _selected_faction = faction - 1;
   _current_option = 0;
   _faction_chosen = true;
+  _controller->sendFaction(_session_id, _selected_faction);
   return {ReturnInput::Screen::LOBBY, _session_id};
 }
 
