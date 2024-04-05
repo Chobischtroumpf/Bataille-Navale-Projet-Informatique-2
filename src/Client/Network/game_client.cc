@@ -108,14 +108,14 @@ std::future<void> GameClient::TestRequest3() {
   return promise->get_future();
 }
 
-future<njson> GameClient::QueryGameState(const string& sessionId) {
+future<njson> GameClient::QueryGameState(const string& session_id) {
     logfile << "Sending GET request to api/games/query" << endl;
 
   // Use a promise to return the result asynchronously
   auto promise = std::make_shared<std::promise<njson>>();
   auto resultFuture = promise->get_future();
 
-  GetRequest("/api/games/query?sessionId=" + sessionId)
+  GetRequest("/api/games/query?session_id=" + session_id)
       .then([promise](njson jsonResponse) {
         // Check if the response contains a 'gameDetails' key
         if (!jsonResponse.empty() && jsonResponse.find("gameDetails") != jsonResponse.end()) {
@@ -180,7 +180,7 @@ future<string> GameClient::GetGames() {
     return resultFuture;
 }
 
-// Method to create a new game, taking gameDetails as input and returning a future<string> sessionId
+// Method to create a new game, taking gameDetails as input and returning a future<string> session_id
 future<string> GameClient::CreateGame(const njson& gameDetails) {
     logfile << "Creating a new game session..." << endl;
 
@@ -191,16 +191,16 @@ future<string> GameClient::CreateGame(const njson& gameDetails) {
   // Send the POST request to the game creation endpoint with gameDetails
   PostRequest("/api/games/create", njson{{"gameDetails", gameDetails}})
       .then([promise](njson jsonResponse) {
-        // Check if the response contains a sessionId
-        if (!jsonResponse.empty() && jsonResponse.find("sessionId") != jsonResponse.end()) {
-            // Success path: Extract sessionId from jsonResponse
-            auto sessionId = jsonResponse["sessionId"].get<string>();
-            logfile << "Game session created with sessionId: " << sessionId << endl;
-            promise->set_value(sessionId);
+        // Check if the response contains a session_id
+        if (!jsonResponse.empty() && jsonResponse.find("session_id") != jsonResponse.end()) {
+            // Success path: Extract session_id from jsonResponse
+            auto session_id = jsonResponse["session_id"].get<string>();
+            logfile << "Game session created with session_id: " << session_id << endl;
+            promise->set_value(session_id);
         } else {
 
-            // Error or sessionId not provided, set a default error value (empty string)
-            logfile << "No sessionId found in jsonResponse" << endl;
+            // Error or session_id not provided, set a default error value (empty string)
+            logfile << "No session_id found in jsonResponse" << endl;
             promise->set_value("");
         }
       })
@@ -221,15 +221,15 @@ future<string> GameClient::CreateGame(const njson& gameDetails) {
 }
 
 // Method to join a game session, returning a future<njson> containing game details
-future<njson> GameClient::JoinGame(const string& sessionId) {
-    logfile << "Attempting to join game session: " << sessionId << " ..." << endl;
+future<njson> GameClient::JoinGame(const string& session_id) {
+    logfile << "Attempting to join game session: " << session_id << " ..." << endl;
 
   // Use a promise to return the result asynchronously
   auto promise = std::make_shared<std::promise<njson>>();
   auto resultFuture = promise->get_future();
 
-  // Construct the request path with the sessionId
-  string requestPath = "/api/games/join?sessionId=" + sessionId;
+  // Construct the request path with the session_id
+  string requestPath = "/api/games/join?session_id=" + session_id;
 
   // Make the GET request to join the game and retrieve the session details
   GetRequest(requestPath)
@@ -260,15 +260,15 @@ future<njson> GameClient::JoinGame(const string& sessionId) {
     return resultFuture;
 }
 
-std::future<bool> GameClient::MakeMove(const std::string& sessionId, const njson& move) {
-    logfile << "Sending move to game session: " << sessionId << " ..." << endl;
+std::future<bool> GameClient::MakeMove(const std::string& session_id, const njson& move) {
+    logfile << "Sending move to game session: " << session_id << " ..." << endl;
 
   // Use a promise to return the result asynchronously
   auto promise = std::make_shared<std::promise<bool>>();
   auto resultFuture = promise->get_future();
 
-  // Prepare the JSON object with sessionId and move
-  njson moveData = {{"sessionId", sessionId}, {"move", move}};
+  // Prepare the JSON object with session_id and move
+  njson moveData = {{"session_id", session_id}, {"move", move}};
 
   // Send the POST request to the game move endpoint
   PostRequest("/api/games/move", moveData)

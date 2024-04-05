@@ -1,6 +1,4 @@
 #include "local_board_commander.hh"
-// #include <unistd.h>
-// #include <iostream>
 
 /*
 
@@ -8,12 +6,12 @@ AJOUTER SESSIONID DANS LE CONSTRUCTEUR
 
 */
 LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
-    Player player, GameMode mode, const std::string &sessionId) :
+    Player player, GameMode mode, const std::string &session_id) :
       _player{player}, _mode{mode}, _is_finished{false}, _is_victory{false},
       _my_board{10, {10, Cell()}}, _their_board{10, {10, Cell()}},
-      _session_id{sessionId}, _client{client} {
+      _session_id{session_id}, _client{client} {
 
-  auto futureMessages = _client->QueryGameState(sessionId);
+  auto futureMessages = _client->QueryGameState(session_id);
   auto messagesJson = futureMessages.get();
   auto usersID = messagesJson["participants"];
   _my_username = _client->getClientUsername();

@@ -1,5 +1,6 @@
+
+#include "session_manager.hh" // Include SessionManager header
 #include "game_server.hh"
-#include <iostream>
 
 using namespace web;
 using namespace web::http;
@@ -91,8 +92,8 @@ void GameServer::handleGet(http_request request) {
         // Handle the case for "/api/games" - List of session IDs
         if (path == U("/api/games")) {
             // Placeholder session IDs for demonstration
-            std::vector<std::string> sessionIds = {"session1", "session2", "session3"};
-            response["sessions"] = njson(sessionIds);
+            std::vector<std::string> session_ids = {"session1", "session2", "session3"};
+            response["sessions"] = njson(session_ids);
             request.reply(status_codes::OK, response.dump(), "application/json");
         }
 
@@ -111,22 +112,22 @@ void GameServer::handleGet(http_request request) {
               
               // Parsing query parameters
               auto queryParams = uri::split_query(request.request_uri().query());
-              // Extracting sessionId  from query parameters
-              auto sessionIdIt = queryParams.find(U("sessionId"));
+              // Extracting session_id  from query parameters
+              auto session_idIt = queryParams.find(U("session_id"));
               
-              // Verifying both sessionId  are provided
-              if (sessionIdIt != queryParams.end() ) {
-                  auto sessionId = sessionIdIt->second;
+              // Verifying both session_id  are provided
+              if (session_idIt != queryParams.end() ) {
+                  auto session_id = session_idIt->second;
                   
-                  if( !sessionManager.sessionExists(to_utf8(sessionId)) ) {
+                  if( !sessionManager.sessionExists(to_utf8(session_id)) ) {
                       // Handle missing parameters
                       response["error"] = "Session could not be found";
                       request.reply(status_codes::BadRequest, response.dump(), "application/json");
                       return;
                   }
 
-                  // Use sessionId to query the game state
-                  auto gameSession = sessionManager.getSession(to_utf8(sessionId));
+                  // Use session_id to query the game state
+                  auto gameSession = sessionManager.getSession(to_utf8(session_id));
                   njson gameState = gameSession->getGameState(userId);
                   njson gameDetails;
 
@@ -141,7 +142,7 @@ void GameServer::handleGet(http_request request) {
                   request.reply(status_codes::OK, response.dump(), "application/json");
               } else {
                   // Handle missing parameters
-                  response["error"] = "Missing sessionId parameter";
+                  response["error"] = "Missing session_id parameter";
                   request.reply(status_codes::BadRequest, response.dump(), "application/json");
               }
             } catch (const exception &e) {
@@ -166,31 +167,31 @@ void GameServer::handleGet(http_request request) {
 
               // Parsing query parameters
               auto queryParams = uri::split_query(request.request_uri().query());
-              // Extracting sessionId from query parameters
-              auto sessionIdIt = queryParams.find(U("sessionId"));
+              // Extracting session_id from query parameters
+              auto session_idIt = queryParams.find(U("session_id"));
           
 
-              // Verifying both sessionId and userId are provided
-              if (sessionIdIt != queryParams.end() ) {
-                  auto sessionId = sessionIdIt->second;
+              // Verifying both session_id and userId are provided
+              if (session_idIt != queryParams.end() ) {
+                  auto session_id = session_idIt->second;
                   
                   //Check if session exists
-                  if( !sessionManager.sessionExists(to_utf8(sessionId)) ) {
+                  if( !sessionManager.sessionExists(to_utf8(session_id)) ) {
                       // Return error
                       response["error"] = "Session could not be found";
                       request.reply(status_codes::BadRequest, response.dump(), "application/json");
                       return;
                   }
 
-                  // Use sessionId and userId to add player to the game 
-                  auto gameSession = sessionManager.getSession(to_utf8(sessionId));
+                  // Use session_id and userId to add player to the game 
+                  auto gameSession = sessionManager.getSession(to_utf8(session_id));
                   gameSession->addParticipant(userId);
 
                   response["isSuccessful"] = true; 
                   request.reply(status_codes::OK, response.dump(), "application/json");
               } else {
                   // Handle missing parameters
-                  response["error"] = "Missing sessionId parameter";
+                  response["error"] = "Missing session_id parameter";
                   request.reply(status_codes::BadRequest, response.dump(), "application/json");
               }
 
@@ -206,11 +207,11 @@ void GameServer::handleGet(http_request request) {
 
               // Parsing query parameters
               auto queryParams = uri::split_query(request.request_uri().query());
-              // Extracting sessionId from query parameters
+              // Extracting session_id from query parameters
               auto usernameIt = queryParams.find(U("username"));
           
 
-              // Verifying both sessionId and userId are provided
+              // Verifying both session_id and userId are provided
               if (usernameIt != queryParams.end() ) {
                   auto username = usernameIt->second;
 
@@ -244,11 +245,11 @@ void GameServer::handleGet(http_request request) {
           try {
               // Parsing query parameters
               auto queryParams = uri::split_query(request.request_uri().query());
-              // Extracting sessionId from query parameters
+              // Extracting session_id from query parameters
               auto userIdIt = queryParams.find(U("userId"));
           
 
-              // Verifying both sessionId and userId are provided
+              // Verifying both session_id and userId are provided
               if (userIdIt != queryParams.end() ) {
                   auto userId = userIdIt->second;
 
@@ -442,8 +443,8 @@ void GameServer::handlePost(http_request request) {
             njson gameDetails = njson::parse(requestBody[U("gameDetails")].serialize());
 
             // Create a new session
-            auto sessionId = sessionManager.createSession(userId, gameDetails);
-            response["sessionId"] = sessionId;
+            auto session_id = sessionManager.createSession(userId, gameDetails);
+            response["session_id"] = session_id;
             request.reply(status_codes::OK, response.dump(),"application/json");
           }
 
@@ -464,12 +465,12 @@ void GameServer::handlePost(http_request request) {
             }
 
             std::cerr << "request : " << requestBody << std::endl;
-            // Extract sessionId and move details from request body
-            auto sessionId = requestBody[U("sessionId")].as_string();
+            // Extract session_id and move details from request body
+            auto session_id = requestBody[U("session_id")].as_string();
             njson move = njson::parse(requestBody[U("move")].serialize());
 
             // Retrieve the session and make the move
-            auto gameSession = sessionManager.getSession(to_utf8(sessionId));
+            auto gameSession = sessionManager.getSession(to_utf8(session_id));
 
             if (gameSession) {
               bool moveResult = gameSession->makeMove(userId, move);

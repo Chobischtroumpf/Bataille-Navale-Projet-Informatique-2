@@ -2,7 +2,6 @@
 #define GAMESTATE_H
 
 #include <nlohmann/json.hpp>
-#include <string>
 
 #include "game.hh"
 #include "player_role.hh"
@@ -10,12 +9,13 @@
 class GameState {
   private:
 
-    std::shared_ptr<Game> game;
+    std::shared_ptr<Game> _game;
     /*// Game details and rules
     nlohmann::json gameDetails;
 
     // Current state of the game
     nlohmann::json currentState;*/
+    bool _has_started;
 
     bool handlePlaceShip(PlayerRole player, const nlohmann::json& move);
 

@@ -4,9 +4,9 @@ LobbyView::LobbyView(std::shared_ptr<GameClient> gameClient)
     : gameClient(gameClient) {}
 
 
-std::vector<std::string> LobbyView::getUserInGame(const std::string& sessionId){
+std::vector<std::string> LobbyView::getUserInGame(const std::string& session_id){
     std::vector<std::string> convertedMessages;
-    auto futureMessages = gameClient->QueryGameState(sessionId);
+    auto futureMessages = gameClient->QueryGameState(session_id);
     auto messagesJson = futureMessages.get();
     auto usersID = messagesJson["participants"];
     for (const auto& userId : usersID) {
@@ -17,10 +17,10 @@ std::vector<std::string> LobbyView::getUserInGame(const std::string& sessionId){
     return convertedMessages;
 }
 
-bool LobbyView::waitGameStart(const std::string& sessionId){
+bool LobbyView::waitGameStart(const std::string& session_id){
     bool started = false;
     while (!started) {
-      auto futureMessages = gameClient->QueryGameState(sessionId);
+      auto futureMessages = gameClient->QueryGameState(session_id);
       auto messagesJson = futureMessages.get();
       if (messagesJson.at("hasStarted") == true) started = true;
       sleep(1);
@@ -28,8 +28,8 @@ bool LobbyView::waitGameStart(const std::string& sessionId){
     return true;
 }
 
-nlohmann::json LobbyView::getGameState(const std::string& sessionId){
-    auto futureMessages = gameClient->QueryGameState(sessionId);
+nlohmann::json LobbyView::getGameState(const std::string& session_id){
+    auto futureMessages = gameClient->QueryGameState(session_id);
     auto messagesJson = futureMessages.get();
     return messagesJson;
 }

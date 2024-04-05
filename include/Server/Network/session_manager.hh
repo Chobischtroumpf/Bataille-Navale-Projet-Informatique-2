@@ -26,13 +26,13 @@ public:
     string createSession( const string& userId, const njson& gameDetails);
 
     // Method to retrieve a session by its ID
-    shared_ptr<GameSession> getSession(const string& sessionId);
+    shared_ptr<GameSession> getSession(const string& session_id);
 
     // Method to check if a session exists
-    bool sessionExists(const string& sessionId);
+    bool sessionExists(const string& session_id);
 
     // Method to end a session and remove it from the manager
-    void endSession(const string& sessionId);
+    void endSession(const string& session_id);
 
 private:
     // Private constructor for singleton pattern

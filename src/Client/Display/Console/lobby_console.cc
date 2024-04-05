@@ -1,9 +1,9 @@
 #include "lobby_console.hh"
 
-LobbyConsole::LobbyConsole(const std::string &sessionId,
+LobbyConsole::LobbyConsole(const std::string &session_id,
                            std::shared_ptr<GameClient> client,
                            bool admin)
-    : _session_id(sessionId) , _admin(admin) {
+    : _session_id(session_id) , _admin(admin) {
   _view = std::make_shared<LobbyView>(client);
   _controller = std::make_shared<LobbyController>(client);
 }

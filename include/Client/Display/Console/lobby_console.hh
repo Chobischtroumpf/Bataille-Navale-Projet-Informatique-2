@@ -4,9 +4,9 @@
 
 #include "console.hh"
 #include "display.hh"
+#include "lobby_view.hh"
 #include "game_client.hh"
 #include "lobby_controller.hh"
-#include "lobby_view.hh"
 #include "game_setting_console.hh"
 
 class LobbyConsole : public Console {
@@ -46,7 +46,7 @@ private:
   ReturnInput GoToInvitePlayer();
 
 public:
-  explicit LobbyConsole(const std::string &sessionId,
+  explicit LobbyConsole(const std::string &session_id,
                         std::shared_ptr<GameClient> client, bool admin = false);
 
   void displayFriends();

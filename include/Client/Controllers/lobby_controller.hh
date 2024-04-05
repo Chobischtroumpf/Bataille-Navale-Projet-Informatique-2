@@ -1,8 +1,6 @@
 #pragma once
 
-#include <future>
 #include <string>
-
 #include "controller.hh"
 #include "game_client.hh"
 
@@ -15,5 +13,5 @@ public:
 
   void sendIDGame(const std::string &destination, const std::string &message);
 
-  void launchGame(const std::string &sessionId);
+  void launchGame(const std::string &sessionId, int faction = -1);
 };

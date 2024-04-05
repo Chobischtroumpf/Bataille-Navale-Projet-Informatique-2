@@ -7,7 +7,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "session_manager.hh" // Include SessionManager header
 #include "token_handler.hh"
 #include "database.hh"
 #include "queries.hh"

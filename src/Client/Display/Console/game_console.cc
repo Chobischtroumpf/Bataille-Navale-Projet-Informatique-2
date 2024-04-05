@@ -1,4 +1,7 @@
+#include <cstddef>
+
 #include "game_console.hh"
+#include "ship_commander.hh"
 #include "local_board_commander.hh"
 
 using std::string;
@@ -476,7 +479,7 @@ ReturnInput GameConsole::handleFire() {
   }
 
   // Fire action
-  BoardCoordinates coord{row - 'A', col};
+  BoardCoordinates coord{static_cast<size_t>(row - 'A'), static_cast<size_t>(col)};
   _control->fire(
       _board->player().getFaction().getSpecialAbilities().at(ability), coord);
   _last_input = OK;

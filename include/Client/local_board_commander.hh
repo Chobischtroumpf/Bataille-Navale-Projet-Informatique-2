@@ -1,10 +1,6 @@
 #pragma once
 
-#include <array>
 #include <cstddef>
-#include <cstdint>
-#include <iostream>
-#include <map>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <vector>
@@ -13,10 +9,8 @@
 #include "cell.hh"
 #include "game_client.hh"
 #include "game_view.hh"
-#include "not_implemented_error.hh"
 #include "player.hh"
 #include "ship.hh"
-#include "ship_commander.hh"
 
 typedef enum { CLASSIC, COMMANDER } GameMode;
 
@@ -46,7 +40,7 @@ private:
 
 public:
   LocalBoardCommander(std::shared_ptr<GameClient> client, Player player,
-                      GameMode mode, const std::string &sessionId);
+                      GameMode mode, const std::string &session_id);
 
   virtual ~LocalBoardCommander() override = default;
 

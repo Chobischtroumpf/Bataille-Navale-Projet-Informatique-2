@@ -3,7 +3,6 @@
 #include "console.hh"
 #include "display.hh"
 #include "game_client.hh"
-#include <iostream>
 #include <memory>
 #include <string>
 

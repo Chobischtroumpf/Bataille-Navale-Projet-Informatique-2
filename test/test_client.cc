@@ -46,8 +46,8 @@ int main() {
     // Create Game
     waitForEnter("Ready to create game. ");
     auto createGameFuture = gameClient.CreateGame(gameDetails);
-    auto sessionId = createGameFuture.get();
-    cout << "Game created with session ID: " << sessionId << "\n";
+    auto session_id = createGameFuture.get();
+    cout << "Game created with session ID: " << session_id << "\n";
 
     // Get Games Information
     waitForEnter("Ready to get game list. ");
@@ -56,7 +56,7 @@ int main() {
 
     // Query Game State
     waitForEnter("Ready to query game state. ");
-    auto queryGameStateFuture = gameClient.QueryGameState(sessionId);
+    auto queryGameStateFuture = gameClient.QueryGameState(session_id);
     cout << "Game state for session 'exampleSessionId': " << queryGameStateFuture.get().dump() << "\n";
 
     // Add a Friend
@@ -100,7 +100,7 @@ int main() {
 
     // Call the MakeMove method
     waitForEnter("Ready to test the StartGame move. ");
-    auto makeMoveFuture = gameClient.MakeMove(sessionId, startGameMove);
+    auto makeMoveFuture = gameClient.MakeMove(session_id, startGameMove);
     cout << "Move result: " << makeMoveFuture.get() << "\n";
 
     return 0;

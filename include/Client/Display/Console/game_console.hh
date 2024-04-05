@@ -16,6 +16,7 @@
 
 #include "console.hh"
 #include "game_client.hh"
+#include "ship_classic.hh"
 #include "game_controller.hh"
 #include "not_implemented_error.hh"
 
