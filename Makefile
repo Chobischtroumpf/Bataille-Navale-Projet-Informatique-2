@@ -9,8 +9,12 @@ else
 endif
 
 all:
-	@cmake -S . -B build
+	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 	cmake --build build --config Release -- -j$(CORES)
+
+debug :
+	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
+	cmake --build build --config Debug -- -j$(CORES) 
 
 clean:
 	@rm -rf build
