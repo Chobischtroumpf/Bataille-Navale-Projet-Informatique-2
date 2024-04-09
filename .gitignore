@@ -65,3 +65,4 @@ gameclientlog.txt
 # Visual Studio Code
 .vscode
 .cache
+*.code-workspace
