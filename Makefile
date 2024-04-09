@@ -23,7 +23,9 @@ fclean: clean
 	@rm -f server
 	@rm -f battleship
 
-run: all
-	./server &
+run_debug: debug
+	./server
 
 re: clean all
+
+re_debug: clean debug

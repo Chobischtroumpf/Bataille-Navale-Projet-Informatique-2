@@ -10,7 +10,11 @@ using namespace web::json;
 
 
 // Open file stream in append mode
-std::ofstream logfile("gameclientlog.txt", std::ios_base::app);
+#ifdef OUTPUT_CLIENT
+  std::ofstream logfile("gameclientlog.txt", std::ios_base::app);
+#else
+  std::ofstream logfile("/dev/null", std::ios_base::app);
+#endif
 
 GameClient::GameClient(const string& baseUri) {
     try {
