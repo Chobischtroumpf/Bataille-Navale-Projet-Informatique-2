@@ -7,7 +7,7 @@
 #include <sstream>
 #include <ctime>
 
-#define DATABASE_DIR "../src/Server/Database/DDL_user_db.sql"
+#define DATABASE_DIR "src/Server/Database/DDL_user_db.sql"
 
 DbError DataBase::createDb() {
     int rc = sqlite3_open("../users.db", &this->db);

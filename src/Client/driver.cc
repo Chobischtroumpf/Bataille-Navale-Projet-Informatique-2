@@ -35,6 +35,8 @@ void Driver::run(ReturnInput::Screen base_screen) {
             displayLobbyScreen(input.arg, true);
           break;
         case ReturnInput::Screen::LOGIN:
+          //const char* str1 = "abc";
+          //char* const dummy[] = {str1};
           displayLoginScreen();
           break;
         case ReturnInput::Screen::REGISTER:
@@ -85,7 +87,8 @@ void Driver::displayLoginScreen() {
     _display = std::make_shared<LoginConsole>(getClient());
     _current_screen = ReturnInput::Screen::LOGIN;
   } else {
-    throw NotImplementedError("GUI not implemented yet");
+    //QApplication app(argc, argv);
+    //throw NotImplementedError("GUI not implemented yet");
   }
 }
 

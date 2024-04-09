@@ -69,8 +69,14 @@ if(NOT cpprestsdk_FOUND)
   message(WARNING "Cpprestsdk not found. Please run the script provided under linux/installCppRestSDK.sh to install cpprestsdk. Admin privileges are likely required")
 endif()
 
+# find qt
+find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+
+include_directories(${Qt6_INCLUDE_DIRS})
+
 target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
 # target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(battleship PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(server PRIVATE SQLite::SQLite3)
 target_link_libraries(server PRIVATE sodium)
+target_link_libraries(battleship PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)

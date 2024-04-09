@@ -2,6 +2,9 @@
 
 #include <memory>
 
+// GUI
+#include "gui.hh"
+
 #include "controller.hh"
 #include "game_client.hh"
 #include "view.hh"
@@ -45,7 +48,7 @@ private:
   void displayLobbyScreen(std::string gameId, bool admin);
   void displayGameCreationScreen();
 
-  std::shared_ptr<Display> _display;
+  std::shared_ptr<screen::Display> _display;
 
   DisplayType _display_type;
   ReturnInput::Screen _current_screen;
