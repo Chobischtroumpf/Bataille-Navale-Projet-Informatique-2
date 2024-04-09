@@ -1,16 +1,12 @@
 #pragma once
 
 #include <memory>
-#include <cstdlib>
-#include <limits>
-#include <iostream>
 
-#include "login_view.hh"
 #include "console.hh"
-#include "login_controller.hh"
 #include "display.hh"
-
+#include "login_view.hh"
 #include "game_client.hh"
+#include "login_controller.hh"
 
 class LoginConsole : public Console {
 private:
@@ -28,6 +24,7 @@ public:
   virtual void display() override {}
   virtual void displayError() override {}
   virtual void update() override {}
+  int makeChoice();
   bool seConnecter(LoginController& loginController);
   bool sEnregistrer(LoginController& loginController);
 };

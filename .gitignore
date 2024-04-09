@@ -59,4 +59,8 @@ build/*
 # *.log
 *.aux
 *.toc
+
+# vscode files
 .vscode
+.cache
+**.code-workspace

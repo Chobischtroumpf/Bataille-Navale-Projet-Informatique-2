@@ -7,12 +7,12 @@ bool SpecialAbility::operator==(const SpecialAbility &other) const {
     return this->_name == other._name && this->_description == other._description && this->_energy_cost == other._energy_cost && this->_type == other._type;
 }
 
-void SpecialAbility::setName(std::string new_name) { this->_name = new_name; };
-void SpecialAbility::setDescription(std::string new_description) { this->_description = new_description; };
-void SpecialAbility::setEnergyCost(int new_cost) { this->_energy_cost = new_cost; };
-void SpecialAbility::setType(SpecialAbilityType new_type) { this->_type = new_type; };
+void SpecialAbility::setName(std::string new_name) { this->_name = new_name; }
+void SpecialAbility::setDescription(std::string new_description) { this->_description = new_description; }
+void SpecialAbility::setEnergyCost(int new_cost) { this->_energy_cost = new_cost; }
+void SpecialAbility::setType(SpecialAbilityType new_type) { this->_type = new_type; }
 
-std::string SpecialAbility::getName() { return _name; };
-std::string SpecialAbility::getDescription() { return _description; };
-int SpecialAbility::getEnergyCost() { return _energy_cost; };
-SpecialAbilityType SpecialAbility::getType() { return _type; };
+std::string SpecialAbility::getName() { return _name; }
+std::string SpecialAbility::getDescription() { return _description; }
+int SpecialAbility::getEnergyCost() { return _energy_cost; }
+SpecialAbilityType SpecialAbility::getType() { return _type; }
