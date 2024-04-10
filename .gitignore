@@ -35,6 +35,7 @@ server
 
 # Other
 # Makefile
+gameclientlog.txt
 test.cc
 gen_board.hh
 */*.json
@@ -65,4 +66,4 @@ gameclientlog.txt
 # Visual Studio Code
 .vscode
 .cache
-*.code-workspace
+**.code-workspace

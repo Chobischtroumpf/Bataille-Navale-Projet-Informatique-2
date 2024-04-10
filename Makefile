@@ -11,8 +11,12 @@ endif
 # DATABASE_DIR := "$(shell pwd)/src/Server/Database/DDL_user_db.sql"
 
 all:
-	@cmake -S . -B build
-	cmake --build build --config Release -- -j$(CORES) #DATABASE_DIR=$(DATABASE_DIR)
+	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+	cmake --build build --config Release -- -j$(CORES)
+
+debug :
+	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
+	cmake --build build --config Debug -- -j$(CORES) 
 
 clean:
 	@rm -rf build
@@ -21,7 +25,9 @@ fclean: clean
 	@rm -f server
 	@rm -f battleship
 
-run: all
-	./server &
+run_debug: debug
+	./server
 
 re: clean all
+
+re_debug: clean debug

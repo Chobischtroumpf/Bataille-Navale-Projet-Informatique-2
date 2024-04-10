@@ -238,12 +238,14 @@ GameConsole::createSelectShipSizePrompt(InputStatus status) const {
   return prompt;
 }
 
-std::vector<string>
-GameConsole::createSelectNextRotateKey(InputStatus status) const {
+std::vector<string> GameConsole::createSelectNextRotateKey(InputStatus status) const {
   std::vector<string> action_key(_map_key.size() - 8, "");
   action_key.emplace_back(" >> SELECTED BOAT <<");
   for (auto &ship : _possible_ships->getShip().to_string()) {
     action_key.emplace_back(ship);
+  }
+  if (_last_input == ERR) {
+    action_key.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
   }
   action_key.emplace_back("<< P - Place | N - Next | R - Rotate | Q - Quit >>");
   return action_key;
@@ -514,6 +516,7 @@ void GameConsole::handleShipSize() {
       return;
     }
     _possible_ships = std::make_unique<ShipCommander>(size);
+    _last_input = OK;
   }
   std::cin.clear();
 }
@@ -523,15 +526,19 @@ void GameConsole::handleShipSelection() {
   _out << "\x1b[32;49;1m";
   _in >> shipbuf;
   _out << "\x1b[0m";
-  if (shipbuf == "P") {
+  if (shipbuf == "P" || shipbuf == "p") {
     _ship_selected = true;
-  } else if (shipbuf == "Q") {
+    _last_input = OK;
+  } else if (shipbuf == "Q" || shipbuf == "q") {
     _ship_size = 0;
     _possible_ships = nullptr;
-  } else if (shipbuf == "N") {
+    _last_input = OK;
+  } else if (shipbuf == "N" || shipbuf == "n") {
     _possible_ships->next();
-  } else if (shipbuf == "R") {
+    _last_input = OK;
+  } else if (shipbuf == "R" || shipbuf == "r") {
     _possible_ships->rotate();
+    _last_input = OK;
   } else {
     _last_input = ERR;
   }

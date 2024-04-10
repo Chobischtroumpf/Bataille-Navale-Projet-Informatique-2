@@ -10,7 +10,11 @@ using namespace web::json;
 
 
 // Open file stream in append mode
-std::ofstream logfile("gameclientlog.txt", std::ios_base::app);
+#ifdef OUTPUT_CLIENT
+  std::ofstream logfile("gameclientlog.txt", std::ios_base::app);
+#else
+  std::ofstream logfile("/dev/null", std::ios_base::app);
+#endif
 
 GameClient::GameClient(const string& baseUri) {
     try {
@@ -761,7 +765,16 @@ pplx::task<njson> GameClient::PostRequest(const string& path, const njson& data)
           try {
             holder->_RethrowUserException();
           } catch (std::exception &e) {
-            cerr << "RequestError, caught exception: " << e.what() << endl;
+            std::string error = e.what();
+            cerr << "RequestError, caught exception: " << error << endl;
+            if (error == "Failed to connect to any resolved endpoint") {
+              cerr
+                  << "Please do check if you entered the right server address, "
+                     "if the server is running and if you have an active "
+                     "internet connection. Leaving the application now."
+                  << endl;
+              exit(1);
+            }
             return njson{}; // return empty object
           }
         }
@@ -816,7 +829,16 @@ pplx::task<njson> GameClient::GetRequest(const string &path) {
           try {
             holder->_RethrowUserException();
           } catch (std::exception &e) {
-            cerr << "RequestError, caught exception: " << e.what() << endl;
+            std::string error = e.what();
+            cerr << "RequestError, caught exception: " << error << endl;
+            if (error == "Failed to connect to any resolved endpoint") {
+              cerr
+                  << "Please do check if you entered the right server address, "
+                     "if the server is running and if you have an active "
+                     "internet connection. Leaving the application now."
+                  << endl;
+              exit(1);
+            }
             return njson{}; // Return empty object
           }
         }
