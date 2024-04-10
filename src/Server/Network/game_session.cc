@@ -75,10 +75,10 @@ bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move
     auto playerRole = getParticipantRole(userId);
 
     // Check if the move object contains "moveType" 
-    std::cerr << "Move: " << move << std::endl;
+    std::clog << "Move: " << move << std::endl;
     if (!move.contains("moveType")) {
         // If "moveType" property is missing, return false indicating error
-        std::cerr << "Invalid move protocol: no move property on move object" << std::endl;
+        std::clog << "Invalid move protocol: no move property on move object" << std::endl;
         return false;
     }
 

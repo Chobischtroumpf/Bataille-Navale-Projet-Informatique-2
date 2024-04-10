@@ -1,14 +1,12 @@
 #include "game_server.hh"
 
-using namespace std;
-
 int main() {
     std::string address = "http://localhost:8080"; // Change the address/port as needed
 
-    cout << "Initializing GameServer" << endl;
+    std::cout << "Initializing GameServer" <<std::endl;
     GameServer server(address);
 
-    cout << "Starting server" << endl;
+    std::cout << "Starting server" <<std::endl;
     server.initialize(); // Start the server
 
     std::cout << "Press Enter to exit." << std::endl;

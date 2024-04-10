@@ -127,7 +127,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
     for (auto &ship : _player.getFleet()) {
       move_request["ships"].push_back(ship.to_json());
     }
-    std::cerr << move_request.dump() << std::endl;
+    std::clog << move_request.dump() << std::endl;
     _client->MakeMove(_session_id, move_request);
   }
 }
@@ -151,7 +151,7 @@ PossibleShips LocalBoardCommander::shipsToPlace() const {
 
 CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
   if (!(lhs & UNDAMAGED_SHIP) || !(rhs & UNDAMAGED_SHIP)) {
-    std::cerr << "BoardView::best(" << static_cast<unsigned>(lhs) << ", "
+    std::clog << "BoardView::best(" << static_cast<unsigned>(lhs) << ", "
               << static_cast<unsigned>(rhs) << ")" << std::endl;
     throw std::logic_error("BoardView::best called with non-ship types");
   }

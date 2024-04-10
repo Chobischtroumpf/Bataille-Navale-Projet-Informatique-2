@@ -42,38 +42,38 @@ void GameServer::initialize() {
 
 // Verifies the validity of an auth token, and returns the userid if successful, otherwise returns an empty string
 string GameServer::verifyAuthToken(const web::http::http_request& request) {
-    cout << "Verifying AuthToken..." << endl;
+    std::cout << "Verifying AuthToken..." <<std::endl;
     auto headers = request.headers();
 
     if (headers.has(U("Authorization"))) {
-        cout << "Authorization header found." << endl;
+        std::cout << "Authorization header found." <<std::endl;
         auto authHeader = headers[U("Authorization")];
         
         // Expected format: "Bearer <token>"
         auto authHeaderStr = utility::conversions::to_utf8string(authHeader);
         if (authHeaderStr.rfind("Bearer ", 0) == 0) { // Check if the string starts with "Bearer "
             auto authToken = authHeaderStr.substr(7); // Extract token after "Bearer "
-            cout << "Extracted AuthToken: " << authToken << endl;
+            std::cout << "Extracted AuthToken: " << authToken <<std::endl;
 
             // Validate the token
             if (tokenHandler.validateToken(authToken)) {
-                cout << "AuthToken is valid." << endl;
+                std::cout << "AuthToken is valid." <<std::endl;
                 // If the token is valid, retrieve and return the user ID
                 auto userId = tokenHandler.getUserID(authToken);
-                cout << "UserID retrieved: " << userId << endl;
+                std::cout << "UserID retrieved: " << userId <<std::endl;
                 return userId;
             } else {
-                cout << "AuthToken is invalid." << endl;
+                std::cout << "AuthToken is invalid." <<std::endl;
                 // If the token is invalid, return an empty string
                 return "";
             }
         } else {
-            cout << "Authorization header does not contain a bearer token." << endl;
+            std::cout << "Authorization header does not contain a bearer token." <<std::endl;
             return "";
         }
 
     } else {
-        cout << "Authorization header is missing." << endl;
+        std::cout << "Authorization header is missing." <<std::endl;
         // If the Authorization header is missing, return an empty string
         return "";
     }
@@ -84,7 +84,7 @@ void GameServer::handleGet(http_request request) {
         auto path = request.relative_uri().path();
         njson response;
 
-        cout << "Received GET request for path " << to_utf8(path) << endl;
+        std::cout << "Received GET request for path " << to_utf8(path) <<std::endl;
 
         // Retrieve the session manager instance
         auto& sessionManager = SessionManager::getInstance();
@@ -147,7 +147,7 @@ void GameServer::handleGet(http_request request) {
               }
             } catch (const exception &e) {
               // In case of exception, set an error value
-              cerr << "Exception in api/games/query/: " << e.what() << endl;
+              std::clog << "Exception in api/games/query/: " << e.what() <<std::endl;
             }
         }
 
@@ -197,7 +197,7 @@ void GameServer::handleGet(http_request request) {
 
             } catch (const exception &e) {
               // In case of exception, set an error value
-              cerr << "Exception in api/games/join/: " << e.what() << endl;
+              std::clog << "Exception in api/games/join/: " << e.what() <<std::endl;
             }
         }
 
@@ -235,7 +235,7 @@ void GameServer::handleGet(http_request request) {
               }
             } catch (const exception &e) {
               // In case of exception, set an error value
-              cerr << "Exception in api/login/uid/: " << e.what() << endl;
+              std::clog << "Exception in api/login/uid/: " << e.what() <<std::endl;
             }
         }
 
@@ -272,7 +272,7 @@ void GameServer::handleGet(http_request request) {
               }
             } catch (const exception &e) {
               // In case of exception, set an error value
-              cerr << "Exception in api/username/: " << e.what() << endl;
+              std::clog << "Exception in api/username/: " << e.what() <<std::endl;
             }
         }
 
@@ -329,7 +329,7 @@ void GameServer::handleGet(http_request request) {
               }
             } catch (const exception &e) {
               // In case of exception, set an error value
-              cerr << "Exception in api/chat/get/: " << e.what() << endl;
+              std::clog << "Exception in api/chat/get/: " << e.what() <<std::endl;
             }
         }
         
@@ -364,7 +364,7 @@ void GameServer::handleGet(http_request request) {
               }
             } catch (const exception &e) {
             // In case of exception, set an error value
-            cerr << "Exception in api/friend/list: " << e.what() << endl;
+            std::clog << "Exception in api/friend/list: " << e.what() <<std::endl;
           }
         }
 
@@ -401,7 +401,7 @@ void GameServer::handleGet(http_request request) {
         }
     } catch (const exception& e) {
                 // In case of exception, set an error value
-                cerr << "Exception in handleGet: " << e.what() << endl;
+                std::clog << "Exception in handleGet: " << e.what() <<std::endl;
     }
 }
 
@@ -409,7 +409,7 @@ void GameServer::handlePost(http_request request) {
   try {
     auto path = request.relative_uri().path();
 
-    cout << "Received POST request for path " << to_utf8(path) << endl;
+    std::cout << "Received POST request for path " << to_utf8(path) <<std::endl;
 
     // Retrieve the session manager instance
     auto &sessionManager = SessionManager::getInstance();
@@ -456,7 +456,7 @@ void GameServer::handlePost(http_request request) {
             auto userId = verifyAuthToken(request);
 
             // If userId is empty, the token is invalid or missing
-            std::cerr << "user : " << userId << std::endl;
+            std::clog << "user : " << userId << std::endl;
             if (userId.empty()) {
               response["error"] = "Invalid or missing AuthToken";
               request.reply(status_codes::Unauthorized, response.dump(),
@@ -464,7 +464,7 @@ void GameServer::handlePost(http_request request) {
               return; // Stop further processing
             }
 
-            std::cerr << "request : " << requestBody << std::endl;
+            std::clog << "request : " << requestBody << std::endl;
             // Extract session_id and move details from request body
             auto session_id = requestBody[U("session_id")].as_string();
             njson move = njson::parse(requestBody[U("move")].serialize());
@@ -538,9 +538,9 @@ void GameServer::handlePost(http_request request) {
             auto username = requestBody[U("username")].as_string();
             auto password = requestBody[U("password")].as_string();
 
-            cout << "Username: " + to_utf8(username) +
+            std::cout << "Username: " + to_utf8(username) +
                         "  Password: " + to_utf8(password)
-                 << endl;
+                 <<std::endl;
 
             // Authenticate user and generate authToken
             // -------------------------------- TBA
@@ -588,9 +588,9 @@ void GameServer::handlePost(http_request request) {
             auto username = requestBody[U("username")].as_string();
             auto password = requestBody[U("password")].as_string();
 
-            cout << "Username: " + to_utf8(username) +
+            std::cout << "Username: " + to_utf8(username) +
                         "  Password: " + to_utf8(password)
-                 << endl;
+                 <<std::endl;
 
             // Register user ------------------------------------------------
             // TBA
@@ -755,11 +755,11 @@ void GameServer::handlePost(http_request request) {
             errorHandler.get();
           } catch (const exception &e) {
             // In case of exception, set an error value
-            cerr << "Exception in handlePost (lambda): " << e.what() << endl;
+            std::clog << "Exception in handlePost (lambda): " << e.what() <<std::endl;
           }
         });
 
   } catch (const std::exception &e) {
-    cerr << "Exception in handlePost : " << e.what() << endl;
+    std::clog << "Exception in handlePost : " << e.what() <<std::endl;
   }
 }

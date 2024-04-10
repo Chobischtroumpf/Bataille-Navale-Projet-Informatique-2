@@ -434,7 +434,7 @@ void GameConsole::printChangeTurn() {
 
   string who = _board->myTurn() ? your : their;
   _out << who << std::endl << "Please press enter to continue..." << std::flush;
-  std::cerr << "printChangeTurn" << std::endl;
+  std::clog << "printChangeTurn" << std::endl;
   // std::getline(std::cin, tmp);
   // std::cin >> tmp;
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');

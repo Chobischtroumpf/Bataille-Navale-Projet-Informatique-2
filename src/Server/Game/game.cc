@@ -40,10 +40,10 @@ bool Game::handlePlaceShip(Turn turn, Ship ship) {
 bool Game::handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinates board_coordinates) {
   Player &player = (turn == PLAYERONE) ? _board->getPlayer1() : _board->getPlayer2();
 
-  std::cerr << "Firing ability: " << ability_type << std::endl;
+  std::clog << "Firing ability: " << ability_type << std::endl;
   for (auto &ability : player.getFaction().getSpecialAbilities()) {
-    std::cerr << "Checking ability: " << ability.getType() << std::endl;
-    std::cerr << "Is it the same : " << (ability.getType() == ability_type) << std::endl;
+    std::clog << "Checking ability: " << ability.getType() << std::endl;
+    std::clog << "Is it the same : " << (ability.getType() == ability_type) << std::endl;
     if (ability.getType() == ability_type) {
       _board->fire(ability, board_coordinates);
       changeTurn();
