@@ -15,7 +15,7 @@ set(CMAKE_CXX_COMPILER g++-10)
 # cmake_policy(SET CMP0135 NEW) # Silence the warning for FetchContent
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Add compile options
 add_compile_options(-std=c++20)
 project(Battleship) # The project name

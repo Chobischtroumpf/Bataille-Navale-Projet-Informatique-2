@@ -81,10 +81,7 @@ bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move
         std::clog << "Invalid move protocol: no move property on move object" << std::endl;
         return false;
     }
-
-    // Check if the moveType is "StartGame" or "EndGame"
     return _game_state.makeMove(playerRole, move);
-
 }
 
 nlohmann::json GameSession::getSessionState() const {
@@ -93,7 +90,7 @@ nlohmann::json GameSession::getSessionState() const {
 
     sessionState["participants"] = getParticipants();
 
-    // sessionState["hasStarted"] = this->->hasStarted();
+    sessionState["hasStarted"] = _game_state.hasStarted();
 
     sessionState["sessionName"] = _session_name;
     

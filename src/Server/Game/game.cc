@@ -3,6 +3,30 @@
 #include "special_ability.hh"
 #include <vector>
 
+
+void Game::startTimer() {
+  _game_timer.startTimer();
+  // _game_timer.start(std::bind(&Game::_game_timer_finished, this));
+  // player_timer.start(std::bind(&Game::player_timer_finished, this));
+}
+
+void Game::setGame(const nlohmann::json &game_details) {
+  
+  _mode_commandant = !(game_details["gamemode"].get<std::string>() == "Classic");
+
+  int game_time =
+      game_details.at("turnTimeLimit").get<int>();
+  int player_time =
+      game_details.at("playerTimeLimit").get<int>();
+  _game_timer.set(game_time, player_time);
+
+}
+
+void Game::changeTurn(){
+  _board->changeTurn();
+  _game_timer.switchTurn();
+}
+
 Game::Game(const nlohmann::json &game_details)
     : _board{std::make_shared<Board>()}, _game_started{false},
     _mode_commandant{false}, _update_player1{true}, _update_player2{true} {
@@ -13,10 +37,16 @@ bool Game::isFinished() const {
   return _board->isFinished() || _game_timer.isFinished();
 }
 
-void Game::startTimer() {
-  _game_timer.startTimer();
-  // _game_timer.start(std::bind(&Game::_game_timer_finished, this));
-  // player_timer.start(std::bind(&Game::player_timer_finished, this));
+bool Game::shipPlacementsFinished() const {
+
+  Player player1 = _board->getPlayer1();
+  Player player2 = _board->getPlayer2();
+
+  if (player1.getFleet().size() == player1.getFaction().getAmountOfShips() &&
+      player2.getFleet().size() == player2.getFaction().getAmountOfShips()) {
+    return true;
+  }
+  return false;
 }
 
 bool Game::handlePlaceShip(Turn turn, Ship ship) {
@@ -51,6 +81,17 @@ bool Game::handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinat
     }
   }
   return false;
+}
+
+bool Game::setPlayerFaction(PlayerRole player, Faction faction) {
+  if (player == PlayerRole::Leader) {
+    _board->getPlayer1().setFaction(faction);
+  } else if (player == PlayerRole::Opponent) {
+    _board->getPlayer2().setFaction(faction);
+  } else {
+    return false;
+  }
+  return true;
 }
 
 nlohmann::json Game::getState(PlayerRole player) {
@@ -95,14 +136,14 @@ nlohmann::json Game::getState(PlayerRole player) {
 
 
   if (shipPlacementsFinished()){
-    game_json["_ship_placements_finished"] = "true";
+    game_json["ship_placements_finished"] = "true";
   }else{
-    game_json["_ship_placements_finished"] = "false";
+    game_json["ship_placements_finished"] = "false";
   }
 
   game_json["player1_timer"] = std::to_string(_game_timer.getPlayer1Timer());
   game_json["player2_timer"] = std::to_string(_game_timer.getPlayer2Timer());
-  game_json["_game_timer"] = std::to_string(_game_timer.getGameTimer());
+  game_json["game_timer"] = std::to_string(_game_timer.getGameTimer());
 
   if (_board->whoseTurn() == PLAYERONE){
     game_json["turn"] = "PLAYERONE";
@@ -112,35 +153,5 @@ nlohmann::json Game::getState(PlayerRole player) {
 
   game_json["gamemode"] = _mode_commandant ? "Commandant" : "Classic";
   
-
   return game_json;
-}
-
-void Game::setGame(const nlohmann::json &game_details) {
-  
-  _mode_commandant = !(game_details["gamemode"].get<std::string>() == "Classic");
-
-  int game_time =
-      game_details.at("turnTimeLimit").get<int>();
-  int player_time =
-      game_details.at("playerTimeLimit").get<int>();
-  _game_timer.set(game_time, player_time);
-
-}
-
-bool Game::shipPlacementsFinished() const {
-
-  Player player1 = _board->getPlayer1();
-  Player player2 = _board->getPlayer2();
-
-  if (player1.getFleet().size() == player1.getFaction().getAmountOfShips() &&
-      player2.getFleet().size() == player2.getFaction().getAmountOfShips()) {
-    return true;
-  }
-  return false;
-}
-
-void Game::changeTurn(){
-  _board->changeTurn();
-  _game_timer.switchTurn();
 }

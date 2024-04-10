@@ -22,8 +22,6 @@ class Game {
     
     void setGame(const nlohmann::json& gameDetails);
 
-    bool shipPlacementsFinished() const;
-
     void changeTurn();
 
   public:
@@ -31,9 +29,13 @@ class Game {
 
     bool isFinished() const;
 
+    bool shipPlacementsFinished() const;
+
     bool handlePlaceShip(Turn turn, Ship ship);
 
     bool handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinates board_coordinates);
+
+    bool setPlayerFaction(PlayerRole player, Faction faction);
 
     nlohmann::json getState(PlayerRole player);
 };

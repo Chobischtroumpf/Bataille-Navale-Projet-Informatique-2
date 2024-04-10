@@ -15,13 +15,18 @@ class GameState {
 
     // Current state of the game
     nlohmann::json currentState;*/
-    bool _has_started;
+    enum Phase {
+        NOT_STARTED=0,
+        PLACING_SHIPS=1,
+        PLAYING=2
+    };
 
+    Phase _phase = Phase::NOT_STARTED;
     bool handlePlaceShip(PlayerRole player, const nlohmann::json& move);
 
     bool handleFire(PlayerRole player, const nlohmann::json& move);
 
-    void handleLaunch();
+    bool handleChooseFaction(PlayerRole player, const nlohmann::json& move);
 
     Turn role_to_turn(PlayerRole player);
 
@@ -44,6 +49,11 @@ class GameState {
     // Get the current state of the game
     nlohmann::json getGameState(PlayerRole player) const;
 
+    // get the current game phase
+    Phase getPhase() const;
+
+    // translate game phase to bool
+    bool hasStarted() const;
 
 };
 

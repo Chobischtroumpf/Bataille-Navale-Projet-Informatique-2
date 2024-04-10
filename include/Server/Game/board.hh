@@ -21,7 +21,7 @@ using json = nlohmann::json;
 /*
  * Représente le plateau de jeu des deux joueurs
  */
-class Board: public GameView {
+class Board: public virtual GameView {
   private:
     bool _my_turn; // true if it's playerone turn, false if it's not
     Player _player1;
@@ -125,7 +125,6 @@ class Board: public GameView {
         throw NotImplementedError("Board unknown CellType");
       }
     }
-
 
     // converts the board to a json object
     nlohmann::json to_json(PlayerRole role) const;
