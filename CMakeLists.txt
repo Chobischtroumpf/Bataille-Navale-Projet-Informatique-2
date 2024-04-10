@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.10) # minimum version of CMake
 
-
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    message("Debug build.")
-    add_compile_options(-g -pedantic -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -DOUTPUT_CLIENT=1 -DOUTPUT_SERVER=1)
-    add_link_options(-fsanitize=address,undefined)
-    else(CMAKE_BUILD_TYPE STREQUAL "Release")
-    message("Release build.")
-    add_compile_options(-O3 -pedantic -Wall -O3)
+  message("Debug build.")
+  add_compile_options(-g -pedantic -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -DOUTPUT_DEBUG=1)
+  add_link_options(-fsanitize=address,undefined)
+else(CMAKE_BUILD_TYPE STREQUAL "Release")
+  message("Release build.")
+  add_compile_options(-O3 -w)
 endif()
 
 # Specify the C++ compiler

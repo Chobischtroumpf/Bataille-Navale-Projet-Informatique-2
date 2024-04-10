@@ -10,7 +10,10 @@
 
 #include "game_session.hh" // Ensure you have a GameSession class defined
 
-using namespace std;
+using std::string;
+using std::mutex;
+using std::shared_ptr;
+using std::unordered_map;
 using njson = nlohmann::json;
 
 class SessionManager {

@@ -28,6 +28,11 @@ fclean: clean
 run_debug: debug
 	./server
 
+run: all
+	./server
+
 re: clean all
 
 re_debug: clean debug
+
+.PHONY: all clean fclean re run_debug re_debug
