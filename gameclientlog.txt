@@ -82,3 +82,52 @@ Login request sent.
 Received response status code: 200
 Auth Token: fvFiLELYI0jdbZ3eA2EdoA8820zCAVoF
 GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+GameClient initialized with URI: http://localhost:8080
+Initiating registration request...
+Preparing to send POST request to path: /api/register
+Full URI: /api/register
+Sending POST request...
+Registration request sent.
+Received response status code: 400
+Registration failed.
+GameClient initialized with URI: http://localhost:8080
+Initiating registration request...
+Preparing to send POST request to path: /api/register
+Full URI: /api/register
+Sending POST request...
+Registration request sent.
+Received response status code: 200
+Registration successful. Auth Token: UQyBBL2YZOCSSr7gICjkfPsXdhCSI2ms
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Received response status code: 200
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: IJR0iGX9jnQ2EK6ccfkfUC3XIuEekOuS
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: x8fP5WgGThZjODEARXwvGmlmLhuLu3jR
