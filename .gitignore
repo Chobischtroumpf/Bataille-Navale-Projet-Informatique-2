@@ -58,5 +58,5 @@ build/*
 *.aux
 *.toc
 .vscode
-
 .cache
+*.code-workspace
