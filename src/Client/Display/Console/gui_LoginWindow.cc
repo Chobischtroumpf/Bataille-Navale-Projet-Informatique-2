@@ -1,6 +1,7 @@
 #include "gui_LoginWindow.hh"
+#include <qt6/QtWidgets/qpushbutton.h>
 
-LoginWindow::LoginWindow() {
+LoginWindow::LoginWindow(std::shared_ptr<GameClient> gameClient) : login_controller(gameClient) {
     // QLineEdit() pour écrire
     usernameLineEdit = new QLineEdit();
     passwordLineEdit = new QLineEdit();
@@ -8,9 +9,9 @@ LoginWindow::LoginWindow() {
 
     // QPushButton pour appuyer sur un bouton
     loginButton = new QPushButton("Se Connecter");
-
-    // donne une logique à ce qui se passe quand on click sur le boutton 
     connect(loginButton, &QPushButton::clicked, this, &LoginWindow::onLoginButtonClicked);
+    registerButton = new QPushButton("S'enregistrer");
+    connect(registerButton, &QPushButton::clicked, this, &LoginWindow::onRegisterButtonClicked);
 
     // disposition des différents objets
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -18,13 +19,37 @@ LoginWindow::LoginWindow() {
     layout->addWidget(usernameLineEdit);
     layout->addWidget(new QLabel("Mot de passe :"));
     layout->addWidget(passwordLineEdit);
-    layout->addWidget(loginButton);
+
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    buttonLayout->addWidget(loginButton);
+    buttonLayout->addWidget(registerButton);
+    // Ajout le layout horizontal avec les deux choix au layout du dessus
+    layout->addLayout(buttonLayout);
 }
 
+
 void LoginWindow::onLoginButtonClicked() {
+    QString username = usernameLineEdit->text(); //on recup la ligne de texte que l'utilisateur a tapé
+    QString password = passwordLineEdit->text(); 
+    std::string str_username = username.toStdString();
+    std::string str_password = password.toStdString();
+
+    auto registerFuture = login_controller.attemptLogin(str_username, str_password);
+    if (registerFuture.get())
+        this->close();
+    else
+        std::cout<< "échec de la connexion" << std::endl;
+}
+
+void LoginWindow::onRegisterButtonClicked() {
     QString username = usernameLineEdit->text(); // stock dans username ce qui a été écrit dans usernameLine
     QString password = passwordLineEdit->text(); // same ici pr le mdp
+    std::string str_username = username.toStdString();
+    std::string str_password = password.toStdString();
 
-    // Logique de connexion ici
-    // ...
+    auto registerFuture = login_controller.attemptRegister(str_username, str_password);
+    if (registerFuture.get())
+        this->close();
+    else
+        std::cout<< "échec de la connexion" << std::endl;
 }

@@ -5,9 +5,6 @@
 
 Driver::Driver(DisplayType display_type) : _display_type{display_type}, _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
 
-Driver::Driver(DisplayType display_type, QApplication* qtApp)
-    : _display_type(display_type), _qtApp(qtApp) , _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
-
 Driver::~Driver() {}
 
 void Driver::launchApp() {
@@ -89,11 +86,6 @@ void Driver::displayLoginScreen() {
     _display = std::make_shared<LoginConsole>(getClient());
     _current_screen = ReturnInput::Screen::LOGIN;
   } else {
-      //throw NotImplementedError("GUI not implemented yet");
-      /*
-      LoginWindow loginWindow;
-      loginWindow.setWindowTitle("Connexion");
-      loginWindow.show();*/
   }
 }
 

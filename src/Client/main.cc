@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include "driver.hh"
+#include "gui_driver.hh"
 //#include "login_display.hh"
 /*
 int print(QApplication &qtApp){
@@ -24,12 +25,10 @@ int main(int argc, char* argv[]) {
     else if (std::strcmp(argv[1], "gui") == 0) {
         QApplication qtApp(argc, argv);
         
-        LoginWindow loginWindow;
-        loginWindow.setWindowTitle("Connexion");
-        loginWindow.show();
-        //Driver app(GUI, &qtApp);
+        DriverGui app;
         // Lancement de l'application
-        //app.launchApp();
+        app.run();
+        
         return qtApp.exec();
     }
     return 0;

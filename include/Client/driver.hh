@@ -54,7 +54,6 @@ private:
   void displayLobbyScreen(std::string gameId, bool admin);
   void displayGameCreationScreen();
 
-  QApplication* _qtApp;
 
   std::shared_ptr<screen::Display> _display;
 
@@ -64,7 +63,6 @@ private:
 
 public:
   Driver(DisplayType display_type);
-  Driver(DisplayType display_type, QApplication* _qtApp);
   ~Driver();
 
   // Launchers
