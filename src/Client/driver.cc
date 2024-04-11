@@ -2,6 +2,7 @@
 #include "faction_sonar.hh"
 #include "faction_bombardement.hh"
 #include "faction_mines.hh"
+#include <iostream>
 
 Driver::Driver(DisplayType display_type, std::string server_address) : _display_type{display_type}, _game_client{std::make_shared<GameClient>(server_address)} {}
 
@@ -52,9 +53,12 @@ std::shared_ptr<GameClient> Driver::getClient() {
 }
 
 void Driver::displayGameScreen(std::string gameId) {
+  std::clog << "displayGameScreen" << std::endl;
   if (_display_type == CONSOLE) {
     Player player1 = Player();
+    std::clog << "commander_mode" << std::endl;
     bool commander_mode = std::static_pointer_cast<LobbyConsole>(_display)->isCommanderMode();
+    std::clog << "faction" << std::endl;
     int faction =
         std::static_pointer_cast<LobbyConsole>(_display)->getFaction();
     if (commander_mode)

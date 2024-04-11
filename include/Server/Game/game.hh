@@ -6,8 +6,6 @@
 #include "game_timer.hh"
 #include "player_role.hh"
 
-
-
 // Class that handles the game between 2 players
 class Game {
   private:

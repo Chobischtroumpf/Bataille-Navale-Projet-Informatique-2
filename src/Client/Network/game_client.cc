@@ -421,7 +421,7 @@ future<string> GameClient::GetUserId(const string& username) {
         }
       });
 
-    std::clog << "Login request initiated." <<std::endl;
+    std::clog << "UserId retrieval initiated" <<std::endl;
     return resultFuture;
 }
 

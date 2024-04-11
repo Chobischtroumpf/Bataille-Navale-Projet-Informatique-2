@@ -1,5 +1,4 @@
-#ifndef GAMESTATE_H
-#define GAMESTATE_H
+#pragma once
 
 #include <nlohmann/json.hpp>
 
@@ -56,5 +55,3 @@ class GameState {
     bool hasStarted() const;
 
 };
-
-#endif // GAMESTATE_H

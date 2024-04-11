@@ -2,7 +2,7 @@
 #include "game_state.hh"
 
 GameSession::GameSession(const std::string& leader_id, const nlohmann::json& game_details)
-    : _leader_id(leader_id), _game_details(game_details), _game_state(game_details) {
+    : _game_details(game_details), _leader_id(leader_id), _game_state(game_details) {
     _participant_roles[leader_id] = PlayerRole::Leader;
     _session_name = game_details.at("name").get<std::string>();
     // hasStarted = false;

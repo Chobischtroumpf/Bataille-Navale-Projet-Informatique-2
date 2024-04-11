@@ -86,6 +86,7 @@ void LobbyConsole::displayOptions(int mode) {
 }
 
 ReturnInput LobbyConsole::handleStartGame() {
+  std::clog << "handleStartGame" << std::endl;
   if (_view->getUserInGame(_session_id).size() < 2) {
     return {ReturnInput::Screen::LOBBY, _session_id};
   }
@@ -94,6 +95,7 @@ ReturnInput LobbyConsole::handleStartGame() {
 }
 
 ReturnInput LobbyConsole::handleInvitePlayer() {
+  std::clog << "handleInvitePlayer" << std::endl;
   std::string input;
   std::cin >> input;
   if (input == "./exit"){
@@ -108,20 +110,24 @@ ReturnInput LobbyConsole::handleInvitePlayer() {
 }
 
 ReturnInput LobbyConsole::GoToInvitePlayer() {
+  std::clog << "GoToInvitePlayer" << std::endl;
   _current_option = 1;
   return {ReturnInput::Screen::LOBBY, _session_id};
 }
 
 ReturnInput LobbyConsole::refresh() {
+  std::clog << "refresh" << std::endl;
   _current_option = 0;
   return {ReturnInput::Screen::LOBBY, _session_id};
 }
 
 ReturnInput LobbyConsole::backToMainMenu() {
+  std::clog << "backToMainMenu" << std::endl;
   return {ReturnInput::Screen::MAIN_MENU, ""};
 }
 
 ReturnInput LobbyConsole::handleChoseFaction(int faction) {
+  std::clog << "handleChoseFaction" << std::endl;
   _selected_faction = faction - 1;
   _current_option = 0;
   _faction_chosen = true;
@@ -130,6 +136,7 @@ ReturnInput LobbyConsole::handleChoseFaction(int faction) {
 }
 
 ReturnInput LobbyConsole::handleInput() {
+  std::clog << "handleInput" << std::endl;
   if (_admin) {
     int input;
     if (!_valid_input) {
@@ -181,6 +188,9 @@ ReturnInput LobbyConsole::handleInput() {
     case 2:
       return handleChoseFaction(input);
       break;
+    default:
+      _valid_input = false;
+      return {ReturnInput::Screen::LOBBY, _session_id};
     }
 
   } else {

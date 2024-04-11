@@ -1,4 +1,5 @@
 #include "game.hh"
+#include "faction_classique.hh"
 #include "player.hh"
 #include "special_ability.hh"
 #include <vector>
@@ -42,8 +43,8 @@ bool Game::shipPlacementsFinished() const {
   Player player1 = _board->getPlayer1();
   Player player2 = _board->getPlayer2();
 
-  if (player1.getFleet().size() == player1.getFaction().getAmountOfShips() &&
-      player2.getFleet().size() == player2.getFaction().getAmountOfShips()) {
+  if (player1.getFleet().size() == (size_t)player1.getFaction().getAmountOfShips() &&
+      player2.getFleet().size() == (size_t)player2.getFaction().getAmountOfShips()) {
     return true;
   }
   return false;

@@ -2,6 +2,7 @@
 #include "board_coordinates.hh"
 #include "cell_type.hh"
 #include "local_board_commander.hh"
+#include <iostream>
 
 GameController::GameController(std::shared_ptr<LocalBoardCommander> board)
     : _board{std::move(board)} {}
@@ -46,6 +47,7 @@ bool GameController::checkShipPosition(Ship ship) const {
 }
 
 bool GameController::placeShip(Ship ship) const {
+  std::clog << "GameController::placeShip" << std::endl;
   // Verifier qu'on peut poser le bateau la
   if (checkShipPosition(ship)) {
     // Sends a request to place the ship to the gameServer
