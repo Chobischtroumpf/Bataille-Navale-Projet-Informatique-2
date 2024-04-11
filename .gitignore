@@ -58,3 +58,5 @@ build/*
 *.aux
 *.toc
 .vscode
+
+.cache

@@ -5,6 +5,8 @@
 // GUI
 #include "gui.hh"
 
+#include <QApplication> 
+
 #include "controller.hh"
 #include "game_client.hh"
 #include "view.hh"
@@ -27,6 +29,10 @@
 #include "main_menu_console.hh"
 #include "register_console.hh"
 
+
+// Gui
+#include "gui_LoginWindow.hh"
+
 // Views
 #include "chat_view.hh"
 #include "lobby_view.hh"
@@ -48,6 +54,8 @@ private:
   void displayLobbyScreen(std::string gameId, bool admin);
   void displayGameCreationScreen();
 
+  QApplication* _qtApp;
+
   std::shared_ptr<screen::Display> _display;
 
   DisplayType _display_type;
@@ -56,6 +64,7 @@ private:
 
 public:
   Driver(DisplayType display_type);
+  Driver(DisplayType display_type, QApplication* _qtApp);
   ~Driver();
 
   // Launchers
