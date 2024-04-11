@@ -1,7 +1,14 @@
 #include "driver.hh"
+#include "chat_console.hh"
+#include "game_console.hh"
 #include "faction_sonar.hh"
-#include "faction_bombardement.hh"
+#include "lobby_console.hh"
+#include "login_console.hh"
 #include "faction_mines.hh"
+#include "register_console.hh"
+#include "main_menu_console.hh"
+#include "game_setting_console.hh"
+#include "faction_bombardement.hh"
 
 Driver::Driver(DisplayType display_type, std::string server_address) : _display_type{display_type}, _game_client{std::make_shared<GameClient>(server_address)} {}
 
