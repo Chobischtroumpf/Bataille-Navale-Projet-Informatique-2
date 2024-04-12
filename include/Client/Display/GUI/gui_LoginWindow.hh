@@ -19,7 +19,11 @@ class LoginWindow : public QWidget {
 public:
     LoginWindow(std::shared_ptr<GameClient> gameClient);
 
-private slots: // en ref à Qt6
+signals:
+    void loginSuccessful();  // Signal qu'on émet pour driver qd on se co pour switch fenetre
+    void registrationSuccessful();  
+    // ...
+private slots:
     void onLoginButtonClicked();
     void onRegisterButtonClicked();
 
@@ -28,5 +32,6 @@ private:
     QLineEdit *usernameLineEdit;
     QLineEdit *passwordLineEdit;
     QPushButton *loginButton;
-    QPushButton *registerButton;  
+    QPushButton *registerButton; 
+
 };

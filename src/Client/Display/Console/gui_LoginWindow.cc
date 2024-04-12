@@ -35,8 +35,10 @@ void LoginWindow::onLoginButtonClicked() {
     std::string str_password = password.toStdString();
 
     auto registerFuture = login_controller.attemptLogin(str_username, str_password);
-    if (registerFuture.get())
+    if (registerFuture.get()){
+        emit loginSuccessful();
         this->close();
+    }
     else
         std::cout<< "échec de la connexion" << std::endl;
 }
@@ -48,8 +50,10 @@ void LoginWindow::onRegisterButtonClicked() {
     std::string str_password = password.toStdString();
 
     auto registerFuture = login_controller.attemptRegister(str_username, str_password);
-    if (registerFuture.get())
+    if (registerFuture.get()){
+        emit registrationSuccessful();
         this->close();
+    }
     else
         std::cout<< "échec de la connexion" << std::endl;
 }
