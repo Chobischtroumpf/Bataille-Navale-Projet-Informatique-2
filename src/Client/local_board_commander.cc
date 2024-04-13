@@ -1,4 +1,5 @@
 #include "local_board_commander.hh"
+#include <iostream>
 
 /*
 
@@ -159,18 +160,20 @@ CellType LocalBoardCommander::best(CellType lhs, CellType rhs) {
 }
 
 bool LocalBoardCommander::waitGame() {
+  std::clog << "Waiting for game to start" << std::endl;
   bool shipPlacementsFinished = false;
   std::string turn;
   while (!shipPlacementsFinished) {
+    std::clog << "inside loop" << std::endl;
     auto FutureGameState = _client->QueryGameState(_session_id);
     auto result = FutureGameState.get();
     auto gameState = result.at("gameState");
     turn = gameState.at("turn");
-    shipPlacementsFinished = gameState.at("_ship_placements_finished") == "true";
+    shipPlacementsFinished = gameState.at("ship_placements_finished") == "true";
     sleep(1);
   }
-  return true ? turn == "PLAYERONE" && _player.isPlayerOne()
-              || turn == "PLAYERTWO" && !_player.isPlayerOne() : false;
+  return true ? (turn == "PLAYERONE" && _player.isPlayerOne())
+              || (turn == "PLAYERTWO" && !_player.isPlayerOne()) : false;
 }
 
 void LocalBoardCommander::waitTurn() {
@@ -180,8 +183,8 @@ void LocalBoardCommander::waitTurn() {
     auto result = FutureGameState.get();
     // Update the board if needed
     auto gameState = result["gameState"];
-    my_turn = gameState["turn"] == "PLAYERONE" && _player.isPlayerOne() ||
-              gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne();
+    my_turn = (gameState["turn"] == "PLAYERONE" && _player.isPlayerOne()) ||
+              (gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne());
     sleep(1);
   }
 }
@@ -227,27 +230,27 @@ CellType LocalBoardCommander::string_to_celltype(const std::string &type) {
 }
 
 void LocalBoardCommander::update_board(const nlohmann::json &new_board) {
-  auto fleetA = new_board["fleetA"];
-  auto fleetB = new_board["fleetB"];
+  auto fleetA = new_board.at("fleetA");
+  auto fleetB = new_board.at("fleetB");
 
   if (!(fleetA.is_string() && fleetA.get<std::string>() == "None")) {
-    for (int i = 0; i < _my_board.size(); i++) {
-      for (int j = 0; j < _my_board.at(0).size(); j++) {
-        _my_board[i][j].setType(string_to_celltype(fleetA[i][j]["type"]));
+    for (size_t i = 0; i < _my_board.size(); i++) {
+      for (size_t j = 0; j < _my_board.at(0).size(); j++) {
+        _my_board[i][j].setType(string_to_celltype(fleetA.at(i).at(j).at("type")));
       }
     }
   }
   if (!(fleetB.is_string() && fleetB.get<std::string>() == "None")) {
-    for (int i = 0; i < _their_board.size(); i++) {
-      for (int j = 0; j < _their_board.at(0).size(); j++) {
-        _their_board[i][j].setType(string_to_celltype(fleetB[i][j]["type"]));
+    for (size_t i = 0; i < _their_board.size(); i++) {
+      for (size_t j = 0; j < _their_board.at(0).size(); j++) {
+        _their_board[i][j].setType(string_to_celltype(fleetB.at(i).at(j).at("type")));
       }
     }
   }
 
-  if (new_board["Finished"] == "true"){
+  if (new_board.at("Finished") == "true"){
     _is_finished = true;
-    if((new_board["Winner"] == "PLAYERONE" && _player.isPlayerOne()) || (new_board["Winner"] == "PLAYERTWO" && !_player.isPlayerOne())){
+    if((new_board.at("Winner") == "PLAYERONE" && _player.isPlayerOne()) || (new_board.at("Winner") == "PLAYERTWO" && !_player.isPlayerOne())){
       _is_victory = true;
     }else{
       _is_victory = false;
@@ -266,14 +269,18 @@ bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {
 
 void LocalBoardCommander::fire(SpecialAbility ability,
                                BoardCoordinates coordinates) {
+  std::clog << "LocalBoardCommander::fire" << std::endl;
   nlohmann::json move_request;
   nlohmann::json fire_request;
 
   fire_request["ability"] = ability.getType();
   fire_request["anchor"] = coordinates.to_json();
 
+
   move_request["moveType"] = "fire";
   move_request["fire"] = fire_request;
+  
+  std::clog << "fire_request: " << fire_request.dump() << std::endl;
 
   _client->MakeMove(_session_id, move_request);
 }

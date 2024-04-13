@@ -243,8 +243,7 @@ future<njson> GameClient::JoinGame(const string& session_id) {
           errorHandler.get();
         } catch (const exception &e) {
           // In case of exception, set an error value
-          std::clog << "Exception caught while joining game session: " << e.what()
-               <<std::endl;
+          std::clog << "Exception caught while joining game session: " << e.what() <<std::endl;
           promise->set_value(njson{});
         }
       });

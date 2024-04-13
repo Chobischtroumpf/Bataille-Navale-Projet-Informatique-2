@@ -34,7 +34,7 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
     }
     else if (str_move == "chooseFaction") {
       std::clog << "chooseFaction move" << std::endl;
-      
+      //handle choose faction
     }
   }
   else if (_phase == Phase::PLACING_SHIPS) {

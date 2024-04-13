@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <iostream>
 
 #include "game_console.hh"
 #include "ship_commander.hh"
@@ -441,9 +442,11 @@ void GameConsole::printChangeTurn() {
 }
 
 ReturnInput GameConsole::handleFire() {
+  std::clog << "GameConsole::handleFire" << std::endl;
+
   _out << "\x1b[32;49;1m";
   std::string buf;
-  getline(_in, buf);
+  _in >> buf;
   _out << "\x1b[0m";
 
   if (std::cin.eof()) {
@@ -492,7 +495,7 @@ ReturnInput GameConsole::handleFire() {
 bool GameConsole::isValidInputFormat(const std::string &input) const {
   // Check if input matches the expected format: [0-9] [A-J][0-9]
   return (input.size() <= 5 && isdigit(input[0]) && input[1] == ' ' &&
-          input[2] >= 'A' && input[2] <= 'J' && isdigit(input[3]));
+          ((input[2] >= 'A' && input[2] <= 'J') || (input[2] >= 'a' && input[2] <= 'j')) && isdigit(input[3]));
 }
 
 bool GameConsole::isValidCoordinates(char row, int col) const {
@@ -633,28 +636,41 @@ void GameConsole::displayWaitTurn() {
 }
 
 void GameConsole::display() {
+  std::clog << "GameConsole::display" << std::endl;
   if (_phase == PLACE_SHIP) {
+    std::clog << "GameConsole::display: PLACE_SHIP" << std::endl;
     updatePlaceShip(_last_input);
   } else if (_phase == GAME) {
+    std::clog << "GameConsole::display: GAME" << std::endl;
     updateGame(_last_input);
   } else if (_phase == WAIT_GAME) {
+    std::clog << "GameConsole::display: WAIT_GAME" << std::endl;
     displayWaitGame();
-  } else {
+  } else if (_phase == WAIT_TURN) {
+    std::clog << "GameConsole::display: WAIT_TURN" << std::endl;
     displayWaitTurn();
   }
+  //  else {
+  //   displayError();
+  // }
 }
+
 void GameConsole::displayError() {}
 void GameConsole::update() {}
 
 ReturnInput GameConsole::handleInput() {
   if (_phase == PLACE_SHIP) {
+    std::clog << "GameConsole::handleInput: PLACE_SHIP" << std::endl;
     handlePlaceShip();
   } else if (_phase == GAME) {
+    std::clog << "GameConsole::handleInput: GAME" << std::endl;
     handleFire();
     _phase = WAIT_TURN;
   } else if (_phase == WAIT_GAME) {
+    std::clog << "GameConsole::handleInput: WAIT_GAME" << std::endl;
     _phase = _board->waitGame() ? GAME : WAIT_TURN;
   } else if (_phase == WAIT_TURN) {
+    std::clog << "GameConsole::handleInput: WAIT_TURN" << std::endl;
     _board->waitTurn();
     _phase = GAME;
   }
