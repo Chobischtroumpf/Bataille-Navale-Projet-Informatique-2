@@ -65,9 +65,10 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
 }
 
 bool GameState::handleFire(PlayerRole player, const nlohmann::json& fire_move) {
+  std::clog << "handleFire" << std::endl;
   SpecialAbilityType ability_type = fire_move.at("ability").get<SpecialAbilityType>();
-  size_t x = fire_move.at("anchor").at(0).get<size_t>();
-  size_t y = fire_move.at("anchor").at(1).get<size_t>();
+  size_t x = fire_move.at("anchor").at("x").get<size_t>();
+  size_t y = fire_move.at("anchor").at("y").get<size_t>();
   BoardCoordinates board_coordinates{x, y};
   return _game->handleFire(role_to_turn(player), ability_type, board_coordinates);
 
@@ -117,10 +118,13 @@ bool GameState::handleChooseFaction(PlayerRole player, const nlohmann::json& mov
   switch (faction) {
     case 0:
       f = FactionBombardement();
+      break;
     case 1:
       f = FactionSonar();
+      break;
     case 2:
       f = FactionMines();
+      break;
     default:
       return false;
   }

@@ -11,8 +11,8 @@ bool GameController::fire(SpecialAbility ability,
                           BoardCoordinates coord) const {
   // Sends POST request to fire to the gameServer
   std::clog << "GameController::fire" << std::endl;
-  if (_board->cellType(false, coord) == CellType::WATER) {
-    std::clog << "GameController::fire: WATER" << std::endl;
+  if (!(_board->cellType(false, coord) & CellType::IS_HIT)) {
+    std::clog << "GameController::fire: not IS_HIT" << std::endl;
     if (_board->mode() == GameMode::CLASSIC) {
       std::clog << "GameController::fire: CLASSIC" << std::endl;
       _board->fire(ability, coord);

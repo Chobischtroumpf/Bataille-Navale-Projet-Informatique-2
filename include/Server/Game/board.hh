@@ -56,11 +56,11 @@ class Board: public virtual GameView {
     // updates the board after a probe has been fired
     void fireProbe(BoardCoordinates coords);
 
+    // updates the board after a mine has been set
+    void setMine(BoardCoordinates coords);
+
     // dispatches the sonar to the correct method
     void dispatchSonar(SpecialAbilityType ability_type, BoardCoordinates coords);
-
-    // updates the board after a mine has been set
-    void setMine(SpecialAbility ability, BoardCoordinates coords);
 
   public:
     Board();
@@ -105,8 +105,6 @@ class Board: public virtual GameView {
         return "WATER";
       case OCEAN:
         return "OCEAN";
-      case SCANNED:
-        return "SCANNED";
       case UNDAMAGED_MINE:
         return "UNDAMAGED_MINE";
       case SCANNED_MINE:

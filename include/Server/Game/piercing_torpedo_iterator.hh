@@ -8,7 +8,7 @@ class PiercingTorpedoIterator {
     size_t _i;
 
   public:
-    PiercingTorpedoIterator(BoardCoordinates coords, size_t width, size_t height)
+    PiercingTorpedoIterator(BoardCoordinates coords)
         : _coords{coords}, _i{0} {}
 
     BoardCoordinates operator*() const { return _coords + BoardCoordinates(0, _i); }

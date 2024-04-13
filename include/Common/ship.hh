@@ -34,8 +34,6 @@ class Ship {
     Ship &operator=(const Ship &other);
     bool operator==(const Ship &other) const;
 
-    // Does a 90° rotation of the ship
-    void rotate();
 
     // Getters
     std::vector<BoardCoordinates> getCoordinates() const;
@@ -54,10 +52,16 @@ class Ship {
     void setTopLeft(BoardCoordinates top_left);
 
     // Notifies the Ship that a tile has been hit, allowing it to check if it has been sunk
-    void notify(const BoardCoordinates &coords);
+    void notify();
 
     // Translate the ship by x and y   
     bool translate(int x, int y);
+
+    // Does a 90° rotation of the ship
+    void rotate();
+
+    // Checks if the coordinates passed as argument are part of the ship
+    bool isPartOfShip(BoardCoordinates coord);
 
     // Print the ship
     std::vector<std::string> to_string();

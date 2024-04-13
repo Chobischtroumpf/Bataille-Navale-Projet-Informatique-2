@@ -11,10 +11,10 @@ Driver::~Driver() {}
 void Driver::launchApp() {
   //std::string user = "slectedUser";
   displayLoginScreen();
-  run(ReturnInput::Screen::LOGIN);
+  run();
 }
 
-void Driver::run(ReturnInput::Screen base_screen) {
+void Driver::run() {
     while (true) {
       _display->display();
       ReturnInput input = _display->handleInput();

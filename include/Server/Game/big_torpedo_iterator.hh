@@ -9,7 +9,7 @@ class BigTorpedoIterator {
     size_t _j;
 
   public:
-    BigTorpedoIterator(BoardCoordinates coords, size_t width, size_t height)
+    BigTorpedoIterator(BoardCoordinates coords)
       : _coords{coords}, _i{0}, _j{0} {}
 
     BoardCoordinates operator*() const { return _coords + BoardCoordinates(_i, _j); }

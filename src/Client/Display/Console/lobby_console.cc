@@ -65,7 +65,7 @@ void LobbyConsole::displayFactions() {
 void LobbyConsole::displayOptions(int mode) {
   switch (mode) {
   case 0:
-    for (int i = 1; i < _options.size() + 1; i++) {
+    for (size_t i = 1; i < _options.size() + 1; i++) {
       std::cout << "║ (" << i << ") " << _options[i - 1]
                 << std::string(_width - (_options[i - 1].size() + 3), ' ')
                 << "║" << std::endl;
@@ -208,6 +208,7 @@ ReturnInput LobbyConsole::handleInput() {
       return {ReturnInput::Screen::GAME, _session_id};
     }
   }
+  return {ReturnInput::Screen::MAIN_MENU, ""};
 }
 
 void LobbyConsole::addPlayer(const std::string& playerName) {

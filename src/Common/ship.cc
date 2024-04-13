@@ -144,7 +144,7 @@ bool Ship::translate(int x, int y) {
     return true;
 }
 
-void Ship::notify(const BoardCoordinates &coords) {
+void Ship::notify() {
     // Check if ship is sunk
     for (auto &c: _coordinates) {
         if (_board->cellType(true,_top_left+c) != HIT_SHIP) {
@@ -156,6 +156,15 @@ void Ship::notify(const BoardCoordinates &coords) {
 
 void Ship::setType(CellType new_type) {
     _type = new_type;
+}
+
+bool Ship::isPartOfShip(BoardCoordinates coord) {
+    for (auto &c: _coordinates) {
+        if (_top_left + c == coord) {
+            return true;
+        }
+    }
+    return false;
 }
 
 Ship::~Ship() {

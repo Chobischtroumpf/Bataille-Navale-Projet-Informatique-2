@@ -42,7 +42,7 @@ std::future<void> GameClient::TestRequest2() {
   auto promise = std::make_shared<std::promise<void>>();
 
   client->request(methods::GET)
-      .then([promise](web::http::http_response response) mutable {
+      .then([promise](web::http::http_response) mutable {
         promise->set_value(); // Indicate success
       })
       .then([promise](pplx::task<void> previous_task) mutable {

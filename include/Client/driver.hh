@@ -59,7 +59,7 @@ public:
   void launchApp();
 
   // Main loop
-  void run(ReturnInput::Screen base_screen);
+  void run();
 
   // Getter
   std::shared_ptr<GameClient> getClient();

@@ -64,7 +64,7 @@ void Board::setScanned(BoardCoordinates coords) {
   } else if (cell.type() == UNDAMAGED_MINE) {
     cell.setType(SCANNED_MINE);
   } else if (cell.type() == WATER) {
-    cell.setType(SCANNED);
+    cell.setType(WATER);
   }
 }
 
@@ -81,16 +81,16 @@ void Board::fireProbe(BoardCoordinates coords) {
     setScanned(BoardCoordinates(i+1, coords.y()));
 }
 
+void Board::setMine(BoardCoordinates coords) {
+  Player& current_player = _my_turn ? _player1 : _player2;
+  current_player.addShip(Ship(coords, {{0,0}}, this));
+}
+
 void Board::dispatchSonar(SpecialAbilityType ability_type, BoardCoordinates coords) {
   if (ability_type == SONAR)
     fireSonar(coords);
   else if (ability_type == PROBE)
     fireProbe(coords);
-}
-
-void Board::setMine(SpecialAbility ability, BoardCoordinates coords) {
-  Player& current_player = _my_turn ? _player1 : _player2;
-  current_player.addShip(Ship(coords, {{0,0}}, this));
 }
 
 Board::Board(): _my_turn{true}, _player1{}, _player2{}, _fleetA_state{true}, _fleetB_state{true},
@@ -150,12 +150,14 @@ void Board::placeShip(Ship ship, bool side) {
 }
 
 void Board::notify(const BoardCoordinates &coords) {
-  // Iterate over the enemy's ships
+  // Iterate over the targeted player's ships
   Player& current_player = _my_turn ? _player2 : _player1;
 
   for (Ship &ship : current_player.getFleet()) {
-    ship.notify(coords);
-    if (ship.getType() != UNDAMAGED_MINE && !ship.isSunk()) {
+    if (ship.isPartOfShip(coords) && !ship.isSunk()) {
+      ship.notify();
+    }
+    if (!(ship.getType() & IS_MINE) && !ship.isSunk()) {
       return;
     }
   }
@@ -174,9 +176,9 @@ void Board::fire(SpecialAbility ability, BoardCoordinates coords) {
   if (ability.getType() & IS_TORPEDO) {
     dispatchTorpedo(ability.getType(), coords);
   } else if (ability.getType() & IS_SONAR) {
-    fireSonar(coords);
+    dispatchSonar(ability.getType(), coords);
   } else if (ability.getType() & MINE) {
-    setMine(ability, coords);
+    setMine(coords);  
   }
   notify(coords);
 }
@@ -248,33 +250,33 @@ bool Board::isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates se
 }
 
 bool Board::isInBoard(BoardCoordinates coord) const {
-  return coord.x() >= 0 && coord.x() < width() && coord.y() >= 0 && coord.y() < height();
+  return (coord.x() < width() && coord.y() < height());
 }
 
 // Iterators methods
 // Big Torpedo
 BigTorpedoIterator Board::beginBigTorpedo(BoardCoordinates coords) {
-  return BigTorpedoIterator(coords, width(), height());
+  return BigTorpedoIterator(coords);
 }
 
 BigTorpedoIterator Board::endBigTorpedo(BoardCoordinates coords) {
-  return BigTorpedoIterator(coords + BoardCoordinates(2, 0), width(), height());
+  return BigTorpedoIterator(coords + BoardCoordinates(2, 0));
 }
 
 // Piercing Torpedo
 PiercingTorpedoIterator Board::beginPiercingTorpedo(BoardCoordinates coords) {
-  return PiercingTorpedoIterator(coords, width(), height());
+  return PiercingTorpedoIterator(coords);
 }
 
 PiercingTorpedoIterator Board::endPiercingTorpedo(BoardCoordinates coords) {
-  return PiercingTorpedoIterator(coords + BoardCoordinates(0, 4), width(), height());
+  return PiercingTorpedoIterator(coords + BoardCoordinates(0, 4));
 }
 
 // Aerial Strike
 AerialStrikeIterator Board::beginAerialStrike(BoardCoordinates coords) {
-  return AerialStrikeIterator(coords, width(), height());
+  return AerialStrikeIterator(coords);
 }
 
 AerialStrikeIterator Board::endAerialStrike(BoardCoordinates coords) {
-  return AerialStrikeIterator(coords + BoardCoordinates(4, 3), width(), height());
+  return AerialStrikeIterator(coords + BoardCoordinates(4, 3));
 }

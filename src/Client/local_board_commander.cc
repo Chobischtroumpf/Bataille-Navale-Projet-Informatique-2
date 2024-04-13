@@ -39,13 +39,15 @@ CellType LocalBoardCommander::cellType(bool my_side,
   return get(my_side, coordinates).type();
 }
 
+// returns the ship at the given position
+std::optional<Ship> LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) const {
+  return get(my_side, position).ship();
+}
+
 bool LocalBoardCommander::isSameShip(bool my_side, BoardCoordinates first,
                                      BoardCoordinates second) const {
-  if (get(true, first).type() != UNDAMAGED_SHIP ||
-      get(true, second).type() != UNDAMAGED_SHIP) {
-    return false;
-  }
-  return get(true, first).ship() == get(true, second).ship();
+  return shipId(my_side, first).has_value() &&
+        shipId(my_side, first) == shipId(my_side, second);
 }
 
 std::vector<Cell>
@@ -183,8 +185,12 @@ void LocalBoardCommander::waitTurn() {
     auto result = FutureGameState.get();
     // Update the board if needed
     auto gameState = result["gameState"];
+    std::clog << gameState << std::endl;
     my_turn = (gameState["turn"] == "PLAYERONE" && _player.isPlayerOne()) ||
               (gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne());
+    if (my_turn) {
+      updateBoard(gameState);
+    }
     sleep(1);
   }
 }
@@ -193,17 +199,6 @@ Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {
   return my_side ? _my_board.at(position.y()).at(position.x())
                  : _their_board.at(position.y()).at(position.x());
 }
-
-// Ship &LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) {}
-
-// bool LocalBoardCommander::check() {}
-
-// void LocalBoardCommander::placeShip(ShipCoordinates coordinates, bool
-// my_fleet) {}
-
-// void LocalBoardCommander::fire(BoardCoordinates coordinates) {
-
-// }
 
 CellType LocalBoardCommander::string_to_celltype(const std::string &type) {
   if (type == "WATER") {
@@ -229,7 +224,7 @@ CellType LocalBoardCommander::string_to_celltype(const std::string &type) {
   }
 }
 
-void LocalBoardCommander::update_board(const nlohmann::json &new_board) {
+void LocalBoardCommander::updateBoard(const nlohmann::json &new_board) {
   auto fleetA = new_board.at("fleetA");
   auto fleetB = new_board.at("fleetB");
 
@@ -258,13 +253,10 @@ void LocalBoardCommander::update_board(const nlohmann::json &new_board) {
   }else{
     _is_finished = false;
   }
-
-
-
 }
 
 bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {
-  return coord.x() >= 0 && coord.x() < 10 && coord.y() >= 0 && coord.y() < 10;
+  return coord.x() < width() && coord.y() < height();
 }
 
 void LocalBoardCommander::fire(SpecialAbility ability,
