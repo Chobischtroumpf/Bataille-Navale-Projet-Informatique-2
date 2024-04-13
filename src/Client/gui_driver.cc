@@ -16,5 +16,13 @@ void DriverGui::showLoginWindow(){
 
 void DriverGui::showMainMenu() {
     _mainMenuWindow = std::make_unique<MainMenu>(_game_client);
+    QObject::connect(_mainMenuWindow.get(), &MainMenu::userDisconnection, this, &DriverGui::showLoginWindow);
+    QObject::connect(_mainMenuWindow.get(), &MainMenu::startChat, this, &DriverGui::showChatOutWindow);
     _mainMenuWindow->show();
+}
+
+void DriverGui::showChatOutWindow() {
+    _chatOutWindow = std::make_unique<ChatOut>(_destination, _game_client);
+    QObject::connect(_chatOutWindow.get(), &ChatOut::goBackToMenu, this, &DriverGui::showMainMenu);
+    _chatOutWindow->show();
 }
