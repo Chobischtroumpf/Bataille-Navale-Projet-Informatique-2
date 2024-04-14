@@ -50,8 +50,9 @@ bool Game::shipPlacementsFinished() const {
   return false;
 }
 
-bool Game::handlePlaceShip(Turn turn, Ship ship) {
+bool Game::handlePlaceShip(Turn turn, Ship &ship) {
   if (!shipPlacementsFinished()) {
+    ship.setBoard(_board.get());
     if (turn == PLAYERONE) {
       _board->placeShip(ship, true);
       _update_player1 = true;

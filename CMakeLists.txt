@@ -37,11 +37,21 @@ function(get_sources dir result)
     set(${result} ${sources} PARENT_SCOPE)
 endfunction()
 
+# function(get_sources_test dir result)
+#     file(GLOB_RECURSE sources "${dir}/*.cc")
+#     # remove server.cc from the test sources
+#     list(FILTER sources EXCLUDE REGEX ".*server.cc")
+#     set(${result} ${sources} PARENT_SCOPE)
+# endfunction()
+
 # Client sources
 get_sources("src/Client" CLIENT_SOURCES)
 
 # Server sources
 get_sources("src/Server" SERVER_SOURCES)
+
+# # Server sources
+# get_sources_test("src/Server" TEST_SOURCES)
 
 # Common sources
 get_sources("src/Common" COMMON_SOURCES)
@@ -52,6 +62,10 @@ add_executable(battleship ${COMMON_SOURCES} ${CLIENT_SOURCES})
 # Create server executable
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
+
+#create test executable
+# add_executable(tests test/test_game.cc ${COMMON_SOURCES} ${TEST_SOURCES})
+
 # Define include directories for target 'client' 
 # target_include_directories(client PRIVATE include/Client/Network)
 
@@ -61,10 +75,13 @@ target_include_directories(server PRIVATE include/Server include/Server/Database
 # Define include directories for target 'battleship'
 target_include_directories(battleship PRIVATE include/Client include/Client/Network include/Client/Controllers include/Client/Views include/Client/Display include/Client/Display/Console include/Client/Display/GUI include/Common include/Common/Commandant/Abilities include/Common/Commandant/Factions)
 
+# Define include directories for target 'tests'
+# target_include_directories(tests PRIVATE include/Server include/Server/Database include/Server/Game include/Server/Network include/Common include/Common/Commandant/Abilities include/Common/Commandant/Factions)
+
 # Specifies libraries for targets
 target_link_libraries(server PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(battleship PRIVATE nlohmann_json::nlohmann_json)
-# target_link_libraries(client PRIVATE nlohmann_json::nlohmann_json)
+# target_link_libraries(tests PRIVATE nlohmann_json::nlohmann_json)
 
 # using libraries like cpprestsdk, link with both executables
 find_package(cpprestsdk REQUIRED)
@@ -74,8 +91,8 @@ if(NOT cpprestsdk_FOUND)
 endif()
 
 target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
-# target_link_libraries(client PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(battleship PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(server PRIVATE SQLite::SQLite3)
 target_link_libraries(server PRIVATE sodium)
 
+# target_link_libraries(tests PRIVATE cpprestsdk::cpprest crypto SQLite::SQLite3 sodium)

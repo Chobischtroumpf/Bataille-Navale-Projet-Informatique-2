@@ -20,7 +20,7 @@ Faction Player::getFaction() const {
   return _faction;
 }
 
-std::vector<Ship> Player::getFleet() const {
+Fleet Player::getFleet() const {
   return _fleet;
 }
 
@@ -36,7 +36,7 @@ void Player::setFaction(Faction faction) {
   _faction = faction;
 }
 
-void Player::setFleet(std::vector<Ship> fleet) {
+void Player::setFleet(Fleet fleet) {
   _fleet = fleet;
 }
 

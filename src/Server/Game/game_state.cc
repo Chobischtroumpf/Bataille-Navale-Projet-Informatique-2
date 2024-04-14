@@ -14,7 +14,7 @@ GameState::~GameState() {
 }
 
 bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
-  std::clog << "makeMove: ";
+  std::clog << "GameState::makeMove: ";
 
   std::string str_move = move.at("moveType").get<std::string>();
   std::clog << "move type: " << str_move << std::endl;
@@ -59,13 +59,13 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
       result = handlePlaceShip(player, move.at("ships"));
     }
   }
-  
+
   std::clog << "result: " << result << std::endl;
   return result;
 }
 
 bool GameState::handleFire(PlayerRole player, const nlohmann::json& fire_move) {
-  std::clog << "handleFire" << std::endl;
+  std::clog << "GameState::handleFire" << std::endl;
   SpecialAbilityType ability_type = fire_move.at("ability").get<SpecialAbilityType>();
   size_t x = fire_move.at("anchor").at("x").get<size_t>();
   size_t y = fire_move.at("anchor").at("y").get<size_t>();
@@ -75,6 +75,7 @@ bool GameState::handleFire(PlayerRole player, const nlohmann::json& fire_move) {
 }
 
 bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& ships) {
+  std::clog << "GameState::handlePlaceShip" << std::endl;
   for (const auto& obj_ship : ships) {
 
     std::clog << "ship: " << obj_ship << std::endl;
@@ -95,13 +96,19 @@ bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& ships) 
       coords.push_back(board_coordinates);
     }
 
+    bool side;
+    if (role_to_turn(player) == Turn::PLAYERONE) {
+      side = true;
+    } else {
+      side = false;
+    }
+
     std::clog << "create Ship" << std::endl;
-    Ship ship{top_left, coords};
+    Ship ship{top_left, coords, side};
 
     std::clog << "set Ship type" << std::endl;
     ship.setType(obj_ship.at("type")); // a mon avis ca ca va pas marcher, on a pas de conversion int -> CellType
 
-    std::clog << "handlePlaceShip" << std::endl;
     bool result = _game->handlePlaceShip(role_to_turn(player), ship);
     if (!result) {
       //error in placing ship gotta be handeled

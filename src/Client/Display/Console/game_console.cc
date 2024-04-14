@@ -12,23 +12,27 @@ GameConsole::GameConsole(std::ostream &out, std::istream &in,
                          std::shared_ptr<GameController> control,
                          std::shared_ptr<GameClient> client)
     : _board{std::move(board)}, _control{std::move(control)}, _game_client(std::move(client)),
-    _out{out}, _in{in}, _letter_width{static_cast<uint8_t>( length(BoardCoordinates(
-                                      _board->width() - 1, _board->height() - 1).xToString()))},
+      _out{out}, _in{in}, _letter_width{static_cast<uint8_t>(length(BoardCoordinates(
+                                                                        _board->width() - 1, _board->height() - 1)
+                                                                        .xToString()))},
       _number_width{static_cast<uint8_t>(
           length(BoardCoordinates(_board->width() - 1, _board->height() - 1).yToString()))},
       _gap{"   "}, _grid_width{_number_width + (1 + _letter_width) * _board->width() + 2},
       _width{_grid_width * 2 + _gap.size()}, _map_key{createMapKey()} {}
 
-inline string operator*(const string &lhs, size_t rhs) {
+inline string operator*(const string &lhs, size_t rhs)
+{
   string result;
   result.reserve(lhs.size() * rhs);
-  for (size_t i = 0; i < rhs; ++i) {
+  for (size_t i = 0; i < rhs; ++i)
+  {
     result += lhs;
   }
   return result;
 }
 
-string GameConsole::createGameHeader() const {
+string GameConsole::createGameHeader() const
+{
   //                   ╔════════════╗
   //                   ║ Your Turn  ║
   //                   ╚════════════╝
@@ -54,7 +58,8 @@ string GameConsole::createGameHeader() const {
   return oss.str();
 }
 
-string GameConsole::createPlaceShipHeader() const {
+string GameConsole::createPlaceShipHeader() const
+{
   //                   ╔═══════════════╗
   //                   ║ Ship to place ║
   //                   ╚═══════════════╝
@@ -86,7 +91,8 @@ string GameConsole::createPlaceShipHeader() const {
   return oss.str();
 }
 
-string GameConsole::createGridLabel(bool my_side) const {
+string GameConsole::createGridLabel(bool my_side) const
+{
   string your = _board->getMyUsername();
   string their = _board->getTheirUsername();
   size_t label_size = std::max(length(your), length(their));
@@ -96,12 +102,14 @@ string GameConsole::createGridLabel(bool my_side) const {
   return margin + (my_side ? your : their);
 }
 
-std::vector<string> GameConsole::createGrid(bool my_side) const {
+std::vector<string> GameConsole::createGrid(bool my_side) const
+{
   std::vector<string> grid;
   std::ostringstream oss("    ", std::ios_base::ate);
 
   // letters
-  for (size_t i = 0; i < _board->width(); ++i) {
+  for (size_t i = 0; i < _board->width(); ++i)
+  {
     oss << std::setw(_letter_width) << BoardCoordinates{i, 0}.xToString()
         << ' ';
   }
@@ -114,18 +122,24 @@ std::vector<string> GameConsole::createGrid(bool my_side) const {
   grid.emplace_back(oss.str());
 
   // body
-  for (unsigned i = 0; i < _board->height(); ++i) {
+  for (unsigned i = 0; i < _board->height(); ++i)
+  {
     oss.str("");
     oss << std::setw(_number_width) << i + 1 << " ";
-    for (unsigned j = 0; j < _board->width(); ++j) {
+    for (unsigned j = 0; j < _board->width(); ++j)
+    {
       string border = "│";
       CellType content = _board->cellType(my_side, {j, i});
 
-      if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i})) {
+      if (j > 0 && _board->isSameShip(my_side, {j - 1, i}, {j, i}))
+      {
         CellType previous = _board->cellType(my_side, {j - 1, i});
-        if (previous == WATER) {
+        if (previous == WATER)
+        {
           border = "│";
-        } else {
+        }
+        else
+        {
           border = toString(_board->best(content, previous));
         }
       }
@@ -143,7 +157,8 @@ std::vector<string> GameConsole::createGrid(bool my_side) const {
   return grid;
 }
 
-std::vector<string> GameConsole::createMapKey() const {
+std::vector<string> GameConsole::createMapKey() const
+{
   std::vector<string> map_key;
   map_key.emplace_back(" > " + toString(OCEAN) + " Ocean          <");
   map_key.emplace_back(" > " + toString(UNDAMAGED_SHIP) + " UNDAMAGED ship <");
@@ -156,15 +171,18 @@ std::vector<string> GameConsole::createMapKey() const {
   return map_key;
 }
 
-std::vector<string> GameConsole::createBoatsKey() const {
+std::vector<string> GameConsole::createBoatsKey() const
+{
   std::vector<string> boat_key;
   PossibleShips remaining_ships = _board->shipsToPlace();
   std::array<std::string, 2> color_code = {"\x1B[2m", "\x1B[0m"};
   // std::cout << shipCounts[CARRIER] <<" " << shipCounts[BATTLESHIP] << " "
   // << std::endl;
   boat_key.emplace_back("");
-  for (auto &ship : remaining_ships) {
-    switch (ship.first) {
+  for (auto &ship : remaining_ships)
+  {
+    switch (ship.first)
+    {
     case 1:
       boat_key.emplace_back(
           color_code.at(ship.second == 0 ? 0 : 1) + " > " +
@@ -202,16 +220,20 @@ std::vector<string> GameConsole::createBoatsKey() const {
   return boat_key;
 }
 
-std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
+std::vector<string> GameConsole::createGamePrompt(InputStatus status) const
+{
   std::vector<string> prompt(_map_key.size() - 7, ""); // Add padding
   prompt.emplace_back(">> Round Time remaining: " + _round_time);
   prompt.emplace_back(">> Game Time remaining:" + _game_time);
   prompt.emplace_back("");
   prompt.emplace_back(
       ">> Put first the ability and then the coordinate (ex: 4 F2) <<");
-  if (status == OK) {
+  if (status == OK)
+  {
     prompt.emplace_back("");
-  } else {
+  }
+  else
+  {
     prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
   }
   prompt.emplace_back(">> SELECT TARGET <<");
@@ -219,13 +241,17 @@ std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
   return prompt;
 }
 
-std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) const {
+std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) const
+{
   std::vector<string> prompt(_map_key.size() - 8, ""); // Add padding
   for (size_t i = 0; i < _board->shipsToPlace().size() - 2; i++)
     prompt.emplace_back("\n");
-  if (status == OK) {
+  if (status == OK)
+  {
     prompt.emplace_back("Select the size of the boat you want to place");
-  } else {
+  }
+  else
+  {
     prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
   }
   prompt.emplace_back(">> BOAT SIZE <<");
@@ -233,13 +259,16 @@ std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) 
   return prompt;
 }
 
-std::vector<string> GameConsole::createSelectNextRotateKey() const {
+std::vector<string> GameConsole::createSelectNextRotateKey() const
+{
   std::vector<string> action_key(_map_key.size() - 8, "");
   action_key.emplace_back(" >> SELECTED BOAT <<");
-  for (auto &ship : _possible_ships->getShip().to_string()) {
+  for (auto &ship : _possible_ships->getShip().to_string())
+  {
     action_key.emplace_back(ship);
   }
-  if (_last_input == ERR) {
+  if (_last_input == ERR)
+  {
     action_key.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
   }
 
@@ -250,13 +279,15 @@ std::vector<string> GameConsole::createSelectNextRotateKey() const {
   return action_key;
 }
 
-std::vector<string> GameConsole::createPlaceShipKey() const {
+std::vector<string> GameConsole::createPlaceShipKey() const
+{
   std::vector<string> action_key;
   action_key.emplace_back("");
   action_key.emplace_back(" >> SELECTED BOAT <<");
   auto ship = _possible_ships->getShip().to_string();
   ship.at(0).at(0) = 'X';
-  for (auto &line : ship) {
+  for (auto &line : ship)
+  {
     action_key.emplace_back(line);
   }
   action_key.emplace_back(">> X is the anchor <<");
@@ -264,15 +295,19 @@ std::vector<string> GameConsole::createPlaceShipKey() const {
 }
 
 std::vector<string>
-GameConsole::createSelectShipPositionPrompt(InputStatus status) const {
+GameConsole::createSelectShipPositionPrompt(InputStatus status) const
+{
   std::vector<string> prompt;
   prompt.emplace_back("");
   prompt.emplace_back(
       "Select the position where you want to place de boat (the position "
       "selected is the top left corner of the boat)");
-  if (status == OK) {
+  if (status == OK)
+  {
     prompt.emplace_back("");
-  } else {
+  }
+  else
+  {
     prompt.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
   }
   prompt.emplace_back(">> PLACE SHIP <<");
@@ -281,7 +316,8 @@ GameConsole::createSelectShipPositionPrompt(InputStatus status) const {
 }
 
 std::vector<string>
-GameConsole::createAvailableBoats() const {
+GameConsole::createAvailableBoats() const
+{
   std::vector<string> boats;
   ShipCommander ship_commander(4);
   ship_commander.next();
@@ -289,7 +325,8 @@ GameConsole::createAvailableBoats() const {
 }
 
 std::vector<string>
-GameConsole::createAvailableAbilities() const {
+GameConsole::createAvailableAbilities() const
+{
   std::vector<string> abilities;
   int width = 25;
   SpecialAbilities special_abilities =
@@ -299,7 +336,8 @@ GameConsole::createAvailableAbilities() const {
   abilities.emplace_back("╠════════════════════╩══════╗");
   int count = 0;
   std::string normal_color = "\x1B[0m";
-  for (auto &ability : special_abilities) {
+  for (auto &ability : special_abilities)
+  {
     std::string color =
         ability.getEnergyCost() > _board->player().getEnergyPoints()
             ? "\x1B[2m"
@@ -325,7 +363,8 @@ GameConsole::createAvailableAbilities() const {
   return abilities;
 }
 
-void GameConsole::updatePlaceShip(InputStatus status) {
+void GameConsole::updatePlaceShip(InputStatus status)
+{
   // methode d'affichage d'ecran temporaire pour le changement de tour
   std::system("clear"); // Do not use std::system in other contexts
   _out << createGameHeader();
@@ -333,50 +372,66 @@ void GameConsole::updatePlaceShip(InputStatus status) {
   _out << '\n';
   printSideBySide(createGrid(true), createGrid(false));
   _out << '\n';
-  if (_ship_size == 0) {
+  if (_ship_size == 0)
+  {
     printSideBySide(createBoatsKey(), createSelectShipSizePrompt(status));
-  } else {
-    if (_ship_selected) {
+  }
+  else
+  {
+    if (_ship_selected)
+    {
       printSideBySide(createPlaceShipKey(),
                       createSelectShipPositionPrompt(status));
-    } else {
+    }
+    else
+    {
       print(createSelectNextRotateKey());
     }
   }
   _out << std::flush;
 }
 
-void GameConsole::print(const std::vector<string> &lines) {
-  for (const string &line : lines) {
+void GameConsole::print(const std::vector<string> &lines)
+{
+  for (const string &line : lines)
+  {
     _out << line << '\n';
   }
 }
 
 void GameConsole::printSideBySide(std::vector<string> left,
-                                  std::vector<string> right) {
+                                  std::vector<string> right)
+{
   size_t left_width = std::max(
-      _grid_width, std::ranges::max(left, {}, [](const string &s) noexcept {
-                     return length(s);
-                   }).size());
+      _grid_width, std::ranges::max(left, {}, [](const string &s) noexcept
+                                    { return length(s); })
+                       .size());
   size_t idx{0};
   size_t last_line = std::max(left.size(), right.size());
   string space(left_width, ' ');
-  for (idx = 0; idx < last_line; ++idx) {
+  for (idx = 0; idx < last_line; ++idx)
+  {
     // Left
-    if (idx < left.size()) {
+    if (idx < left.size())
+    {
       _out << std::left << left.at(idx);
-      if (length(left.at(idx)) < left_width) {
+      if (length(left.at(idx)) < left_width)
+      {
         _out << string(left_width - length(left.at(idx)), ' ');
       }
-    } else {
+    }
+    else
+    {
       _out << space;
     }
     // Right (and gap)
-    if (idx < right.size()) {
+    if (idx < right.size())
+    {
       _out << _gap << right.at(idx);
     }
     // New line
-    if (idx < last_line - 1) {
+    if (idx < last_line - 1)
+    {
       _out << '\n';
     }
   }
@@ -384,47 +439,59 @@ void GameConsole::printSideBySide(std::vector<string> left,
 
 void GameConsole::printThreeElements(std::vector<string> left,
                                      std::vector<string> middle,
-                                     std::vector<string> right) {
+                                     std::vector<string> right)
+{
   size_t left_width = std::max(
-      _grid_width, std::ranges::max(left, {}, [](const string &s) noexcept {
-                     return length(s);
-                   }).size());
+      _grid_width, std::ranges::max(left, {}, [](const string &s) noexcept
+                                    { return length(s); })
+                       .size());
   size_t middle_width = std::max(
-      _grid_width, std::ranges::max(middle, {}, [](const string &s) noexcept {
-                     return length(s);
-                   }).size());
+      _grid_width, std::ranges::max(middle, {}, [](const string &s) noexcept
+                                    { return length(s); })
+                       .size());
   size_t idx{0};
   size_t last_line = std::max(left.size(), right.size());
   string spaceleft(left_width, ' ');
   string spacemiddle(middle_width, ' ');
-  for (idx = 0; idx < last_line; ++idx) {
+  for (idx = 0; idx < last_line; ++idx)
+  {
     // Left
-    if (idx < left.size()) {
+    if (idx < left.size())
+    {
       _out << std::left << left.at(idx);
-      if (length(left.at(idx)) < left_width) {
+      if (length(left.at(idx)) < left_width)
+      {
         _out << string(left_width - length(left.at(idx)), ' ');
       }
-    } else {
+    }
+    else
+    {
       _out << spaceleft;
     }
     // Middle
-    if (idx < middle.size()) {
+    if (idx < middle.size())
+    {
       _out << _gap << middle.at(idx);
-      if (length(middle.at(idx)) < middle_width) {
+      if (length(middle.at(idx)) < middle_width)
+      {
         _out << string(middle_width - length(middle.at(idx)), ' ');
       }
-    } else {
+    }
+    else
+    {
       _out << spacemiddle;
     }
     // Right (and gap)
-    if (idx < right.size()) {
+    if (idx < right.size())
+    {
       _out << _gap << right.at(idx);
     }
     std::cout << std::endl;
   }
 }
 
-void GameConsole::printChangeTurn() {
+void GameConsole::printChangeTurn()
+{
   string your = "Player 1";
   string their = "Player 2";
   string tmp;
@@ -432,14 +499,16 @@ void GameConsole::printChangeTurn() {
   std::system("clear");
 
   string who = _board->myTurn() ? your : their;
-  _out << who << std::endl << "Please press enter to continue..." << std::flush;
+  _out << who << std::endl
+       << "Please press enter to continue..." << std::flush;
   std::clog << "printChangeTurn" << std::endl;
   // std::getline(std::cin, tmp);
   // std::cin >> tmp;
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-ReturnInput GameConsole::handleFire() {
+ReturnInput GameConsole::handleFire()
+{
   std::clog << "GameConsole::handleFire" << std::endl;
 
   _out << "\x1b[32;49;1m";
@@ -449,20 +518,23 @@ ReturnInput GameConsole::handleFire() {
 
   std::clog << "GameConsole::handleFire: input: " << buf << std::endl;
 
-  if (std::cin.eof()) {
+  if (std::cin.eof())
+  {
     std::clog << "GameConsole::handleFire: EOF" << std::endl;
     _out << std::endl;
     _control->quit();
     return {};
   }
 
-  if (buf.size() == 2 || buf.size() == 3) {
+  if (buf.size() == 2 || buf.size() == 3)
+  {
     std::string tmp = "0 " + buf;
     buf = tmp;
   }
 
   // Validate input format
-  if (!isValidInputFormat(buf)) {
+  if (!isValidInputFormat(buf))
+  {
     std::clog << "GameConsole::handleFire: invalid input format" << std::endl;
     _last_input = ERR;
     return {ReturnInput::Screen::GAME, ""};
@@ -470,24 +542,27 @@ ReturnInput GameConsole::handleFire() {
 
   // Parse input
   size_t ability = std::stoi(buf.substr(0, 1));
-  std::optional<size_t> x{BoardCoordinates::parseX(buf.substr(2, 1))}; 
-  std::optional<size_t> y{BoardCoordinates::parseY(buf.substr(3, buf.size()-3))};
+  std::optional<size_t> x{BoardCoordinates::parseX(buf.substr(2, 1))};
+  std::optional<size_t> y{BoardCoordinates::parseY(buf.substr(3, buf.size() - 3))};
 
-  if (!x || !y) {
+  if (!x || !y)
+  {
     std::clog << "GameConsole::handleFire: invalid parsing" << std::endl;
     _last_input = ERR;
     return {ReturnInput::Screen::GAME, ""};
   }
 
   // Validate ability index
-  if (ability >= _board->player().getFaction().getSpecialAbilities().size()) {
+  if (ability >= _board->player().getFaction().getSpecialAbilities().size())
+  {
     std::clog << "GameConsole::handleFire: invalid ability index" << std::endl;
     _last_input = ERR;
     return {ReturnInput::Screen::GAME, ""};
   }
 
   // Validate coordinates
-  if (!isValidCoordinates(x.value(), y.value())) {
+  if (!isValidCoordinates(x.value(), y.value()))
+  {
     std::clog << "GameConsole::handleFire: invalid coordinates" << std::endl;
     _last_input = ERR;
     return {ReturnInput::Screen::GAME, ""};
@@ -506,30 +581,37 @@ ReturnInput GameConsole::handleFire() {
   return {ReturnInput::Screen::GAME, ""};
 }
 
-bool GameConsole::isValidInputFormat(const std::string &input) const {
+bool GameConsole::isValidInputFormat(const std::string &input) const
+{
   // Check if input matches the expected format: [0-9] [A-J][0-9]
   std::clog << "GameConsole::isValidInputFormat: input: " << input << std::endl;
   return (input.size() <= 5 && isdigit(input[0]) && input[1] == ' ' &&
           ((input[2] >= 'A' && input[2] <= 'J') || (input[2] >= 'a' && input[2] <= 'j')) && isdigit(input[3]));
 }
 
-bool GameConsole::isValidCoordinates(size_t col, size_t row) const {
+bool GameConsole::isValidCoordinates(size_t col, size_t row) const
+{
   // Check if coordinates are within the board bounds
   std::clog << "GameConsole::isValidCoordinates: col: " << std::to_string(col) << ", row: " << std::to_string(row) << std::endl;
-  return (col >= 0 && col <= 10 && row >= 0 && row <= 10);
+  return (col <= _board->width() && row <= _board->height());
 }
 
-void GameConsole::handleShipSize() {
+void GameConsole::handleShipSize()
+{
   std::string sizebuf;
   _out << "\x1b[32;49;1m";
   _in >> sizebuf;
   _out << "\x1b[0m";
-  if (sizebuf.at(0) < '1' || sizebuf.at(0) > '5') {
+  if (sizebuf.at(0) < '1' || sizebuf.at(0) > '5')
+  {
     _last_input = ERR;
-  } else {
+  }
+  else
+  {
     int size = sizebuf.at(0) - '0';
     _ship_size = size;
-    if (!_board->isShipAvailable(size)) {
+    if (!_board->isShipAvailable(size))
+    {
       _last_input = ERR;
       _ship_size = 0;
       return;
@@ -540,31 +622,42 @@ void GameConsole::handleShipSize() {
   std::cin.clear();
 }
 
-void GameConsole::handleShipSelection() {
+void GameConsole::handleShipSelection()
+{
   std::string shipbuf;
   _out << "\x1b[32;49;1m";
   _in >> shipbuf;
   _out << "\x1b[0m";
-  if (shipbuf == "P" || shipbuf == "p") {
+  if (shipbuf == "P" || shipbuf == "p")
+  {
     _ship_selected = true;
     _last_input = OK;
-  } else if (shipbuf == "Q" || shipbuf == "q") {
+  }
+  else if (shipbuf == "Q" || shipbuf == "q")
+  {
     _ship_size = 0;
     _possible_ships = nullptr;
     _last_input = OK;
-  } else if (shipbuf == "N" || shipbuf == "n") {
+  }
+  else if (shipbuf == "N" || shipbuf == "n")
+  {
     _possible_ships->next();
     _last_input = OK;
-  } else if (shipbuf == "R" || shipbuf == "r") {
+  }
+  else if (shipbuf == "R" || shipbuf == "r")
+  {
     _possible_ships->rotate();
     _last_input = OK;
-  } else {
+  }
+  else
+  {
     _last_input = ERR;
   }
   std::cin.clear();
 }
 
-void GameConsole::handleShipPlacement() {
+void GameConsole::handleShipPlacement()
+{
   _in.ignore();
   BoardCoordinates coordinates{};
   _out << "\x1b[32;49;1m";
@@ -572,50 +665,67 @@ void GameConsole::handleShipPlacement() {
   _out << "\x1b[0m";
 
   if (_in && coordinates.x() < _board->width() &&
-      coordinates.y() < _board->height()) {
+      coordinates.y() < _board->height())
+  {
     Ship ship = _possible_ships->getShip();
     ship.setTopLeft(coordinates);
-    if (_control->placeShip(ship)) {
+    if (_control->placeShip(ship))
+    {
       _ship_size = 0;
       _ship_selected = false;
       _possible_ships = nullptr;
       _last_input = OK;
       // _control->sendShips(_board->getPlacedShips());
-      if (_board->allShipsPlaced()) {
+      if (_board->allShipsPlaced())
+      {
         _phase = WAIT_GAME;
       }
-    } else {
+    }
+    else
+    {
       _last_input = ERR;
     }
-  } else {
+  }
+  else
+  {
     _last_input = ERR;
   }
   std::cin.clear();
 }
 
-ReturnInput GameConsole::handlePlaceShip() {
-  if (_ship_size == 0) {
+ReturnInput GameConsole::handlePlaceShip()
+{
+  if (_ship_size == 0)
+  {
     handleShipSize();
-  } else {
-    if (_ship_selected) {
+  }
+  else
+  {
+    if (_ship_selected)
+    {
       handleShipPlacement();
-    } else {
+    }
+    else
+    {
       handleShipSelection();
     }
   }
-  if (std::cin.eof()) {
+  if (std::cin.eof())
+  {
     _out << std::endl;
     _control->quit();
     return {};
   }
-  if (_board->allShipsPlaced()) {
+  if (_board->allShipsPlaced())
+  {
     _phase = WAIT_GAME;
   }
   std::cin.clear();
   return {ReturnInput::Screen::GAME, ""};
 }
 
-void GameConsole::updateGame(InputStatus status) {
+void GameConsole::updateGame(InputStatus status)
+{
   // methode d'affichage d'ecran temporaire pour le changement de tour
   std::system("clear"); // Do not use std::system in other contexts
   _out << createGameHeader();
@@ -628,7 +738,8 @@ void GameConsole::updateGame(InputStatus status) {
   _out << std::flush;
 }
 
-void GameConsole::displayWaitGame() {
+void GameConsole::displayWaitGame()
+{
   std::system("clear");
   _out << createGameHeader();
   printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
@@ -640,7 +751,8 @@ void GameConsole::displayWaitGame() {
   _out << std::flush;
 }
 
-void GameConsole::displayWaitTurn() {
+void GameConsole::displayWaitTurn()
+{
   std::system("clear");
   _out << createGameHeader();
   printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
@@ -651,18 +763,26 @@ void GameConsole::displayWaitTurn() {
   _out << std::flush;
 }
 
-void GameConsole::display() {
+void GameConsole::display()
+{
   std::clog << "GameConsole::display" << std::endl;
-  if (_phase == PLACE_SHIP) {
+  if (_phase == PLACE_SHIP)
+  {
     std::clog << "GameConsole::display: PLACE_SHIP" << std::endl;
     updatePlaceShip(_last_input);
-  } else if (_phase == GAME) {
+  }
+  else if (_phase == GAME)
+  {
     std::clog << "GameConsole::display: GAME" << std::endl;
     updateGame(_last_input);
-  } else if (_phase == WAIT_GAME) {
+  }
+  else if (_phase == WAIT_GAME)
+  {
     std::clog << "GameConsole::display: WAIT_GAME" << std::endl;
     displayWaitGame();
-  } else if (_phase == WAIT_TURN) {
+  }
+  else if (_phase == WAIT_TURN)
+  {
     std::clog << "GameConsole::display: WAIT_TURN" << std::endl;
     displayWaitTurn();
   }
@@ -674,18 +794,26 @@ void GameConsole::display() {
 void GameConsole::displayError() {}
 void GameConsole::update() {}
 
-ReturnInput GameConsole::handleInput() {
-  if (_phase == PLACE_SHIP) {
+ReturnInput GameConsole::handleInput()
+{
+  if (_phase == PLACE_SHIP)
+  {
     std::clog << "GameConsole::handleInput: PLACE_SHIP" << std::endl;
     handlePlaceShip();
-  } else if (_phase == GAME) {
+  }
+  else if (_phase == GAME)
+  {
     std::clog << "GameConsole::handleInput: GAME" << std::endl;
     handleFire();
     _phase = WAIT_TURN;
-  } else if (_phase == WAIT_GAME) {
+  }
+  else if (_phase == WAIT_GAME)
+  {
     std::clog << "GameConsole::handleInput: WAIT_GAME" << std::endl;
     _phase = _board->waitGame() ? GAME : WAIT_TURN;
-  } else if (_phase == WAIT_TURN) {
+  }
+  else if (_phase == WAIT_TURN)
+  {
     std::clog << "GameConsole::handleInput: WAIT_TURN" << std::endl;
     _board->waitTurn();
     _phase = GAME;
@@ -693,9 +821,11 @@ ReturnInput GameConsole::handleInput() {
   return {ReturnInput::Screen::GAME, ""};
 }
 
-constexpr size_t GameConsole::length(const string &s) {
+constexpr size_t GameConsole::length(const string &s)
+{
   // In UTF-8, continuation bytes begin with 0b10, so, does not count these
   // bytes.
   return static_cast<size_t>(std::ranges::count_if(
-      s, [](char c) noexcept { return (c & '\xC0') != '\x80'; }));
+      s, [](char c) noexcept
+      { return (c & '\xC0') != '\x80'; }));
 }

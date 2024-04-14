@@ -9,11 +9,7 @@ class GameState {
   private:
 
     std::shared_ptr<Game> _game;
-    /*// Game details and rules
-    nlohmann::json gameDetails;
 
-    // Current state of the game
-    nlohmann::json currentState;*/
     enum Phase {
         NOT_STARTED=0,
         PLACING_SHIPS=1,

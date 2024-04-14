@@ -73,6 +73,7 @@ class Board: public virtual GameView {
 
     size_t width() const override;
     size_t height() const  override;
+    bool myTurn() const override;
 
     Player& getPlayer1();
     Player& getPlayer2();
@@ -90,7 +91,7 @@ class Board: public virtual GameView {
     Turn whoseTurn() const;
 
     // adds a ship to the board
-    void placeShip(Ship ship, bool side);
+    void placeShip(Ship &ship, bool side);
 
     // notifies the opponent's board that the cell in coord has been hit
     void notify(const BoardCoordinates &coords);

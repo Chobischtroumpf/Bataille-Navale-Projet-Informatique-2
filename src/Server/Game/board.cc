@@ -1,4 +1,5 @@
 #include "board.hh"
+#include <iostream>
 
 void Board::setHit(BoardCoordinates coords) {
   Cell &cell = _my_turn ? _player2_side[coords.y()][coords.x()]
@@ -83,7 +84,7 @@ void Board::fireProbe(BoardCoordinates coords) {
 
 void Board::setMine(BoardCoordinates coords) {
   Player& current_player = _my_turn ? _player1 : _player2;
-  current_player.addShip(Ship(coords, {{0,0}}, this));
+  current_player.addShip(Ship(coords, {{0,0}}, this, _my_turn));
 }
 
 void Board::dispatchSonar(SpecialAbilityType ability_type, BoardCoordinates coords) {
@@ -108,6 +109,10 @@ size_t Board::width() const {
 
 size_t Board::height() const {
   return _player1_side.size();
+}
+
+bool Board::myTurn() const {
+  return _my_turn;
 }
 
 Player& Board::getPlayer1() {
@@ -140,7 +145,7 @@ Turn Board::whoseTurn() const {
   }
 }
 
-void Board::placeShip(Ship ship, bool side) {
+void Board::placeShip(Ship &ship, bool side) {
   std::vector<std::vector<Cell>> &board = side ? _player1_side : _player2_side;
   Player &player = side ? _player1 : _player2;
   for (auto& board_coordinates : ship.getCoordinates()){
@@ -154,8 +159,18 @@ void Board::notify(const BoardCoordinates &coords) {
   Player& current_player = _my_turn ? _player2 : _player1;
 
   for (Ship &ship : current_player.getFleet()) {
+    std::clog << "isPartOfShip: " << ship.isPartOfShip(coords) << std::endl;
+    std::clog << "isSunk: " << ship.isSunk() << std::endl;
     if (ship.isPartOfShip(coords) && !ship.isSunk()) {
       ship.notify();
+      std::clog << "Ship is sunk: " << ship.isSunk() << std::endl;
+      if (ship.isSunk() && !(ship.getType() & IS_MINE)) {
+        std::vector<BoardCoordinates> ship_coords = ship.getCoordinates();
+        BoardCoordinates top_left = ship.getTopLeft();
+        for (auto &coord : ship_coords) {
+          _player1_side[top_left.y() + coord.y()][top_left.x() + coord.x()].setType(SUNK_SHIP);
+        }
+      }
     }
     if (!(ship.getType() & IS_MINE) && !ship.isSunk()) {
       return;
