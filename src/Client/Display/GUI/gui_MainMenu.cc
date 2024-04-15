@@ -17,11 +17,19 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     timerFriends->setInterval(10000); // 10 secondes
     timerFriends->start();
 
+    frameCounter = 0;
+
     // Initialisation du refresh timer pour update les notifications
     timerNotifications = new QTimer(this);
     connect(timerNotifications, &QTimer::timeout, this, &MainMenu::updateNotifications);
-    timerNotifications->setInterval(10000); // 10 secondes
+    timerNotifications->setInterval(1000); // 1 secondes
     timerNotifications->start();
+
+    // Initialisation du refresh timer pour update le background
+    timerBackground = new QTimer(this);
+    connect(timerBackground, &QTimer::timeout, this, &MainMenu::updateBackground);
+    timerBackground->setInterval(1000/60); // 60 fois par seconde
+    timerBackground->start();
 
     // Gui components initialization
 	setWindowTitle("Main Menu");
@@ -147,7 +155,7 @@ void MainMenu::onFriendLineEditReturnPressed() {
     updateFriends();
 }
 
-MainMenu::~MainMenu() {delete timerFriends;}
+MainMenu::~MainMenu() {delete timerFriends; delete timerNotifications; delete timerBackground;}
 
 void MainMenu::onChatWithAFriendButtonClicked() {
     emit startChat();
@@ -179,9 +187,6 @@ void MainMenu::updateFriends() {
         scrollLayoutFriends->addSpacing(20);
         connect(friendButton, &QPushButton::clicked, this, &MainMenu::onChatWithAFriendButtonClicked);
     }
-
-    qDebug() << "Largeur du bouton creatGame :" << creatGame->width();
-    qDebug() << "Hauteur du bouton creatGame :" << creatGame->height();
 }
 
 void MainMenu::updateNotifications() {
@@ -258,10 +263,30 @@ void HighlightButton::leaveEvent(QEvent *event) {
     emit mouseLeft();
 }
 
-void MainMenu::paintEvent(QPaintEvent *event) {
-    QWidget::paintEvent(event);
-    QPainter painter(this);
-    QPixmap backgroundImage("src/Common/Images/main_menu_background.png");
-    painter.drawPixmap(rect(), backgroundImage);
+void MainMenu::updateBackground() {
+    update();
 }
 
+
+void MainMenu::paintEvent(QPaintEvent *event) {
+    frameCounter = (frameCounter + 1) % 60; // Reset frameCounter after reaching 60
+
+    QWidget::paintEvent(event);
+    QPainter painter(this);
+    QPixmap backgroundImage;
+
+    if (frameCounter < 15) {
+        backgroundImage = QPixmap("src/Common/Images/main_menu_background_1.png");
+    }
+    else if (frameCounter < 30) {
+        backgroundImage = QPixmap("src/Common/Images/main_menu_background_2.png");
+    }
+    else if (frameCounter < 45) {
+        backgroundImage = QPixmap("src/Common/Images/main_menu_background_1.png");
+    }
+    else {
+        backgroundImage = QPixmap("src/Common/Images/main_menu_background_3.png");
+    }
+
+    painter.drawPixmap(rect(), backgroundImage);
+}

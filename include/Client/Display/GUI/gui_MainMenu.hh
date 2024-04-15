@@ -21,6 +21,7 @@
 #include <QEnterEvent> // for QEnterEvent
 #include <QFocusEvent> // for QFocusEvent
 #include <QPainter>
+#include <QMovie>
 
 #include "main_menu_controller.hh"
 #include "main_menu_view.hh"
@@ -65,6 +66,7 @@ private slots: // en ref à Qt6
     void clearFriendsLayout();
     void updateNotifications();
     void clearNotificationsLayout();
+    void updateBackground();
 
     void mouseOnButton();
     void mouseLeftButton();
@@ -74,6 +76,7 @@ private:
     std::shared_ptr<MainMenuView> _view;
     QTimer *timerFriends;
     QTimer *timerNotifications;
+    QTimer *timerBackground;
     QPushButton *creatGame;
     QPushButton *addFriend;
 	QPushButton *chatWithAFriend;
@@ -83,6 +86,8 @@ private:
     QVBoxLayout *scrollLayoutFriends; // Layout pour contenir les amis
     QLineEdit *friendNameLineEdit;
     QVBoxLayout *scrollLayoutNotifications;
+
+    int frameCounter;
 
     // Pour dessiner le background car on hérite pas de QMainWindow
     void paintEvent(QPaintEvent *event) override;
