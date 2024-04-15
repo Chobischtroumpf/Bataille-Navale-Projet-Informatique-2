@@ -20,6 +20,7 @@
 #include <QMouseEvent> // for QMouseEvent
 #include <QEnterEvent> // for QEnterEvent
 #include <QFocusEvent> // for QFocusEvent
+#include <QPainter>
 
 #include "main_menu_controller.hh"
 #include "main_menu_view.hh"
@@ -30,8 +31,8 @@ class HighlightButton : public QPushButton {
 public:
     HighlightButton(QString name, QWidget *parent = nullptr);
 
-    signals:
-            void mouseEntered();
+signals:
+    void mouseEntered();
     void mouseLeft();
 
 protected:
@@ -45,6 +46,7 @@ class MainMenu : public QWidget {
 
 public:
     MainMenu(std::shared_ptr<GameClient> gameClient);
+    ~MainMenu();
 
 signals:
     void userDisconnection();
@@ -61,6 +63,8 @@ private slots: // en ref à Qt6
 
     void updateFriends();
     void clearFriendsLayout();
+    void updateNotifications();
+    void clearNotificationsLayout();
 
     void mouseOnButton();
     void mouseLeftButton();
@@ -69,6 +73,7 @@ private:
     std::shared_ptr<MainMenuController> _controller;
     std::shared_ptr<MainMenuView> _view;
     QTimer *timerFriends;
+    QTimer *timerNotifications;
     QPushButton *creatGame;
     QPushButton *addFriend;
 	QPushButton *chatWithAFriend;
@@ -77,4 +82,8 @@ private:
 
     QVBoxLayout *scrollLayoutFriends; // Layout pour contenir les amis
     QLineEdit *friendNameLineEdit;
+    QVBoxLayout *scrollLayoutNotifications;
+
+    // Pour dessiner le background car on hérite pas de QMainWindow
+    void paintEvent(QPaintEvent *event) override;
 };
