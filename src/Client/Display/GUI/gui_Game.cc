@@ -9,18 +9,28 @@ BoardFrame::BoardFrame(QWidget *parent, LocalBoardCommander& board, bool my_side
   setGeometry(0, 0, 500, 500);
 }
 
+QBrush BoardFrame::getTileColor(CellType cell) {
+  QBrush brush;
+  switch (cell) {
+  case CellType::WATER:
+    brush = Qt::blue;
+    break;
+  case CellType::UNDAMAGED_SHIP:
+    brush = Qt::gray;
+    break;
+  case CellType::HIT_SHIP:
+    brush = Qt::red;
+    break;
+  }
+  return brush;
+}
+
 void BoardFrame::paintEvent(QPaintEvent *event) {
   Q_UNUSED(event); // To avoid unused parameter warning
   QPainter painter(this);
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
-      QBrush brush;
-      CellType cell = _board.cellType(_my_side, BoardCoordinates(i, j));
-      switch (cell) {
-      case CellType::WATER:
-        brush = Qt::blue;
-        break;
-      }
+      QBrush brush = getTileColor(_board.cellType(_my_side, BoardCoordinates(i, j)));
       painter.fillRect(i * 50, j * 50, 50, 50, brush);
       painter.setPen(Qt::white);
       painter.drawRect(i * 50, j * 50, 50, 50);

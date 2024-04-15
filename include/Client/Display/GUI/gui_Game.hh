@@ -19,6 +19,7 @@ class BoardFrame : public QFrame {
 
 public:
   BoardFrame(QWidget *parent, LocalBoardCommander& board, bool my_side = true);
+  QBrush getTileColor(CellType cell);
 
 protected:
   void paintEvent(QPaintEvent *event) override;
