@@ -33,6 +33,7 @@ protected:
   void paintEvent(QPaintEvent *event) override;
   void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
+  void keyPressEvent(QKeyEvent *event) override;
 
 private:
   std::shared_ptr<LocalBoardCommander> _board;
@@ -58,6 +59,9 @@ public:
   Phase getPhase() const;
   void placeShip(Ship& ship);
   void refreshButtons();
+  void rotateShip();
+  void previousShip();
+  void nextShip();
   
 
 protected:
@@ -72,6 +76,8 @@ private:
 
   BoardFrame *_my_frame;
   BoardFrame *_their_frame;
+  QHBoxLayout *_boards_layout;
+  QHBoxLayout *_ships_placement_layout;
   std::vector<QPushButton *> _ShipsButtons;
   std::optional<Ship> _selected_ship = std::nullopt;
   std::shared_ptr<ShipCommander> _possible_ships = nullptr;                 //< The ships that can be placed

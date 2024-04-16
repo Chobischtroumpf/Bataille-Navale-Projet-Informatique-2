@@ -67,23 +67,51 @@ void BoardFrame::paintEvent(QPaintEvent *event) {
 }
 
 void BoardFrame::mousePressEvent(QMouseEvent *event) {
-  if (_parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected()) {
+  if (_parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected() && event->button() == Qt::LeftButton) {
     Ship ship = _parent->getSelectedShip().value();
     ship.setTopLeft(_last_hovered);
     _parent->placeShip(ship);
+  } else if (event->button() == Qt::RightButton) {
+    _parent->rotateShip();
   }
+
   _parent->refreshButtons();
   update();
 }
 
+void BoardFrame::keyPressEvent(QKeyEvent *event) {
+  if (event->key() == Qt::Key_Space) {
+    _parent->rotateShip();
+    update();
+  }
+  else if (event->key() == Qt::Key_Return) {
+    if (_parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected()) {
+      Ship ship = _parent->getSelectedShip().value();
+      ship.setTopLeft(_last_hovered);
+      _parent->placeShip(ship);
+    }
+    _parent->refreshButtons();
+    update();
+  }
+  else if (event->key() == 'Z') {
+    _parent->previousShip();
+    update();
+  }
+  else if (event->key() == 'X') {
+    _parent->nextShip();
+    update();
+  }
+}
+
 void BoardFrame::mouseMoveEvent(QMouseEvent *event) {
   _last_hovered = BoardCoordinates(event->position().x() / 50, event->position().y() / 50);
+  setFocus();
   update();
 }
 
 void Game::setupShipPlacement() {
   _phase = PLACING_SHIPS;
-  QHBoxLayout *params = new QHBoxLayout();
+  _ships_placement_layout = new QHBoxLayout();
   QVBoxLayout *sizes = new QVBoxLayout();
   for (auto &ship : _board->shipsToPlace()) {
     std::string ship_name;
@@ -110,30 +138,27 @@ void Game::setupShipPlacement() {
     sizes->addWidget(button);
   }
   QHBoxLayout *change_ships = new QHBoxLayout();
-  QPushButton *change_ship = new QPushButton("Next >>");
-  QPushButton *change_ship_back = new QPushButton("<< Previous");
-  connect(change_ship, &QPushButton::clicked, [this] {
-    if (_possible_ships)
-      _possible_ships->next();
-      _selected_ship = _possible_ships->getShip();
-  });
-  connect(change_ship_back, &QPushButton::clicked, [this] {
-    if (_possible_ships)
-      _possible_ships->previous();
-      _selected_ship = _possible_ships->getShip();
-  });
+  QPushButton *change_ship = new QPushButton("Next >> (X)");
+  QPushButton *change_ship_back = new QPushButton("(Z) << Previous");
+  connect(change_ship, &QPushButton::clicked, this, &Game::nextShip);
+  connect(change_ship_back, &QPushButton::clicked, this, &Game::previousShip);
   change_ships->addWidget(change_ship_back);
   change_ships->addWidget(change_ship);
-  params->addLayout(sizes);
-  params->addLayout(change_ships);
+  _ships_placement_layout->addLayout(sizes);
+  _ships_placement_layout->addLayout(change_ships);
 
-  QHBoxLayout *layout = new QHBoxLayout();
-  layout->addWidget(_my_frame);
-  layout->addWidget(_their_frame);
+  _boards_layout = new QHBoxLayout();
+  _boards_layout->addWidget(_my_frame);
+  _boards_layout->addWidget(_their_frame);
   QVBoxLayout *main_layout = new QVBoxLayout();
   setLayout(main_layout);
-  main_layout->addLayout(layout);
-  main_layout->addLayout(params);
+  main_layout->addLayout(_boards_layout);
+  main_layout->addLayout(_ships_placement_layout);
+}
+
+void Game::setupWaitingGame() {
+  _phase = WAITING_GAME;
+  // TODO: Implement
 }
 
 Game::Game(std::shared_ptr<GameClient> gameClient) : _game_client(gameClient) {
@@ -215,6 +240,21 @@ void Game::placeShip(Ship& ship) {
   _game_controller->placeShip(ship);
   _selected_ship = std::nullopt;
   _possible_ships = nullptr;
+  if (_board->allShipsPlaced()) {
+    setupWaitingGame();
+  }
+}
+
+void Game::nextShip() {
+  if (_possible_ships)
+    _possible_ships->next();
+    _selected_ship = _possible_ships->getShip();
+}
+
+void Game::previousShip() {
+  if (_possible_ships)
+    _possible_ships->previous();
+    _selected_ship = _possible_ships->getShip();
 }
 
 bool Game::isShipSelected() const {
@@ -223,6 +263,12 @@ bool Game::isShipSelected() const {
 
 std::optional<Ship> Game::getSelectedShip() const {
   return _selected_ship;
+}
+
+void Game::rotateShip() {
+  if (_selected_ship.has_value()) {
+    _selected_ship->rotate();
+  }
 }
 
 std::shared_ptr<ShipClassic> Game::getPossibleShips() const {
