@@ -30,10 +30,10 @@ void Game::changeTurn(){
 
 Game::Game(const nlohmann::json &game_details)
     : _board{std::make_shared<Board>()}, _game_started{false},
-    _mode_commandant{false}, _update_player1{true}, _update_player2{true} {
+    _mode_commandant{false} {
   setGame(game_details);
 }
-
+ 
 bool Game::isFinished() const {
   return _board->isFinished() || _game_timer.isFinished();
 }
@@ -55,10 +55,8 @@ bool Game::handlePlaceShip(Turn turn, Ship &ship) {
     ship.setBoard(_board.get());
     if (turn == PLAYERONE) {
       _board->placeShip(ship, true);
-      _update_player1 = true;
     } else {
       _board->placeShip(ship, false);
-      _update_player2 = true;
     }
     // if the ship placements finished then start the timer
     if (shipPlacementsFinished()){
@@ -98,19 +96,8 @@ bool Game::setPlayerFaction(PlayerRole player, Faction faction) {
 
 nlohmann::json Game::getState(PlayerRole player) {
   nlohmann::json game_json;
-  if (player == PlayerRole::Leader && _update_player1) {
-    game_json = _board->to_json(player);
-    _update_player1 = false;
-  } else if(player == PlayerRole::Opponent && _update_player2) {
-    game_json = _board->to_json(player);
-    _update_player2 = false;
-    
-  } else if(player == PlayerRole::Spectator) {
-    game_json = _board->to_json(player);
-  } else {
-    game_json["fleetA"] = "None";
-    game_json["fleetB"] = "None";
-  }
+  
+  game_json = _board->to_json(player);
 
   if (isFinished()) {
       game_json["Finished"] = "true";

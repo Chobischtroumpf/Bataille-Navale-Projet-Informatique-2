@@ -13,8 +13,6 @@ class Game {
     bool _game_started;
     bool _mode_commandant;
     GameTimer _game_timer;
-    bool _update_player1;
-    bool _update_player2;
 
     void startTimer();
     
