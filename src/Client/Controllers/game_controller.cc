@@ -52,6 +52,7 @@ bool GameController::placeShip(Ship ship) const {
     _board->placeShip(ship);
     return true;
   } else {
+    std::cout << "Cannot place ship here" << std::endl;
     return false;
   }
 }

@@ -1,4 +1,5 @@
 #include "ship_classic.hh"
+
 ShipClassic::ShipClassic(int number_of_case) {
     switch (number_of_case) {
     case 2:
@@ -21,6 +22,13 @@ ShipClassic::ShipClassic(int number_of_case) {
 void ShipClassic::next() {
     _pos ++;
     _pos %= _ships.size();
+}
+
+void ShipClassic::previous() {
+    _pos --;
+    if (_pos < 0) {
+        _pos = _ships.size() - 1;
+    }
 }
 
 Ship ShipClassic::getShip() {

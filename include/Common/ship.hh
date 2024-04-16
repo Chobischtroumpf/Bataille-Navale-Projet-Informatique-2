@@ -39,6 +39,7 @@ class Ship {
 
     // Getters
     std::vector<BoardCoordinates> getCoordinates() const;
+    bool isAt(const BoardCoordinates &coords) const;
     BoardCoordinates getTopLeft() const;
     // const std::vector<std::vector<Cell>> getShipCells() const;
     CellType getType() const;

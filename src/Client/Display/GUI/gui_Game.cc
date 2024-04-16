@@ -1,28 +1,49 @@
+/**
+ * @file gui_Game.cc
+ * @brief Implementation of the GUI Game class
+ 
+ * TODO: Implementation for the normal mode and the commander mode
+         Playing the game
+         Waiting for the game
+         Waiting for the turn
+*/
+
+
 #include "gui_Game.hh"
 #include <QHBoxLayout>
 #include <QString>
 #include <QLabel>
+#include <QVBoxLayout>
+#include <string>
 
-BoardFrame::BoardFrame(QWidget *parent, LocalBoardCommander& board, bool my_side) : QFrame(parent), _board(board), _my_side(my_side) {
-  setFrameStyle(QFrame::Panel | QFrame::Sunken);
-  setFocusPolicy(Qt::StrongFocus);
-  setGeometry(0, 0, 500, 500);
+BoardFrame::BoardFrame(Game *parent, std::shared_ptr<LocalBoardCommander> board, bool my_side) : _parent{parent}, _board(board), _my_side(my_side) {
+  setMouseTracking(true);
 }
 
 QBrush BoardFrame::getTileColor(CellType cell) {
   QBrush brush;
   switch (cell) {
-  case CellType::WATER:
-    brush = Qt::blue;
-    break;
   case CellType::UNDAMAGED_SHIP:
     brush = Qt::gray;
     break;
   case CellType::HIT_SHIP:
     brush = Qt::red;
     break;
+  case CellType::WATER:
+    brush = Qt::blue;
+    break;
+  default:
+    brush = Qt::white;
+    break;
   }
   return brush;
+}
+
+void BoardFrame::drawCell(QPainter &painter, int x, int y, CellType cell) {
+  QBrush brush = getTileColor(cell);
+  painter.fillRect(x * 50, y * 50, 50, 50, brush);
+  painter.setPen(Qt::white);
+  painter.drawRect(x * 50, y * 50, 50, 50);
 }
 
 void BoardFrame::paintEvent(QPaintEvent *event) {
@@ -30,16 +51,89 @@ void BoardFrame::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
-      QBrush brush = getTileColor(_board.cellType(_my_side, BoardCoordinates(i, j)));
-      painter.fillRect(i * 50, j * 50, 50, 50, brush);
-      painter.setPen(Qt::white);
-      painter.drawRect(i * 50, j * 50, 50, 50);
+      if (_my_side && _parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected()){
+        Ship ship = _parent->getSelectedShip().value();
+        ship.setTopLeft(_last_hovered);
+        if (ship.isAt(BoardCoordinates(i, j))) {
+          drawCell(painter, i, j, CellType::UNDAMAGED_SHIP);
+        } else {
+          drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
+        }
+      } else {
+        drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
+      }
     }
   }
 }
 
 void BoardFrame::mousePressEvent(QMouseEvent *event) {
+  if (_parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected()) {
+    Ship ship = _parent->getSelectedShip().value();
+    ship.setTopLeft(_last_hovered);
+    _parent->placeShip(ship);
+  }
+  _parent->refreshButtons();
   update();
+}
+
+void BoardFrame::mouseMoveEvent(QMouseEvent *event) {
+  _last_hovered = BoardCoordinates(event->position().x() / 50, event->position().y() / 50);
+  update();
+}
+
+void Game::setupShipPlacement() {
+  _phase = PLACING_SHIPS;
+  QHBoxLayout *params = new QHBoxLayout();
+  QVBoxLayout *sizes = new QVBoxLayout();
+  for (auto &ship : _board->shipsToPlace()) {
+    std::string ship_name;
+    switch (ship.first) {
+      case 2:
+        ship_name = "2. Destroyer (x" + std::to_string(ship.second) + ")";
+        break;
+      case 3:
+        ship_name = "3. Cruiser (x" + std::to_string(ship.second) + ")";
+        break;
+      case 4:
+        ship_name = "4. Battleship (x" + std::to_string(ship.second) + ")";
+        break;
+      case 5:
+        ship_name = "5. Carrier (x" + std::to_string(ship.second) + ")";
+        break;
+    }
+    QPushButton *button = new QPushButton(QString::fromStdString(ship_name));
+    connect(button, &QPushButton::clicked, [this, ship] {
+      _possible_ships = std::make_shared<ShipCommander>(ship.first);
+      _selected_ship = _possible_ships->getShip();
+    });
+    _ships_buttons.push_back(button);
+    sizes->addWidget(button);
+  }
+  QHBoxLayout *change_ships = new QHBoxLayout();
+  QPushButton *change_ship = new QPushButton("Next >>");
+  QPushButton *change_ship_back = new QPushButton("<< Previous");
+  connect(change_ship, &QPushButton::clicked, [this] {
+    if (_possible_ships)
+      _possible_ships->next();
+      _selected_ship = _possible_ships->getShip();
+  });
+  connect(change_ship_back, &QPushButton::clicked, [this] {
+    if (_possible_ships)
+      _possible_ships->previous();
+      _selected_ship = _possible_ships->getShip();
+  });
+  change_ships->addWidget(change_ship_back);
+  change_ships->addWidget(change_ship);
+  params->addLayout(sizes);
+  params->addLayout(change_ships);
+
+  QHBoxLayout *layout = new QHBoxLayout();
+  layout->addWidget(_my_frame);
+  layout->addWidget(_their_frame);
+  QVBoxLayout *main_layout = new QVBoxLayout();
+  setLayout(main_layout);
+  main_layout->addLayout(layout);
+  main_layout->addLayout(params);
 }
 
 Game::Game(std::shared_ptr<GameClient> gameClient) : _game_client(gameClient) {
@@ -64,6 +158,12 @@ Game::Game(std::shared_ptr<GameClient> gameClient) : _game_client(gameClient) {
   sleep(1);
 
   second_client.JoinGame(session_id_str);
+
+  nlohmann::json req;
+  req["moveType"] = "StartGame";
+  _game_client->MakeMove(session_id_str, req);
+
+  sleep(1);
   
   _board= std::make_shared<LocalBoardCommander>(
       _game_client, Player(), GameMode::COMMANDER, session_id_str);
@@ -74,12 +174,61 @@ Game::Game(std::shared_ptr<GameClient> gameClient) : _game_client(gameClient) {
   resize(1200, 800);
 
 
-  _my_frame = new BoardFrame(this, *_board, true);
+  _my_frame = new BoardFrame(this, _board, true);
 
-  _their_frame = new BoardFrame(this, *_board, false);
-  QHBoxLayout *layout = new QHBoxLayout(this);
-  layout->addWidget(_my_frame);
-  layout->addWidget(_their_frame);
+  _their_frame = new BoardFrame(this, _board, false);
 
-  setLayout(layout);
+  _my_frame->setFixedSize(500, 500);
+  _their_frame->setFixedSize(500, 500);
+
+  setupShipPlacement();
+}
+
+void Game::refreshButtons() {
+  for (auto &button : _ships_buttons) {
+    int size = std::stoi(button->text().toStdString().substr(0, 1));
+    int count = _board->shipsToPlace().at(size);
+    if (count == 0) {
+      button->setEnabled(false);
+    } else {
+      std::string new_label;
+      switch (size) {
+        case 2:
+          new_label = "2. Destroyer (x" + std::to_string(count) + ")";
+          break;
+        case 3:
+          new_label = "3. Cruiser (x" + std::to_string(count) + ")";
+          break;
+        case 4:
+          new_label = "4. Battleship (x" + std::to_string(count) + ")";
+          break;
+        case 5:
+          new_label = "5. Carrier (x" + std::to_string(count) + ")";
+          break;
+      }
+      button->setText(QString::fromStdString(new_label));
+    }
+  }
+}
+
+void Game::placeShip(Ship& ship) {
+  _game_controller->placeShip(ship);
+  _selected_ship = std::nullopt;
+  _possible_ships = nullptr;
+}
+
+bool Game::isShipSelected() const {
+  return _selected_ship.has_value();
+}
+
+std::optional<Ship> Game::getSelectedShip() const {
+  return _selected_ship;
+}
+
+std::shared_ptr<ShipClassic> Game::getPossibleShips() const {
+  return _possible_ships;
+}
+
+Phase Game::getPhase() const {
+  return _phase;
 }
