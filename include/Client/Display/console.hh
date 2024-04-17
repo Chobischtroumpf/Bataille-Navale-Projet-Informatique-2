@@ -1,6 +1,6 @@
 #pragma once
 
-#include "display.hh"
+#include "../display.hh"
 
 /*
  * Interface pour l'affichage dans la console

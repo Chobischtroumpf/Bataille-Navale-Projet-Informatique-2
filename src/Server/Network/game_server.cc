@@ -98,32 +98,32 @@ void GameServer::handleGet(http_request request) {
         }
 
         // Handle the case for "/api/games/query" - Query game state by session ID ( and user ID ) -- Protected
-        else if (path.find(U("/api/games/query")) != wstring::npos ) {
+        else if (path.find(U("/api/games/query")) != std::wstring::npos ) {
             handleQueryGame(path, request, response, sessionManager);
         }
 
         // Handle the case for "/api/games/join" - Join game by session ID ( and user ID ) -- Protected
-        else if (path.find(U("/api/games/join")) != wstring::npos) {
+        else if (path.find(U("/api/games/join")) != std::wstring::npos) {
           handleJoinGame(path, request, response, sessionManager);
         }
 
         // Handle the case for "/api/user/uid" - Retrieve user ID from database
-        else if (path.find(U("/api/login/uid")) != wstring::npos ) {
+        else if (path.find(U("/api/login/uid")) != std::wstring::npos ) {
           handleGetUID(path, request, response, sessionManager);
         }
 
         // Handle the case for "/api/username" - Retrieve username from database
-        else if (path.find(U("/api/username")) != wstring::npos ) {
+        else if (path.find(U("/api/username")) != std::wstring::npos ) {
           handleGetUsername(path, request, response, sessionManager);
         }
 
         // Handle the case for "/api/chat/get" - Retrieve conversation with a user -- Protected
-        else if (path.find(U("/api/chat/get")) != wstring::npos ) {
+        else if (path.find(U("/api/chat/get")) != std::wstring::npos ) {
           handleGetChat(path, request, response, sessionManager);
         }
         
         // Handle the case for "/api/friend/list" - Retrieving the friend list -- Protected
-        else if (path.find(U("/api/friend/list")) != wstring::npos) {
+        else if (path.find(U("/api/friend/list")) != std::wstring::npos) {
           handleGetFriendList(path, request, response, sessionManager);
         }
 
@@ -196,9 +196,9 @@ void GameServer::handleQueryGame(const string& path, http_request& request, njso
         response["error"] = "Missing sessionId parameter";
         request.reply(status_codes::BadRequest, response.dump(), "application/json");
     }
-  } catch (const exception &e) {
+  } catch (const std::exception &e) {
     // In case of exception, set an error value
-    cerr << "Exception in api/games/query/: " << e.what() << endl;
+    std::cerr << "Exception in api/games/query/: " << e.what() << std::endl;
   }
 }
 
@@ -244,9 +244,9 @@ void GameServer::handleJoinGame(const string& path, http_request& request, njson
         request.reply(status_codes::BadRequest, response.dump(), "application/json");
     }
 
-  } catch (const exception &e) {
+  } catch (const std::exception &e) {
     // In case of exception, set an error value
-    cerr << "Exception in api/games/join/: " << e.what() << endl;
+    std::cerr << "Exception in api/games/join/: " << e.what() << std::endl;
   }
 }
 
@@ -280,9 +280,9 @@ void GameServer::handleGetUID(const string& path, http_request& request, njson r
         response["error"] = "Missing username parameter";
         request.reply(status_codes::BadRequest, response.dump(), "application/json");
     }
-  } catch (const exception &e) {
+  } catch (const std::exception &e) {
     // In case of exception, set an error value
-    cerr << "Exception in api/login/uid/: " << e.what() << endl;
+    std::cerr << "Exception in api/login/uid/: " << e.what() << std::endl;
   }
 }
 
@@ -315,9 +315,9 @@ void GameServer::handleGetUsername(const string& path, http_request& request, nj
           response["error"] = "Missing username parameter";
           request.reply(status_codes::BadRequest, response.dump(), "application/json");
       }
-    } catch (const exception &e) {
+    } catch (const std::exception &e) {
       // In case of exception, set an error value
-      cerr << "Exception in api/username/: " << e.what() << endl;
+      std::cerr << "Exception in api/username/: " << e.what() << std::endl;
     }
 }
 
@@ -371,9 +371,9 @@ void GameServer::handleGetChat(const string& path, http_request& request, njson 
           response["error"] = "Missing recipientId parameter";
           request.reply(status_codes::BadRequest, response.dump(), "application/json");
       }
-  } catch (const exception &e) {
+  } catch (const std::exception &e) {
     // In case of exception, set an error value
-    cerr << "Exception in api/chat/get/: " << e.what() << endl;
+    std::cerr << "Exception in api/chat/get/: " << e.what() << std::endl;
   }
 }
 
@@ -405,9 +405,9 @@ void GameServer::handleGetFriendList(const string& path, http_request& request, 
         response["friends"] = friendsJson;
         request.reply(status_codes::OK, response.dump(), "application/json");
     }
-  } catch (const exception &e) {
+  } catch (const std::exception &e) {
     // In case of exception, set an error value
-    cerr << "Exception in api/friend/list: " << e.what() << endl;
+    std::cerr << "Exception in api/friend/list: " << e.what() << std::endl;
   }
 }
 
@@ -485,11 +485,11 @@ void GameServer::handlePost(http_request request) {
           }
 
           // Handle the case for "/api/chat/send" - Sending a message
-          else if (path.find(U("/api/chat/send")) != wstring::npos) {
+          else if (path.find(U("/api/chat/send")) != std::wstring::npos) {
             handleMessageSendRequest(requestBody, path, request, response, sessionManager);
           }
 
-          else if (path.find(U("/api/user/add/notification")) != wstring::npos) {
+          else if (path.find(U("/api/user/add/notification")) != std::wstring::npos) {
             handleAddNotificationRequest(requestBody, path, request, response, sessionManager);
           }
 
@@ -623,9 +623,9 @@ void GameServer::handleLoginRequest(web::json::value& requestBody, const string&
   auto username = requestBody[U("username")].as_string();
   auto password = requestBody[U("password")].as_string();
 
-  cout << "Username: " + to_utf8(username) +
+  std::cout << "Username: " + to_utf8(username) +
               "  Password: " + to_utf8(password)
-        << endl;
+        << std::endl;
 
   // Authenticate user and generate authToken
   // -------------------------------- TBA
@@ -671,9 +671,9 @@ void GameServer::handleRegisterRequest( web::json::value& requestBody, const str
   auto username = requestBody[U("username")].as_string();
   auto password = requestBody[U("password")].as_string();
 
-  cout << "Username: " + to_utf8(username) +
+  std::cout << "Username: " + to_utf8(username) +
               "  Password: " + to_utf8(password)
-        << endl;
+        << std::endl;
 
   // Register user ------------------------------------------------
   // TBA
