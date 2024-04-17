@@ -10,6 +10,7 @@
 
 
 #include "gui_Game.hh"
+#include "faction_bombardement.hh"
 #include <QHBoxLayout>
 #include <QString>
 #include <QLabel>
@@ -31,6 +32,9 @@ QBrush BoardFrame::getTileColor(CellType cell) {
     break;
   case CellType::WATER:
     brush = Qt::blue;
+    break;
+  case CellType::UNDAMAGED_MINE:
+    brush = Qt::black;
     break;
   default:
     brush = Qt::white;
@@ -109,13 +113,33 @@ void BoardFrame::mouseMoveEvent(QMouseEvent *event) {
   update();
 }
 
+void Game::clearLayout(QLayout* layout) {
+  QLayoutItem *item;
+  while ((item = layout->takeAt(0)) != nullptr) {
+    if (item->layout()) {
+      item->layout()->setParent(nullptr);
+      clearLayout(item->layout());
+      item->layout()->deleteLater();
+    }
+    if (item->widget()) {
+      item->widget()->setParent(nullptr);
+      item->widget()->hide();
+      item->widget()->deleteLater();
+    }
+    delete item;
+  }
+}
+
 void Game::setupShipPlacement() {
   _phase = PLACING_SHIPS;
-  _ships_placement_layout = new QHBoxLayout();
+  _footer_layout = new QHBoxLayout();
   QVBoxLayout *sizes = new QVBoxLayout();
   for (auto &ship : _board->shipsToPlace()) {
     std::string ship_name;
     switch (ship.first) {
+      case 1:
+        ship_name = "1. Bomb (x" + std::to_string(ship.second) + ")";
+        break;
       case 2:
         ship_name = "2. Destroyer (x" + std::to_string(ship.second) + ")";
         break;
@@ -131,7 +155,10 @@ void Game::setupShipPlacement() {
     }
     QPushButton *button = new QPushButton(QString::fromStdString(ship_name));
     connect(button, &QPushButton::clicked, [this, ship] {
-      _possible_ships = std::make_shared<ShipCommander>(ship.first);
+      if (_commander_mode)
+        _possible_ships = std::make_shared<ShipCommander>(ship.first);
+      else
+        _possible_ships = std::make_shared<ShipClassic>(ship.first);
       _selected_ship = _possible_ships->getShip();
     });
     _ships_buttons.push_back(button);
@@ -144,8 +171,8 @@ void Game::setupShipPlacement() {
   connect(change_ship_back, &QPushButton::clicked, this, &Game::previousShip);
   change_ships->addWidget(change_ship_back);
   change_ships->addWidget(change_ship);
-  _ships_placement_layout->addLayout(sizes);
-  _ships_placement_layout->addLayout(change_ships);
+  _footer_layout->addLayout(sizes);
+  _footer_layout->addLayout(change_ships);
 
   _boards_layout = new QHBoxLayout();
   _boards_layout->addWidget(_my_frame);
@@ -153,15 +180,46 @@ void Game::setupShipPlacement() {
   QVBoxLayout *main_layout = new QVBoxLayout();
   setLayout(main_layout);
   main_layout->addLayout(_boards_layout);
-  main_layout->addLayout(_ships_placement_layout);
+  main_layout->addLayout(_footer_layout);
 }
 
 void Game::setupWaitingGame() {
   _phase = WAITING_GAME;
-  // TODO: Implement
+  clearLayout(_footer_layout);
+
+  QLabel *phase2Label = new QLabel("Waiting for the game to start");
+
+  phase2Label->setAlignment(Qt::AlignCenter);
+
+  // Add widgets to layout
+  _footer_layout->addWidget(phase2Label);
 }
 
-Game::Game(std::shared_ptr<GameClient> gameClient) : _game_client(gameClient) {
+void Game::setupWaitingTurn() {
+  _phase = WAITING_TURN;
+  clearLayout(_footer_layout);
+
+  QLabel *phase2Label = new QLabel("Waiting for your turn");
+
+  phase2Label->setAlignment(Qt::AlignCenter);
+
+  // Add widgets to layout
+  _footer_layout->addWidget(phase2Label);
+}
+
+void Game::setupGame() {
+  _phase = PLAYING;
+  clearLayout(_footer_layout);
+
+  QLabel *phase2Label = new QLabel("Game started");
+
+  phase2Label->setAlignment(Qt::AlignCenter);
+
+  // Add widgets to layout
+  _footer_layout->addWidget(phase2Label);
+}
+
+Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_client(gameClient), _commander_mode(commander_mode) {
   _game_client->Login("romek", "Romainlisa");
   sleep(1);
 
@@ -194,10 +252,14 @@ Game::Game(std::shared_ptr<GameClient> gameClient) : _game_client(gameClient) {
       _game_client, Player(), GameMode::COMMANDER, session_id_str);
   _game_controller = std::make_shared<GameController>(_board);
 
+  _board->setPlayerFaction(FactionBombardement());
   setWindowTitle("Game");
 
   resize(1200, 800);
 
+  _timer = new QTimer(this);
+  connect(_timer, &QTimer::timeout, this, &Game::update);
+  _timer->start(1000);
 
   _my_frame = new BoardFrame(this, _board, true);
 
@@ -236,11 +298,30 @@ void Game::refreshButtons() {
   }
 }
 
+void Game::update() {
+  if (_phase == WAITING_GAME) {
+    if (_board->isGameStarted()) {
+      if (_board->fetchMyTurn()) {
+        _phase = PLAYING;
+        setupGame();
+      } else {
+        _phase = WAITING_TURN;
+        setupWaitingTurn();
+      }
+    }
+  } else if (_phase == WAITING_TURN) {
+    if (_board->fetchMyTurn()) {
+      setupGame();
+    }
+  }
+}
+
 void Game::placeShip(Ship& ship) {
   _game_controller->placeShip(ship);
   _selected_ship = std::nullopt;
   _possible_ships = nullptr;
   if (_board->allShipsPlaced()) {
+    _phase = WAITING_GAME;
     setupWaitingGame();
   }
 }

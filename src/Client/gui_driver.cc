@@ -5,7 +5,7 @@ DriverGui::DriverGui()
     : _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
 
 void DriverGui::run() {
-    showLoginWindow();
+    showGameWindow();
 }
 void DriverGui::showLoginWindow(){
       _loginWindow = std::make_unique<LoginWindow>(_game_client);

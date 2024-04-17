@@ -2,11 +2,13 @@
 
 #include <QFrame>
 #include <QMouseEvent>
+#include <QTimer>
 #include <QPainter>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <memory>
 #include <QPushButton>
+#include <QThread>
 #include <vector>
 #include <optional>
 
@@ -47,7 +49,7 @@ class Game : public QWidget {
   Q_OBJECT
 
 public:
-  Game(std::shared_ptr<GameClient> gameClient);
+  Game(std::shared_ptr<GameClient> gameClient, bool commander_mode = true);
   void display();
   void display_error();
   void update();
@@ -62,13 +64,14 @@ public:
   void rotateShip();
   void previousShip();
   void nextShip();
-  
+  void clearLayout(QLayout *layout);
 
 protected:
   void setupShipPlacement();
   void setupGame();
   void setupWaitingGame();
   void setupWaitingTurn();
+
 private:
   std::shared_ptr<GameClient> _game_client;
   std::shared_ptr<LocalBoardCommander> _board;
@@ -77,10 +80,13 @@ private:
   BoardFrame *_my_frame;
   BoardFrame *_their_frame;
   QHBoxLayout *_boards_layout;
-  QHBoxLayout *_ships_placement_layout;
+  QHBoxLayout *_footer_layout;
   std::vector<QPushButton *> _ShipsButtons;
   std::optional<Ship> _selected_ship = std::nullopt;
-  std::shared_ptr<ShipCommander> _possible_ships = nullptr;                 //< The ships that can be placed
+  std::shared_ptr<ShipClassic> _possible_ships = nullptr;                 //< The ships that can be placed
   Phase _phase = PLACING_SHIPS;
   std::vector<QPushButton *> _ships_buttons;
+  bool _commander_mode;
+  QThread *_polling_thread;
+  QTimer *_timer;
 };
