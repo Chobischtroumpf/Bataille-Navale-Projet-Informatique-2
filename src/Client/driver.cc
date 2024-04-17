@@ -1,6 +1,9 @@
 #include "driver.hh"
+#include "chat_console.hh"
+#include "game_console.hh"
 #include "faction_sonar.hh"
-#include "faction_bombardement.hh"
+#include "lobby_console.hh"
+#include "login_console.hh"
 #include "faction_mines.hh"
 #include <iostream>
 

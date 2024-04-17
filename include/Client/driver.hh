@@ -2,35 +2,28 @@
 
 #include <memory>
 
-#include "controller.hh"
+// #include "controller.hh"
 #include "game_client.hh"
-#include "view.hh"
+// #include "view.hh"
 
 // Controllers
-#include "chat_controller.hh"
-#include "game_controller.hh"
-#include "lobby_controller.hh"
-#include "login_controller.hh"
-#include "main_menu_controller.hh"
+// #include "chat_controller.hh"
+// #include "game_controller.hh"
+// #include "lobby_controller.hh"
+// #include "login_controller.hh"
+// #include "main_menu_controller.hh"
 // #include "register_controller.hh"
 
 // Displays
-#include "chat_console.hh"
 #include "display.hh"
-#include "game_console.hh"
-#include "game_setting_console.hh"
-#include "lobby_console.hh"
-#include "login_console.hh"
-#include "main_menu_console.hh"
-#include "register_console.hh"
 
 // Views
-#include "chat_view.hh"
-#include "lobby_view.hh"
-#include "local_board_commander.hh"
-#include "login_view.hh"
-#include "main_menu_view.hh"
-#include "register_view.hh"
+// #include "chat_view.hh"
+// #include "lobby_view.hh"
+// #include "local_board_commander.hh"
+// #include "login_view.hh"
+// #include "main_menu_view.hh"
+// #include "register_view.hh"
 
 enum DisplayType { CONSOLE, GUI };
 

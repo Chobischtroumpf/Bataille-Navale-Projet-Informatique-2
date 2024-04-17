@@ -1,9 +1,11 @@
-#include <iostream>
-#include <memory>
-
 #include "driver.hh"
 
 int main(int argc, char *argv[]) {
+
+#ifdef OUTPUT_DEBUG
+  std::ofstream out("battleship.log");
+  auto coutbuf = std::cerr.rdbuf(out.rdbuf()); //save and redirect
+#endif
   std::string server_address;
 
   if (argc < 2) {
