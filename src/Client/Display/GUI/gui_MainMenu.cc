@@ -69,6 +69,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     QVBoxLayout *buttonLayout = new QVBoxLayout();
     mainLayout->addLayout(buttonLayout);
 
+
     // QPushButton pour appuyer sur un bouton
     creatGame = new HighlightButton("Jouer", this); creatGame->setFixedWidth(400);
     creatGame->setStyleSheet("HighlightButton { color : red; padding: 10px; border-image: url(src/Common/Images/submarine.png);}");
@@ -81,6 +82,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::clicked, this, &MainMenu::onAddFriendButtonClicked); // Le bouton se cache une fois cliqué
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
+
     chatWithAFriend = new HighlightButton("Chat avec un ami", this); chatWithAFriend->setFixedWidth(400);
     chatWithAFriend->setStyleSheet("QPushButton { color : yellow; padding: 10px;}");
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::clicked, this, &MainMenu::onChatWithAFriendButtonClicked);
@@ -106,11 +108,19 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     });
     friendNameLineEdit->hide(); // Caché par défaut
 
+
+    chatFriendLineEdit = new QLineEdit(); chatFriendLineEdit->setFixedWidth(400);
+    connect(chatFriendLineEdit, &QLineEdit::returnPressed, [this] {
+    onChatFriendLineEditReturnPressed();
+    });
+    chatFriendLineEdit->hide(); 
+
     // Disposition des objets dans le buttonLayout
     buttonLayout->setAlignment(Qt::AlignCenter);
     buttonLayout->addWidget(creatGame);
     buttonLayout->addWidget(addFriend);
     buttonLayout->addWidget(friendNameLineEdit);
+    buttonLayout->addWidget(chatFriendLineEdit);
     buttonLayout->addWidget(chatWithAFriend);
     buttonLayout->addWidget(joinGame);
     buttonLayout->addWidget(logOut);
@@ -156,12 +166,31 @@ void MainMenu::onFriendLineEditReturnPressed() {
 
 MainMenu::~MainMenu() {delete timerFriends; delete timerNotifications; delete timerBackground;}
 
-void MainMenu::onChatWithAFriendButtonClicked(const QString &destination) {
+void MainMenu::onChatWithAFriendButtonClicked() {
+    chatWithAFriend->hide(); // Cache le bouton "Chat avec un ami"
+    chatFriendLineEdit->show();
+    //std::string destinationStd = destination.toStdString();
+    //emit startChat(destinationStd);
+}
+void MainMenu::onChatFriendLineEditReturnPressed() {
+    chatFriendLineEdit->show();
+    QString friendName = chatFriendLineEdit->text();
+    qDebug() << "Tentative de chat avec :" << friendName; // Debug
+
+    // Nettoyage et widget caché
+    chatFriendLineEdit->clear();
+    chatFriendLineEdit->hide();
+
+    chatWithAFriend->show();
+
+    std::string str_friendName = friendName.toStdString();
+    emit startChat(str_friendName);
+}
+void MainMenu::onFriendNameButtonClicked(const QString &destination){
     std::string destinationStd = destination.toStdString();
     emit startChat(destinationStd);
-    // Utilisez destinationStd si nécessaire pour des opérations qui requièrent std::string
-    // this->close(); // Décommentez si vous souhaitez fermer cette fenêtre après avoir émis le signal
 }
+
 void MainMenu::onJoinGameButtonClicked() {
 }
 
@@ -187,7 +216,7 @@ void MainMenu::updateFriends() {
 
         // passe le nom comme paramètre
         connect(friendButton, &QPushButton::clicked, [this, QStr_name]() {
-            this->onChatWithAFriendButtonClicked(QStr_name);
+            this->onFriendNameButtonClicked(QStr_name);
         });
     }
 }

@@ -56,11 +56,13 @@ signals:
 private slots: // en ref à Qt6
     void onCreatGameButtonClicked();
     void onAddFriendButtonClicked();
-	void onChatWithAFriendButtonClicked(const QString &destination);
+	void onChatWithAFriendButtonClicked();
+    void onFriendNameButtonClicked(const QString &destination);
 	void onJoinGameButtonClicked();
 	void onLogOutButtonClicked();
 
     void onFriendLineEditReturnPressed();
+    void onChatFriendLineEditReturnPressed();
 
     void updateFriends();
     void clearFriendsLayout();
@@ -85,6 +87,7 @@ private:
 
     QVBoxLayout *scrollLayoutFriends; // Layout pour contenir les amis
     QLineEdit *friendNameLineEdit;
+    QLineEdit *chatFriendLineEdit;
     QVBoxLayout *scrollLayoutNotifications;
 
     int frameCounter;
