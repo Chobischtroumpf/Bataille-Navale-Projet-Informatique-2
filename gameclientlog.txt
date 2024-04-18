@@ -132,3 +132,2974 @@ Login request sent.
 Received response status code: 200
 Auth Token: x8fP5WgGThZjODEARXwvGmlmLhuLu3jR
 
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: 8w8S8qsmGLCO42Px5Yxm2SeQUujk4HH1
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: DomCoAERqoSncwiuyTc3hjAPCC93ZH2q
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: vRqEoEnWZU6FxNqjZMojQvDt8Z1Pb8Tx
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: StcsON6ntM7QdyA75QAiwIaM2iAvshu9
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: Awqd8jqqTk6WGvRA0fGvOH8FNyY6Di42
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: MGP2YVuXjDNhmM0Wgcgi2RUYgE29UMbx
+Preparing to send POST request to path: /api/friend/add
+Full URI: /api/friend/add
+Sending POST request...
+Login request initiated.
+Received response status code: 200
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Received response status code: 200
+Received response status code: 200
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+Initiating registration request...
+Preparing to send POST request to path: /api/register
+Full URI: /api/register
+Sending POST request...
+Registration request sent.
+Received response status code: 200
+Registration successful. Auth Token: DM63JjzWDoWfVVeSCPdPiR6xXERqsQYT
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Received response status code: 200
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: sTMZ30Junvz0hBPHeSknygIjIqz15mIl
+Login request initiated.
+Preparing to send POST request to path: /api/friend/add
+Full URI: /api/friend/add
+Sending POST request...
+Login request initiated.
+Received response status code: 200
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Received response status code: 200
+Received response status code: 200
+Creating a new game session...
+Preparing to send POST request to path: /api/games/create
+Full URI: /api/games/create
+Sending POST request...
+Game creation request sent.
+Received response status code: 200
+Game session created with sessionId: 48c941ef2ef24fe2328e6fe55f8487b695892b5ac4348644020388a04d29eb
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Login request initiated.
+Sending message to user 3 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Sending GET request to api/games/query
+Game state query request sent.
+Received response status code: 200
+Game info retrieved 
+Received response status code: 200
+Message sent successfully.
+Attempting to join game session: 48c941ef2ef24fe2328e6fe55f8487b695892b5ac4348644020388a04d29eb ...
+Join game request sent.
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Sending move to game session: 48c941ef2ef24fe2328e6fe55f8487b695892b5ac4348644020388a04d29eb ...
+Preparing to send POST request to path: /api/games/move
+Full URI: /api/games/move
+Sending POST request...
+Move request sent.
+Received response status code: 200
+Move made successfully.
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Login request initiated.
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Sending GET request to api/games/query
+Game state query request sent.
+Game info retrieved 
+Login request initiated.
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: 4i9UhIet4Bq926G4MQgaUPjt4GhXQP7K
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: EHYWsQ3dExHO6vv34cTFf8mqXFJMB027
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: ievYTLfk9bpScvaoQQDgl8VHbyolnM8t
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: 6G6jzB5BfKewLlv3kPw2vyf0LNOHL4iG
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: xbPXCImFiq2TzmJKZ7zluDk6gXBPQJle
+GameClient initialized with URI: http://localhost:8080
+Initiating registration request...
+Preparing to send POST request to path: /api/register
+Full URI: /api/register
+Sending POST request...
+Registration request sent.
+Received response status code: 400
+Registration failed.
+Initiating registration request...
+Preparing to send POST request to path: /api/register
+Full URI: /api/register
+Sending POST request...
+Registration request sent.
+Received response status code: 200
+Registration successful. Auth Token: KZZax0FDpukMETmtPKE8dN2hAsWe28iz
+Preparing to send POST request to path: /api/friend/add
+Full URI: /api/friend/add
+Sending POST request...
+Login request initiated.
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Preparing to send POST request to path: /api/user/add/notification
+Full URI: /api/user/add/notification
+Sending POST request...
+Received response status code: 200
+Received response status code: 200
+Received response status code: 200
+Login request initiated.
+Fetching conversation with user ...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user ...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: U6xh51IhkQUOA58dCAbFb3MBkyF0uMwe
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: WyxqfHpMcfd1Ovz75sJZ53hFURdkqMqb
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: 3cSqikyBGgAM6nY9rF91wvPpJtIBFDmx
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: kY4SuzijBQZvAHO3tDCyLRwi2dMEdrSl
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: oXrDbYS9r5wd7RNPbrsPe71jEqENOrK3
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 5 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 5 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 1 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 4 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+GameClient initialized with URI: http://localhost:8080
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: d2tcOb965s91aLFb4VQ6SHekVGVzWvpX
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 3 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 5 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 5...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: 5bjLjPl9Qy3mak0RiaPdKBAitAlaSlSK
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: n3muFvsjRkuRutxAtcD4B2aUplS9wBGJ
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: rQ4Ucl4TunzOEWfWWGPnwN7LYOHldeSu
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 3 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 1 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 3 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 1 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 1 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Sending message to user 3 ...
+Preparing to send POST request to path: /api/chat/send
+Full URI: /api/chat/send
+Sending POST request...
+Message request sent.
+Received response status code: 200
+Message sent successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 1...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 3...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: UMeUV7Cdh2SMLVyxpbILPEnBjSMmWvFF
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+Login request initiated.
+Fetching conversation with user 4...
+Conversation fetch request sent.
+Conversation retrieved successfully.
+GameClient initialized with URI: http://localhost:8080
