@@ -22,7 +22,7 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
 
   if (str_move == "EndGame") {
     std::clog << "endGame move" << std::endl;
-    _phase = Phase::NOT_STARTED;
+    _phase = Phase::FINISHED;
     result = true;
   }
   if (_phase == Phase::NOT_STARTED) {

@@ -13,7 +13,8 @@ class GameState {
     enum Phase {
         NOT_STARTED=0,
         PLACING_SHIPS=1,
-        PLAYING=2
+        PLAYING=2,
+        FINISHED=3
     };
 
     Phase _phase = Phase::NOT_STARTED;
