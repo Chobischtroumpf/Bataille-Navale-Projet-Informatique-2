@@ -4,7 +4,7 @@
 #include "cell_type.hh"
 #include "board_coordinates.hh"
 
-class GameView : public virtual View {
+class GameView : public View {
 public:
     virtual ~GameView() override {}
 

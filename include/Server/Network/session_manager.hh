@@ -10,10 +10,7 @@
 
 #include "game_session.hh" // Ensure you have a GameSession class defined
 
-using std::string;
-using std::mutex;
-using std::shared_ptr;
-using std::unordered_map;
+using namespace std;
 using njson = nlohmann::json;
 
 class SessionManager {
@@ -29,13 +26,13 @@ public:
     string createSession( const string& userId, const njson& gameDetails, Queries& dbManager);
 
     // Method to retrieve a session by its ID
-    shared_ptr<GameSession> getSession(const string& session_id);
+    shared_ptr<GameSession> getSession(const string& sessionId);
 
     // Method to check if a session exists
-    bool sessionExists(const string& session_id);
+    bool sessionExists(const string& sessionId);
 
     // Method to end a session and remove it from the manager
-    void endSession(const string& session_id);
+    void endSession(const string& sessionId);
 
 private:
     // Private constructor for singleton pattern

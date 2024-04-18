@@ -1,6 +1,10 @@
 #pragma once
 
+#include <array>
 #include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <map>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <vector>
@@ -9,8 +13,10 @@
 #include "cell.hh"
 #include "game_client.hh"
 #include "game_view.hh"
+#include "not_implemented_error.hh"
 #include "player.hh"
 #include "ship.hh"
+#include "ship_commander.hh"
 
 typedef enum { CLASSIC, COMMANDER } GameMode;
 
@@ -21,8 +27,8 @@ class LocalBoardCommander : public GameView {
 private:
   Player _player;
   GameMode _mode;
-  bool _is_finished;
-  bool _is_victory;
+  std::string _game_id;
+  const std::string &_session_id;
 
   std::vector<std::vector<Cell>> _my_board;
   std::vector<std::vector<Cell>> _their_board;
@@ -30,17 +36,18 @@ private:
   std::string _my_username;
   std::string _their_username;
 
-  const std::string _session_id;
   std::shared_ptr<GameClient> _client;
 
   // bool _my_turn;
+  bool _is_finished;
+  bool _is_victory;
 
   /* Get the cell in one of the board*/
   Cell get(bool my_side, BoardCoordinates position) const;
 
 public:
   LocalBoardCommander(std::shared_ptr<GameClient> client, Player player,
-                      GameMode mode, const std::string &session_id);
+                      GameMode mode, const std::string &sessionId);
 
   virtual ~LocalBoardCommander() override = default;
 
@@ -59,8 +66,6 @@ public:
    * @return le cell type
    */
   CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
-
-  std::optional<Ship> shipId(bool my_side, BoardCoordinates position) const;
 
   /* Check if two cells are part of the same ship */
   bool isSameShip(bool my_side, BoardCoordinates first,
@@ -97,7 +102,7 @@ public:
 
   static CellType string_to_celltype(const std::string &type);
 
-  void updateBoard(const nlohmann::json &new_board);
+  void update_board(const nlohmann::json &new_board);
 
   bool isInBoard(BoardCoordinates coord) const;
 

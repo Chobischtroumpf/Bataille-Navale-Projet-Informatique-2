@@ -38,8 +38,8 @@ public:
   explicit GameClient(const std::string &baseUri);
 
   std::future<std::string> CreateGame(const njson &gameDetails);
-  std::future<njson> JoinGame(const std::string &session_id);
-  std::future<bool> MakeMove(const std::string &session_id, const njson &move);
+  std::future<njson> JoinGame(const std::string &sessionId);
+  std::future<bool> MakeMove(const std::string &sessionId, const njson &move);
   std::future<bool> Login(const std::string &userId,
                           const std::string &password);
   std::future<bool> Register(const std::string &userId,
@@ -47,7 +47,7 @@ public:
   std::future<std::string> GetUserId(const std::string &username);
   std::future<std::string> GetUsername(const std::string &userId);
   std::future<std::string> GetGames();
-  std::future<njson> QueryGameState(const std::string &session_id);
+  std::future<njson> QueryGameState(const std::string &sessionId);
   std::future<bool> SendMessage(const std::string &targetId,
                                 const std::string &message);
   std::future<njson> GetMessages(const std::string &recipientId);

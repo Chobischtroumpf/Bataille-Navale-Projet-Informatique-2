@@ -1,5 +1,4 @@
 #include "ship_classic.hh"
-
 ShipClassic::ShipClassic(int number_of_case) {
     switch (number_of_case) {
     case 2:

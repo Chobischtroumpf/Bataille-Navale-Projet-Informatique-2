@@ -7,7 +7,7 @@ class GameView {
   public:
     virtual ~GameView() {}
 
-    virtual bool myTurn() const =0;
+    // virtual bool myTurn() const =0;
     virtual bool isFinished() const =0;
     virtual bool isVictory() const =0;
     virtual std::size_t width() const =0;

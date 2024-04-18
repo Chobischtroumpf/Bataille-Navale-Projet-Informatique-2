@@ -20,7 +20,7 @@ Faction Player::getFaction() const {
   return _faction;
 }
 
-Fleet Player::getFleet() const {
+std::vector<Ship> Player::getFleet() const {
   return _fleet;
 }
 
@@ -36,7 +36,7 @@ void Player::setFaction(Faction faction) {
   _faction = faction;
 }
 
-void Player::setFleet(Fleet fleet) {
+void Player::setFleet(std::vector<Ship> fleet) {
   _fleet = fleet;
 }
 
@@ -46,10 +46,6 @@ void Player::addShip(Ship ship) {
 
 void Player::setTurn(bool is_turn) {
   _is_turn = is_turn;
-}
-
-void Player::swapTurn() {
-  _is_turn = !_is_turn;
 }
 
 void Player::addEnergyPoints(int energy_points) {

@@ -9,7 +9,7 @@
 #include "aerial_strike.hh"
 
 
-class FactionSonar : public virtual Faction
+class FactionSonar : public Faction
 {
   public:
     // Constructor

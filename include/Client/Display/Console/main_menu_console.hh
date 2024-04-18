@@ -2,11 +2,11 @@
 
 #include <memory>
 
-#include "../console.hh"
-#include "../../display.hh"
-#include "../../Network/game_client.hh"
-#include "../../Controllers/main_menu_controller.hh"
-#include "../../Views/main_menu_view.hh"
+#include "console.hh"
+#include "display.hh"
+#include "game_client.hh"
+#include "main_menu_controller.hh"
+#include "main_menu_view.hh"
 
 class MainMenuConsole : public Console {
 private:

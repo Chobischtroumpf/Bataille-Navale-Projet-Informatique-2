@@ -1,6 +1,7 @@
 #pragma once
 
 #include "faction.hh"
+#include "special_ability.hh"
 #include "torpedo.hh"
 
 class FactionClassique : public Faction
