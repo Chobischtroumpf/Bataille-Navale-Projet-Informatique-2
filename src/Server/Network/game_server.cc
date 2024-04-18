@@ -110,7 +110,7 @@ void GameServer::handleGet(http_request request) {
         }
 
         // Handle the case for "/api/games/join" - Join game by session ID ( and user ID ) -- Protected
-        else if (path.find(U("/api/games/history")) != wstring::npos) {
+        else if (path.find(U("/api/games/history")) != std::wstring::npos) {
           handleGetHistory(path, request, response, sessionManager);
         }
         // Handle the case for "/api/user/uid" - Retrieve user ID from database
@@ -244,9 +244,9 @@ void GameServer::handleGetHistory(const string& path, http_request& request, njs
             response["error"] = "Missing sessionId parameter";
             request.reply(status_codes::BadRequest, response.dump(), "application/json");
         }
-    } catch (const exception &e) {
+    } catch (const std::exception &e) {
         // In case of exception, set an error value
-        cerr << "Exception in api/games/history/: " << e.what() << endl;
+        std::clog << "Exception in api/games/history/: " << e.what() << std::endl;
     }
 }
 
