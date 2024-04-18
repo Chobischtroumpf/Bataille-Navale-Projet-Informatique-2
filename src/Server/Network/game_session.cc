@@ -1,8 +1,8 @@
 #include "game_session.hh"
 #include "game_state.hh"
 
-GameSession::GameSession(const std::string& leaderId, const nlohmann::json& gameDetails)
-    : leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
+GameSession::GameSession(Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails)
+    : dbManager(dbManager), leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
     participantRoles[leaderId] = PlayerRole::Leader;
     hasStarted = false;
 }
@@ -15,6 +15,8 @@ void GameSession::startSession() {
 
 void GameSession::endSession() {
     // Cleanup or end game logic
+
+    //Here's the game history should be saved to database
 }
 
 void GameSession::addParticipant(const std::string& participantId) {
@@ -93,7 +95,12 @@ bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move
     }
 
     // Call makeMove on the gameState and return the result
-    return gameState.makeMove(playerRole, move);
+    auto result = gameState.makeMove(playerRole, move);
+
+    // Update the state history if the move was successful
+    if (result) { updateHistory(); }
+
+    return result;
 }
 
 nlohmann::json GameSession::getSessionState() const {
@@ -105,4 +112,18 @@ nlohmann::json GameSession::getSessionState() const {
     sessionState["hasStarted"] = this->hasStarted;
     
     return sessionState;
+}
+
+// Returns the game's history
+nlohmann::json GameSession::getHistory() const {
+    return gameHistory;
+}
+
+// Updates the game history by appending the current game state
+void GameSession::updateHistory() {
+    // Get the current game state
+    auto state = gameState.getGameState(PlayerRole::Spectator);
+
+    // Append the current game state to the game history
+    gameHistory["states"].push_back(state);
 }
