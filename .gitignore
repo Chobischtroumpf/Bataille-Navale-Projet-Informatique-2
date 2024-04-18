@@ -32,6 +32,7 @@
 *.app
 battleship
 server
+tests
 
 # Other
 # Makefile
@@ -55,12 +56,15 @@ build/*
 !build/linux
 
 
+# log files
+gameclientlog.txt
+*.log
+
 # TeXLive compilation files
-# *.log
 *.aux
 *.toc
 
-# vscode files
+# Visual Studio Code
 .vscode
 .cache
 **.code-workspace

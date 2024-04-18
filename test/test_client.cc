@@ -7,17 +7,17 @@ using njson = nlohmann::json;
 using namespace std;
 
 void waitForEnter(const string& prompt = "Press Enter to continue...") {
-    cout << prompt;
+    std::cout << prompt;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 int main() {
-    cout << "Program started\n";
+    std::cout << "Program started\n";
 
     // Initialize the GameClient with the base URI of your game server
     GameClient gameClient("http://localhost:8080");
 
-    cout << "Instance successfully started\n";
+    std::cout << "Instance successfully started\n";
 
     // Create a fictional njson object with game details
     njson gameDetails = {
@@ -33,49 +33,49 @@ int main() {
     waitForEnter("Ready to register. ");
     auto registerFuture = gameClient.Register("newUser", "newPassword");
     if (registerFuture.get()) {
-        cout << "Register request success.\n";
+        std::cout << "Register request success.\n";
     } else {
-        cout << "Register request failed.\n";
+        std::cout << "Register request failed.\n";
     }
 
     // Login
     waitForEnter("Ready to login. ");
     auto loginFuture = gameClient.Login("newUser", "newPassword");
-    cout << "Login request success: " << loginFuture.get() << "\n";
+    std::cout << "Login request success: " << loginFuture.get() << "\n";
 
     // Create Game
     waitForEnter("Ready to create game. ");
     auto createGameFuture = gameClient.CreateGame(gameDetails);
-    auto sessionId = createGameFuture.get();
-    cout << "Game created with session ID: " << sessionId << "\n";
+    auto session_id = createGameFuture.get();
+    std::cout << "Game created with session ID: " << session_id << "\n";
 
     // Get Games Information
     waitForEnter("Ready to get game list. ");
     auto getGamesFuture = gameClient.GetGames();
-    cout << "Games information received: " << getGamesFuture.get() << "\n";
+    std::cout << "Games information received: " << getGamesFuture.get() << "\n";
 
     // Query Game State
     waitForEnter("Ready to query game state. ");
-    auto queryGameStateFuture = gameClient.QueryGameState(sessionId);
-    cout << "Game state for session 'exampleSessionId': " << queryGameStateFuture.get().dump() << "\n";
+    auto queryGameStateFuture = gameClient.QueryGameState(session_id);
+    std::cout << "Game state for session 'exampleSessionId': " << queryGameStateFuture.get().dump() << "\n";
 
     // Add a Friend
     waitForEnter("Ready to add friend. ");
     auto addFriendFuture = gameClient.AddFriend("friendUsername");
-    cout << "Friend was added ? : " << addFriendFuture.get() << "\n";
+    std::cout << "Friend was added ? : " << addFriendFuture.get() << "\n";
    
 
     // Get Friends List
     waitForEnter("Ready to get friend list. ");
     auto getFriendsFuture = gameClient.GetFriends();
-    cout << "Friend list received: " << getFriendsFuture.get().dump() << "\n";
+    std::cout << "Friend list received: " << getFriendsFuture.get().dump() << "\n";
 
     waitForEnter("Ready to get user id. ");
     // Asynchronously get user ID for the username
     auto getUserIdFuture = gameClient.GetUserId("newUser");
     // Correctly wait for the future to get the result and print it
     auto userId = getUserIdFuture.get(); // This blocks until the future is ready and gets the result
-    cout << "UserId received: " << userId << "\n";
+    std::cout << "UserId received: " << userId << "\n";
 
 
     waitForEnter("Ready to send message.");
@@ -83,15 +83,15 @@ int main() {
     auto messageSentFuture = gameClient.SendMessage("1","Hello");
     // Correctly wait for the future to get the result and print it
     auto result = messageSentFuture.get(); // This blocks until the future is ready and gets the result
-    cout << "Message sent: " << result << "\n";
+    std::cout << "Message sent: " << result << "\n";
     
     waitForEnter("Ready to get messages.");
     // Asynchronously 
     auto messagesFuture = gameClient.GetMessages("1");
     // Correctly wait for the future to get the result and print it
     auto result2 = messagesFuture.get(); // This blocks until the future is ready and gets the result
-    cout << "Messages retrieved: " << result2 << "\n";
-    cout << "All requests were processed. Check your server for the responses.\n";
+    std::cout << "Messages retrieved: " << result2 << "\n";
+    std::cout << "All requests were processed. Check your server for the responses.\n";
 
 
     njson startGameMove = {
@@ -100,8 +100,8 @@ int main() {
 
     // Call the MakeMove method
     waitForEnter("Ready to test the StartGame move. ");
-    auto makeMoveFuture = gameClient.MakeMove(sessionId, startGameMove);
-    cout << "Move result: " << makeMoveFuture.get() << "\n";
+    auto makeMoveFuture = gameClient.MakeMove(session_id, startGameMove);
+    std::cout << "Move result: " << makeMoveFuture.get() << "\n";
 
     return 0;
 }
