@@ -7,19 +7,18 @@ DriverGui::DriverGui()
 void DriverGui::run() {
     showLoginWindow();
 }
-void DriverGui::showLoginWindow(){
-      _loginWindow = std::make_unique<LoginWindow>(_game_client);
-      QObject::connect(_loginWindow.get(), &LoginWindow::loginSuccessful, this, &DriverGui::showMainMenu);
-      QObject::connect(_loginWindow.get(), &LoginWindow::registrationSuccessful, this, &DriverGui::showMainMenu);
-      _loginWindow->show();
+void DriverGui::showLoginWindow() {
+    _loginWindow = std::make_unique<LoginWindow>(_game_client);
+    QObject::connect(_loginWindow.get(), &LoginWindow::loginSuccessful, this, &DriverGui::showMainMenu);
+    QObject::connect(_loginWindow.get(), &LoginWindow::registrationSuccessful, this, &DriverGui::showMainMenu);
+    _loginWindow->show();
 }
 
 void DriverGui::showMainMenu() {
     _mainMenuWindow = std::make_unique<MainMenu>(_game_client);
     QObject::connect(_mainMenuWindow.get(), &MainMenu::userDisconnection, this, &DriverGui::showLoginWindow);
-QObject::connect(_mainMenuWindow.get(), &MainMenu::startChat, this, [this](const std::string &destination) {
-    showChatOutWindow(destination);
-});
+    QObject::connect(_mainMenuWindow.get(), &MainMenu::startGameSetting, this, &DriverGui::showGameSettingWindow);
+    QObject::connect(_mainMenuWindow.get(), &MainMenu::startChat, this, [this](const std::string &destination) { showChatOutWindow(destination); });
     _mainMenuWindow->show();
 }
 
@@ -35,4 +34,10 @@ void DriverGui::showChatOutWindow(const std::string &destination) {
 void DriverGui::showGameWindow() {
     _gameWindow = std::make_unique<Game>(_game_client);
     _gameWindow->show();
+}
+
+void DriverGui::showGameSettingWindow() {
+    _gameSettingWindow = std::make_unique<GameSetting>(_game_client);
+    QObject::connect(_gameSettingWindow.get(), &GameSetting::goBackToMenu, this, &DriverGui::showMainMenu);
+    _gameSettingWindow->show();
 }

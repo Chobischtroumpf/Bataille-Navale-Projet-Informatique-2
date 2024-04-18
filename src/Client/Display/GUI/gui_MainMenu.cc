@@ -136,6 +136,8 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
 
 
 void MainMenu::onCreatGameButtonClicked() {
+    emit startGameSetting();
+    this->close();
 }
 
 
