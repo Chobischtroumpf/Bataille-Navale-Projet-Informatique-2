@@ -165,7 +165,7 @@ void GameServer::handleQueryGame(const string& path, http_request& request, njso
     // Parsing query parameters
     auto queryParams = uri::split_query(request.request_uri().query());
     // Extracting sessionId  from query parameters
-    auto sessionIdIt = queryParams.find(U("sessionId"));
+    auto sessionIdIt = queryParams.find(U("session_id"));
     
     // Verifying both sessionId  are provided
     if (sessionIdIt != queryParams.end() ) {
@@ -217,7 +217,7 @@ void GameServer::handleJoinGame(const string& path, http_request& request, njson
     // Parsing query parameters
     auto queryParams = uri::split_query(request.request_uri().query());
     // Extracting sessionId from query parameters
-    auto sessionIdIt = queryParams.find(U("sessionId"));
+    auto sessionIdIt = queryParams.find(U("session_id"));
 
 
     // Verifying both sessionId and userId are provided
@@ -538,7 +538,7 @@ void GameServer::handleCreateGameRequest( web::json::value& requestBody, const s
 
   // Create a new session
   auto sessionId = sessionManager.createSession(userId, gameDetails);
-  response["sessionId"] = sessionId;
+  response["session_id"] = sessionId;
   request.reply(status_codes::OK, response.dump(),"application/json");
 }
 
@@ -555,7 +555,7 @@ void GameServer::handleMoveRequest(web::json::value& requestBody, const string& 
   }
 
   // Extract sessionId and move details from request body
-  auto sessionId = requestBody[U("sessionId")].as_string();
+  auto sessionId = requestBody[U("session_id")].as_string();
   njson move = njson::parse(requestBody[U("move")].serialize());
 
   // Retrieve the session and make the move
