@@ -53,13 +53,13 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::clicked, this, &MainMenu::onAddFriendButtonClicked); // Le bouton se cache une fois cliqué
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
-
+/*
     chatWithAFriend = new HighlightButton("Chat avec un ami", this);
     chatWithAFriend->setStyleSheet("QPushButton { color : yellow; padding: 10px;}");
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::clicked, this, &MainMenu::onChatWithAFriendButtonClicked);
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
-
+*/
     joinGame = new HighlightButton("Rejoindre une partie", this);
     joinGame->setStyleSheet("QPushButton { color : green; padding: 10px;}");
     connect(dynamic_cast<HighlightButton*>(joinGame), &HighlightButton::clicked, this, &MainMenu::onJoinGameButtonClicked);
@@ -123,11 +123,12 @@ void MainMenu::onFriendLineEditReturnPressed() {
     updateFriends();
 }
 
-void MainMenu::onChatWithAFriendButtonClicked() {
-    emit startChat();
-    this->close();
+void MainMenu::onChatWithAFriendButtonClicked(const QString &destination) {
+    std::string destinationStd = destination.toStdString();
+    emit startChat(destinationStd);
+    // Utilisez destinationStd si nécessaire pour des opérations qui requièrent std::string
+    // this->close(); // Décommentez si vous souhaitez fermer cette fenêtre après avoir émis le signal
 }
-
 void MainMenu::onJoinGameButtonClicked() {
 }
 
@@ -137,21 +138,22 @@ void MainMenu::onLogOutButtonClicked() {
 }
 
 void MainMenu::updateFriends() {
-
     clearFriendsLayout();
 
     for (auto friendInfo : _view->getFriends()) {
         std::string name = get<0>(friendInfo);
         QString QStr_name = QString::fromStdString(name);
         QPushButton *friendButton = new QPushButton(QStr_name);
-        friendButton->setFlat(true); // Retire le contour du bouton
-        friendButton->setStyleSheet("QPushButton { color : green; "
-                                    "text-align: left;"
-                                    "font-weight: bold;}"); // Change la couleur du texte en bleu
-        friendButton->setCursor(Qt::PointingHandCursor); // Change le curseur lorsqu'il passe au-dessus du QPushButton
+        friendButton->setFlat(true);
+        friendButton->setStyleSheet("QPushButton { color : green; text-align: left; font-weight: bold;}");
+        friendButton->setCursor(Qt::PointingHandCursor);
         scrollLayoutFriends->addWidget(friendButton);
         scrollLayoutFriends->addSpacing(20);
-        connect(friendButton, &QPushButton::clicked, this, &MainMenu::onChatWithAFriendButtonClicked);
+
+        // passe le nom comme paramètre
+        connect(friendButton, &QPushButton::clicked, [this, QStr_name]() {
+            this->onChatWithAFriendButtonClicked(QStr_name);
+        });
     }
 }
 

@@ -17,12 +17,17 @@ void DriverGui::showLoginWindow(){
 void DriverGui::showMainMenu() {
     _mainMenuWindow = std::make_unique<MainMenu>(_game_client);
     QObject::connect(_mainMenuWindow.get(), &MainMenu::userDisconnection, this, &DriverGui::showLoginWindow);
-    QObject::connect(_mainMenuWindow.get(), &MainMenu::startChat, this, &DriverGui::showChatOutWindow);
+QObject::connect(_mainMenuWindow.get(), &MainMenu::startChat, this, [this](const std::string &destination) {
+    showChatOutWindow(destination);
+});
     _mainMenuWindow->show();
 }
 
-void DriverGui::showChatOutWindow() {
-    _chatOutWindow = std::make_unique<ChatOut>(_destination, _game_client);
+void DriverGui::showChatOutWindow(const std::string &destination) {
+    if (_chatOutWindow) {
+        _chatOutWindow->close();  // Ferme l'instance existante, si elle existe
+    }
+    _chatOutWindow = std::make_unique<ChatOut>(destination, _game_client); // Crée une nouvelle instance avec la bonne destination
     QObject::connect(_chatOutWindow.get(), &ChatOut::goBackToMenu, this, &DriverGui::showMainMenu);
     _chatOutWindow->show();
 }

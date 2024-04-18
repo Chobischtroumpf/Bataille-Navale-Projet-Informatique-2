@@ -13,6 +13,7 @@
 #include <QVBoxLayout>
 #include <QStackedWidget>
 #include <QTimer> // Peut servir pour ajouter un refresh automatisé tout les x temps
+#include <QTextEdit>
 #include <qt6/QtWidgets/qpushbutton.h>
 
 #include "chat_controller.hh"
@@ -20,16 +21,17 @@
 #include "message.hh"
 
 class ChatOut : public QWidget {
-    Q_OBJECT
+    Q_OBJECT  // Nécessaire pour les fonctionnalités MOC de Qt
 
 public:
-    ChatOut(const std::string &destination, std::shared_ptr<GameClient> gameClient);
+    explicit ChatOut(const std::string &destination, std::shared_ptr<GameClient> gameClient);
 
 signals:
-    // insérer les signaux ici
     void goBackToMenu();
+    void messageSent(const QString &msg);
+    void errorOccurred(const QString &error);  
 
-private slots: // en ref à Qt6
+private slots:
     void onBackToMenuButtonClicked();
 
 private:
@@ -37,5 +39,11 @@ private:
     std::shared_ptr<ChatView> _view;
     std::string _destination;
 
-    QPushButton *backToMenu;
+    QPushButton *backToMenu;  
+    QTextEdit *messageDisplay;
+    QLineEdit *messageInput;
+    QPushButton *sendButton;
+
+    void updateMessagesDisplay();
+    void sendMessage();
 };

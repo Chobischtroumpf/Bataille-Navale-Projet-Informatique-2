@@ -23,6 +23,6 @@ private:
 
 	void showLoginWindow();
 	void showMainMenu();
-    void showChatOutWindow();
+    void showChatOutWindow(const std::string &destination);
 
 };

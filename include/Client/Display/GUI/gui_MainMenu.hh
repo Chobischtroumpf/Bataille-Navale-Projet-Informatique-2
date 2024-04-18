@@ -48,12 +48,12 @@ public:
 
 signals:
     void userDisconnection();
-    void startChat();
+    void startChat(const std::string& destination);
 
 private slots: // en ref à Qt6
     void onCreatGameButtonClicked();
     void onAddFriendButtonClicked();
-	void onChatWithAFriendButtonClicked();
+	void onChatWithAFriendButtonClicked(const QString &destination);
 	void onJoinGameButtonClicked();
 	void onLogOutButtonClicked();
 
