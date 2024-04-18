@@ -13,7 +13,6 @@
 #include "faction_bombardement.hh"
 #include <QHBoxLayout>
 #include <QString>
-#include <QLabel>
 #include <QVBoxLayout>
 #include <string>
 
@@ -63,7 +62,11 @@ void BoardFrame::paintEvent(QPaintEvent *event) {
         } else {
           drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
         }
-      } else {
+      } 
+      else if (!_my_side && _parent->getPhase() == PLAYING && _parent->isAbilitySelected() && _last_hovered == BoardCoordinates(i, j)) {
+        drawCell(painter, i, j, CellType::HIT_SHIP);
+      }
+      else {
         drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
       }
     }
@@ -71,15 +74,17 @@ void BoardFrame::paintEvent(QPaintEvent *event) {
 }
 
 void BoardFrame::mousePressEvent(QMouseEvent *event) {
-  if (_parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected() && event->button() == Qt::LeftButton) {
+  if (_my_side && _parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected() && event->button() == Qt::LeftButton) {
     Ship ship = _parent->getSelectedShip().value();
     ship.setTopLeft(_last_hovered);
     _parent->placeShip(ship);
-  } else if (event->button() == Qt::RightButton) {
+    _parent->refreshButtons();
+  } else if (_my_side && event->button() == Qt::RightButton) {
     _parent->rotateShip();
+  } else if (!_my_side && _parent->getPhase() == PLAYING && _parent->isAbilitySelected()) {
+    _parent->fire(_last_hovered);
   }
 
-  _parent->refreshButtons();
   update();
 }
 
@@ -115,6 +120,8 @@ void BoardFrame::mouseMoveEvent(QMouseEvent *event) {
 
 void Game::clearLayout(QLayout* layout) {
   QLayoutItem *item;
+  if (layout == nullptr)
+    return;
   while ((item = layout->takeAt(0)) != nullptr) {
     if (item->layout()) {
       item->layout()->setParent(nullptr);
@@ -165,14 +172,24 @@ void Game::setupShipPlacement() {
     sizes->addWidget(button);
   }
   QHBoxLayout *change_ships = new QHBoxLayout();
+  QVBoxLayout *controls = new QVBoxLayout();
   QPushButton *change_ship = new QPushButton("Next >> (X)");
   QPushButton *change_ship_back = new QPushButton("(Z) << Previous");
+  QPushButton *rotate_ship = new QPushButton("Rotate (Space or R-Click)");
+  QLabel *place_ship = new QLabel("Place ship (Enter or L-Click)");
+  place_ship->setAlignment(Qt::AlignCenter);
+  place_ship->setStyleSheet("font-weight: bold;");
+  place_ship->setFixedHeight(30);
   connect(change_ship, &QPushButton::clicked, this, &Game::nextShip);
   connect(change_ship_back, &QPushButton::clicked, this, &Game::previousShip);
+  connect(rotate_ship, &QPushButton::clicked, this, &Game::rotateShip);
   change_ships->addWidget(change_ship_back);
   change_ships->addWidget(change_ship);
+  controls->addWidget(rotate_ship);
+  controls->addLayout(change_ships);
+  controls->addWidget(place_ship);
   _footer_layout->addLayout(sizes);
-  _footer_layout->addLayout(change_ships);
+  _footer_layout->addLayout(controls);
 
   _boards_layout = new QHBoxLayout();
   _boards_layout->addWidget(_my_frame);
@@ -211,16 +228,53 @@ void Game::setupGame() {
   _phase = PLAYING;
   clearLayout(_footer_layout);
 
-  QLabel *phase2Label = new QLabel("Game started");
+  QVBoxLayout *game_layout = new QVBoxLayout();
 
-  phase2Label->setAlignment(Qt::AlignCenter);
+  QHBoxLayout *ability_layout = new QHBoxLayout();
+  for (auto &ability : _board->player().getFaction().getSpecialAbilities()) {
+    QPushButton *button = new QPushButton(QString::fromStdString(ability.getName()));
+    connect(button, &QPushButton::clicked, [this, ability] {
+      _selected_ability = &ability;
+      updateAbilityInformations();
+    });
+    if (ability.getEnergyCost() > energy) {
+      button->setEnabled(false);
+    }
+    _abilities_buttons.push_back(button);
+    ability_layout->addWidget(button);
+  }
+  game_layout->addLayout(ability_layout);
 
-  // Add widgets to layout
-  _footer_layout->addWidget(phase2Label);
+  QHBoxLayout *information_layout = new QHBoxLayout();
+  QVBoxLayout *game_informations_layout = new QVBoxLayout();
+  QVBoxLayout *selected_ability_information_layout = new QVBoxLayout();
+
+  QLabel *energy_label = new QLabel("Energy: " + QString::number(energy));
+  QLabel *selected_ability_name = new QLabel("Selected ability: ");
+  QLabel *selected_ability_description = new QLabel("Description: ");
+  QLabel *selected_ability_energy = new QLabel("Energy cost: ");
+
+  _ability_informations.push_back(selected_ability_name);
+  _ability_informations.push_back(selected_ability_description);
+  _ability_informations.push_back(selected_ability_energy);
+
+  _game_informations.push_back(energy_label);
+
+  game_informations_layout->addWidget(energy_label);
+  selected_ability_information_layout->addWidget(selected_ability_name);
+  selected_ability_information_layout->addWidget(selected_ability_description);
+  selected_ability_information_layout->addWidget(selected_ability_energy);
+
+  information_layout->addLayout(game_informations_layout);
+  information_layout->addLayout(selected_ability_information_layout);
+
+  game_layout->addLayout(information_layout);
+
+  _footer_layout->addLayout(game_layout); 
 }
 
 Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_client(gameClient), _commander_mode(commander_mode) {
-  _game_client->Login("romek", "Romainlisa");
+  _game_client->Login("Jeffries", "Hitchcock");
   sleep(1);
 
   njson gameDetails = {
@@ -232,7 +286,7 @@ Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_
       {"maxPlayers", 2}};
 
   GameClient second_client("http://localhost:8080");
-  second_client.Login("STC", "Sashat");
+  second_client.Login("Fremont", "Hitchcock");
 
   std::future<std::string> session_id = _game_client->CreateGame(gameDetails);
 
@@ -269,6 +323,7 @@ Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_
   _their_frame->setFixedSize(500, 500);
 
   setupShipPlacement();
+  setupGame();
 }
 
 void Game::refreshButtons() {
@@ -316,6 +371,21 @@ void Game::update() {
   }
 }
 
+void Game::updateAbilityInformations() {
+  if (_selected_ability) {
+    for (auto &button : _abilities_buttons) {
+      if (button->text().toStdString() == _selected_ability->getName()) {
+        button->setStyleSheet("font-weight: bold;");
+      } else {
+        button->setStyleSheet("");
+      }
+    }
+  }
+  _ability_informations.at(0)->setText("Selected ability: " + QString::fromStdString(_selected_ability->getName()));
+  _ability_informations.at(1)->setText("Description: " + QString::fromStdString(_selected_ability->getDescription()));
+  _ability_informations.at(2)->setText("Energy cost: " + QString::number(_selected_ability->getEnergyCost()));
+}
+
 void Game::placeShip(Ship& ship) {
   _game_controller->placeShip(ship);
   _selected_ship = std::nullopt;
@@ -342,6 +412,10 @@ bool Game::isShipSelected() const {
   return _selected_ship.has_value();
 }
 
+bool Game::isAbilitySelected() const {
+  return _selected_ability != nullptr;
+}
+
 std::optional<Ship> Game::getSelectedShip() const {
   return _selected_ship;
 }
@@ -358,4 +432,13 @@ std::shared_ptr<ShipClassic> Game::getPossibleShips() const {
 
 Phase Game::getPhase() const {
   return _phase;
+}
+
+void Game::fire(BoardCoordinates coord) {
+  if (_selected_ability) {
+    if (_game_controller->fire(*_selected_ability, coord)) {
+      energy -= _selected_ability->getEnergyCost();
+      updateAbilityInformations();
+    }
+  }
 }

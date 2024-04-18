@@ -9,6 +9,7 @@
 #include <memory>
 #include <QPushButton>
 #include <QThread>
+#include <QLabel>
 #include <vector>
 #include <optional>
 
@@ -56,6 +57,7 @@ public:
   void handle_input(BoardCoordinates user_input);
 
   bool isShipSelected() const;
+  bool isAbilitySelected() const;
   std::optional<Ship> getSelectedShip() const;
   std::shared_ptr<ShipClassic> getPossibleShips() const;
   Phase getPhase() const;
@@ -65,6 +67,8 @@ public:
   void previousShip();
   void nextShip();
   void clearLayout(QLayout *layout);
+  void updateAbilityInformations();
+  void fire(BoardCoordinates coord);
 
 protected:
   void setupShipPlacement();
@@ -89,4 +93,9 @@ private:
   bool _commander_mode;
   QThread *_polling_thread;
   QTimer *_timer;
+  const SpecialAbility* _selected_ability = nullptr;
+  int energy = 0;
+  std::vector<QPushButton *> _abilities_buttons;
+  std::vector<QLabel *> _ability_informations;
+  std::vector<QLabel *> _game_informations;
 };
