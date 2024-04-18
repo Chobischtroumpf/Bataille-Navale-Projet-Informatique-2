@@ -33,6 +33,7 @@ void GameServer::initialize() {
         // Initialize the session manager
         auto& sessionManager = SessionManager::getInstance();
         ucout << "Session Manager initialized" << std::endl;
+
     } catch (const std::exception& e) {
         ucerr << "Failed to open listener: " << e.what() << std::endl;
     }
@@ -102,6 +103,10 @@ void GameServer::handleGet(http_request request) {
           handleJoinGame(path, request, response, sessionManager);
         }
 
+        // Handle the case for "/api/games/join" - Join game by session ID ( and user ID ) -- Protected
+        else if (path.find(U("/api/games/history")) != wstring::npos) {
+          handleGetHistory(path, request, response, sessionManager);
+        }
         // Handle the case for "/api/user/uid" - Retrieve user ID from database
         else if (path.find(U("/api/login/uid")) != wstring::npos ) {
           handleGetUID(path, request, response, sessionManager);
@@ -197,6 +202,48 @@ void GameServer::handleQueryGame(const string& path, http_request& request, njso
     // In case of exception, set an error value
     cerr << "Exception in api/games/query/: " << e.what() << endl;
   }
+}
+
+void GameServer::handleGetHistory(const string& path, http_request& request, njson response, SessionManager& sessionManager) {
+    try {
+        // Protected route - verify the AuthToken and retrieve the userId
+        auto userId = verifyAuthToken(request);
+
+        // If userId is empty, the token is invalid or missing
+        if (userId.empty()) {
+            response["error"] = "Invalid or missing AuthToken";
+            request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+            return; // Stop further processing
+        }
+
+        // Parsing query parameters
+        auto queryParams = uri::split_query(request.request_uri().query());
+        // Extracting sessionId from query parameters
+        auto sessionIdIt = queryParams.find(U("sessionId"));
+
+        // Verifying sessionId is provided
+        if (sessionIdIt != queryParams.end()) {
+            auto sessionId = sessionIdIt->second;
+
+            // Check if session exists ?
+
+            // Retrieve game history from the database using dbManager
+            
+            //njson gameHistory = dbManager.getGameHistory(to_utf8(sessionId));
+
+            // Add the game history to the response
+            //response["gameHistory"] = gameHistory;
+
+            request.reply(status_codes::OK, response.dump(), "application/json");
+        } else {
+            // Handle missing parameters
+            response["error"] = "Missing sessionId parameter";
+            request.reply(status_codes::BadRequest, response.dump(), "application/json");
+        }
+    } catch (const exception &e) {
+        // In case of exception, set an error value
+        cerr << "Exception in api/games/history/: " << e.what() << endl;
+    }
 }
 
 void GameServer::handleJoinGame(const string& path, http_request& request, njson response, SessionManager& sessionManager) {
@@ -533,7 +580,7 @@ void GameServer::handleCreateGameRequest( web::json::value& requestBody, const s
   njson gameDetails = njson::parse(requestBody[U("gameDetails")].serialize());
 
   // Create a new session
-  auto sessionId = sessionManager.createSession(userId, gameDetails);
+  auto sessionId = sessionManager.createSession(userId, gameDetails, this->dbManager);
   response["sessionId"] = sessionId;
   request.reply(status_codes::OK, response.dump(),"application/json");
 }

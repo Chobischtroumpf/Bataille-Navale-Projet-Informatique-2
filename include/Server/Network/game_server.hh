@@ -54,6 +54,6 @@ private:
     void handleGetChat(const string& path, http_request& request, njson response, SessionManager& sessionManager);
     void handleGetFriendList(const string& path, http_request& request, njson response, SessionManager& sessionManager);
     void handleGetNotification(const string& path, http_request& request, njson response, SessionManager& sessionManager);
-
+    void handleGetHistory(const string& path, http_request& request, njson response, SessionManager& sessionManager);
 
 };
