@@ -7,13 +7,10 @@
 #include <unordered_map>
 #include <vector>
 
+#include "session_manager.hh" // Include SessionManager header
 #include "token_handler.hh"
 #include "database.hh"
 #include "queries.hh"
-#include "session_manager.hh"
-#include "faction_bombardement.hh"
-#include "../Client/Display/Console/register_console.hh"
-#include "../Client/Display/Console/main_menu_console.hh"
 
 using namespace web;
 using namespace web::http;

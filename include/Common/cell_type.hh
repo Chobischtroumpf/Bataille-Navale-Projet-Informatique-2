@@ -15,6 +15,8 @@ enum CellType {
   WATER = 0,        //< water (my side) or unknown (assumed water, their side)
   OCEAN = IS_KNOWN, //< was empty target
 
+  SCANNED = IS_SHIP | IS_MINE | IS_KNOWN,
+
   // Mine:
   UNDAMAGED_MINE = IS_MINE,
   SCANNED_MINE = IS_MINE | IS_KNOWN,

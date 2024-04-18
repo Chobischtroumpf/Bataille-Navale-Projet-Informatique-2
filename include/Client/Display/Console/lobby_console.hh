@@ -4,9 +4,9 @@
 
 #include "console.hh"
 #include "display.hh"
-#include "lobby_view.hh"
 #include "game_client.hh"
 #include "lobby_controller.hh"
+#include "lobby_view.hh"
 #include "game_setting_console.hh"
 
 class LobbyConsole : public Console {
@@ -26,8 +26,6 @@ private:
   std::vector<std::string> _options_classic = {"Add Player to Lobby ⌨", "Start Game ⚑", "Refresh Player List 🔄", "Back to the Main Menu ☝"};
   std::vector<std::string>& _options = _options_classic;
   
-  // Invited player variables
-  bool _faction_chosen = false;
 
   // Game parameters
   int _max_players;
@@ -46,7 +44,7 @@ private:
   ReturnInput GoToInvitePlayer();
 
 public:
-  explicit LobbyConsole(const std::string &session_id,
+  explicit LobbyConsole(const std::string &sessionId,
                         std::shared_ptr<GameClient> client, bool admin = false);
 
   void displayFriends();
@@ -55,8 +53,6 @@ public:
   void displayError() override {}
   void update() override {}
   void loadParameters(std::shared_ptr<GameSettingConsole> gameSettingConsole);
-  void loadParameters(const std::string& session_id);
-
   ReturnInput handleInput() override;
   bool isCommanderMode() const;
   int getFaction() const;

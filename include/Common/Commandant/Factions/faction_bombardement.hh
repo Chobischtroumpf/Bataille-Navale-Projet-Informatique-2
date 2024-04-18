@@ -9,7 +9,7 @@
 #include "big_torpedo.hh"
 #include "aerial_strike.hh"
 
-class FactionBombardement : public virtual Faction
+class FactionBombardement : public Faction
 {
   public:
     // Constructor

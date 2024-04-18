@@ -4,10 +4,10 @@
 #include <string>
 #include <tuple>
 
-#include "../view.hh"
+#include "view.hh"
 #include "message.hh"
 
-#include "../Network/game_client.hh"
+#include "game_client.hh"
 
 class MainMenuView: public View {
 public:

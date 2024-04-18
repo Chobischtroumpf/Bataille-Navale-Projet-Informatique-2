@@ -2,7 +2,7 @@
 
 #include "special_ability.hh"
 
-class Probe : public virtual SpecialAbility
+class Probe : public SpecialAbility
 {
   public:
     Probe(int cost=4) : SpecialAbility{"Tir", "capacité de base, vise une case simple", cost, PROBE} {};

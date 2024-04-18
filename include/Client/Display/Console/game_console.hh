@@ -16,7 +16,6 @@
 
 #include "console.hh"
 #include "game_client.hh"
-#include "ship_classic.hh"
 #include "game_controller.hh"
 #include "not_implemented_error.hh"
 
@@ -30,14 +29,14 @@ enum GamePhase { PLACE_SHIP, WAIT_GAME, GAME, WAIT_TURN };
  * Draw both sides of the board as two grids side by side. */
 class GameConsole : public Console {
 private:
+  /** ConsoleBoardDisplay's methods must check they support this */
+  std::ostream &_out;                                //< Where to print
+  std::istream &_in;                                 //< Where to read
   std::shared_ptr<LocalBoardCommander> const _board; //< What to print
   std::shared_ptr<GameController> const
       _control; //< Who to inform of user actions
   std::shared_ptr<GameClient> const
       _game_client; //< Who to inform of user actions
-
-  std::ostream &_out;                                //< Where to print
-  std::istream &_in;                                 //< Where to read
 
   uint8_t const _letter_width; //< Number of character in a column name
   uint8_t const _number_width; //< Number of character in a row name
@@ -133,13 +132,13 @@ private:
   void handleShipPlacement();
 
   bool isValidInputFormat(const std::string &input) const;
-  bool isValidCoordinates(size_t row, size_t col) const;
+  bool isValidCoordinates(char row, int col) const;
 
   std::vector<string> createSelectShipSizePrompt(InputStatus status) const;
-  std::vector<string> createSelectNextRotateKey() const;
+  std::vector<string> createSelectNextRotateKey(InputStatus status) const;
   std::vector<string> createSelectShipPositionPrompt(InputStatus status) const;
-  std::vector<string> createAvailableAbilities() const;
-  std::vector<string> createAvailableBoats() const;
+  std::vector<string> createAvailableAbilities(InputStatus status) const;
+  std::vector<string> createAvailableBoats(InputStatus status) const;
 
 public:
   /** @param out: where to print

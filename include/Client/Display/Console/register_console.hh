@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "../console.hh"
-#include "../../Views/login_view.hh"
+#include "console.hh"
+#include "login_view.hh"
 
 class RegisterConsole : public Console {
 private:

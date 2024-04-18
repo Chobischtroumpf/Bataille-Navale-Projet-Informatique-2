@@ -33,7 +33,6 @@ void MainMenuConsole::displayFriends() {
         break;
       case 3:
         status = "○ offline";
-        break;
       case 4:
         status = "";
         color = "";
@@ -58,8 +57,8 @@ void MainMenuConsole::displayNotifications() {
                "═══════════╩═══════════════════════════════════════════════════"
                "════════════════╪\n";
   for (auto i : _view->getNotifications()) {
-    size_t start = 0;
-    size_t end = 1;
+    int start = 0;
+    int end = 1;
     std::cout << "║ \033[0;33m◈\033[0m ";
     while (i.length() > start*78) {
       std::string partial_i = i.substr(start*78, end*78);
@@ -118,7 +117,6 @@ void MainMenuConsole::displayOptions(int mode) {
             std::cout << "║ (6) Join game" << std::endl;
             std::cout << "║ (7) Log out ↆ" << std::endl;
             std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
-            break;
         case 6:
             std::cout << "║ Enter a username to send a message!" << std::endl;
             std::cout << "║ Type :'./exit' to back to the main menu"<< std::endl;

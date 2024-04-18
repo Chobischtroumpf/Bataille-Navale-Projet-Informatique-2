@@ -1,9 +1,9 @@
 #include "lobby_console.hh"
 
-LobbyConsole::LobbyConsole(const std::string &session_id,
+LobbyConsole::LobbyConsole(const std::string &sessionId,
                            std::shared_ptr<GameClient> client,
                            bool admin)
-    : _session_id(session_id) , _admin(admin) {
+    : _session_id(sessionId) , _admin(admin) {
   _view = std::make_shared<LobbyView>(client);
   _controller = std::make_shared<LobbyController>(client);
 }
@@ -16,19 +16,6 @@ void LobbyConsole::display() {
   }
   if (_admin) {
     displayOptions(_current_option);
-  } else {
-    if (!_faction_chosen && _commander_mode) {
-      displayOptions(2);
-    } else {
-      std::cout << "║ Please wait the game to start                            "
-                   "            ║"
-                << std::endl;
-
-      std::cout << "╚";
-      for (int i = 0; i < _width; i++)
-        std::cout << "═";
-      std::cout << "╝" << std::endl;
-    }
   }
 }
 
@@ -65,7 +52,7 @@ void LobbyConsole::displayFactions() {
 void LobbyConsole::displayOptions(int mode) {
   switch (mode) {
   case 0:
-    for (size_t i = 1; i < _options.size() + 1; i++) {
+    for (int i = 1; i < _options.size() + 1; i++) {
       std::cout << "║ (" << i << ") " << _options[i - 1]
                 << std::string(_width - (_options[i - 1].size() + 3), ' ')
                 << "║" << std::endl;
@@ -86,7 +73,6 @@ void LobbyConsole::displayOptions(int mode) {
 }
 
 ReturnInput LobbyConsole::handleStartGame() {
-  std::clog << "handleStartGame" << std::endl;
   if (_view->getUserInGame(_session_id).size() < 2) {
     return {ReturnInput::Screen::LOBBY, _session_id};
   }
@@ -95,7 +81,6 @@ ReturnInput LobbyConsole::handleStartGame() {
 }
 
 ReturnInput LobbyConsole::handleInvitePlayer() {
-  std::clog << "handleInvitePlayer" << std::endl;
   std::string input;
   std::cin >> input;
   if (input == "./exit"){
@@ -110,33 +95,26 @@ ReturnInput LobbyConsole::handleInvitePlayer() {
 }
 
 ReturnInput LobbyConsole::GoToInvitePlayer() {
-  std::clog << "GoToInvitePlayer" << std::endl;
   _current_option = 1;
   return {ReturnInput::Screen::LOBBY, _session_id};
 }
 
 ReturnInput LobbyConsole::refresh() {
-  std::clog << "refresh" << std::endl;
   _current_option = 0;
   return {ReturnInput::Screen::LOBBY, _session_id};
 }
 
 ReturnInput LobbyConsole::backToMainMenu() {
-  std::clog << "backToMainMenu" << std::endl;
   return {ReturnInput::Screen::MAIN_MENU, ""};
 }
 
 ReturnInput LobbyConsole::handleChoseFaction(int faction) {
-  std::clog << "handleChoseFaction" << std::endl;
   _selected_faction = faction - 1;
   _current_option = 0;
-  _faction_chosen = true;
-  _controller->sendFaction(_session_id, _selected_faction);
   return {ReturnInput::Screen::LOBBY, _session_id};
 }
 
 ReturnInput LobbyConsole::handleInput() {
-  std::clog << "handleInput" << std::endl;
   if (_admin) {
     int input;
     if (!_valid_input) {
@@ -188,27 +166,12 @@ ReturnInput LobbyConsole::handleInput() {
     case 2:
       return handleChoseFaction(input);
       break;
-    default:
-      _valid_input = false;
-      return {ReturnInput::Screen::LOBBY, _session_id};
     }
 
   } else {
-    if (!_faction_chosen && _commander_mode) {
-      int input;
-      std::cin >> input;
-      if (std::cin.fail()) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return {ReturnInput::Screen::LOBBY, _session_id};
-      }
-      return handleChoseFaction(input);
-    } else {
-      _view->waitGameStart(_session_id);
-      return {ReturnInput::Screen::GAME, _session_id};
-    }
+    _view->waitGameStart(_session_id);
+    return {ReturnInput::Screen::GAME, _session_id};
   }
-  return {ReturnInput::Screen::MAIN_MENU, ""};
 }
 
 void LobbyConsole::addPlayer(const std::string& playerName) {
@@ -221,12 +184,6 @@ void LobbyConsole::loadParameters(std::shared_ptr<GameSettingConsole> gameSettin
   _game_name = gameSettingConsole->getGameName();
   _commander_mode = gameSettingConsole->isCommanderMode();
   _options = _commander_mode ? _options_commander : _options_classic;
-}
-
-void LobbyConsole::loadParameters(const std::string& session_id) {
-  nlohmann::json game = _view->getGameState(session_id);
-  _commander_mode = game.at("gameState").at("gamemode") == "Commandant";
-  _game_name = game.at("sessionName").get<std::string>();
 }
 
 bool LobbyConsole::isCommanderMode() const {
