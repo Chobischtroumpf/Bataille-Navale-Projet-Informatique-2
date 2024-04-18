@@ -39,6 +39,10 @@ std::size_t LocalBoardCommander::height() const { return _my_board.size(); }
 GameMode LocalBoardCommander::mode() const { return _mode; }
 Player LocalBoardCommander::player() const { return _player; }
 
+void LocalBoardCommander::setPlayerFaction(Faction faction) {
+  _player.setFaction(faction);
+}
+
 CellType LocalBoardCommander::cellType(bool my_side,
                                        BoardCoordinates coordinates) const {
   return get(my_side, coordinates).type();
@@ -168,28 +172,33 @@ bool LocalBoardCommander::waitGame() {
   bool shipPlacementsFinished = false;
   std::string turn;
   while (!shipPlacementsFinished) {
-    auto FutureGameState = _client->QueryGameState(_session_id);
-    auto result = FutureGameState.get();
-    auto gameState = result.at("gameState");
-    turn = gameState.at("turn");
-    shipPlacementsFinished = gameState.at("_ship_placements_finished") == "true";
+    shipPlacementsFinished = isGameStarted();
     sleep(1);
   }
-  return true ? turn == "PLAYERONE" && _player.isPlayerOne()
-              || turn == "PLAYERTWO" && !_player.isPlayerOne() : false;
+  return fetchMyTurn();
+}
+
+bool LocalBoardCommander::isGameStarted() {
+  auto FutureGameState = _client->QueryGameState(_session_id);
+  auto result = FutureGameState.get();
+  auto gameState = result.at("gameState");
+  return gameState.at("_ship_placements_finished") == "true";
 }
 
 void LocalBoardCommander::waitTurn() {
   bool my_turn = false;
   while (!my_turn) {
-    auto FutureGameState = _client->QueryGameState(_session_id);
-    auto result = FutureGameState.get();
-    // Update the board if needed
-    auto gameState = result["gameState"];
-    my_turn = gameState["turn"] == "PLAYERONE" && _player.isPlayerOne() ||
-              gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne();
+    my_turn = fetchMyTurn();
     sleep(1);
   }
+}
+
+bool LocalBoardCommander::fetchMyTurn() {
+  auto FutureGameState = _client->QueryGameState(_session_id);
+  auto result = FutureGameState.get();
+  auto gameState = result["gameState"];
+  return gameState["turn"] == "PLAYERONE" && _player.isPlayerOne() ||
+         gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne();
 }
 
 Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {

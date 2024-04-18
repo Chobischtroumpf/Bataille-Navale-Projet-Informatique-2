@@ -17,7 +17,7 @@ int print(QApplication &qtApp){
 */
 
 int main(int argc, char* argv[]) {
-    if (std::strcmp(argv[1], "console") == 0) {
+    if (argc == 1) {
         Driver app(CONSOLE);
         // Lancement de l'application
         app.launchApp();

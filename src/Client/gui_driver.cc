@@ -31,3 +31,8 @@ void DriverGui::showChatOutWindow(const std::string &destination) {
     QObject::connect(_chatOutWindow.get(), &ChatOut::goBackToMenu, this, &DriverGui::showMainMenu);
     _chatOutWindow->show();
 }
+
+void DriverGui::showGameWindow() {
+    _gameWindow = std::make_unique<Game>(_game_client);
+    _gameWindow->show();
+}
