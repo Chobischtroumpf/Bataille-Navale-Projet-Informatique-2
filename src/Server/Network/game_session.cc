@@ -6,6 +6,7 @@ GameSession::GameSession(Queries& dbManager, const std::string& leader_id, const
     _participant_roles[leader_id] = PlayerRole::Leader;
     hasStarted = false;
     _session_name = game_details.at("name").get<std::string>();
+    std::clog << "GameSession created: " << _session_name << std::endl;
 }
 
 GameSession::~GameSession() {}
@@ -107,6 +108,8 @@ nlohmann::json GameSession::getSessionState() const {
     sessionState["participants"] = getParticipants();
 
     sessionState["hasStarted"] = _game_state.hasStarted();
+
+    std::clog << "Session State: " << _session_name << std::endl;
 
     sessionState["sessionName"] = _session_name;
     

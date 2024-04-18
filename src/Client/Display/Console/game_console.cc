@@ -245,7 +245,7 @@ std::vector<string> GameConsole::createSelectShipSizePrompt(InputStatus status) 
 {
   std::vector<string> prompt(_map_key.size() - 8, ""); // Add padding
   for (size_t i = 0; i < _board->shipsToPlace().size() - 2; i++)
-    prompt.emplace_back("\n");
+    prompt.emplace_back("");
   if (status == OK)
   {
     prompt.emplace_back("Select the size of the boat you want to place");
@@ -272,8 +272,8 @@ std::vector<string> GameConsole::createSelectNextRotateKey() const
     action_key.emplace_back("\x1B[31m Invalid input, please try again. \x1B[0m");
   }
 
-  for (size_t i = 0; i < _board->shipsToPlace().size() - 2; i++)
-    action_key.emplace_back("\n");
+  // for (size_t i = 0; i < _board->shipsToPlace().size() - 2; i++)
+  //   action_key.emplace_back("");
 
   action_key.emplace_back("<< P - Place | N - Next | R - Rotate | Q - Quit >>");
   return action_key;

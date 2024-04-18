@@ -194,6 +194,7 @@ void GameServer::handleQueryGame(const string& path, http_request& request, njso
 
         gameDetails["participants"] = sessionState["participants"];
         gameDetails["hasStarted"] = sessionState["hasStarted"];
+        gameDetails["sessionName"] = sessionState["sessionName"];
         response["gameDetails"] = gameDetails;
 
         request.reply(status_codes::OK, response.dump(), "application/json");
@@ -223,7 +224,7 @@ void GameServer::handleGetHistory(const string& path, http_request& request, njs
         // Parsing query parameters
         auto queryParams = uri::split_query(request.request_uri().query());
         // Extracting sessionId from query parameters
-        auto sessionIdIt = queryParams.find(U("sessionId"));
+        auto sessionIdIt = queryParams.find(U("session_id"));
 
         // Verifying sessionId is provided
         if (sessionIdIt != queryParams.end()) {

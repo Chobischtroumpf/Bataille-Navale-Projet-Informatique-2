@@ -225,6 +225,9 @@ void LobbyConsole::loadParameters(std::shared_ptr<GameSettingConsole> gameSettin
 
 void LobbyConsole::loadParameters(const std::string& session_id) {
   nlohmann::json game = _view->getGameState(session_id);
+  
+  std::clog << game.dump(2) << std::endl;
+
   _commander_mode = game.at("gameState").at("gamemode") == "Commandant";
   _game_name = game.at("sessionName").get<std::string>();
 }
