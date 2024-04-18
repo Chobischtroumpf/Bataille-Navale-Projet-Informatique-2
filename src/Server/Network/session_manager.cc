@@ -11,7 +11,7 @@ SessionManager::SessionManager() {
     // Constructor body, if needed
 }
 
-string SessionManager::createSession(const string& userId, const njson& gameDetails) {
+string SessionManager::createSession(const string& userId, const njson& gameDetails, Queries& dbManager) {
     std::lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
 
     // Generate a unique session ID
@@ -24,7 +24,7 @@ string SessionManager::createSession(const string& userId, const njson& gameDeta
     string session_id = ss.str();
 
     // Create and store the new session
-    sessions[session_id] = std::make_shared<GameSession>(userId, gameDetails);
+    sessions[session_id] = make_shared<GameSession>(dbManager, userId, gameDetails);
 
     return session_id;
 }

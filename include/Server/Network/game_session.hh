@@ -4,7 +4,8 @@
 #include <vector>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
-
+#include "database.hh"
+#include "queries.hh"
 #include "game_state.hh"
 
 class GameSession {
@@ -14,10 +15,14 @@ class GameSession {
     std::string _session_name;
 
     // // Bool indicating session state
-    // bool hasStarted;
+    bool hasStarted;
+
+    // Reference to the dbManager from the GameServer class
+    Queries& dbManager;
 
     // Game details (e.g., game type, rules)
     nlohmann::json _game_details;
+    nlohmann::json _game_history;
 
     // Roles of the participants
     std::string _leader_id; // Player A
@@ -30,9 +35,11 @@ class GameSession {
     // Instance of GameState to manage game logic
     GameState _game_state; 
  
+    void updateHistory();
+ 
   public:
     // Constructor with game leader userId and game details
-    GameSession(const std::string& leader_id, const nlohmann::json& gameDetails);
+    GameSession(Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails);
     virtual ~GameSession();
 
     // // GameSession Management
@@ -51,4 +58,7 @@ class GameSession {
     nlohmann::json getGameState(const std::string& userId) const;
 
     nlohmann::json getSessionState() const;
+
+    nlohmann::json getHistory() const;
+
 };
