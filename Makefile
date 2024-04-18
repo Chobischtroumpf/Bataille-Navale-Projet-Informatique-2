@@ -9,11 +9,11 @@ else
 endif
 
 all:
-	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=1
 	cmake --build build --config Release -- -j$(CORES)
 
 debug :
-	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
+	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=1
 	cmake --build build --config Debug -- -j$(CORES) 
 
 clean:
