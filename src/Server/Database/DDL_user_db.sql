@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS GameStates (
     id_game_state INTEGER PRIMARY KEY,
     id_player1 INTEGER NOT NULL,
     id_player2 INTEGER NOT NULL,
-    id_session VARCHAR(100) NOT NULL,
+    id_session VARCHAR(100) NOT NULL UNIQUE,
     game_state VARCHAR(1000) NOT NULL,
     state_date_time DATETIME NOT NULL,
     FOREIGN KEY (id_player1) REFERENCES Users(id_user)
