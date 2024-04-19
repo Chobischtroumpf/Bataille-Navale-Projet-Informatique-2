@@ -10,7 +10,9 @@ struct ReturnInput {
         LOBBY,
         LOGIN,
         REGISTER,
-        GAME_CREATION
+        GAME_CREATION,
+        REVIEW_MENU,
+        REVIEW_GAME
     };
 
     Screen screen;
