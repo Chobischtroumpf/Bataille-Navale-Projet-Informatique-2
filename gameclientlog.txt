@@ -3103,3 +3103,154 @@ Fetching conversation with user 4...
 Conversation fetch request sent.
 Conversation retrieved successfully.
 GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: EK20Dz4yuO72NkzkLKRUprvPNWZZdruH
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: ZlEqJvN40JTKTgVsOAb4RwGuiuhjJCOy
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: LiPkEqcBZVcG2XXDlYw4k1lqktATTeis
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: lVDNbDeYogsd2fGb2150Qdq2uOIdQOw2
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: xXEyqJkCNBFDG0EwZwvDzJuUl2V3FhT4
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: 3mpiTAIuZdXtapPZL0tbGLTSAEI7KpZC
+GameClient initialized with URI: http://localhost:8080
+Initiating registration request...
+Preparing to send POST request to path: /api/register
+Full URI: /api/register
+Sending POST request...
+Registration request sent.
+Received response status code: 200
+Registration successful. Auth Token: BcJiAhDplqJjEo0flqgSZXyqs7k3l8uL
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: 04TA0kPizmr4Bo9KCdss1QGiKO9ULttI
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: ka9jlMrKYHDnVzYoCeEtTazrMybnPsVX
+GameClient initialized with URI: http://localhost:8080
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: tS8CsmcgTDsD3eRvilMZj0hVvi7aBRYS
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: xTkP4kULNceFgVYm5ycdyjWTpSSOxGwV
+GameClient initialized with URI: http://localhost:8080
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 401
+Initiating login request...
+Preparing to send POST request to path: /api/login
+Full URI: /api/login
+Sending POST request...
+Login request sent.
+Received response status code: 200
+Auth Token: nGAgOkRrkTVoCJBw7DxuKhbZZTEnnY7A

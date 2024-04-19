@@ -6,11 +6,11 @@
 
 #include <QApplication>
 #include <QWidget>
+#include <QFont>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QLabel>
 #include <QSlider>
-#include <QComboBox>
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QStackedWidget>
@@ -32,21 +32,30 @@ signals:
 private slots: // en ref à Qt6
     void onBackToMenuButtonClicked();
     void onGoToLobbyButtonClicked();
+    void classicModeButtonClicked();
+    void commanderModeButtonClicked();
     void changeValueTimePerTurn();
     void changeValueTimePerGame();
     void changeValueTimeGame();
+    void allowSpectatorButtonClicked();
+    void notAllowSpectatorButtonClicked();
 
 private:
     std::shared_ptr<GameClient> gameClient;
+    std::string gameMode = "Classic";
+    std::string spectatorAllowed = "Yes";
+
     QLineEdit *gameName;
-    QComboBox *gameMode;
+    QPushButton *classicMode;
+    QPushButton *commanderMode;
     QSlider *timePerTurn;
     QSlider *timePerGame;
     QSlider *timeGame;
     QLabel *timePerTurnValue;
     QLabel *timePerGameValue;
     QLabel *timeGameValue;
-    QComboBox *spectatorAllowed;
+    QPushButton *allowSpectator;
+    QPushButton *notAllowSpectator;
 
     QPushButton *backToMenu;
     QPushButton *toLobby;
