@@ -12,7 +12,7 @@ class GameSession {
 public:
 
     // Constructor with game leader userId and game details
-    GameSession(Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails);
+    GameSession(std::string& sessionId, Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails);
     virtual ~GameSession();
 
     // GameSession Management
@@ -54,6 +54,8 @@ private:
 
     // Game details (e.g., game type, rules)
     nlohmann::json gameDetails;
+
+    std::string gamemode;
     
     nlohmann::json gameHistory;
     // Mapping from participant ID to their role

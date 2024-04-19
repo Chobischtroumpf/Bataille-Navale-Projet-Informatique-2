@@ -1,10 +1,11 @@
 #include "game_session.hh"
 #include "game_state.hh"
 
-GameSession::GameSession(Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails)
-    : dbManager(dbManager), leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
+GameSession::GameSession(std::string& sessionId, Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails)
+    : sessionId(sessionId), dbManager(dbManager), leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
     participantRoles[leaderId] = PlayerRole::Leader;
     hasStarted = false;
+    gamemode = gameDetails.at("gamemode");
 }
 
 GameSession::~GameSession() {}
@@ -16,7 +17,13 @@ void GameSession::startSession() {
 void GameSession::endSession() {
     // Cleanup or end game logic
 
-    //Here's the game history should be saved to database
+    gameHistory["gamemode"] = gamemode;
+
+    //Here's the game history saved to database
+    if (!opponentId.empty()) {
+       dbManager.addGameState(leaderId, opponentId, sessionId, gameHistory.dump());
+    }
+    
 }
 
 void GameSession::addParticipant(const std::string& participantId) {
@@ -90,7 +97,8 @@ bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move
         hasStarted = true;
         return true;
     } else if ( moveType == "EndGame") {
-        return false;
+        endSession();
+        return true;
         // Nothing yet
     }
 
