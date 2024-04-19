@@ -127,8 +127,7 @@ void Driver::displayChatScreen(std::string username) {
 void Driver::displayLobbyScreen(std::string gameId, bool admin) {
   if (_display_type == CONSOLE) {
     if (_current_screen == ReturnInput::Screen::GAME_CREATION) {
-      std::shared_ptr<LobbyConsole> lobby = std::make_shared<LobbyConsole>(gameId, getClient(), admin);
-      lobby->loadParameters(std::static_pointer_cast<GameSettingConsole>(_display));
+      std::shared_ptr<LobbyConsole> lobby = std::make_shared<LobbyConsole>(gameId, getClient(), admin, std::static_pointer_cast<GameSettingConsole>(_display));
       _display = std::move(lobby);
       _current_screen = ReturnInput::Screen::LOBBY;
     } else {

@@ -44,8 +44,10 @@ private:
   ReturnInput GoToInvitePlayer();
 
 public:
-  explicit LobbyConsole(const std::string &sessionId,
-                        std::shared_ptr<GameClient> client, bool admin = false);
+  explicit LobbyConsole(
+      const std::string &sessionId, std::shared_ptr<GameClient> client,
+      bool admin = false,
+      std::shared_ptr<GameSettingConsole> gameSettingConsole = nullptr);
 
   void displayFriends();
   void displayFactions();
@@ -53,6 +55,7 @@ public:
   void displayError() override {}
   void update() override {}
   void loadParameters(std::shared_ptr<GameSettingConsole> gameSettingConsole);
+  void loadParameters(const std::string &sessionId);
   ReturnInput handleInput() override;
   bool isCommanderMode() const;
   int getFaction() const;

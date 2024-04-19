@@ -2,10 +2,15 @@
 
 LobbyConsole::LobbyConsole(const std::string &sessionId,
                            std::shared_ptr<GameClient> client,
-                           bool admin)
+                           bool admin, std::shared_ptr<GameSettingConsole> gameSettingConsole)
     : _session_id(sessionId) , _admin(admin) {
   _view = std::make_shared<LobbyView>(client);
   _controller = std::make_shared<LobbyController>(client);
+  if (gameSettingConsole != nullptr) {
+    loadParameters(gameSettingConsole);
+  } else {
+    loadParameters(sessionId);
+  }
 }
 
 void LobbyConsole::display() {
@@ -184,6 +189,12 @@ void LobbyConsole::loadParameters(std::shared_ptr<GameSettingConsole> gameSettin
   _game_name = gameSettingConsole->getGameName();
   _commander_mode = gameSettingConsole->isCommanderMode();
   _options = _commander_mode ? _options_commander : _options_classic;
+}
+
+void LobbyConsole::loadParameters(const std::string& session_id) {
+  nlohmann::json game = _view->getGameState(session_id);
+  _commander_mode = game.at("gameState").at("gamemode") == "Commandant";
+  _game_name = game.at("sessionName").get<std::string>();
 }
 
 bool LobbyConsole::isCommanderMode() const {
