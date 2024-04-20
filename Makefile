@@ -9,8 +9,12 @@ else
 endif
 
 all:
-	@cmake -S . -B build
+	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=1
 	cmake --build build --config Release -- -j$(CORES)
+
+debug :
+	@cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=1
+	cmake --build build --config Debug -- -j$(CORES) 
 
 clean:
 	@rm -rf build
@@ -19,7 +23,9 @@ fclean: clean
 	@rm -f server
 	@rm -f battleship
 
-run: all
-	./server &
+run_debug: debug
+	./server
 
 re: clean all
+
+re_debug: clean debug

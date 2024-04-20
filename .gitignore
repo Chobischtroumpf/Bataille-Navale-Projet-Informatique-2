@@ -31,9 +31,11 @@
 *.out
 *.app
 battleship
+server
 
 # Other
 # Makefile
+gameclientlog.txt
 test.cc
 gen_board.hh
 */*.json
@@ -57,6 +59,8 @@ build/*
 # *.log
 *.aux
 *.toc
+
+# vscode files
 .vscode
 .cache
-*.code-workspace
+**.code-workspace

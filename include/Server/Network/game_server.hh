@@ -35,4 +35,25 @@ private:
     std::shared_ptr<DataBase> database; // DataBase instance
     std::unordered_map<std::string, std::vector<std::string>> users_notifications;
     Queries dbManager; // Database interface instance
+
+    // Post requests handlers
+    void handleCreateGameRequest( web::json::value& requestBody, const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleMoveRequest( web::json::value& requestBody, const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleAddFriendRequest( web::json::value& requestBody, const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleLoginRequest( web::json::value& requestBody, const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleRegisterRequest( web::json::value& requestBody, const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleMessageSendRequest( web::json::value& requestBody, const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleAddNotificationRequest( web::json::value& requestBody, const string& path, http_request& request, njson response, SessionManager& sessionManager);
+
+    // Get requests handlers
+    void handleGetGames(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleQueryGame(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleJoinGame(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleGetUID(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleGetUsername(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleGetChat(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleGetFriendList(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleGetNotification(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+    void handleGetHistory(const string& path, http_request& request, njson response, SessionManager& sessionManager);
+
 };

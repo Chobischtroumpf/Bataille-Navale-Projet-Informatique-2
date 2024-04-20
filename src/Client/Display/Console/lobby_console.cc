@@ -2,10 +2,15 @@
 
 LobbyConsole::LobbyConsole(const std::string &sessionId,
                            std::shared_ptr<GameClient> client,
-                           bool admin)
+                           bool admin, std::shared_ptr<GameSettingConsole> gameSettingConsole)
     : _session_id(sessionId) , _admin(admin) {
   _view = std::make_shared<LobbyView>(client);
   _controller = std::make_shared<LobbyController>(client);
+  if (gameSettingConsole != nullptr) {
+    loadParameters(gameSettingConsole);
+  } else {
+    loadParameters(sessionId);
+  }
 }
 
 void LobbyConsole::display() {
@@ -16,19 +21,6 @@ void LobbyConsole::display() {
   }
   if (_admin) {
     displayOptions(_current_option);
-  } else {
-    if (!_faction_chosen) {
-      displayOptions(2);
-    } else {
-      std::cout << "║ Please wait the game to start                            "
-                   "            ║"
-                << std::endl;
-
-      std::cout << "╚";
-      for (int i = 0; i < _width; i++)
-        std::cout << "═";
-      std::cout << "╝" << std::endl;
-    }
   }
 }
 
@@ -124,7 +116,6 @@ ReturnInput LobbyConsole::backToMainMenu() {
 ReturnInput LobbyConsole::handleChoseFaction(int faction) {
   _selected_faction = faction - 1;
   _current_option = 0;
-  _faction_chosen = true;
   return {ReturnInput::Screen::LOBBY, _session_id};
 }
 
@@ -183,19 +174,8 @@ ReturnInput LobbyConsole::handleInput() {
     }
 
   } else {
-    if (!_faction_chosen) {
-      int input;
-      std::cin >> input;
-      if (std::cin.fail()) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return {ReturnInput::Screen::LOBBY, _session_id};
-      }
-      return handleChoseFaction(input);
-    } else {
-      _view->waitGameStart(_session_id);
-      return {ReturnInput::Screen::GAME, _session_id};
-    }
+    _view->waitGameStart(_session_id);
+    return {ReturnInput::Screen::GAME, _session_id};
   }
 }
 

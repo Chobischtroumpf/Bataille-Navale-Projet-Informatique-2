@@ -28,8 +28,8 @@ bool LobbyView::waitGameStart(const std::string& sessionId){
     return true;
 }
 
-nlohmann::json LobbyView::getGameState(const std::string& sessionId){
-    auto futureMessages = gameClient->QueryGameState(sessionId);
+nlohmann::json LobbyView::getGameState(const std::string& session_id){
+    auto futureMessages = gameClient->QueryGameState(session_id);
     auto messagesJson = futureMessages.get();
     return messagesJson;
 }

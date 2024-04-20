@@ -1,13 +1,23 @@
 cmake_minimum_required(VERSION 3.16) # minimum version of CMake
 
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message("Debug build.")
+    add_compile_options(-g -pedantic -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -DOUTPUT_DEBUG=1)
+    add_link_options(-fsanitize=address,undefined)
+    else(CMAKE_BUILD_TYPE STREQUAL "Release")
+    message("Release build.")
+    add_compile_options(-O3 -pedantic -Wall -O3)
+endif()
+
 # Specify the C++ compiler
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../)
 set(CMAKE_CXX_COMPILER g++-10)
-# cmake_policy(SET CMP0135 NEW) # Silence the warning for FetchContent
+# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add compile options
-add_compile_options(-std=c++20 -pedantic -g)
+add_compile_options(-std=c++20)
 project(Battleship) # The project name
 
 # Add fetch content macro to fetch external libraries from their repo

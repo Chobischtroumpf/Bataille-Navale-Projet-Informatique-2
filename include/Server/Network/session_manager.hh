@@ -23,7 +23,7 @@ public:
     static SessionManager& getInstance();
 
     // Method to create a new game session, returns the session ID
-    string createSession( const string& userId, const njson& gameDetails);
+    string createSession( const string& userId, const njson& gameDetails, Queries& dbManager);
 
     // Method to retrieve a session by its ID
     shared_ptr<GameSession> getSession(const string& sessionId);
@@ -43,4 +43,5 @@ private:
 
     // Container for active sessions
     unordered_map<string, shared_ptr<GameSession>> sessions;
+    
 };

@@ -1,9 +1,16 @@
 #include "driver.hh"
+#include "chat_console.hh"
+#include "game_console.hh"
 #include "faction_sonar.hh"
-#include "faction_bombardement.hh"
+#include "lobby_console.hh"
+#include "login_console.hh"
 #include "faction_mines.hh"
+#include "register_console.hh"
+#include "main_menu_console.hh"
+#include "game_setting_console.hh"
+#include "faction_bombardement.hh"
 
-Driver::Driver(DisplayType display_type) : _display_type{display_type}, _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
+Driver::Driver(DisplayType display_type, std::string server_address) : _display_type{display_type}, _game_client{std::make_shared<GameClient>(server_address)} {}
 
 Driver::~Driver() {}
 
@@ -60,19 +67,19 @@ void Driver::displayGameScreen(std::string gameId) {
         std::static_pointer_cast<LobbyConsole>(_display)->getFaction();
     if (commander_mode)
       switch (faction) {
-      case 0:
+      case 1:
         player1.setFaction(FactionBombardement());
         break;
-      case 1:
+      case 2:
         player1.setFaction(FactionSonar());
         break;
-      case 2:
+      case 3:
         player1.setFaction(FactionMines());
         break;
       }
     else
       player1.setFaction(FactionClassique());
-    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC, gameId);
+    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, GameMode::CLASSIC, gameId);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());
     _current_screen = ReturnInput::Screen::GAME;
@@ -120,14 +127,11 @@ void Driver::displayChatScreen(std::string username) {
 void Driver::displayLobbyScreen(std::string gameId, bool admin) {
   if (_display_type == CONSOLE) {
     if (_current_screen == ReturnInput::Screen::GAME_CREATION) {
-      std::shared_ptr<LobbyConsole> lobby = std::make_shared<LobbyConsole>(gameId, getClient(), admin);
-      lobby->loadParameters(std::static_pointer_cast<GameSettingConsole>(_display));
+      std::shared_ptr<LobbyConsole> lobby = std::make_shared<LobbyConsole>(gameId, getClient(), admin, std::static_pointer_cast<GameSettingConsole>(_display));
       _display = std::move(lobby);
       _current_screen = ReturnInput::Screen::LOBBY;
     } else {
-      std::shared_ptr<LobbyConsole> lobby = std::make_shared<LobbyConsole>(gameId, getClient(), admin);
-      lobby->loadParameters(gameId);
-      _display = std::move(lobby);
+      _display = std::make_shared<LobbyConsole>(gameId, getClient(), admin);
       _current_screen = ReturnInput::Screen::LOBBY;
     }
   } else {

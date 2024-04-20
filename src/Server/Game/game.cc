@@ -110,8 +110,6 @@ nlohmann::json Game::getState(PlayerRole player) {
   }else{
     game_json["turn"] = "PLAYERTWO";
   }
-
-  game_json["gamemode"] = _mode_commandant ? "Commandant" : "Classic";
   
 
   return game_json;

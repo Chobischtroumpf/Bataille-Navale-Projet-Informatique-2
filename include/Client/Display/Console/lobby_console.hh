@@ -26,8 +26,6 @@ private:
   std::vector<std::string> _options_classic = {"Add Player to Lobby ⌨", "Start Game ⚑", "Refresh Player List 🔄", "Back to the Main Menu ☝"};
   std::vector<std::string>& _options = _options_classic;
   
-  // Invited player variables
-  bool _faction_chosen = false;
 
   // Game parameters
   int _max_players;
@@ -46,8 +44,10 @@ private:
   ReturnInput GoToInvitePlayer();
 
 public:
-  explicit LobbyConsole(const std::string &sessionId,
-                        std::shared_ptr<GameClient> client, bool admin = false);
+  explicit LobbyConsole(
+      const std::string &sessionId, std::shared_ptr<GameClient> client,
+      bool admin = false,
+      std::shared_ptr<GameSettingConsole> gameSettingConsole = nullptr);
 
   void displayFriends();
   void displayFactions();
@@ -55,8 +55,7 @@ public:
   void displayError() override {}
   void update() override {}
   void loadParameters(std::shared_ptr<GameSettingConsole> gameSettingConsole);
-  void loadParameters(const std::string& session_id);
-
+  void loadParameters(const std::string &sessionId);
   ReturnInput handleInput() override;
   bool isCommanderMode() const;
   int getFaction() const;

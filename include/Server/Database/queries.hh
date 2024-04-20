@@ -154,6 +154,31 @@ public:
      */
     QueryResult getUserFriends(const std::string &id_user);
 
+    /**
+     * Add a new game state to the db.
+     * @param id_player1 The ID of the player who's turn it is.
+     * @param id_player2 The ID of the other player.
+     * @param id_session The ID of the game session.
+     * @param game_state The state of the game.
+     * @return true if succefull, false otherwise.
+     */
+    bool addGameState(const std::string &id_player1, const std::string &id_player2,const std::string &id_session, const std::string &game_state);
+
+    /**
+     * Get all game states from a game session.
+     * @param id_session The ID of the game session.
+     * @return A QueryResult containing the the gamestates of a game session class by time or an error message if something failed.
+     */
+    QueryResult getGameStates(const std::string &id_session);
+
+    /**
+     * Delete all game states from a game session.
+     * @param id_session The ID of the game session.
+     * @return A QueryResult containing an error message if something failed.
+     */
+    QueryResult deleteGameStates(const std::string &id_session);
+
+
     // for test only
     void printSelectUsers();
     void printSelectRelations();

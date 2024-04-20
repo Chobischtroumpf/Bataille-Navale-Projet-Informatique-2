@@ -7,6 +7,6 @@
  */
 class Controller {
 public:
-  virtual void sendData(std::string data) {}
+  virtual void sendData(std::string) {}
   virtual ~Controller() = default;
 };

@@ -1,10 +1,9 @@
 #include "game_session.hh"
 #include "game_state.hh"
 
-GameSession::GameSession(const std::string& leaderId, const nlohmann::json& gameDetails)
-    : leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
+GameSession::GameSession(Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails)
+    : dbManager(dbManager), leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
     participantRoles[leaderId] = PlayerRole::Leader;
-    _session_name = gameDetails.at("name").get<std::string>();
     hasStarted = false;
 }
 
@@ -16,6 +15,8 @@ void GameSession::startSession() {
 
 void GameSession::endSession() {
     // Cleanup or end game logic
+
+    //Here's the game history should be saved to database
 }
 
 void GameSession::addParticipant(const std::string& participantId) {
@@ -77,11 +78,11 @@ bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move
     // Check if the move object contains "moveType" 
     if (!move.contains("moveType")) {
         // If "moveType" property is missing, return false indicating error
-        std::cerr << "Invalid move protocol: no move property on move object" << std::endl;
+        std::cerr << "Invalid move protocol: no moveType property on move object" << std::endl;
         return false;
     }
 
-    std::string moveType = move.at("moveType");
+    std::string moveType = move["moveType"];
 
     // Check if the moveType is "StartGame" or "EndGame"
     if (moveType == "StartGame") {
@@ -94,7 +95,12 @@ bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move
     }
 
     // Call makeMove on the gameState and return the result
-    return gameState.makeMove(playerRole, move);
+    auto result = gameState.makeMove(playerRole, move);
+
+    // Update the state history if the move was successful
+    if (result) { updateHistory(); }
+
+    return result;
 }
 
 nlohmann::json GameSession::getSessionState() const {
@@ -104,8 +110,20 @@ nlohmann::json GameSession::getSessionState() const {
     sessionState["participants"] = getParticipants();
 
     sessionState["hasStarted"] = this->hasStarted;
-
-    sessionState["sessionName"] = _session_name;
     
     return sessionState;
+}
+
+// Returns the game's history
+nlohmann::json GameSession::getHistory() const {
+    return gameHistory;
+}
+
+// Updates the game history by appending the current game state
+void GameSession::updateHistory() {
+    // Get the current game state
+    auto state = gameState.getGameState(PlayerRole::Spectator);
+
+    // Append the current game state to the game history
+    gameHistory["states"].push_back(state);
 }
