@@ -528,15 +528,16 @@ void GameConsole::handleShipSize() {
   _out << "\x1b[0m";
   if (sizebuf.at(0) < '1' || sizebuf.at(0) > '5') {
     _last_input = ERR;
-  } else {
-    int size = sizebuf.at(0) - '0';
-    _ship_size = size;
+  } else if (_board->isShipAvailable(sizebuf.at(0) - '0')) {
+    _ship_size = sizebuf.at(0) - '0';
     if (_board->mode() == GameMode::COMMANDER) {
-    _possible_ships = std::make_unique<ShipCommander>(size);
+    _possible_ships = std::make_unique<ShipCommander>(_ship_size);
     } else {
-      _possible_ships = std::make_unique<ShipClassic>(size);
+      _possible_ships = std::make_unique<ShipClassic>(_ship_size);
     }
     _last_input = OK;
+  } else {
+    _last_input = ERR;
   }
   std::cin.clear();
 }
