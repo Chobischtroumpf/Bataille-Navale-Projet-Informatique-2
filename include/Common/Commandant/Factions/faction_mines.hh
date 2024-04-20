@@ -8,7 +8,7 @@
 #include "piercing_torpedo.hh"
 #include "aerial_strike.hh"
 
-class FactionMines : public Faction
+class FactionMines : public virtual Faction
 {
   public:
     // Constructor

@@ -12,31 +12,31 @@ SessionManager::SessionManager() {
 }
 
 string SessionManager::createSession(const string& userId, const njson& gameDetails, Queries& dbManager) {
-    lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
+    std::lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
 
     // Generate a unique session ID
-    stringstream ss;
-    random_device rd;
+    std::stringstream ss;
+    std::random_device rd;
     for (int i = 0; i < 8; ++i) { // Generate a random 8-character hex string
-        ss << hex << rd();
+        ss << std::hex << rd();
     }
 
-    string sessionId = ss.str();
+    string session_id = ss.str();
 
     // Create and store the new session
-    sessions[sessionId] = make_shared<GameSession>(dbManager, userId, gameDetails);
+    sessions[session_id] = make_shared<GameSession>(dbManager, userId, gameDetails);
 
-    return sessionId;
+    return session_id;
 }
-bool SessionManager::sessionExists(const string& sessionId) {
-    auto it = sessions.find(sessionId);
+bool SessionManager::sessionExists(const string& session_id) {
+    auto it = sessions.find(session_id);
     return it != sessions.end();
 }
 
-shared_ptr<GameSession> SessionManager::getSession(const string& sessionId) {
-    lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
+shared_ptr<GameSession> SessionManager::getSession(const string& session_id) {
+    std::lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
 
-    auto it = sessions.find(sessionId);
+    auto it = sessions.find(session_id);
     if (it != sessions.end()) {
         return it->second;
     } else {
@@ -45,10 +45,10 @@ shared_ptr<GameSession> SessionManager::getSession(const string& sessionId) {
     }
 }
 
-void SessionManager::endSession(const string& sessionId) {
-    lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
+void SessionManager::endSession(const string& session_id) {
+    std::lock_guard<mutex> guard(sessionsMutex); // Lock for thread safety
 
-    auto it = sessions.find(sessionId);
+    auto it = sessions.find(session_id);
     if (it != sessions.end()) {
         // Properly end the session
         it->second->endSession(); 

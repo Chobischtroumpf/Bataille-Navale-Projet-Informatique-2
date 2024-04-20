@@ -19,6 +19,8 @@
 #include "game_view.hh"
 #include "gui.hh"
 #include "local_board_commander.hh"
+#include "ship_classic.hh"
+#include "ship_commander.hh"
 
 enum Phase { PLACING_SHIPS, WAITING_GAME, PLAYING, WAITING_TURN, FINISHED };
 

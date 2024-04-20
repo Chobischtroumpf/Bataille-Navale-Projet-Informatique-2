@@ -2,10 +2,12 @@
 ## Build le projet
 ### Dependencies
 Pour faire fonctionner le projet, vous aurez besoin des libraires suivantes:
+ - Make · `sudo apt install make`
  - CMake · `sudo apt install cmake`
  - CppRestSDK · `sudo apt install libcpprest-dev`
  - libSQLite3-dev · `sudo apt install libsqlite3-dev`
  - libsodium-dev · `sudo apt install libsodium-dev`
+ - qt6 · `sudo apt install qt6-base-dev`
 
 Pour vous aider à installer les dépendances, un script est là pour simplifier la tache si vous êtes sur un système basé sur Debian:
 ```sh
@@ -14,7 +16,16 @@ Pour vous aider à installer les dépendances, un script est là pour simplifier
 ```
 
 ### Compilation
-Pour build le projet, vous entrez les commandes suivantes:
+Pour build le projet, vous avez deux options, soit vous compilez le projet en mode "Release" et pour cela il suffit de faire la commande suivante:
+```sh
+> make
+```
+Soit vous le compilez en mode "Debug" et il suffit alors de faire cette commande ci:
+```sh
+> make debug
+```
+
+Si pour l'une ou l'autre raison les commandes au dessus ne fonctionnent pas, vous pouvez essayer de le compiler en faisant la manipulation suivante:
 ```sh
 > mkdir build && cd build
 > cmake ..

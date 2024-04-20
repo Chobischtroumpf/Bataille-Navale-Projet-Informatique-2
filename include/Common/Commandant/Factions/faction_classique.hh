@@ -1,10 +1,9 @@
 #pragma once
 
 #include "faction.hh"
-#include "special_ability.hh"
 #include "torpedo.hh"
 
-class FactionClassique : public Faction
+class FactionClassique : public virtual Faction
 {
   public:
     // Constructor
