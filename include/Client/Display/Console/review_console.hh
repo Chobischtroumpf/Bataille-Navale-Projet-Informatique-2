@@ -19,7 +19,7 @@ class ReviewConsole: public Console{
         std::shared_ptr<ReviewController> const _controller;
     
     public:
-   /** 
+    /** 
     * Contructor
     * @param out: where to print
     * @param in: from where to read
@@ -39,8 +39,11 @@ class ReviewConsole: public Console{
     */
     ReturnInput handleInput() override ;
 
+    /**
+    * Handle the display.
+    */
     void display() override;
-    
+
     void displayError() override {}
     void update() override {}
 

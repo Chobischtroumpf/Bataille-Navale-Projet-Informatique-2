@@ -1,7 +1,6 @@
 #include "review_controller.hh"
 #include "board_coordinates.hh"
 #include "cell_type.hh"
-#include "local_board_commander.hh"
 
 
 ReviewController::ReviewController(std::shared_ptr<GameClient> client)

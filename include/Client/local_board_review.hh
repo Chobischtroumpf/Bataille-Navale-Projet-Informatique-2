@@ -62,6 +62,9 @@ class LocalBoardReview : public GameView {
 
         const std::string getSessionId();
 
+        CellType best(CellType lhs, CellType rhs);
+
+
         bool isFinished() const override{return false;}
         bool isVictory() const override{return false;}
         CellType cellType(bool my_side, BoardCoordinates coordinates) const override{CellType a; return a;}

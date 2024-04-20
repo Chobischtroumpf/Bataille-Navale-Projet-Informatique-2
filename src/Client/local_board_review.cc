@@ -60,3 +60,12 @@ std::size_t LocalBoardReview::height() const {
 const std::string LocalBoardReview::getSessionId(){
     return _session_id;
 }
+
+CellType LocalBoardReview::best(CellType lhs, CellType rhs) {
+  if (!(lhs & UNDAMAGED_SHIP) || !(rhs & UNDAMAGED_SHIP)) {
+    std::cerr << "BoardView::best(" << static_cast<unsigned>(lhs) << ", "
+              << static_cast<unsigned>(rhs) << ")" << std::endl;
+    throw std::logic_error("BoardView::best called with non-ship types");
+  }
+  return lhs <= rhs ? lhs : rhs;
+}

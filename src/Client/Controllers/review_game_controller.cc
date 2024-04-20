@@ -8,6 +8,7 @@ ReviewGameController::ReviewGameController(std::shared_ptr<GameClient> client, s
     : _client{client},_board{std::move(board)} {
         _current_move = 0;
         requestMovesList();
+        initLocalBoard();
     }
 
 void ReviewGameController::requestMovesList(){
