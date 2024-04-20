@@ -39,5 +39,6 @@ void DriverGui::showGameWindow() {
 void DriverGui::showGameSettingWindow() {
     _gameSettingWindow = std::make_unique<GameSetting>(_game_client);
     QObject::connect(_gameSettingWindow.get(), &GameSetting::goBackToMenu, this, &DriverGui::showMainMenu);
+    //QObject::connect(_gameSettingWindow.get(), &GameSetting::goToLobby, this, &DriverGui::showLobbyWindow);
     _gameSettingWindow->show();
 }

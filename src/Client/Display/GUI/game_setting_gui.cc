@@ -31,6 +31,7 @@ GameSetting::GameSetting(std::shared_ptr<GameClient> gameClient): gameClient(gam
     gameName = new QLineEdit(this);
     gameName->setFixedSize(380, 40);
     gameName->setFont(font);
+    gameName->setPlaceholderText(QString("Type here"));
     mainLayout->addWidget(gameName, 0, 1, 1, 2, Qt::AlignHCenter);
 
     classicMode = new QPushButton("Classic", this);
@@ -92,6 +93,10 @@ GameSetting::GameSetting(std::shared_ptr<GameClient> gameClient): gameClient(gam
     timeGameValue = new QLabel("600 second      ", this);
     timeGameValue->setFont(font);
     mainLayout->addWidget(timeGameValue, 4, 3, 1, 1, Qt::AlignRight);
+    noGameNameWarning = new QLabel("", this);
+    noGameNameWarning->setFont(font);
+    noGameNameWarning->setStyleSheet("color: red;");
+    mainLayout->addWidget(noGameNameWarning, 0, 3, 1, 1, Qt::AlignRight);
 
     backToMenu = new QPushButton("Back", this);
     backToMenu->setFont(font);
@@ -112,8 +117,21 @@ void GameSetting::onBackToMenuButtonClicked() {
 }
 
 void GameSetting::onGoToLobbyButtonClicked() {
-    //emit goToLobby();
-    this->close();
+    std::string gameNameString = gameName->text().toStdString();
+
+    if (gameNameString == "") {
+        noGameNameWarning->setText("No Game Name !");
+    } else {
+        njson gameDetails = {{"name", gameNameString},
+                             {"gamemode", gameMode},
+                             {"gameTimeLimit", timePerTurn->value() * 5},
+                             {"playerTimeLimit", timePerGame->value() * 10},
+                             {"turnTimeLimit", timeGame->value() * 10},
+                             {"maxPlayers", ((spectatorAllowed == "Yes") ? 8 : 2)}
+                             };
+        //emit goToLobby();
+        //this->close();
+    }
 }
 
 void GameSetting::classicModeButtonClicked() {

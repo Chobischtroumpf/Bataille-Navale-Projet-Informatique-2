@@ -46,6 +46,7 @@ private:
     std::string spectatorAllowed = "Yes";
 
     QLineEdit *gameName;
+    QLabel *noGameNameWarning;
     QPushButton *classicMode;
     QPushButton *commanderMode;
     QSlider *timePerTurn;
