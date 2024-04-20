@@ -285,23 +285,15 @@ Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_
       {"turnTimeLimit", 70},
       {"maxPlayers", 2}};
 
-  GameClient second_client("http://localhost:8080");
-  second_client.Login("Fremont", "Hitchcock");
-
   std::future<std::string> session_id = _game_client->CreateGame(gameDetails);
 
   std::string session_id_str = session_id.get();
-  
-  sleep(1);
-
-  second_client.JoinGame(session_id_str);
-
+  std::string ouifqsf;
+  std::cin >> ouifqsf;
   nlohmann::json req;
   req["moveType"] = "StartGame";
   _game_client->MakeMove(session_id_str, req);
 
-  sleep(1);
-  
   _board= std::make_shared<LocalBoardCommander>(
       _game_client, Player(), GameMode::COMMANDER, session_id_str);
   _game_controller = std::make_shared<GameController>(_board);
@@ -323,7 +315,6 @@ Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_
   _their_frame->setFixedSize(500, 500);
 
   setupShipPlacement();
-  setupGame();
 }
 
 void Game::refreshButtons() {
@@ -332,24 +323,26 @@ void Game::refreshButtons() {
     int count = _board->shipsToPlace().at(size);
     if (count == 0) {
       button->setEnabled(false);
-    } else {
-      std::string new_label;
-      switch (size) {
-        case 2:
-          new_label = "2. Destroyer (x" + std::to_string(count) + ")";
-          break;
-        case 3:
-          new_label = "3. Cruiser (x" + std::to_string(count) + ")";
-          break;
-        case 4:
-          new_label = "4. Battleship (x" + std::to_string(count) + ")";
-          break;
-        case 5:
-          new_label = "5. Carrier (x" + std::to_string(count) + ")";
-          break;
-      }
-      button->setText(QString::fromStdString(new_label));
     }
+    std::string new_label;
+    switch (size) {
+    case 1:
+      new_label = "1. Bomb (x" + std::to_string(count) + ")";
+      break;
+    case 2:
+      new_label = "2. Destroyer (x" + std::to_string(count) + ")";
+      break;
+    case 3:
+      new_label = "3. Cruiser (x" + std::to_string(count) + ")";
+      break;
+    case 4:
+      new_label = "4. Battleship (x" + std::to_string(count) + ")";
+      break;
+    case 5:
+      new_label = "5. Carrier (x" + std::to_string(count) + ")";
+      break;
+    }
+    button->setText(QString::fromStdString(new_label));
   }
 }
 
