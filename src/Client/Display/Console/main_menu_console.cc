@@ -84,7 +84,8 @@ void MainMenuConsole::displayOptions(int mode) {
             std::cout << "║ (4) Show more friends ☳" << std::endl;
             std::cout << "║ (5) Chat with a friend ✍" << std::endl;
             std::cout << "║ (6) Join game" << std::endl;
-            std::cout << "║ (7) Log out ↆ" << std::endl;
+            std::cout << "║ (7) Review game" << std::endl;
+            std::cout << "║ (8) Log out ↆ" << std::endl;
             std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
             break;
         case 1:
@@ -117,6 +118,7 @@ void MainMenuConsole::displayOptions(int mode) {
             std::cout << "║ (6) Join game" << std::endl;
             std::cout << "║ (7) Log out ↆ" << std::endl;
             std::cout << "╚═════════════════════════════════════════════════════════════════════════════════╪\n";
+            break;
         case 6:
             std::cout << "║ Enter a username to send a message!" << std::endl;
             std::cout << "║ Type :'./exit' to back to the main menu"<< std::endl;
@@ -215,7 +217,11 @@ ReturnInput MainMenuConsole::handleInput() {
             else
                 break;
         }
-        case 7: // log out
+        case 7: // review game
+            std::system("clear");
+            return {ReturnInput::REVIEW_MENU, ""};
+
+        case 8: // log out
             std::system("clear");
             return {ReturnInput::LOGIN, ""};
     }
