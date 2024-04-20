@@ -229,10 +229,10 @@ void GameServer::handleGetHistory(const string& path, http_request& request, njs
 
             // Retrieve game history from the database using dbManager
             
-            //njson gameHistory = dbManager.getGameHistory(to_utf8(sessionId));
+            njson gameHistory = njson::parse(dbManager.getGameStates(to_utf8(sessionId)).getFirst());
 
             // Add the game history to the response
-            //response["gameHistory"] = gameHistory;
+            response["gameHistory"] = gameHistory;
 
             request.reply(status_codes::OK, response.dump(), "application/json");
         } else {
