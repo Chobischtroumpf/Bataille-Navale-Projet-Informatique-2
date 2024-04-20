@@ -11,9 +11,9 @@ GameSession::GameSession(Queries& dbManager, const std::string& leader_id, const
 
 GameSession::~GameSession() {}
 
-// void GameSession::startSession() {
-//     this->hasStarted = true;
-// }
+void GameSession::startSession() {
+    this->hasStarted = true;
+}
 
 void GameSession::endSession() {
     // Cleanup or end game logic

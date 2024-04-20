@@ -8,7 +8,7 @@
 
 // Class that handles the game between 2 players
 class Game {
-  public:
+  private:
     std::shared_ptr<Board> _board;
     bool _game_started;
     bool _mode_commandant;

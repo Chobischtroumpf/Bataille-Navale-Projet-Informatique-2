@@ -40,6 +40,24 @@ CREATE TABLE IF NOT EXISTS Messages (
 );
 
 
+CREATE TABLE IF NOT EXISTS GameStates (
+    id_game_state INTEGER PRIMARY KEY,
+    id_player1 INTEGER NOT NULL,
+    id_player2 INTEGER NOT NULL,
+    id_session VARCHAR(100) NOT NULL,
+    game_state VARCHAR(1000) NOT NULL,
+    state_date_time DATETIME NOT NULL,
+    FOREIGN KEY (id_player1) REFERENCES Users(id_user)
+        ON DELETE CASCADE 
+        ON UPDATE NO ACTION,
+	FOREIGN KEY (id_player2) REFERENCES Users(id_user)
+        ON DELETE CASCADE 
+        ON UPDATE NO ACTION,
+    CHECK (id_player1 <> id_player2),
+    CHECK(game_state <> '')
+);
+
+
 -- Create a trigger to prevent updates on the id columns
 
 CREATE TRIGGER IF NOT EXISTS prevent_user_id_update

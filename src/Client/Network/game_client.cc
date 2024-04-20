@@ -11,17 +11,17 @@ using namespace web::json;
 
 
 GameClient::GameClient(const string& baseUri) {
-    try {
-        // Convert the base URI from string to utility::string_t
-        auto uri = conversions::to_string_t(baseUri);
-        // Initialize the http_client with the converted URI
-        client = make_unique<http_client>(uri);
-        std::clog << "GameClient initialized with URI: " << baseUri <<std::endl;
+  try {
+      // Convert the base URI from string to utility::string_t
+      auto uri = conversions::to_string_t(baseUri);
+      // Initialize the http_client with the converted URI
+      client = make_unique<http_client>(uri);
+      std::clog << "GameClient initialized with URI: " << baseUri <<std::endl;
 
-    } catch (const exception& e) {
-        // Catch and print any exceptions that occur during initialization
-        std::clog << "Initialization failed: " << e.what() <<std::endl;
-    }
+  } catch (const exception& e) {
+      // Catch and print any exceptions that occur during initialization
+      std::clog << "Initialization failed: " << e.what() <<std::endl;
+  }
 }
 
 // Function to test a simple GET request

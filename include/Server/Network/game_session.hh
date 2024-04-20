@@ -42,8 +42,8 @@ class GameSession {
     GameSession(Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails);
     virtual ~GameSession();
 
-    // // GameSession Management
-    // void startSession();
+    // GameSession Management
+    void startSession();
     void endSession();
 
     // Session Participants Management

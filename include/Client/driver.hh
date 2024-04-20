@@ -25,10 +25,6 @@
 // #include "main_menu_view.hh"
 // #include "register_view.hh"
 
-#include "../Common/Commandant/Factions/faction_bombardement.hh"
-#include "Display/Console/register_console.hh"
-#include "Display/Console/main_menu_console.hh"
-
 enum DisplayType { CONSOLE, GUI };
 
 class Driver {

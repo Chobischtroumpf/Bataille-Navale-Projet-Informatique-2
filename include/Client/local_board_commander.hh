@@ -21,8 +21,7 @@ class LocalBoardCommander : public GameView {
 private:
   Player _player;
   GameMode _mode;
-  bool _is_finished;
-  bool _is_victory;
+  const std::string _session_id;
 
   std::vector<std::vector<Cell>> _my_board;
   std::vector<std::vector<Cell>> _their_board;
@@ -30,17 +29,18 @@ private:
   std::string _my_username;
   std::string _their_username;
 
-  const std::string _session_id;
   std::shared_ptr<GameClient> _client;
 
   // bool _my_turn;
+  bool _is_finished;
+  bool _is_victory;
 
   /* Get the cell in one of the board*/
   Cell get(bool my_side, BoardCoordinates position) const;
 
 public:
   LocalBoardCommander(std::shared_ptr<GameClient> client, Player player,
-                      GameMode mode, const std::string &session_id);
+                      GameMode mode, const std::string &sessionId);
 
   virtual ~LocalBoardCommander() override = default;
 

@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "../controller.hh"
-#include "../Network/game_client.hh"
+#include "controller.hh"
+#include "game_client.hh"
 
 class MainMenuController : public Controller {
 private:

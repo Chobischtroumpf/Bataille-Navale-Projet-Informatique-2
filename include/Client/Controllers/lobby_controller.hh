@@ -1,6 +1,8 @@
 #pragma once
 
+#include <future>
 #include <string>
+
 #include "controller.hh"
 #include "game_client.hh"
 

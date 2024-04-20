@@ -3,7 +3,7 @@
 #include "faction.hh"
 #include "torpedo.hh"
 
-class FactionClassique : public Faction
+class FactionClassique : public virtual Faction
 {
   public:
     // Constructor

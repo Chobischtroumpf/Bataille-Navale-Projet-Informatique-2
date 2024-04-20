@@ -36,7 +36,6 @@ class GameController : public Controller {
 
     /* Handle the placement of a ship */
     virtual bool placeShip(Ship ship) const;
-
     /** Inform that the player quit the game. */
     virtual void quit();
 

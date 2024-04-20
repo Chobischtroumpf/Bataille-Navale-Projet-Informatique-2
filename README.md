@@ -7,6 +7,7 @@ Pour faire fonctionner le projet, vous aurez besoin des libraires suivantes:
  - CppRestSDK · `sudo apt install libcpprest-dev`
  - libSQLite3-dev · `sudo apt install libsqlite3-dev`
  - libsodium-dev · `sudo apt install libsodium-dev`
+ - qt6 · `sudo apt install qt6-base-dev`
 
 Pour vous aider à installer les dépendances, un script est là pour simplifier la tache si vous êtes sur un système basé sur Debian:
 ```sh

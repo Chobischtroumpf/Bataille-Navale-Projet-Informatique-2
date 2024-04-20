@@ -30,14 +30,14 @@ enum GamePhase { PLACE_SHIP, WAIT_GAME, GAME, WAIT_TURN };
  * Draw both sides of the board as two grids side by side. */
 class GameConsole : public Console {
 private:
+  /** ConsoleBoardDisplay's methods must check they support this */
+  std::ostream &_out;                                //< Where to print
+  std::istream &_in;                                 //< Where to read
   std::shared_ptr<LocalBoardCommander> const _board; //< What to print
   std::shared_ptr<GameController> const
       _control; //< Who to inform of user actions
   std::shared_ptr<GameClient> const
       _game_client; //< Who to inform of user actions
-
-  std::ostream &_out;                                //< Where to print
-  std::istream &_in;                                 //< Where to read
 
   uint8_t const _letter_width; //< Number of character in a column name
   uint8_t const _number_width; //< Number of character in a row name

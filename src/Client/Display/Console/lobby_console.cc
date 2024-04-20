@@ -2,10 +2,15 @@
 
 LobbyConsole::LobbyConsole(const std::string &session_id,
                            std::shared_ptr<GameClient> client,
-                           bool admin)
+                           bool admin, std::shared_ptr<GameSettingConsole> gameSettingConsole)
     : _session_id(session_id) , _admin(admin) {
   _view = std::make_shared<LobbyView>(client);
   _controller = std::make_shared<LobbyController>(client);
+  if (gameSettingConsole != nullptr) {
+    loadParameters(gameSettingConsole);
+  } else {
+    loadParameters(session_id);
+  }
 }
 
 void LobbyConsole::display() {
