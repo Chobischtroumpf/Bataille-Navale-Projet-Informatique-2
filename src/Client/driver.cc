@@ -17,10 +17,10 @@ Driver::~Driver() {}
 void Driver::launchApp() {
   //std::string user = "slectedUser";
   displayLoginScreen();
-  run(ReturnInput::Screen::LOGIN);
+  run();
 }
 
-void Driver::run(ReturnInput::Screen base_screen) {
+void Driver::run() {
     while (true) {
       _display->display();
       ReturnInput input = _display->handleInput();
@@ -59,26 +59,29 @@ std::shared_ptr<GameClient> Driver::getClient() {
 }
 
 void Driver::displayGameScreen(std::string gameId) {
+  std::clog << "displayGameScreen" << std::endl;
   if (_display_type == CONSOLE) {
     Player player1 = Player();
+    std::clog << "commander_mode" << std::endl;
     bool commander_mode = std::static_pointer_cast<LobbyConsole>(_display)->isCommanderMode();
+    std::clog << "faction" << std::endl;
     int faction =
         std::static_pointer_cast<LobbyConsole>(_display)->getFaction();
     if (commander_mode)
       switch (faction) {
-      case 1:
+      case 0:
         player1.setFaction(FactionBombardement());
         break;
-      case 2:
+      case 1:
         player1.setFaction(FactionSonar());
         break;
-      case 3:
+      case 2:
         player1.setFaction(FactionMines());
         break;
       }
     else
       player1.setFaction(FactionClassique());
-    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, GameMode::CLASSIC, gameId);
+    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC, gameId);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());
     _current_screen = ReturnInput::Screen::GAME;

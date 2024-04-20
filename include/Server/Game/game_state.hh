@@ -1,8 +1,6 @@
-#ifndef GAMESTATE_H
-#define GAMESTATE_H
+#pragma once
 
 #include <nlohmann/json.hpp>
-#include <string>
 
 #include "game.hh"
 #include "player_role.hh"
@@ -10,18 +8,21 @@
 class GameState {
   private:
 
-    std::shared_ptr<Game> game;
-    /*// Game details and rules
-    nlohmann::json gameDetails;
+    std::shared_ptr<Game> _game;
 
-    // Current state of the game
-    nlohmann::json currentState;*/
+    enum Phase {
+        NOT_STARTED=0,
+        PLACING_SHIPS=1,
+        PLAYING=2,
+        FINISHED=3
+    };
 
+    Phase _phase = Phase::NOT_STARTED;
     bool handlePlaceShip(PlayerRole player, const nlohmann::json& move);
 
     bool handleFire(PlayerRole player, const nlohmann::json& move);
 
-    void handleLaunch();
+    bool handleChooseFaction(PlayerRole player, const nlohmann::json& move);
 
     Turn role_to_turn(PlayerRole player);
 
@@ -44,7 +45,10 @@ class GameState {
     // Get the current state of the game
     nlohmann::json getGameState(PlayerRole player) const;
 
+    // get the current game phase
+    Phase getPhase() const;
+
+    // translate game phase to bool
+    bool hasStarted() const;
 
 };
-
-#endif // GAMESTATE_H
