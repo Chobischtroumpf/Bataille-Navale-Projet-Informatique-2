@@ -105,7 +105,7 @@ public:
 
   static CellType string_to_celltype(const std::string &type);
 
-  void updateBoard(const nlohmann::json &new_board);
+  void updateBoard();
 
   bool isInBoard(BoardCoordinates coord) const;
 

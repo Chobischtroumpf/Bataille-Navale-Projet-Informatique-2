@@ -2,10 +2,7 @@
  * @file gui_Game.cc
  * @brief Implementation of the GUI Game class
  
- * TODO: Implementation for the normal mode and the commander mode
-         Playing the game
-         Waiting for the game
-         Waiting for the turn
+ * TODO: Change Turn
 */
 
 
@@ -28,6 +25,21 @@ QBrush BoardFrame::getTileColor(CellType cell) {
     break;
   case CellType::HIT_SHIP:
     brush = Qt::red;
+    break;
+  case CellType::OCEAN:
+    brush = Qt::cyan;
+    break;
+  case CellType::SCANNED_SHIP:
+    brush = Qt::yellow;
+    break;
+  case CellType::SUNK_SHIP:
+    brush = Qt::darkRed;
+    break;
+  case CellType::HIT_MINE:
+    brush = Qt::black;
+    break;
+  case CellType::SCANNED_MINE:
+    brush = Qt::darkYellow;
     break;
   case CellType::WATER:
     brush = Qt::blue;
@@ -359,6 +371,7 @@ void Game::update() {
     }
   } else if (_phase == WAITING_TURN) {
     if (_board->fetchMyTurn()) {
+      _board->updateBoard();
       setupGame();
     }
   }
@@ -432,6 +445,9 @@ void Game::fire(BoardCoordinates coord) {
     if (_game_controller->fire(*_selected_ability, coord)) {
       energy -= _selected_ability->getEnergyCost();
       updateAbilityInformations();
+      _selected_ability = nullptr;
+      updateAbilityInformations();
+      setupWaitingTurn();
     }
   }
 }

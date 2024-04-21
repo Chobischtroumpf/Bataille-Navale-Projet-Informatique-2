@@ -228,7 +228,9 @@ CellType LocalBoardCommander::string_to_celltype(const std::string &type) {
   }
 }
 
-void LocalBoardCommander::updateBoard(const nlohmann::json &new_board) {
+void LocalBoardCommander::updateBoard() {
+  auto req = _client->QueryGameState(_session_id).get();
+  auto new_board = req.at("gameState");
   auto fleetA = new_board.at("fleetA");
   auto fleetB = new_board.at("fleetB");
 
