@@ -43,8 +43,13 @@ bool Game::shipPlacementsFinished() const {
   Player player1 = _board->getPlayer1();
   Player player2 = _board->getPlayer2();
 
-  if (player1.getFleet().size() == (size_t)player1.getFaction().getAmountOfShips() &&
-      player2.getFleet().size() == (size_t)player2.getFaction().getAmountOfShips()) {
+  std::clog << "Player 1 fleet size : " << player1.getFleet().size() << std::endl;
+  std::clog << "Player 2 fleet size: " << player2.getFleet().size() << std::endl;
+  std::clog << "Player 1 faction amount of ships: " << player1.getFaction().getAmountOfShips() << std::endl;
+  std::clog << "Player 2 faction amount of ships: " << player2.getFaction().getAmountOfShips() << std::endl;
+
+  if (player1.getFleet().size() >= (size_t)player1.getFaction().getAmountOfShips() &&
+      player2.getFleet().size() >= (size_t)player2.getFaction().getAmountOfShips()) {
     return true;
   }
   return false;
