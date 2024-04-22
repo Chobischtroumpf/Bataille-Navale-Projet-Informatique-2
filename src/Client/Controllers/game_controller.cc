@@ -25,7 +25,6 @@ bool GameController::fire(SpecialAbility ability,
       }
       if (_board->player().getEnergyPoints() >= ability.getEnergyCost()) {
         std::clog << "GameController::fire: COMMANDER: energyCost <= energyPoints" << std::endl;
-        _board->player().removeEnergyPoints(ability.getEnergyCost());
         _board->fire(ability, coord);
       }
     }

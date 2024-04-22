@@ -23,34 +23,35 @@ void Driver::run() {
     while (true) {
       _display->display();
       ReturnInput input = _display->handleInput();
-      if (_current_screen != input.screen)
-      switch (input.screen) {
-        case ReturnInput::Screen::MAIN_MENU:
-          displayMainMenuScreen();
-          break;
-        case ReturnInput::Screen::GAME:
-          displayGameScreen(input.arg);
-          break;
-        case ReturnInput::Screen::CHAT:
-          displayChatScreen(input.arg);
-          break;
-        case ReturnInput::Screen::LOBBY:
-          if (_current_screen == ReturnInput::Screen::MAIN_MENU)
-            displayLobbyScreen(input.arg, false);
-          else
-            displayLobbyScreen(input.arg, true);
-          break;
-        case ReturnInput::Screen::LOGIN:
-          //const char* str1 = "abc";
-          //char* const dummy[] = {str1};
-          displayLoginScreen();
-          break;
-        case ReturnInput::Screen::REGISTER:
-          displayRegisterScreen();
-          break;
-        case ReturnInput::Screen::GAME_CREATION:
-          displayGameCreationScreen();
-          break;
+      if (_current_screen != input.screen) {
+        switch (input.screen) {
+          case ReturnInput::Screen::MAIN_MENU:
+            displayMainMenuScreen();
+            break;
+          case ReturnInput::Screen::GAME:
+            displayGameScreen(input.arg);
+            break;
+          case ReturnInput::Screen::CHAT:
+            displayChatScreen(input.arg);
+            break;
+          case ReturnInput::Screen::LOBBY:
+            if (_current_screen == ReturnInput::Screen::MAIN_MENU)
+              displayLobbyScreen(input.arg, false);
+            else
+              displayLobbyScreen(input.arg, true);
+            break;
+          case ReturnInput::Screen::LOGIN:
+            //const char* str1 = "abc";
+            //char* const dummy[] = {str1};
+            displayLoginScreen();
+            break;
+          case ReturnInput::Screen::REGISTER:
+            displayRegisterScreen();
+            break;
+          case ReturnInput::Screen::GAME_CREATION:
+            displayGameCreationScreen();
+            break;
+        }
       }
     }
 }
@@ -68,7 +69,7 @@ void Driver::displayGameScreen(std::string gameId) {
     std::clog << "faction" << std::endl;
     int faction =
         std::static_pointer_cast<LobbyConsole>(_display)->getFaction();
-    if (commander_mode)
+    if (commander_mode) {
       switch (faction) {
       case 0:
         player1.setFaction(FactionBombardement());
@@ -80,8 +81,10 @@ void Driver::displayGameScreen(std::string gameId) {
         player1.setFaction(FactionMines());
         break;
       }
-    else
+    } else {
       player1.setFaction(FactionClassique());
+    }
+
     std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC, gameId);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());

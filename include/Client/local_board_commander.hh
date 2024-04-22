@@ -4,6 +4,7 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <vector>
+#include <thread>
 
 #include "board_coordinates.hh"
 #include "cell.hh"
@@ -97,8 +98,6 @@ public:
 
   /* Asks once if its my turn*/
   bool fetchMyTurn();
-
-  // void update() override { throw NotImplementedError("Update"); }
 
   // returns the
   CellType best(CellType lhs, CellType rhs);

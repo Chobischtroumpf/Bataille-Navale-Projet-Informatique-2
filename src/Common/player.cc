@@ -52,6 +52,10 @@ void Player::swapTurn() {
   _is_turn = !_is_turn;
 }
 
+void Player::setEnergyPoints(int energy_points) {
+  _energy_points = energy_points;
+}
+
 void Player::addEnergyPoints(int energy_points) {
   _energy_points += energy_points;
 }

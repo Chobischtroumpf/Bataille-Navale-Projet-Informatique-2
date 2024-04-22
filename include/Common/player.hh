@@ -35,6 +35,7 @@ class Player {
     void addShip(Ship ship);
     void setTurn(bool is_turn);
     void swapTurn();
+    void setEnergyPoints(int energy_points);
     void addEnergyPoints(int energy_points);
     void removeEnergyPoints(int energy_points);
     void setPlayerOne(bool is_player_one);

@@ -80,8 +80,12 @@ bool Game::handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinat
     std::clog << "Checking ability: " << ability.getType() << std::endl;
     std::clog << "Is it the same : " << (ability.getType() == ability_type) << std::endl;
     if (ability.getType() == ability_type) {
-      _board->fire(ability, board_coordinates);
-      changeTurn();
+      if (!_board->fire(ability, board_coordinates)) {
+        changeTurn();
+      } else {
+        _game_timer.switchTurn();
+        _game_timer.switchTurn();
+      }
       return true;
     }
   }
