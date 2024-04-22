@@ -202,11 +202,14 @@ void Board::fire(SpecialAbility ability, BoardCoordinates coords) {
 nlohmann::json Board::to_json(PlayerRole role) const {
   nlohmann::json boardJson;
   nlohmann::json fleetAJson, fleetBJson;
+
   for (size_t y = 0; y < height(); ++y) {
     nlohmann::json rowJsonA, rowJsonB;
+
     for (size_t x = 0; x < width(); ++x) {
       nlohmann::json cellObjectA, cellObjectB;
       Cell cellA, cellB;
+
       if (role == PlayerRole::Leader || role == PlayerRole::Spectator) {
         cellA = _player1_side[y][x];
         cellB = _player2_side[y][x];
@@ -235,6 +238,17 @@ nlohmann::json Board::to_json(PlayerRole role) const {
 
   boardJson["fleetA"] = fleetAJson;
   boardJson["fleetB"] = fleetBJson;
+
+  if (role == PlayerRole::Leader) {
+    boardJson["energy_points"] = _player1.getEnergyPoints();
+  } else if (role == PlayerRole::Opponent) {
+    boardJson["energy_points"] = _player2.getEnergyPoints();
+  } else {
+    boardJson["energy_points"] = 0;
+  }
+
+  boardJson[""]
+  
 
   return boardJson;
 }
