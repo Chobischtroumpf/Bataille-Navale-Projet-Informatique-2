@@ -239,10 +239,17 @@ void Game::setupWaitingTurn() {
 void Game::setupGame() {
   _phase = PLAYING;
   clearLayout(_footer_layout);
+  energy = _board->player().getEnergyPoints();
+
+  if (_abilities_buttons.size() > 0) {
+    _abilities_buttons.clear();
+    _ability_informations.clear();
+  }
 
   QVBoxLayout *game_layout = new QVBoxLayout();
 
   QHBoxLayout *ability_layout = new QHBoxLayout();
+
   for (auto &ability : _board->player().getFaction().getSpecialAbilities()) {
     QPushButton *button = new QPushButton(QString::fromStdString(ability.getName()));
     connect(button, &QPushButton::clicked, [this, ability] {
@@ -378,6 +385,7 @@ void Game::update() {
 }
 
 void Game::updateAbilityInformations() {
+  energy = _board->player().getEnergyPoints();
   if (_selected_ability) {
     for (auto &button : _abilities_buttons) {
       if (button->text().toStdString() == _selected_ability->getName()) {
@@ -387,9 +395,20 @@ void Game::updateAbilityInformations() {
       }
     }
   }
-  _ability_informations.at(0)->setText("Selected ability: " + QString::fromStdString(_selected_ability->getName()));
-  _ability_informations.at(1)->setText("Description: " + QString::fromStdString(_selected_ability->getDescription()));
-  _ability_informations.at(2)->setText("Energy cost: " + QString::number(_selected_ability->getEnergyCost()));
+  if (_selected_ability == nullptr) {
+    _ability_informations.at(0)->setText("Selected ability: ");
+    _ability_informations.at(1)->setText("Description: ");
+    _ability_informations.at(2)->setText("Energy cost: ");
+  } else {
+    _ability_informations.at(0)->setText(
+        "Selected ability: " +
+        QString::fromStdString(_selected_ability->getName()));
+    _ability_informations.at(1)->setText(
+        "Description: " +
+        QString::fromStdString(_selected_ability->getDescription()));
+    _ability_informations.at(2)->setText(
+        "Energy cost: " + QString::number(_selected_ability->getEnergyCost()));
+  }
 }
 
 void Game::placeShip(Ship& ship) {
