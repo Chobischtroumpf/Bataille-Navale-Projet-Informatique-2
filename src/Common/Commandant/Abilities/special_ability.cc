@@ -12,7 +12,7 @@ void SpecialAbility::setDescription(std::string new_description) { this->_descri
 void SpecialAbility::setEnergyCost(int new_cost) { this->_energy_cost = new_cost; }
 void SpecialAbility::setType(SpecialAbilityType new_type) { this->_type = new_type; }
 
-std::string SpecialAbility::getName() const { return _name; };
-std::string SpecialAbility::getDescription() const { return _description; };
-int SpecialAbility::getEnergyCost() const { return _energy_cost; };
-SpecialAbilityType SpecialAbility::getType() const { return _type; };
+std::string SpecialAbility::getName() const { return _name; }
+std::string SpecialAbility::getDescription() const { return _description; }
+int SpecialAbility::getEnergyCost() const { return _energy_cost; }
+SpecialAbilityType SpecialAbility::getType() const { return _type; }

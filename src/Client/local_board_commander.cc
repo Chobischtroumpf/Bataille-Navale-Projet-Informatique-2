@@ -170,8 +170,8 @@ bool LocalBoardCommander::waitGame() {
   bool shipPlacementsFinished = false;
   std::string turn;
   while (!shipPlacementsFinished) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
     shipPlacementsFinished = isGameStarted();
-    sleep(1);
   }
   return fetchMyTurn();
 }
@@ -185,10 +185,11 @@ bool LocalBoardCommander::isGameStarted() {
 
 void LocalBoardCommander::waitTurn() {
   bool my_turn = false;
-  while (!my_turn) {
-    my_turn = fetchMyTurn();
-    sleep(1);
+  while (!_player.isTurn()) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));;
+    updateBoard();
   }
+
 }
 
 bool LocalBoardCommander::fetchMyTurn() {
@@ -248,6 +249,15 @@ void LocalBoardCommander::updateBoard() {
       }
     }
   }
+
+  _player.setEnergyPoints(new_board.at("energy_points"));
+  if (new_board.at("turn") == "PLAYERONE" && _player.isPlayerOne() ||
+      new_board.at("turn") == "PLAYERTWO" && !_player.isPlayerOne()) {
+    _player.setTurn(true);
+  } else {
+    _player.setTurn(false);
+  }
+
 
   if (new_board.at("Finished") == "true"){
     _is_finished = true;

@@ -1,14 +1,16 @@
 #include "board.hh"
 #include <iostream>
 
-void Board::setHit(BoardCoordinates coords) {
+bool Board::setHit(BoardCoordinates coords) {
   Cell &cell = _my_turn ? _player2_side[coords.y()][coords.x()]
                       : _player1_side[coords.y()][coords.x()];
   Player &current_player = _my_turn ? _player1 : _player2;
   Player &opponent = _my_turn ? _player2 : _player1;
+  bool is_hit = false;
 
   if (cell.type() == UNDAMAGED_SHIP) {
     cell.setType(HIT_SHIP);
+    is_hit = true;
   } else if (cell.type() == UNDAMAGED_MINE) {
     cell.setType(HIT_MINE);
     if (opponent.getFaction().getName() == "Mines"){
@@ -19,42 +21,59 @@ void Board::setHit(BoardCoordinates coords) {
   } else if (cell.type() == WATER) {
     cell.setType(OCEAN);
   }
+
+  return is_hit;
 }
 
-void Board::fireBigTorpedo(BoardCoordinates coords) {
+bool Board::fireBigTorpedo(BoardCoordinates coords) {
+  bool is_hit = false;
+
   for (BigTorpedoIterator it = beginBigTorpedo(coords);
     it != endBigTorpedo(coords); ++it) {
     if (isInBoard(*it)){
-        setHit(*it);
+        is_hit = setHit(*it);
     }
   }
+  return is_hit;
 }
 
-void Board::firePiercingTorpedo(BoardCoordinates coords) {
+bool Board::firePiercingTorpedo(BoardCoordinates coords) {
+  bool is_hit = false;
+
   for (PiercingTorpedoIterator it = beginPiercingTorpedo(coords); it != endPiercingTorpedo(coords); ++it) {
     if (isInBoard(*it)){
-      setHit(*it);
+      is_hit = setHit(*it);
     }
   }
+
+  return is_hit;
 }
 
-void Board::fireAerialStrike(BoardCoordinates coords) {
+bool Board::fireAerialStrike(BoardCoordinates coords) {
+  bool is_hit = false;
+
   for (AerialStrikeIterator it = beginAerialStrike(coords); it != endAerialStrike(coords); ++it) {
     if (isInBoard(*it)) {
-      setHit(*it);
+      is_hit = setHit(*it);
     }
   }
+
+  return is_hit;
 }
 
-void Board::dispatchTorpedo(SpecialAbilityType ability_type, BoardCoordinates coords) {
+bool Board::dispatchTorpedo(SpecialAbilityType ability_type, BoardCoordinates coords) {
+  bool is_hit = false;
+  
   if (ability_type == TORPEDO)
-    setHit(coords);
+    is_hit = setHit(coords);
   else if (ability_type == BIG_TORPEDO)
-    fireBigTorpedo(coords);
+    is_hit = fireBigTorpedo(coords);
   else if (ability_type == PIERCING_TORPEDO)
-    firePiercingTorpedo(coords);
+    is_hit = firePiercingTorpedo(coords);
   else if (ability_type == AERIAL_STRIKE)
-    fireAerialStrike(coords);
+    is_hit = fireAerialStrike(coords);
+
+  return is_hit;
 }
 
 void Board::setScanned(BoardCoordinates coords) {
@@ -127,6 +146,11 @@ void Board::changeTurn() {
   _my_turn = !_my_turn;
   _player1.swapTurn();
   _player2.swapTurn();
+  if (_my_turn){
+    _player1.addEnergyPoints(1);
+  } else {
+    _player2.addEnergyPoints(1);
+  }
 }
 
 bool Board::isFinished() const {
@@ -183,30 +207,35 @@ void Board::notify(const BoardCoordinates &coords) {
   }
 }
 
-void Board::fire(SpecialAbility ability, BoardCoordinates coords) {
+bool Board::fire(SpecialAbility ability, BoardCoordinates coords) {
   Player& current_player = _my_turn ? _player1 : _player2;
+  bool is_hit = false;
 
   current_player.removeEnergyPoints(ability.getEnergyCost());
   
   if (ability.getType() & IS_TORPEDO) {
-    dispatchTorpedo(ability.getType(), coords);
+    is_hit = dispatchTorpedo(ability.getType(), coords);
   } else if (ability.getType() & IS_SONAR) {
     dispatchSonar(ability.getType(), coords);
   } else if (ability.getType() & MINE) {
     setMine(coords);  
   }
   notify(coords);
+  return is_hit;
 }
 
 // converts the board to a json object
 nlohmann::json Board::to_json(PlayerRole role) const {
   nlohmann::json boardJson;
   nlohmann::json fleetAJson, fleetBJson;
+
   for (size_t y = 0; y < height(); ++y) {
     nlohmann::json rowJsonA, rowJsonB;
+
     for (size_t x = 0; x < width(); ++x) {
       nlohmann::json cellObjectA, cellObjectB;
       Cell cellA, cellB;
+
       if (role == PlayerRole::Leader || role == PlayerRole::Spectator) {
         cellA = _player1_side[y][x];
         cellB = _player2_side[y][x];
@@ -235,6 +264,17 @@ nlohmann::json Board::to_json(PlayerRole role) const {
 
   boardJson["fleetA"] = fleetAJson;
   boardJson["fleetB"] = fleetBJson;
+
+  if (role == PlayerRole::Leader) {
+    boardJson["energy_points"] = _player1.getEnergyPoints();
+  } else if (role == PlayerRole::Opponent) {
+    boardJson["energy_points"] = _player2.getEnergyPoints();
+  } else {
+    boardJson["energy_points"] = 0;
+  }
+
+//  boardJson[""]
+  
 
   return boardJson;
 }

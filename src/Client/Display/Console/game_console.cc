@@ -502,9 +502,13 @@ ReturnInput GameConsole::handleFire() {
             << " at coordinates " << coord.toString() << std::endl;
   _control->fire(
       _board->player().getFaction().getSpecialAbilities().at(ability), coord);
+
   _last_input = OK;
 
+  _board->updateBoard();
+
   return {ReturnInput::Screen::GAME, ""};
+
 }
 
 bool GameConsole::isValidInputFormat(const std::string &input) const {
@@ -604,11 +608,13 @@ ReturnInput GameConsole::handlePlaceShip() {
       handleShipSelection();
     }
   }
+
   if (std::cin.eof() && !std::cin.fail()) {
     _out << std::endl;
     _control->quit();
     return {};
   }
+  
   if (_board->allShipsPlaced()) {
     _phase = WAIT_GAME;
   }
@@ -680,7 +686,9 @@ ReturnInput GameConsole::handleInput()
   } else if (_phase == GAME) {
     std::clog << "GameConsole::handleInput: GAME" << std::endl;
     handleFire();
-    _phase = WAIT_TURN;
+    if (!_board->myTurn()) {
+      _phase = WAIT_TURN;
+    }
   } else if (_phase == WAIT_GAME) {
     std::clog << "GameConsole::handleInput: WAIT_GAME" << std::endl;
     _phase = _board->waitGame() ? GAME : WAIT_TURN;
@@ -689,6 +697,7 @@ ReturnInput GameConsole::handleInput()
     _board->waitTurn();
     _phase = GAME;
   }
+
   return {ReturnInput::Screen::GAME, ""};
 }
 

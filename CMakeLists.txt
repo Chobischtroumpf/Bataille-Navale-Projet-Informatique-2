@@ -78,6 +78,8 @@ get_sources("include/Common" COMMON_HEADERS)
 # Create client executable
 add_executable(battleship ${COMMON_SOURCES} ${CLIENT_SOURCES} ${CLIENT_HEADERS} ${COMMON_HEADERS})
 
+set(CMAKE_AUTOMOC OFF)
+
 # Create server executable
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 

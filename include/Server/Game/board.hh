@@ -33,19 +33,19 @@ class Board: public virtual GameView {
     std::vector<std::vector<Cell>>  _player2_side;
 
     // updates the board after a cell has been hit
-    void setHit(BoardCoordinates coords);
+    bool setHit(BoardCoordinates coords);
 
     // updates the board after a torpedo has been fired
-    void fireBigTorpedo(BoardCoordinates coords);
+    bool fireBigTorpedo(BoardCoordinates coords);
 
     // updates the board after a piercing torpedo has been fired
-    void firePiercingTorpedo(BoardCoordinates coords);
+    bool firePiercingTorpedo(BoardCoordinates coords);
 
     // updates the board after an aerial strike has been fired
-    void fireAerialStrike(BoardCoordinates coords);
+    bool fireAerialStrike(BoardCoordinates coords);
 
     // dispatches the torpedo to the correct method
-    void dispatchTorpedo(SpecialAbilityType ability_type, BoardCoordinates coords);
+    bool dispatchTorpedo(SpecialAbilityType ability_type, BoardCoordinates coords);
 
     // updates the board after it has been scanned
     void setScanned(BoardCoordinates coords);
@@ -97,7 +97,7 @@ class Board: public virtual GameView {
     void notify(const BoardCoordinates &coords);
 
     // method to call when a player wants to fire a special ability
-    void fire(SpecialAbility ability, BoardCoordinates coords);
+    bool fire(SpecialAbility ability, BoardCoordinates coords);
 
     // converts a CellType to a string
     static string to_string(CellType type) {
