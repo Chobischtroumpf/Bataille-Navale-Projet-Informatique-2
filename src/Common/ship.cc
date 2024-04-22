@@ -103,6 +103,15 @@ std::vector<BoardCoordinates> Ship::getCoordinates() const {
     return _coordinates;
 }
 
+bool Ship::isAt(const BoardCoordinates &coords) const {
+    for (auto &c: _coordinates) {
+        if ((c + getTopLeft()) == coords) {
+            return true;
+        }
+    }
+    return false;
+}
+
 BoardCoordinates Ship::getTopLeft() const {
     return _top_left;
 }

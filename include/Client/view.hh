@@ -8,6 +8,6 @@
 class View : public Observer {
 public:
   virtual ~View() override {}
-  virtual void update(){}
+  virtual void update() override{}
 
 };

@@ -11,6 +11,7 @@ class ShipClassic {
   public:
     ShipClassic(int number_of_case);
     void next();
+    void previous();
     Ship getShip();
     void rotate();
 

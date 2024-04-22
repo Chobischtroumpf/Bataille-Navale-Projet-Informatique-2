@@ -15,7 +15,6 @@ Driver::Driver(DisplayType display_type, std::string server_address) : _display_
 Driver::~Driver() {}
 
 void Driver::launchApp() {
-  //std::string user = "slectedUser";
   displayLoginScreen();
   run();
 }
@@ -42,6 +41,8 @@ void Driver::run() {
             displayLobbyScreen(input.arg, true);
           break;
         case ReturnInput::Screen::LOGIN:
+          //const char* str1 = "abc";
+          //char* const dummy[] = {str1};
           displayLoginScreen();
           break;
         case ReturnInput::Screen::REGISTER:
@@ -95,7 +96,6 @@ void Driver::displayLoginScreen() {
     _display = std::make_shared<LoginConsole>(getClient());
     _current_screen = ReturnInput::Screen::LOGIN;
   } else {
-    throw NotImplementedError("GUI not implemented yet");
   }
 }
 

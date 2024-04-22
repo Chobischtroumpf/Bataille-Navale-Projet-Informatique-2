@@ -20,10 +20,13 @@ struct ReturnInput {
 /*
  * Interface du display (ce qui est affiché à l'écran)
  */
-class Display {
-public:
-  virtual void display() = 0;
-  virtual void displayError() = 0;
-  virtual void update() = 0;
-  virtual ReturnInput handleInput() = 0;
-};
+namespace screen {
+    class Display {
+    public:
+        virtual void display() = 0;
+        virtual void displayError() = 0;
+        virtual void update() = 0;
+        virtual ReturnInput handleInput() = 0;
+    };
+}
+

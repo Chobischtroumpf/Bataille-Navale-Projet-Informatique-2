@@ -53,6 +53,9 @@ public:
   GameMode mode() const;
   Player player() const;
 
+
+  void setPlayerFaction(Faction faction);
+
   /*
    * Get the cell type at the given coordinates
    * @param coordinates : coordinates of the cell
@@ -87,8 +90,13 @@ public:
   /* Polls the server to wait the beggining of the game */
   bool waitGame();
 
+  bool isGameStarted();
+
   /* Polls the server to wait the turn */
   void waitTurn();
+
+  /* Asks once if its my turn*/
+  bool fetchMyTurn();
 
   // void update() override { throw NotImplementedError("Update"); }
 
@@ -97,7 +105,7 @@ public:
 
   static CellType string_to_celltype(const std::string &type);
 
-  void updateBoard(const nlohmann::json &new_board);
+  void updateBoard();
 
   bool isInBoard(BoardCoordinates coord) const;
 

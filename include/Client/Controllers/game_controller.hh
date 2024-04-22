@@ -15,7 +15,7 @@
 class GameController : public Controller {
   private:
     std::shared_ptr<LocalBoardCommander> _board;
-    std::shared_ptr<Display> _display;
+    std::shared_ptr<screen::Display> _display;
 
     virtual bool checkShipPosition(Ship coord) const;
   public:
@@ -25,7 +25,7 @@ class GameController : public Controller {
     GameController &operator=(const GameController &) = default;
     GameController &operator=(GameController &&) = default;
 
-    virtual void setDisplay(std::shared_ptr<Display> display) {
+    virtual void setDisplay(std::shared_ptr<screen::Display> display) {
       _display = std::move(display);
     }
 

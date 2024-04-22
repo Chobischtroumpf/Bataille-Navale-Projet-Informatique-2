@@ -2,6 +2,11 @@
 
 #include <memory>
 
+// GUI
+#include "gui.hh"
+
+#include <QApplication> 
+
 // #include "controller.hh"
 #include "game_client.hh"
 // #include "view.hh"
@@ -16,6 +21,16 @@
 
 // Displays
 #include "display.hh"
+#include "game_console.hh"
+#include "game_setting_console.hh"
+#include "lobby_console.hh"
+#include "login_console.hh"
+#include "main_menu_console.hh"
+#include "register_console.hh"
+
+
+// Gui
+#include "gui_LoginWindow.hh"
 
 // Views
 // #include "chat_view.hh"
@@ -38,7 +53,8 @@ private:
   void displayLobbyScreen(std::string gameId, bool admin);
   void displayGameCreationScreen();
 
-  std::shared_ptr<Display> _display;
+
+  std::shared_ptr<screen::Display> _display;
 
   DisplayType _display_type;
   ReturnInput::Screen _current_screen;

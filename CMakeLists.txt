@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.10) # minimum version of CMake
+cmake_minimum_required(VERSION 3.16) # minimum version of CMake
+
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Debug build.")
@@ -30,10 +31,19 @@ find_package(SQLite3 REQUIRED)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
+if(POLICY CMP0100)
+    cmake_policy(SET CMP0100 NEW)
+endif()
+
+set(CMAKE_AUTOMOC ON)
+
+
 include_directories(include)
 
 function(get_sources dir result)
-    file(GLOB_RECURSE sources "${dir}/*.cc")
+    file(GLOB_RECURSE sources 
+    "${dir}/*.cc"
+    "${dir}/*.hh")
     set(${result} ${sources} PARENT_SCOPE)
 endfunction()
 
@@ -45,7 +55,13 @@ endfunction()
 # endfunction()
 
 # Client sources
+# Récupère les fichiers source
 get_sources("src/Client" CLIENT_SOURCES)
+
+# Récupère également les fichiers d'en-tête
+get_sources("include/Client" CLIENT_HEADERS)
+
+
 
 # Server sources
 get_sources("src/Server" SERVER_SOURCES)
@@ -56,8 +72,11 @@ get_sources("src/Server" SERVER_SOURCES)
 # Common sources
 get_sources("src/Common" COMMON_SOURCES)
 
+# Common headers
+get_sources("include/Common" COMMON_HEADERS)
+
 # Create client executable
-add_executable(battleship ${COMMON_SOURCES} ${CLIENT_SOURCES})
+add_executable(battleship ${COMMON_SOURCES} ${CLIENT_SOURCES} ${CLIENT_HEADERS} ${COMMON_HEADERS})
 
 # Create server executable
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
@@ -90,9 +109,17 @@ if(NOT cpprestsdk_FOUND)
   message(WARNING "Cpprestsdk not found. Please run the script provided under linux/installCppRestSDK.sh to install cpprestsdk. Admin privileges are likely required")
 endif()
 
+# find qt
+find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+
+include_directories(${Qt6_INCLUDE_DIRS})
+
+
+set(CMAKE_AUTORCC ON) #*.qrc
+set(CMAKE_AUTOUIC ON) #*.ui
+
 target_link_libraries(server PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(battleship PRIVATE cpprestsdk::cpprest crypto)
 target_link_libraries(server PRIVATE SQLite::SQLite3)
 target_link_libraries(server PRIVATE sodium)
-
-# target_link_libraries(tests PRIVATE cpprestsdk::cpprest crypto SQLite::SQLite3 sodium)
+target_link_libraries(battleship PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)

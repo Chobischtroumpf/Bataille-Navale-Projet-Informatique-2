@@ -24,6 +24,13 @@ void ShipClassic::next() {
     _pos %= _ships.size();
 }
 
+void ShipClassic::previous() {
+    _pos --;
+    if (_pos < 0) {
+        _pos = _ships.size() - 1;
+    }
+}
+
 Ship ShipClassic::getShip() {
     return _ships[_pos];
 }

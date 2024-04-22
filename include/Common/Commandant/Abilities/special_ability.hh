@@ -38,10 +38,10 @@ class SpecialAbility
     SpecialAbility() = delete;
     SpecialAbility(std::string name, std::string description="", int energy_cost=0, SpecialAbilityType type=NONE);
     bool operator==(const SpecialAbility &other) const;
-    std::string getName();
-    std::string getDescription();
-    int     getEnergyCost();
-    SpecialAbilityType getType();
+    std::string getName() const;
+    std::string getDescription() const;
+    int     getEnergyCost() const;
+    SpecialAbilityType getType() const;
 
     virtual ~SpecialAbility() = default;
 };

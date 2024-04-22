@@ -5,4 +5,4 @@
 /*
  * Interface pour l'affichage dans la console
  */
-class Console : public Display {};
+class Console : public screen::Display {};
