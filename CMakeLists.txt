@@ -25,6 +25,8 @@ project(Battleship) # The project name
 include(FetchContent)
 # Find the sodium package
 include(${CMAKE_CURRENT_SOURCE_DIR}/lib/sodium.cmake)
+
+
 find_package(SQLite3 REQUIRED)
 
 # Fetch the nlohmann json library
@@ -32,12 +34,17 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(json)
 
 if(POLICY CMP0100)
-    cmake_policy(SET CMP0100 NEW)
+cmake_policy(SET CMP0100 NEW)
 endif()
 
 set(CMAKE_AUTOMOC ON)
 
+# Add the installation prefix of Qt6 to CMAKE_PREFIX_PATH
+list(APPEND CMAKE_PREFIX_PATH "/home/adorigo/group-9/lib/usr/lib/x86_64-linux-gnu/cmake")
 
+
+
+# Add the include directories
 include_directories(include)
 
 function(get_sources dir result)
@@ -94,7 +101,7 @@ add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 target_include_directories(server PRIVATE include/Server include/Server/Database include/Server/Game include/Server/Network include/Common include/Common/Commandant/Abilities include/Common/Commandant/Factions)
 
 # Define include directories for target 'battleship'
-target_include_directories(battleship PRIVATE include/Client include/Client/Network include/Client/Controllers include/Client/Views include/Client/Display include/Client/Display/Console include/Client/Display/GUI include/Common include/Common/Commandant/Abilities include/Common/Commandant/Factions)
+target_include_directories(battleship PRIVATE  include/Client include/Client/Network include/Client/Controllers include/Client/Views include/Client/Display include/Client/Display/Console include/Client/Display/GUI include/Common include/Common/Commandant/Abilities include/Common/Commandant/Factions)
 
 # Define include directories for target 'tests'
 # target_include_directories(tests PRIVATE include/Server include/Server/Database include/Server/Game include/Server/Network include/Common include/Common/Commandant/Abilities include/Common/Commandant/Factions)

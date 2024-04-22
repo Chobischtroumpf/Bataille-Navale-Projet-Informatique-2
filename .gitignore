@@ -48,6 +48,7 @@ CMakeCache.txt
 *.bat
 windows
 build
+lib/usr
 
 users.db
 
