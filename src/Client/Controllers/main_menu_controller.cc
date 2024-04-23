@@ -3,11 +3,6 @@
 MainMenuController::MainMenuController(std::shared_ptr<GameClient> _game_client)
     : _game_client(_game_client) {}
 
-bool MainMenuController::createGame(int mode, int friend_id) {
-  // Communiquer avec le serveur pour créer une game (normal, commandant) +
-  // inviter un ami
-}
-
 bool MainMenuController::joinGame(const std::string &game_id) {
   auto resultFuture = _game_client->JoinGame(game_id);
   auto result = resultFuture.get();

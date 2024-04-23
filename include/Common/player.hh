@@ -2,13 +2,16 @@
 
 #include <memory>
 
-#include "Commandant/Factions/faction.hh"
-#include "Commandant/Factions/faction_classique.hh"
+#include "ship.hh"
+#include "faction.hh"
+#include "faction_classique.hh"
+
+typedef std::vector<Ship> Fleet;
 
 class Player {
   private:
     Faction _faction;
-    std::vector<Ship> _fleet;
+    Fleet _fleet;
     bool _is_turn;
     int _energy_points;
     bool _is_player_one;
@@ -22,15 +25,17 @@ class Player {
     Player& operator=(const Player& other);
 
     Faction getFaction() const;
-    std::vector<Ship> getFleet() const;
+    Fleet getFleet() const;
     bool isTurn() const;
     int getEnergyPoints() const;
     bool isPlayerOne() const;
 
     void setFaction(Faction faction);
-    void setFleet(std::vector<Ship> fleet); // Cette méthode est peut etre inutile ?
+    void setFleet(Fleet fleet); // Cette méthode est peut etre inutile ?
     void addShip(Ship ship);
     void setTurn(bool is_turn);
+    void swapTurn();
+    void setEnergyPoints(int energy_points);
     void addEnergyPoints(int energy_points);
     void removeEnergyPoints(int energy_points);
     void setPlayerOne(bool is_player_one);

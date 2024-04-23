@@ -2,10 +2,11 @@
 #include "game_state.hh"
 
 GameSession::GameSession(std::string& sessionId, Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails)
-    : sessionId(sessionId), dbManager(dbManager), leaderId(leaderId), gameDetails(gameDetails), gameState(gameDetails) {
-    participantRoles[leaderId] = PlayerRole::Leader;
+    : _session_id(sessionId), dbManager(dbManager), _leader_id(leaderId), _game_details(gameDetails), _game_state(gameDetails) {
+    _participant_roles[leaderId] = PlayerRole::Leader;
     hasStarted = false;
-    gamemode = gameDetails.at("gamemode");
+    _session_name = _game_details.at("name").get<std::string>();
+    std::clog << "GameSession created: " << _session_name << std::endl;
 }
 
 GameSession::~GameSession() {}
@@ -17,32 +18,32 @@ void GameSession::startSession() {
 void GameSession::endSession() {
     // Cleanup or end game logic
 
-    gameHistory["gamemode"] = gamemode;
+    _game_history["gamemode"] = gamemode;
 
     //Here's the game history saved to database
-    if (!opponentId.empty()) {
-       dbManager.addGameState(leaderId, opponentId, sessionId, gameHistory.dump());
+    if (!_opponent_id.empty()) {
+       dbManager.addGameState(_leader_id, _opponent_id, _session_id, _game_history.dump());
     }
     
 }
 
 void GameSession::addParticipant(const std::string& participantId) {
     //Assign the role of the participant
-    if (opponentId.empty()) {
-        opponentId = participantId;
-        participantRoles[participantId] = PlayerRole::Opponent;
+    if (_opponent_id.empty()) {
+        _opponent_id = participantId;
+        _participant_roles[participantId] = PlayerRole::Opponent;
     } else {
         spectators.push_back(participantId);
-        participantRoles[participantId] = PlayerRole::Spectator;
+        _participant_roles[participantId] = PlayerRole::Spectator;
     }
 }
 
 void GameSession::removeParticipant(const std::string& participantId) {
     // Remove participant from their respective list and role mapping
-    participantRoles.erase(participantId);
-    if (participantId == opponentId) {
+    _participant_roles.erase(participantId);
+    if (participantId == _opponent_id) {
         // Handle reassignment or vacancy of Player B
-        opponentId.clear();
+        _opponent_id.clear();
     } else {
         spectators.erase(std::remove(spectators.begin(), spectators.end(), participantId), spectators.end());
     }
@@ -50,10 +51,10 @@ void GameSession::removeParticipant(const std::string& participantId) {
 
 vector<std::string> GameSession::getParticipants() const {
     vector<std::string> participants;
-    participants.emplace_back(leaderId);
+    participants.emplace_back(_leader_id);
 
-    if (!opponentId.empty()) {
-        participants.emplace_back(opponentId);
+    if (!_opponent_id.empty()) {
+        participants.emplace_back(_opponent_id);
     }
 
     for (const std::string& spectator : spectators) {
@@ -65,8 +66,8 @@ vector<std::string> GameSession::getParticipants() const {
 
 // Utility method to retrieve a participant role by id
 PlayerRole GameSession::getParticipantRole(const std::string& participantId) const {
-    auto it = participantRoles.find(participantId);
-    if (it != participantRoles.end()) {
+    auto it = _participant_roles.find(participantId);
+    if (it != _participant_roles.end()) {
         return it->second;
     }
     return PlayerRole::Spectator; // Default or error handling
@@ -76,34 +77,32 @@ PlayerRole GameSession::getParticipantRole(const std::string& participantId) con
 nlohmann::json GameSession::getGameState(const std::string& userId) const {
     auto playerRole= getParticipantRole(userId);
 
-    return gameState.getGameState(playerRole);
+    return _game_state.getGameState(playerRole);
 }
 
 bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move) {
     auto playerRole = getParticipantRole(userId);
 
     // Check if the move object contains "moveType" 
+    std::clog << "Move: " << move << std::endl;
     if (!move.contains("moveType")) {
         // If "moveType" property is missing, return false indicating error
-        std::cerr << "Invalid move protocol: no moveType property on move object" << std::endl;
+        std::clog << "Invalid move protocol: no move property on move object" << std::endl;
         return false;
     }
 
     std::string moveType = move["moveType"];
-
     // Check if the moveType is "StartGame" or "EndGame"
     if (moveType == "StartGame") {
         // If moveType is "StartGame" or "EndGame", update the hasStarted property accordingly
         hasStarted = true;
-        return true;
     } else if ( moveType == "EndGame") {
         endSession();
         return true;
         // Nothing yet
     }
-
     // Call makeMove on the gameState and return the result
-    auto result = gameState.makeMove(playerRole, move);
+    bool result = _game_state.makeMove(playerRole, move);
 
     // Update the state history if the move was successful
     if (result) { updateHistory(); }
@@ -117,21 +116,25 @@ nlohmann::json GameSession::getSessionState() const {
 
     sessionState["participants"] = getParticipants();
 
-    sessionState["hasStarted"] = this->hasStarted;
+    sessionState["hasStarted"] = _game_state.hasStarted();
+
+    std::clog << "Session State: " << _session_name << std::endl;
+
+    sessionState["sessionName"] = _session_name;
     
     return sessionState;
 }
 
 // Returns the game's history
 nlohmann::json GameSession::getHistory() const {
-    return gameHistory;
+    return _game_history;
 }
 
 // Updates the game history by appending the current game state
 void GameSession::updateHistory() {
     // Get the current game state
-    auto state = gameState.getGameState(PlayerRole::Spectator);
+    auto state = _game_state.getGameState(PlayerRole::Spectator);
 
     // Append the current game state to the game history
-    gameHistory["states"].push_back(state);
+    _game_history["states"].push_back(state);
 }

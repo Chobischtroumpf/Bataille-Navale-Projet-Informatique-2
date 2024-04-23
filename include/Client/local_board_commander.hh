@@ -1,22 +1,17 @@
 #pragma once
 
-#include <array>
 #include <cstddef>
-#include <cstdint>
-#include <iostream>
-#include <map>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <vector>
+#include <thread>
 
 #include "board_coordinates.hh"
 #include "cell.hh"
 #include "game_client.hh"
 #include "game_view.hh"
-#include "not_implemented_error.hh"
 #include "player.hh"
 #include "ship.hh"
-#include "ship_commander.hh"
 
 typedef enum { CLASSIC, COMMANDER } GameMode;
 
@@ -27,8 +22,7 @@ class LocalBoardCommander : public GameView {
 private:
   Player _player;
   GameMode _mode;
-  std::string _game_id;
-  const std::string &_session_id;
+  const std::string _session_id;
 
   std::vector<std::vector<Cell>> _my_board;
   std::vector<std::vector<Cell>> _their_board;
@@ -60,12 +54,17 @@ public:
   GameMode mode() const;
   Player player() const;
 
+
+  void setPlayerFaction(Faction faction);
+
   /*
    * Get the cell type at the given coordinates
    * @param coordinates : coordinates of the cell
    * @return le cell type
    */
   CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
+
+  std::optional<Ship> shipId(bool my_side, BoardCoordinates position) const;
 
   /* Check if two cells are part of the same ship */
   bool isSameShip(bool my_side, BoardCoordinates first,
@@ -92,17 +91,20 @@ public:
   /* Polls the server to wait the beggining of the game */
   bool waitGame();
 
+  bool isGameStarted();
+
   /* Polls the server to wait the turn */
   void waitTurn();
 
-  // void update() override { throw NotImplementedError("Update"); }
+  /* Asks once if its my turn*/
+  bool fetchMyTurn();
 
   // returns the
   CellType best(CellType lhs, CellType rhs);
 
   static CellType string_to_celltype(const std::string &type);
 
-  void update_board(const nlohmann::json &new_board);
+  void updateBoard();
 
   bool isInBoard(BoardCoordinates coord) const;
 

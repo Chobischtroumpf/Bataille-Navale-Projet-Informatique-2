@@ -104,6 +104,21 @@ else
     echo "sodium is already installed."
 fi
 
+# Install Qt and Wayland
+    dpkg -s qt6-base-dev > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "Qt not found. Attempting to install..."
+        sudo apt-get install -y qt6-base-dev qt6-wayland
+
+        if [ $? -eq 0 ]; then
+            echo "Qt installed successfully."
+        else
+            echo "Failed to install Qt. Please install it manually."
+        fi
+    else
+        echo "Qt is already installed."
+    fi
+
 else
     echo "This script is only for Ubuntu/Debian based systems."
     exit 1

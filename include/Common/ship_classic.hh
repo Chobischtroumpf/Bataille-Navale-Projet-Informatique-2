@@ -1,8 +1,8 @@
-#include "ship.hh"
-#include "not_implemented_error.hh"
-#include <optional>
-#include <string>
+#pragma once
+
 #include <vector>
+
+#include "ship.hh"
 
 class ShipClassic {
   protected:
@@ -11,6 +11,7 @@ class ShipClassic {
   public:
     ShipClassic(int number_of_case);
     void next();
+    void previous();
     Ship getShip();
     void rotate();
 

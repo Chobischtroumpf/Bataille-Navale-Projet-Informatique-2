@@ -17,12 +17,11 @@ Driver::Driver(DisplayType display_type, std::string server_address) : _display_
 Driver::~Driver() {}
 
 void Driver::launchApp() {
-  //std::string user = "slectedUser";
   displayLoginScreen();
-  run(ReturnInput::Screen::LOGIN);
+  run();
 }
 
-void Driver::run(ReturnInput::Screen base_screen) {
+void Driver::run() {
     while (true) {
       _display->display();
       ReturnInput input = _display->handleInput();
@@ -67,26 +66,31 @@ std::shared_ptr<GameClient> Driver::getClient() {
 }
 
 void Driver::displayGameScreen(std::string gameId) {
+  std::clog << "displayGameScreen" << std::endl;
   if (_display_type == CONSOLE) {
     Player player1 = Player();
+    std::clog << "commander_mode" << std::endl;
     bool commander_mode = std::static_pointer_cast<LobbyConsole>(_display)->isCommanderMode();
+    std::clog << "faction" << std::endl;
     int faction =
         std::static_pointer_cast<LobbyConsole>(_display)->getFaction();
-    if (commander_mode)
+    if (commander_mode) {
       switch (faction) {
-      case 1:
+      case 0:
         player1.setFaction(FactionBombardement());
         break;
-      case 2:
+      case 1:
         player1.setFaction(FactionSonar());
         break;
-      case 3:
+      case 2:
         player1.setFaction(FactionMines());
         break;
       }
-    else
+    } else {
       player1.setFaction(FactionClassique());
-    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, GameMode::CLASSIC, gameId);
+    }
+
+    std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC, gameId);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
     _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());
     _current_screen = ReturnInput::Screen::GAME;
@@ -100,7 +104,6 @@ void Driver::displayLoginScreen() {
     _display = std::make_shared<LoginConsole>(getClient());
     _current_screen = ReturnInput::Screen::LOGIN;
   } else {
-    throw NotImplementedError("GUI not implemented yet");
   }
 }
 
@@ -135,8 +138,7 @@ void Driver::displayChatScreen(std::string username) {
 void Driver::displayLobbyScreen(std::string gameId, bool admin) {
   if (_display_type == CONSOLE) {
     if (_current_screen == ReturnInput::Screen::GAME_CREATION) {
-      std::shared_ptr<LobbyConsole> lobby = std::make_shared<LobbyConsole>(gameId, getClient(), admin);
-      lobby->loadParameters(std::static_pointer_cast<GameSettingConsole>(_display));
+      std::shared_ptr<LobbyConsole> lobby = std::make_shared<LobbyConsole>(gameId, getClient(), admin, std::static_pointer_cast<GameSettingConsole>(_display));
       _display = std::move(lobby);
       _current_screen = ReturnInput::Screen::LOBBY;
     } else {

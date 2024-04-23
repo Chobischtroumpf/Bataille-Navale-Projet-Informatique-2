@@ -16,6 +16,7 @@
 
 #include "console.hh"
 #include "game_client.hh"
+#include "ship_classic.hh"
 #include "game_controller.hh"
 #include "not_implemented_error.hh"
 
@@ -48,8 +49,8 @@ private:
   bool _my_turn; //< True if it's the player's turn
   InputStatus _last_input = OK;  //< True if the last input was valid
   GamePhase _phase = PLACE_SHIP; //< The current phase of the game
-  std::unique_ptr<ShipClassic> _possible_ships = nullptr;                 //< The ships that can be placed
   bool _ship_selected = false; //< True if a boat has been selected
+  std::unique_ptr<ShipClassic> _possible_ships = nullptr;                 //< The ships that can be placed
 
   std::string _round_time = ""; //< The time of the round
   std::string _game_time = "";  //< The time of the game
@@ -132,13 +133,13 @@ private:
   void handleShipPlacement();
 
   bool isValidInputFormat(const std::string &input) const;
-  bool isValidCoordinates(char row, int col) const;
+  bool isValidCoordinates(size_t row, size_t col) const;
 
   std::vector<string> createSelectShipSizePrompt(InputStatus status) const;
-  std::vector<string> createSelectNextRotateKey(InputStatus status) const;
+  std::vector<string> createSelectNextRotateKey() const;
   std::vector<string> createSelectShipPositionPrompt(InputStatus status) const;
-  std::vector<string> createAvailableAbilities(InputStatus status) const;
-  std::vector<string> createAvailableBoats(InputStatus status) const;
+  std::vector<string> createAvailableAbilities() const;
+  std::vector<string> createAvailableBoats() const;
 
 public:
   /** @param out: where to print
