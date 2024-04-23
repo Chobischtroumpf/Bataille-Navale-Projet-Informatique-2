@@ -26,6 +26,12 @@ fclean: clean
 run_debug: debug
 	./server
 
+remove_dep:
+	@rm -rf ./lib/*.deb
+	@rm -rf ./lib/usr
+	@rm -rf ./lib/etc
+	@rm -rf ./lib/var
+
 re: clean all
 
 re_debug: clean debug
