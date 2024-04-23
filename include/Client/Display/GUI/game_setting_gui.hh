@@ -23,6 +23,7 @@ class GameSetting : public QWidget {
 
 public:
     GameSetting(std::shared_ptr<GameClient> gameClient);
+    ~GameSetting();
     bool isSpectatorAllowed();
     std::string getGameName();
     bool isCommanderMode();

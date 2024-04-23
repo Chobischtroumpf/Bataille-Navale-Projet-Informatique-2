@@ -67,7 +67,7 @@ private:
 
     QTimer *timerPlayer;
     QTimer *timerGameStart;
-    QLabel *Warning;
+    QLabel *warning;
     QVBoxLayout *scrollLayoutPlayer;
     QLineEdit *addPlayerName;
     QPushButton *FactionBombardement;

@@ -111,6 +111,23 @@ GameSetting::GameSetting(std::shared_ptr<GameClient> gameClient): gameClient(gam
     mainLayout->addWidget(toLobby, 6, 3, 1, 1, Qt::AlignRight);
 }
 
+GameSetting::~GameSetting() {
+    delete gameName;
+    delete noGameNameWarning;
+    delete classicMode;
+    delete commanderMode;
+    delete timePerTurn;
+    delete timePerGame;
+    delete timeGame;
+    delete timePerTurnValue;
+    delete timePerGameValue;
+    delete timeGameValue;
+    delete allowSpectator;
+    delete notAllowSpectator;
+    delete backToMenu;
+    delete toLobby;
+}
+
 void GameSetting::onBackToMenuButtonClicked() {
     emit goBackToMenu();
     this->close();

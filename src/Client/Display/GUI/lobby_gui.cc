@@ -33,16 +33,8 @@ Lobby::Lobby(const std::string &session_id,
     scrollAreaPlayer->setWidgetResizable(true);
     scrollAreaPlayer->setWidget(scrollWidgetPlayer);
     scrollAreaPlayer->setFixedWidth(780);
-    //scrollAreaPlayer->setFixedHeight(300);
     mainLayout->addWidget(scrollAreaPlayer, 0, 0, 4, 3, Qt::AlignHCenter);
-    
-    addPlayerName = new QLineEdit(this);
-    addPlayerName->setFixedSize(400, 40);
-    addPlayerName->setFont(font);
-    addPlayerName->setPlaceholderText(QString("Username of the player to add"));
-    connect(addPlayerName, &QLineEdit::returnPressed, this, &Lobby::invitePlayer);
-    mainLayout->addWidget(addPlayerName, 4, 0, 1, 3, Qt::AlignHCenter);
-    
+
     if (_commander_mode) {
         FactionBombardement = new QPushButton("Faction Bombardement", this);
         FactionBombardement->setFont(font);
@@ -68,30 +60,54 @@ Lobby::Lobby(const std::string &session_id,
         timerGameStart->start();
     }
 
-    Warning = new QLabel("", this);
-    Warning->setFont(font);
-    Warning->setStyleSheet("color: red;");
-    mainLayout->addWidget(Warning, 6, 1, 1, 1, Qt::AlignHCenter);
-
     backToMenu = new QPushButton("Back", this);
     backToMenu->setFont(font);
     backToMenu->setFixedSize(180, 50);
     connect(backToMenu, &QPushButton::clicked, this, &Lobby::onBackToMenuButtonClicked);
     mainLayout->addWidget(backToMenu, 6, 0, 1, 1);
 
-    toGame = new QPushButton("Lauch Game", this);
-    toGame->setFont(font);
-    toGame->setFixedSize(180, 50);
-    connect(toGame, &QPushButton::clicked, this, &Lobby::onLaunchGameButtonClicked);
-    mainLayout->addWidget(toGame, 6, 2, 1, 1, Qt::AlignRight);
+    if (_admin) {
+        addPlayerName = new QLineEdit(this);
+        addPlayerName->setFixedSize(400, 40);
+        addPlayerName->setFont(font);
+        addPlayerName->setPlaceholderText(QString("Username of the player to add"));
+        connect(addPlayerName, &QLineEdit::returnPressed, this, &Lobby::invitePlayer);
+        mainLayout->addWidget(addPlayerName, 4, 0, 1, 3, Qt::AlignHCenter);
+
+        warning = new QLabel("", this);
+        warning->setFont(font);
+        warning->setStyleSheet("color: red;");
+        if (_commander_mode) {
+            mainLayout->addWidget(warning, 6, 1, 1, 1, Qt::AlignHCenter);
+        } else {
+            mainLayout->addWidget(warning, 6, 1, 1, 1, Qt::AlignRight);
+        }
+
+        toGame = new QPushButton("Lauch Game", this);
+        toGame->setFont(font);
+        toGame->setFixedSize(180, 50);
+        connect(toGame, &QPushButton::clicked, this, &Lobby::onLaunchGameButtonClicked);
+        mainLayout->addWidget(toGame, 6, 2, 1, 1, Qt::AlignRight);
+    }
 }
 
 Lobby::~Lobby() {
     delete timerPlayer;
-    if (!_admin) {
-        if ((!_commander_mode) or _faction_chosen) {
-            delete timerGameStart;
-        }
+    delete scrollLayoutPlayer;
+    delete backToMenu;
+
+    if (_commander_mode) {
+        delete FactionBombardement;
+        delete FactionSonar;
+        delete FactionMines;
+    }
+
+    if (_admin) {
+        delete warning;
+        delete addPlayerName;
+        delete toGame;
+    } else if ((!_commander_mode) or _faction_chosen) {
+        delete timerGameStart;
     }
 }
 
@@ -197,9 +213,9 @@ void Lobby::onBackToMenuButtonClicked() {
 
 void Lobby::onLaunchGameButtonClicked() {
     if (_view->getUserInGame(_session_id).size() < 2) {
-        Warning->setText("Not enough Player !");
+        warning->setText("Not enough Player !");
     } else if (!_faction_chosen) {
-        Warning->setText("No Faction Chosen !");
+        warning->setText("No Faction Chosen !");
     } else {
         _controller->launchGame(_session_id);
         emit launchGame(_session_id);
