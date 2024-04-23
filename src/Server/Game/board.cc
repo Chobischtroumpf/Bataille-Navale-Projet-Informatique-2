@@ -247,7 +247,7 @@ nlohmann::json Board::to_json(PlayerRole role) const {
     boardJson["energy_points"] = 0;
   }
 
-  boardJson[""]
+//  boardJson[""]
   
 
   return boardJson;

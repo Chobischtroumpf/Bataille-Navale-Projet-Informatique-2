@@ -49,6 +49,10 @@ CMakeCache.txt
 windows
 build
 lib/usr
+lib/etc
+lib/var
+
+*.deb
 
 users.db
 
@@ -60,6 +64,7 @@ build/*
 # log files
 gameclientlog.txt
 *.log
+*.txt
 
 # TeXLive compilation files
 # *.log

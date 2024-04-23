@@ -13,21 +13,32 @@ endif()
 # Specify the C++ compiler
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../)
 set(CMAKE_CXX_COMPILER g++-10)
-# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Add compile options
 add_compile_options(-std=c++20)
 project(Battleship) # The project name
 
 # Add fetch content macro to fetch external libraries from their repo
 include(FetchContent)
+
 # Find the sodium package
+set(sodium_DIR ${CMAKE_CURRENT_SOURCE_DIR}/usr/lib)
+set(sodium_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/include/sodium/)
+set(sodium_LIBRARY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu/libsodium.a)
+set(sodium_LIBRARY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu/libsodium.a)
+
 include(${CMAKE_CURRENT_SOURCE_DIR}/lib/sodium.cmake)
 
-
+# Find the SQLite3 package
 find_package(SQLite3 REQUIRED)
+
+
+set(boost_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib)
+set(boost_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/include/boost)
+
+# Find the Boost package
+find_package(Boost REQUIRED)
 
 # Fetch the nlohmann json library
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
@@ -40,12 +51,14 @@ endif()
 set(CMAKE_AUTOMOC ON)
 
 # Add the installation prefix of Qt6 to CMAKE_PREFIX_PATH
-list(APPEND CMAKE_PREFIX_PATH "/home/adorigo/group-9/lib/usr/lib/x86_64-linux-gnu/cmake")
+list(PREPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu")
+list(PREPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu/cmake")
 
 
 
 # Add the include directories
 include_directories(include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/include/x86_64-linux-gnu)
 
 function(get_sources dir result)
     file(GLOB_RECURSE sources 
