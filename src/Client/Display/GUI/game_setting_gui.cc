@@ -117,7 +117,7 @@ void GameSetting::onBackToMenuButtonClicked() {
 }
 
 void GameSetting::onGoToLobbyButtonClicked() {
-    std::string gameNameString = gameName->text().toStdString();
+    gameNameString = gameName->text().toStdString();
 
     if (gameNameString == "") {
         noGameNameWarning->setText("No Game Name !");
@@ -127,10 +127,18 @@ void GameSetting::onGoToLobbyButtonClicked() {
                              {"gameTimeLimit", timePerTurn->value() * 5},
                              {"playerTimeLimit", timePerGame->value() * 10},
                              {"turnTimeLimit", timeGame->value() * 10},
-                             {"maxPlayers", ((spectatorAllowed == "Yes") ? 8 : 2)}
+                             {"maxPlayers", (spectatorAllowed ? 8 : 2)}
                              };
-        //emit goToLobby();
-        //this->close();
+        auto resultFuture = gameClient->CreateGame(gameDetails);
+        auto gameID = resultFuture.get();
+        if (gameMode == "Commander") {
+          nlohmann::json req;
+          req["moveType"] = "chooseFaction";
+          req["faction"] = 0;
+          gameClient->MakeMove(gameID, req);
+        }
+        emit goToLobby(gameID, true);
+        this->close();
     }
 }
 
@@ -164,11 +172,23 @@ void GameSetting::changeValueTimeGame() {
 void GameSetting::allowSpectatorButtonClicked() {
     allowSpectator->setEnabled(false);
     notAllowSpectator->setEnabled(true);
-    spectatorAllowed = "Yes";
+    spectatorAllowed = true;
 }
 
 void GameSetting::notAllowSpectatorButtonClicked() {
     notAllowSpectator->setEnabled(false);
     allowSpectator->setEnabled(true);
-    spectatorAllowed = "No";
+    spectatorAllowed = false;
+}
+
+bool GameSetting::isSpectatorAllowed() {
+    return spectatorAllowed;
+}
+
+std::string GameSetting::getGameName() {
+    return gameNameString;
+}
+
+bool GameSetting::isCommanderMode() {
+    return gameMode == "Commander";
 }

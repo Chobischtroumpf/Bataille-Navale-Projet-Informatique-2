@@ -31,14 +31,21 @@ void DriverGui::showChatOutWindow(const std::string &destination) {
     _chatOutWindow->show();
 }
 
-void DriverGui::showGameWindow() {
+void DriverGui::showGameWindow(std::string gameId) {
     _gameWindow = std::make_unique<Game>(_game_client);
     _gameWindow->show();
 }
 
 void DriverGui::showGameSettingWindow() {
-    _gameSettingWindow = std::make_unique<GameSetting>(_game_client);
+    _gameSettingWindow = std::make_shared<GameSetting>(_game_client);
     QObject::connect(_gameSettingWindow.get(), &GameSetting::goBackToMenu, this, &DriverGui::showMainMenu);
-    //QObject::connect(_gameSettingWindow.get(), &GameSetting::goToLobby, this, &DriverGui::showLobbyWindow);
+    QObject::connect(_gameSettingWindow.get(), &GameSetting::goToLobby, this, &DriverGui::showLobbyWindow);
     _gameSettingWindow->show();
+}
+
+void DriverGui::showLobbyWindow(std::string gameId, bool admin = false) {
+    _lobbyWindow = std::make_unique<Lobby>(gameId, _game_client, admin, _gameSettingWindow);
+    QObject::connect(_lobbyWindow.get(), &Lobby::goBackToMenu, this, &DriverGui::showMainMenu);
+    QObject::connect(_lobbyWindow.get(), &Lobby::launchGame, this, &DriverGui::showGameWindow);
+    _lobbyWindow->show();
 }

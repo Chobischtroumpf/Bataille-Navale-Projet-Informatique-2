@@ -23,11 +23,14 @@ class GameSetting : public QWidget {
 
 public:
     GameSetting(std::shared_ptr<GameClient> gameClient);
+    bool isSpectatorAllowed();
+    std::string getGameName();
+    bool isCommanderMode();
 
 signals:
     // insérer les signaux ici
     void goBackToMenu();
-    //void goToLobby();
+    void goToLobby(std::string gameId, bool admin);
 
 private slots: // en ref à Qt6
     void onBackToMenuButtonClicked();
@@ -42,8 +45,9 @@ private slots: // en ref à Qt6
 
 private:
     std::shared_ptr<GameClient> gameClient;
+    std::string gameNameString;
     std::string gameMode = "Classic";
-    std::string spectatorAllowed = "Yes";
+    bool spectatorAllowed = true;
 
     QLineEdit *gameName;
     QLabel *noGameNameWarning;
