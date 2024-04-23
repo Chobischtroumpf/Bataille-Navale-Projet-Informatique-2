@@ -93,6 +93,7 @@ Lobby::Lobby(const std::string &session_id,
 
 Lobby::~Lobby() {
     delete timerPlayer;
+    clearPlayerLayout();
     delete scrollLayoutPlayer;
     delete backToMenu;
 
