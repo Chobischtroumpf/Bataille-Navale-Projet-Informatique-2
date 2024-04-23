@@ -52,6 +52,8 @@ private:
   void displayChatScreen(std::string username);
   void displayLobbyScreen(std::string gameId, bool admin);
   void displayGameCreationScreen();
+  void displayReviewScreen();
+  void displayReviewGameScreen(std::string gameId);
 
 
   std::shared_ptr<screen::Display> _display;

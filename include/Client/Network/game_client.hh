@@ -40,6 +40,7 @@ public:
   std::future<std::string> CreateGame(const njson &gameDetails);
   std::future<njson> JoinGame(const std::string &session_id);
   std::future<bool> MakeMove(const std::string &session_id, const njson &move);
+  std::future<njson> GetGameHistory(std::string sessionId);
   std::future<bool> Login(const std::string &userId,
                           const std::string &password);
   std::future<bool> Register(const std::string &userId,
