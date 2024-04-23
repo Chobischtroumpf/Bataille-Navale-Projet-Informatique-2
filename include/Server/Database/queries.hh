@@ -165,14 +165,22 @@ public:
     bool addGameState(const std::string &id_player1, const std::string &id_player2,const std::string &id_session, const std::string &game_state);
 
     /**
-     * Get all game states from a game session.
+     * Get the game state of a game session. (game state = list of move made during a game)
      * @param id_session The ID of the game session.
      * @return A QueryResult containing the the gamestates of a game session class by time or an error message if something failed.
      */
     QueryResult getGameStates(const std::string &id_session);
 
     /**
-     * Delete all game states from a game session.
+     * Get all sessionId of games played by a given player.
+     * @param id_player The ID of the player.
+     * @return A QueryResult containing the the game session id class in chronological order.
+     * Or an error message if something failed.
+     */
+    QueryResult getSessionId(const std::string &id_player);
+
+    /**
+     * Delete the game state of a game session.
      * @param id_session The ID of the game session.
      * @return A QueryResult containing an error message if something failed.
      */

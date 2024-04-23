@@ -1,11 +1,11 @@
 #include "game_session.hh"
 #include "game_state.hh"
 
-GameSession::GameSession(Queries& dbManager, const std::string& leader_id, const nlohmann::json& game_details)
-    : dbManager(dbManager), _game_details(game_details), _leader_id(leader_id), _game_state(game_details) {
-    _participant_roles[leader_id] = PlayerRole::Leader;
+GameSession::GameSession(std::string& sessionId, Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails)
+    : _session_id(sessionId), dbManager(dbManager), _leader_id(leaderId), _game_details(gameDetails), _game_state(gameDetails) {
+    _participant_roles[leaderId] = PlayerRole::Leader;
     hasStarted = false;
-    _session_name = game_details.at("name").get<std::string>();
+    _session_name = _game_details.at("name").get<std::string>();
     std::clog << "GameSession created: " << _session_name << std::endl;
 }
 
@@ -18,7 +18,13 @@ void GameSession::startSession() {
 void GameSession::endSession() {
     // Cleanup or end game logic
 
-    //Here's the game history should be saved to database
+    _game_history["gamemode"] = gamemode;
+
+    //Here's the game history saved to database
+    if (!_opponent_id.empty()) {
+       dbManager.addGameState(_leader_id, _opponent_id, _session_id, _game_history.dump());
+    }
+    
 }
 
 void GameSession::addParticipant(const std::string& participantId) {
@@ -91,6 +97,9 @@ bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move
         // If moveType is "StartGame" or "EndGame", update the hasStarted property accordingly
         hasStarted = true;
     } else if ( moveType == "EndGame") {
+        endSession();
+        return true;
+        // Nothing yet
     }
     // Call makeMove on the gameState and return the result
     bool result = _game_state.makeMove(playerRole, move);

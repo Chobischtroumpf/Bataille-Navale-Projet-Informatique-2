@@ -24,7 +24,7 @@ string SessionManager::createSession(const string& userId, const njson& gameDeta
     string session_id = ss.str();
 
     // Create and store the new session
-    sessions[session_id] = make_shared<GameSession>(dbManager, userId, gameDetails);
+    sessions[session_id] = make_shared<GameSession>(session_id, dbManager, userId, gameDetails);
 
     return session_id;
 }

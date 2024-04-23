@@ -20,6 +20,8 @@ class GameSession {
     // Reference to the dbManager from the GameServer class
     Queries& dbManager;
 
+    std::string gamemode;
+
     // Game details (e.g., game type, rules)
     nlohmann::json _game_details;
     nlohmann::json _game_history;
@@ -39,7 +41,7 @@ class GameSession {
  
   public:
     // Constructor with game leader userId and game details
-    GameSession(Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails);
+    GameSession(std::string& sessionId, Queries& dbManager, const std::string& leaderId, const nlohmann::json& gameDetails);
     virtual ~GameSession();
 
     // GameSession Management

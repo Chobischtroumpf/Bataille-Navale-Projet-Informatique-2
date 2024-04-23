@@ -173,6 +173,44 @@ future<string> GameClient::GetGames() {
     return resultFuture;
 }
 
+future<njson> GameClient::GetGameHistory( string sessionId ) {
+  std::clog << "Fetching history of game: " << sessionId << " ..." << endl;
+
+  // Use a promise to return the result asynchronously
+  auto promise = std::make_shared<std::promise<njson>>();
+  auto resultFuture = promise->get_future();
+
+  // Construct the request path with the sessionId
+  string requestPath = "/api/games/history?sessionId=" + sessionId;
+
+  // Make the GET request to  retrieve the game history 
+  GetRequest(requestPath)
+      .then([promise](njson jsonResponse) {
+        // Check if the response was successful
+        if (!jsonResponse.empty() &&
+            jsonResponse.find("error") == jsonResponse.end()) {
+          promise->set_value(jsonResponse["gameHistory"]);
+        } else {
+          // Error or game not found, return empty object
+          promise->set_value(njson{});
+        }
+      })
+      .then([promise](pplx::task<void> errorHandler) {
+        try {
+          // Attempt to catch exceptions if any
+          errorHandler.get();
+        } catch (const exception &e) {
+          // In case of exception, set an error value
+          cerr << "Exception caught while joining fetching game history: " << e.what()
+               << endl;
+          promise->set_value(njson{});
+        }
+      });
+
+    std::clog << "Get game history request sent." << endl;
+    return resultFuture;
+}
+
 // Method to create a new game, taking gameDetails as input and returning a future<string> session_id
 future<string> GameClient::CreateGame(const njson& gameDetails) {
     std::clog << "Creating a new game session..." <<std::endl;

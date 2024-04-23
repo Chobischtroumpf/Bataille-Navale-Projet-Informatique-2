@@ -103,5 +103,19 @@ int main() {
     auto makeMoveFuture = gameClient.MakeMove(sessionId, startGameMove);
     cout << "Move result: " << makeMoveFuture.get() << "\n";
 
+    njson endGameMove = {
+        {"moveType", "EndGame"},
+    };
+
+    // Call the MakeMove method
+    waitForEnter("Ready to test the EndGame move. ");
+    auto endMoveFuture = gameClient.MakeMove(sessionId, endGameMove);
+    cout << "Move result: " << endMoveFuture.get() << "\n";
+
+
+    // Get the game history
+    waitForEnter("Ready to test the game history retrieval ");
+    auto historyFuture = gameClient.GetGameHistory();
+    cout << "game history: " << historyFuture.get() << "\n";
     return 0;
 }

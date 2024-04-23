@@ -188,6 +188,13 @@ bool Queries::addGameState(const std::string &id_player1, const std::string &id_
 QueryResult Queries::getGameStates(const std::string &id_session){
     std::string columns = "game_state";
     std::string condition = "(id_session = '" + id_session + "')";
+    QueryResult result = db->selectFromTable("GameStates", columns, condition);
+    return result;
+}
+
+QueryResult Queries::getSessionId(const std::string &id_player){
+    std::string columns = "id_session, id_player1, id_player2";
+    std::string condition = "(id_player1 = '" + id_player + "' OR id_player2 = '" + id_player + "')";    
     std::string order_by = " ORDER BY state_date_time";
     QueryResult result = db->selectFromTable("GameStates", columns, condition + order_by);
     return result;

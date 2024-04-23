@@ -9,6 +9,8 @@
 #include "main_menu_console.hh"
 #include "game_setting_console.hh"
 #include "faction_bombardement.hh"
+#include "review_console.hh"
+#include "review_game_console.hh"
 
 Driver::Driver(DisplayType display_type, std::string server_address) : _display_type{display_type}, _game_client{std::make_shared<GameClient>(server_address)} {}
 
@@ -23,35 +25,38 @@ void Driver::run() {
     while (true) {
       _display->display();
       ReturnInput input = _display->handleInput();
-      if (_current_screen != input.screen) {
-        switch (input.screen) {
-          case ReturnInput::Screen::MAIN_MENU:
-            displayMainMenuScreen();
-            break;
-          case ReturnInput::Screen::GAME:
-            displayGameScreen(input.arg);
-            break;
-          case ReturnInput::Screen::CHAT:
-            displayChatScreen(input.arg);
-            break;
-          case ReturnInput::Screen::LOBBY:
-            if (_current_screen == ReturnInput::Screen::MAIN_MENU)
-              displayLobbyScreen(input.arg, false);
-            else
-              displayLobbyScreen(input.arg, true);
-            break;
-          case ReturnInput::Screen::LOGIN:
-            //const char* str1 = "abc";
-            //char* const dummy[] = {str1};
-            displayLoginScreen();
-            break;
-          case ReturnInput::Screen::REGISTER:
-            displayRegisterScreen();
-            break;
-          case ReturnInput::Screen::GAME_CREATION:
-            displayGameCreationScreen();
-            break;
-        }
+      if (_current_screen != input.screen)
+      switch (input.screen) {
+        case ReturnInput::Screen::MAIN_MENU:
+          displayMainMenuScreen();
+          break;
+        case ReturnInput::Screen::GAME:
+          displayGameScreen(input.arg);
+          break;
+        case ReturnInput::Screen::CHAT:
+          displayChatScreen(input.arg);
+          break;
+        case ReturnInput::Screen::LOBBY:
+          if (_current_screen == ReturnInput::Screen::MAIN_MENU)
+            displayLobbyScreen(input.arg, false);
+          else
+            displayLobbyScreen(input.arg, true);
+          break;
+        case ReturnInput::Screen::LOGIN:
+          displayLoginScreen();
+          break;
+        case ReturnInput::Screen::REGISTER:
+          displayRegisterScreen();
+          break;
+        case ReturnInput::Screen::GAME_CREATION:
+          displayGameCreationScreen();
+          break;
+        case ReturnInput::Screen::REVIEW_MENU:
+          displayReviewScreen();
+          break;
+        case ReturnInput::Screen::REVIEW_GAME:
+          displayReviewGameScreen(input.arg);
+          break;
       }
     }
 }
@@ -152,4 +157,25 @@ void Driver::displayGameCreationScreen() {
   } else {
     throw NotImplementedError("GUI not implemented yet");
   }
+}
+
+void Driver::displayReviewScreen(){
+  if (_display_type == CONSOLE) {
+      std::shared_ptr<ReviewController> review_controller = std::make_shared<ReviewController>(getClient());
+      _display = std::make_shared<ReviewConsole>(std::cout, std::cin, review_controller);
+      _current_screen = ReturnInput::Screen::REVIEW_MENU;
+  } else {
+    throw NotImplementedError("GUI not implemented yet");
+  }
+}
+
+void Driver::displayReviewGameScreen(std::string gameId){
+    if (_display_type == CONSOLE) {
+        std::shared_ptr<LocalBoardReview> board = std::make_shared<LocalBoardReview>(gameId);
+        std::shared_ptr<ReviewGameController> rgame_controller = std::make_shared<ReviewGameController>(getClient(), board);
+        _display = std::make_shared<ReviewGameConsole>(std::cout, std::cin, board, rgame_controller);
+        _current_screen = ReturnInput::Screen::REVIEW_GAME;
+    } else {
+        throw NotImplementedError("GUI not implemented yet");
+    }
 }
