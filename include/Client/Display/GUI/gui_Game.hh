@@ -77,6 +77,11 @@ protected:
   void setupGame();
   void setupWaitingGame();
   void setupWaitingTurn();
+  void setupWinning();
+  void setupLosing();
+
+signals:
+  void gameFinished();
 
 private:
   std::shared_ptr<GameClient> _game_client;

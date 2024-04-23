@@ -292,6 +292,48 @@ void Game::setupGame() {
   _footer_layout->addLayout(game_layout); 
 }
 
+void Game::setupWinning() {
+  _phase = FINISHED;
+  clearLayout(_footer_layout);
+
+  QLabel *phase2Label = new QLabel("You won! 🎶 You're simply the best 🎶");
+
+  QPushButton *quitButton = new QPushButton("Return to main menu");
+
+  connect(quitButton, &QPushButton::clicked, [this] {
+    emit gameFinished();
+  });
+
+  phase2Label->setAlignment(Qt::AlignCenter);
+
+  QVBoxLayout *layout = new QVBoxLayout();
+  layout->addWidget(phase2Label);
+  layout->addWidget(quitButton);
+
+  _footer_layout->addLayout(layout);
+}
+
+void Game::setupLosing() {
+  _phase = FINISHED;
+  clearLayout(_footer_layout);
+
+  QLabel *phase2Label = new QLabel("You lost! 🫵😹 Might be bad luck, or just a skill issue...");
+
+  QPushButton *quitButton = new QPushButton("Return to main menu");
+
+  connect(quitButton, &QPushButton::clicked, [this] {
+    emit gameFinished();
+  });
+
+  phase2Label->setAlignment(Qt::AlignCenter);
+
+  QVBoxLayout *layout = new QVBoxLayout();
+  layout->addWidget(phase2Label);
+  layout->addWidget(quitButton);
+
+  _footer_layout->addLayout(layout);
+}
+
 Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_client(gameClient), _commander_mode(commander_mode) {
   _game_client->Login("Jeffries", "Hitchcock");
   sleep(1);
@@ -307,6 +349,7 @@ Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_
   std::future<std::string> session_id = _game_client->CreateGame(gameDetails);
 
   std::string session_id_str = session_id.get();
+  std::cout << session_id_str << std::endl;
   std::string ouifqsf;
   std::cin >> ouifqsf;
   nlohmann::json req;
@@ -466,7 +509,15 @@ void Game::fire(BoardCoordinates coord) {
       updateAbilityInformations();
       _selected_ability = nullptr;
       updateAbilityInformations();
-      setupWaitingTurn();
+      if (_board->isFinished()) {
+        if (_board->isVictory()) {
+          setupWinning();
+        } else {
+          setupLosing();
+        }
+      } else {
+        setupWaitingTurn();
+      }
     }
   }
 }
