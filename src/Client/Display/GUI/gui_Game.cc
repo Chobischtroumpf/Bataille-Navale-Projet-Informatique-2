@@ -372,7 +372,7 @@ Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int s
   } else {
     _board->setPlayerFaction(FactionClassique());
   }
-  setWindowTitle("Game");
+  setWindowTitle(QString::fromStdString("Battleship: " + _board->getMyUsername() + " vs " + _board->getTheirUsername()));
 
   resize(1200, 800);
 
