@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.16) # minimum version of CMake
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Debug build.")
-  add_compile_options(-g -pedantic -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -DOUTPUT_DEBUG=1)
+  add_compile_options(-std=c++20 -g -pedantic -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -DOUTPUT_DEBUG=1)
   add_link_options(-fsanitize=address,undefined)
 else(CMAKE_BUILD_TYPE STREQUAL "Release")
   message("Release build.")
-  add_compile_options(-O3 -w)
+  add_compile_options(-std=c++20 -O2 -w)
 endif()
 
 # Specify the C++ compiler
@@ -16,22 +16,19 @@ set(CMAKE_CXX_COMPILER g++-10)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add compile options
-add_compile_options(-std=c++20)
+
 project(Battleship) # The project name
-
-
 
 # Add fetch content macro to fetch external libraries from their repo
 include(FetchContent)
 
 
 # if the path local path to lib/usr/lib/x86_64-linux-gnu exists, assumes the libraries are manually installed
-if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu/)
-  include(${CMAKE_CURRENT_SOURCE_DIR}/lib/sodium.cmake)
-else()
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu/)
   # Add the libraries installation prefix to CMAKE_PREFIX_PATH
   list(PREPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu")
   list(PREPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu/cmake")
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/include/x86_64-linux-gnu)
   
   # Find the sodium package
   set(sodium_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib)
@@ -39,40 +36,36 @@ else()
   set(sodium_LIBRARY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu/libsodium.a)
   set(sodium_LIBRARY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu/libsodium.a)
   
-  include(${CMAKE_CURRENT_SOURCE_DIR}/lib/sodium.cmake)
-
+  
   set(boost_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/lib/x86_64-linux-gnu)
   set(boost_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/include/boost)
-
-  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/usr/include/x86_64-linux-gnu)
+  
 endif()
+
+# Include the sodium package
+include(${CMAKE_CURRENT_SOURCE_DIR}/lib/sodium.cmake)
 
 # Find the SQLite3 package
 find_package(SQLite3 REQUIRED)
-
-
-
-# Find the Boost package
-# find_package(Boost REQUIRED)
 
 # Fetch the nlohmann json library
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
+# Set the policy for CMP0100 
 if(POLICY CMP0100)
 cmake_policy(SET CMP0100 NEW)
 endif()
 
-set(CMAKE_AUTOMOC ON)
 
 # Add the include directories
 include_directories(include)
 
 function(get_sources dir result)
-    file(GLOB_RECURSE sources 
-    "${dir}/*.cc"
-    "${dir}/*.hh")
-    set(${result} ${sources} PARENT_SCOPE)
+file(GLOB_RECURSE sources 
+"${dir}/*.cc"
+"${dir}/*.hh")
+set(${result} ${sources} PARENT_SCOPE)
 endfunction()
 
 # function(get_sources_test dir result)
@@ -83,10 +76,10 @@ endfunction()
 # endfunction()
 
 # Client sources
-# Récupère les fichiers source
+# Gets all the source files in the src/Client directory
 get_sources("src/Client" CLIENT_SOURCES)
 
-# Récupère également les fichiers d'en-tête
+# Gets all the header files in the include/Client directory
 get_sources("include/Client" CLIENT_HEADERS)
 
 
@@ -102,6 +95,9 @@ get_sources("src/Common" COMMON_SOURCES)
 
 # Common headers
 get_sources("include/Common" COMMON_HEADERS)
+
+#enables the use of the AUTOMOC target property to automatically run moc for the battleship executable.
+set(CMAKE_AUTOMOC ON)
 
 # Create client executable
 add_executable(battleship ${COMMON_SOURCES} ${CLIENT_SOURCES} ${CLIENT_HEADERS} ${COMMON_HEADERS})
