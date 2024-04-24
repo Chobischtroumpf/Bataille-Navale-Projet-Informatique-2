@@ -4,6 +4,8 @@
 #include "turn.hh"
 #include "board.hh"
 #include "game_timer.hh"
+#include "classic_timer.hh"
+#include "pendulum_timer.hh"
 #include "player_role.hh"
 
 // Class that handles the game between 2 players
@@ -12,7 +14,7 @@ class Game {
     std::shared_ptr<Board> _board;
     bool _game_started;
     bool _mode_commandant;
-    GameTimer _game_timer;
+    std::unique_ptr<GameTimer> _game_timer;
 
     void startTimer();
     

@@ -269,7 +269,12 @@ void LocalBoardCommander::updateBoard() {
   }else{
     _is_finished = false;
   }
-  if (new_board.count("game_timer") > 0 &&
+  _game_time = new_board.at("game_timer");
+    _player_time = _player.isPlayerOne() ? new_board.at("player1_timer")
+                                         : new_board.at("player2_timer");
+    _opponent_time = _player.isPlayerOne() ? new_board.at("player2_timer")
+                                           : new_board.at("player1_timer");
+  /*if (new_board.count("game_timer") > 0 &&
       new_board.count("player1_timer") > 0 &&
       new_board.count("player2_timer") > 0) {
     _game_time = new_board.at("game_timer");
@@ -277,7 +282,7 @@ void LocalBoardCommander::updateBoard() {
                                          : new_board.at("player2_timer");
     _opponent_time = _player.isPlayerOne() ? new_board.at("player2_timer")
                                            : new_board.at("player1_timer");
-  }
+  }*/
 }
 
 bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {
