@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
                     std::ofstream::out |
                         std::ofstream::app); // sends log to /dev/null
 #endif
+
   auto clog_buf = std::clog.rdbuf(); // Save the original std::clog buffer
   std::clog.rdbuf(ofs.rdbuf());      // Redirect std::clog to the log file
 
