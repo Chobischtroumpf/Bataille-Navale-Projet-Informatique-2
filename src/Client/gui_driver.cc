@@ -34,7 +34,8 @@ void DriverGui::showChatOutWindow(const std::string &destination) {
 void DriverGui::showGameWindow(std::string gameId) {
     bool is_commander = _lobbyWindow->isCommanderMode();
     std::string session_id = _lobbyWindow->getSessionId();
-    _gameWindow = std::make_unique<Game>(_game_client, session_id, is_commander);
+    int selected_faction = _lobbyWindow->getSelectedFaction();
+    _gameWindow = std::make_unique<Game>(_game_client, session_id, selected_faction, is_commander);
     connect(_gameWindow.get(), &Game::gameFinished, this, &DriverGui::showMainMenu);
     _gameWindow->show();
 }

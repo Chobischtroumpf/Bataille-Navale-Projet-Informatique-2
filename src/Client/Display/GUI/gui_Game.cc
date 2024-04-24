@@ -8,6 +8,9 @@
 
 #include "gui_Game.hh"
 #include "faction_bombardement.hh"
+#include "faction_classique.hh"
+#include "faction_mines.hh"
+#include "faction_sonar.hh"
 #include <QHBoxLayout>
 #include <QString>
 #include <QVBoxLayout>
@@ -203,11 +206,26 @@ void Game::setupShipPlacement() {
   _footer_layout->addLayout(sizes);
   _footer_layout->addLayout(controls);
 
+  // Putting times over the boards
+  QVBoxLayout *my_layout = new QVBoxLayout();
+  _my_label = new QLabel(QString::fromStdString(_board->getMyUsername() + "'s board - " + std::to_string(_board->getPlayerTime()) + "s"));
+  my_layout->addWidget(_my_label);
+  my_layout->addWidget(_my_frame);
+
+  QVBoxLayout *their_layout = new QVBoxLayout();
+  _their_label = new QLabel(QString::fromStdString(_board->getTheirUsername() + "'s board - " + std::to_string(_board->getOpponentTime()) + "s"));
+  their_layout->addWidget(_their_label);
+  their_layout->addWidget(_their_frame);
+
+  _game_label = new QLabel("Game time: " + QString::number(_board->getGameTime()) + "s");
+  _game_label->setAlignment(Qt::AlignCenter);
+
   _boards_layout = new QHBoxLayout();
-  _boards_layout->addWidget(_my_frame);
-  _boards_layout->addWidget(_their_frame);
+  _boards_layout->addLayout(my_layout);
+  _boards_layout->addLayout(their_layout);
   QVBoxLayout *main_layout = new QVBoxLayout();
   setLayout(main_layout);
+  main_layout->addWidget(_game_label);
   main_layout->addLayout(_boards_layout);
   main_layout->addLayout(_footer_layout);
 }
@@ -334,12 +352,26 @@ void Game::setupLosing() {
   _footer_layout->addLayout(layout);
 }
 
-Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, bool commander_mode) : _game_client(gameClient), _session_id{session_id}, _commander_mode(commander_mode) {
+Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int selected_faction, bool commander_mode) : _game_client(gameClient), _session_id{session_id}, _commander_mode(commander_mode) {
   _board= std::make_shared<LocalBoardCommander>(
-      _game_client, Player(), GameMode::COMMANDER, _session_id);
+      _game_client, Player(), (commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC), _session_id);
   _game_controller = std::make_shared<GameController>(_board);
 
-  _board->setPlayerFaction(FactionBombardement());
+  if (_commander_mode) {
+    switch (selected_faction) {
+    case 0:
+      _board->setPlayerFaction(FactionBombardement());
+      break;
+    case 1:
+      _board->setPlayerFaction(FactionSonar());
+      break;
+    case 2:
+      _board->setPlayerFaction(FactionMines());
+      break;
+    }
+  } else {
+    _board->setPlayerFaction(FactionClassique());
+  }
   setWindowTitle("Game");
 
   resize(1200, 800);
@@ -404,6 +436,18 @@ void Game::update() {
       setupGame();
     }
   }
+
+  // Update Timers
+  if (_phase == PLAYING || _phase == WAITING_TURN) {
+    _board->updateBoard();
+    updateLabels();
+  }
+}
+
+void Game::updateLabels() {
+  _game_label->setText("Game time: " + QString::number(_board->getGameTime()) + "s");
+  _my_label->setText(QString::fromStdString(_board->getMyUsername() + "'s board - " + std::to_string(_board->getPlayerTime()) + "s"));
+  _their_label->setText(QString::fromStdString(_board->getTheirUsername() + "'s board - " + std::to_string(_board->getOpponentTime()) + "s"));
 }
 
 void Game::updateAbilityInformations() {
@@ -485,7 +529,6 @@ void Game::fire(BoardCoordinates coord) {
   if (_selected_ability) {
     if (_game_controller->fire(*_selected_ability, coord)) {
       energy -= _selected_ability->getEnergyCost();
-      updateAbilityInformations();
       _selected_ability = nullptr;
       updateAbilityInformations();
       if (_board->isFinished()) {

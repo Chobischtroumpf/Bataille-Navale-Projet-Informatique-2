@@ -244,3 +244,7 @@ bool Lobby::isCommanderMode() const {
 std::string Lobby::getSessionId() const {
     return _session_id;
 }
+
+int Lobby::getSelectedFaction() const {
+    return _selected_faction;
+}

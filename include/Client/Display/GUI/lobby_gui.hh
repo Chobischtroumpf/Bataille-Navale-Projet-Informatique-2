@@ -38,6 +38,7 @@ public:
 
     bool isCommanderMode() const;
     std::string getSessionId() const;
+    int getSelectedFaction() const;
 
 signals:
     // insérer les signaux ici

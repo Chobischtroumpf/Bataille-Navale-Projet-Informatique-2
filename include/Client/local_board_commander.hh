@@ -32,6 +32,10 @@ private:
 
   std::shared_ptr<GameClient> _client;
 
+  uint16_t _game_time = 0;
+  uint16_t _player_time = 0;
+  uint16_t _opponent_time = 0;
+
   // bool _my_turn;
   bool _is_finished;
   bool _is_victory;
@@ -113,4 +117,7 @@ public:
 
   std::string getMyUsername() const;
   std::string getTheirUsername() const;
+  uint16_t getGameTime() const;
+  uint16_t getPlayerTime() const;
+  uint16_t getOpponentTime() const;
 };

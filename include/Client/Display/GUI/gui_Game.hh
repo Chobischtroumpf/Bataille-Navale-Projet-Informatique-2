@@ -52,7 +52,7 @@ class Game : public QWidget {
   Q_OBJECT
 
 public:
-  Game(std::shared_ptr<GameClient> gameClient, std::string session_id, bool commander_mode = true);
+  Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int selected_faction, bool commander_mode = true);
   void display();
   void display_error();
   void update();
@@ -70,6 +70,7 @@ public:
   void nextShip();
   void clearLayout(QLayout *layout);
   void updateAbilityInformations();
+  void updateLabels();
   void fire(BoardCoordinates coord);
 
 protected:
@@ -92,6 +93,9 @@ private:
   BoardFrame *_their_frame;
   QHBoxLayout *_boards_layout;
   QHBoxLayout *_footer_layout;
+  QLabel *_my_label;
+  QLabel *_their_label;
+  QLabel *_game_label;
   std::vector<QPushButton *> _ShipsButtons;
   std::string _session_id;
   std::optional<Ship> _selected_ship = std::nullopt;
