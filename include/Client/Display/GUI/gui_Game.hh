@@ -52,7 +52,7 @@ class Game : public QWidget {
   Q_OBJECT
 
 public:
-  Game(std::shared_ptr<GameClient> gameClient, bool commander_mode = true);
+  Game(std::shared_ptr<GameClient> gameClient, std::string session_id, bool commander_mode = true);
   void display();
   void display_error();
   void update();
@@ -93,6 +93,7 @@ private:
   QHBoxLayout *_boards_layout;
   QHBoxLayout *_footer_layout;
   std::vector<QPushButton *> _ShipsButtons;
+  std::string _session_id;
   std::optional<Ship> _selected_ship = std::nullopt;
   std::shared_ptr<ShipClassic> _possible_ships = nullptr;                 //< The ships that can be placed
   Phase _phase = PLACING_SHIPS;

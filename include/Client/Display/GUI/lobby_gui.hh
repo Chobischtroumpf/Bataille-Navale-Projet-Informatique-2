@@ -36,6 +36,9 @@ public:
     void loadParameters(std::shared_ptr<GameSetting> gameSetting);
     void loadParameters(const std::string &session_id);
 
+    bool isCommanderMode() const;
+    std::string getSessionId() const;
+
 signals:
     // insérer les signaux ici
     void goBackToMenu();

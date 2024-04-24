@@ -334,30 +334,9 @@ void Game::setupLosing() {
   _footer_layout->addLayout(layout);
 }
 
-Game::Game(std::shared_ptr<GameClient> gameClient, bool commander_mode) : _game_client(gameClient), _commander_mode(commander_mode) {
-  _game_client->Login("Jeffries", "Hitchcock");
-  sleep(1);
-
-  njson gameDetails = {
-      {"name", "oui"},
-      {"gamemode", "Commander"},
-      {"gameTimeLimit", 70},
-      {"playerTimeLimit", 70},
-      {"turnTimeLimit", 70},
-      {"maxPlayers", 2}};
-
-  std::future<std::string> session_id = _game_client->CreateGame(gameDetails);
-
-  std::string session_id_str = session_id.get();
-  std::cout << session_id_str << std::endl;
-  std::string ouifqsf;
-  std::cin >> ouifqsf;
-  nlohmann::json req;
-  req["moveType"] = "StartGame";
-  _game_client->MakeMove(session_id_str, req);
-
+Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, bool commander_mode) : _game_client(gameClient), _session_id{session_id}, _commander_mode(commander_mode) {
   _board= std::make_shared<LocalBoardCommander>(
-      _game_client, Player(), GameMode::COMMANDER, session_id_str);
+      _game_client, Player(), GameMode::COMMANDER, _session_id);
   _game_controller = std::make_shared<GameController>(_board);
 
   _board->setPlayerFaction(FactionBombardement());

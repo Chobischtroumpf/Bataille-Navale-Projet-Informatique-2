@@ -215,7 +215,7 @@ void Lobby::onBackToMenuButtonClicked() {
 void Lobby::onLaunchGameButtonClicked() {
     if (_view->getUserInGame(_session_id).size() < 2) {
         warning->setText("Not enough Player !");
-    } else if (!_faction_chosen) {
+    } else if (!_faction_chosen && _commander_mode) {
         warning->setText("No Faction Chosen !");
     } else {
         _controller->launchGame(_session_id);
@@ -235,4 +235,12 @@ void Lobby::loadParameters(const std::string &session_id) {
 
     _commander_mode = game.at("gameState").at("gamemode") == "Commandant";
     _game_name = game.at("sessionName").get<std::string>();
+}
+
+bool Lobby::isCommanderMode() const {
+    return _commander_mode;
+}
+
+std::string Lobby::getSessionId() const {
+    return _session_id;
 }
