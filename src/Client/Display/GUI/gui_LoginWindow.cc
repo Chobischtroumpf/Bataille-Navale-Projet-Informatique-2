@@ -9,8 +9,12 @@ LoginWindow::LoginWindow(std::shared_ptr<GameClient> gameClient) : login_control
 
     // QPushButton pour appuyer sur un bouton
     loginButton = new QPushButton("Se Connecter");
+    loginButton->setAutoDefault(true);
+    loginButton->setDefault(true); 
     connect(loginButton, &QPushButton::clicked, this, &LoginWindow::onLoginButtonClicked);
+
     registerButton = new QPushButton("S'enregistrer");
+    registerButton->setAutoDefault(true);
     connect(registerButton, &QPushButton::clicked, this, &LoginWindow::onRegisterButtonClicked);
 
     // disposition des différents objets
@@ -23,9 +27,9 @@ LoginWindow::LoginWindow(std::shared_ptr<GameClient> gameClient) : login_control
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addWidget(loginButton);
     buttonLayout->addWidget(registerButton);
-    // Ajout le layout horizontal avec les deux choix au layout du dessus
     layout->addLayout(buttonLayout);
 }
+
 
 
 void LoginWindow::onLoginButtonClicked() {

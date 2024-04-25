@@ -113,7 +113,8 @@ Lobby::~Lobby() {
 }
 
 void Lobby::onFactionBombardementClicked() {
-    int _selected_faction = 0;
+    _selected_faction = 0;
+    _controller->sendFaction(_session_id, _selected_faction);
     FactionBombardement->setEnabled(false);
 
     if (!_faction_chosen) {
@@ -132,7 +133,8 @@ void Lobby::onFactionBombardementClicked() {
 }
 
 void Lobby::onFactionSonarClicked() {
-    int _selected_faction = 1;
+    _selected_faction = 1;
+    _controller->sendFaction(_session_id, _selected_faction);
     FactionSonar->setEnabled(false);
 
     if (!_faction_chosen) {
@@ -151,7 +153,8 @@ void Lobby::onFactionSonarClicked() {
 }
 
 void Lobby::onFactionMinesClicked() {
-    int _selected_faction = 2;
+    _selected_faction = 2;
+    _controller->sendFaction(_session_id, _selected_faction);
     FactionMines->setEnabled(false);
 
     if (!_faction_chosen) {
