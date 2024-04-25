@@ -9,9 +9,7 @@ ReviewGameController::ReviewGameController(std::shared_ptr<GameClient> client, s
         std::cout << "controller game review constr." << std::endl;
         _current_move = 0;
         requestMovesList();
-        std::cout << "1." << std::endl;
         //initLocalBoard();
-        std::cout << "2." << std::endl;
 
     }
 
@@ -27,11 +25,12 @@ void ReviewGameController::requestMovesList(){
     const std::string session = _board->getSessionId();
     std::future<nlohmann::json> future_json = _client->GetGameHistory(session);
     nlohmann::json json_data = future_json.get();
-    nlohmann::json json_data;
+    //std::clog << json_data << std::endl;
 
     if (json_data.contains("states")) {
         nlohmann::json membersArray = json_data["states"];
         for (const auto& member : membersArray) {
+            std::clog << "AAAAAAAAAAAAAAAA  " << member << std::endl;
             _move_list.push_back(member);
         }
     }
@@ -42,10 +41,11 @@ void ReviewGameController::initLocalBoard(){
 }
 
 void ReviewGameController::setNextMove(){
-    if (_current_move <= _move_list.size()-2){
-        _current_move += 1;
+    _current_move += 1;
+    if (_current_move <= _move_list.size()-1){
         _board->update_board(_move_list[_current_move]);
     }
+    else{_current_move -= 1;}
 }
 
 void ReviewGameController::setPreviousMove(){

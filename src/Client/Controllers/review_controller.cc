@@ -9,11 +9,15 @@ ReviewController::ReviewController(std::shared_ptr<GameClient> client)
 }
 
 void ReviewController::requestSessionsIds(){
-    std::future<std::string> future_json = _client->GetGames();
+    std::future<njson> future_json = _client->GetGames();
     nlohmann::json json_data = future_json.get();
-    nlohmann::json json_data;
-    // Watch format, need to init a Session_info instance
-    //_session_id_list = _client->GetGames();
+    for (const auto& session : json_data) {
+        Session_info session_info;
+        session_info.session_id = session["sessionId"].get<std::string>();
+        session_info.id_player1 = session["player1Id"].get<std::string>();
+        session_info.id_player2 = session["player2Id"].get<std::string>();
+        _session_id_list.push_back(session_info);
+       }
 }
 
 const std::vector<Session_info>& ReviewController::getSessionIdList(){

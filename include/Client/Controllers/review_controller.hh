@@ -7,10 +7,9 @@
 #include "ship.hh"
 
 struct Session_info{
-    const std::string session_id;
-    const std::string id_player1;
-    const std::string id_player2;
-    const std::string game_type;
+    std::string session_id;
+    std::string id_player1;
+    std::string id_player2;
 };
 
 class ReviewController : public Controller
