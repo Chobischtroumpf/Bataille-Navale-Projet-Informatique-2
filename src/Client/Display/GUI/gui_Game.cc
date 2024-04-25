@@ -488,15 +488,17 @@ void Game::placeShip(Ship& ship) {
 }
 
 void Game::nextShip() {
-  if (_possible_ships)
+  if (_possible_ships) {
     _possible_ships->next();
     _selected_ship = _possible_ships->getShip();
+  }
 }
 
 void Game::previousShip() {
-  if (_possible_ships)
+  if (_possible_ships) {
     _possible_ships->previous();
     _selected_ship = _possible_ships->getShip();
+  }
 }
 
 bool Game::isShipSelected() const {

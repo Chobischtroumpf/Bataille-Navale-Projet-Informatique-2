@@ -35,7 +35,7 @@ string GameConsole::createGameHeader() const {
   //                   ╚════════════╝
 
   // 2de line:
-  string who = _board->myTurn() ? "Player 1's " : "Player 2's";
+  string who = _board->myTurn() ? "Your" : "Opponent's";
   string turn = "║ " + who + " Turn ║";
 
   // margin:

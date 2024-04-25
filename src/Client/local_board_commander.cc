@@ -196,8 +196,8 @@ bool LocalBoardCommander::fetchMyTurn() {
   auto FutureGameState = _client->QueryGameState(_session_id);
   auto result = FutureGameState.get();
   auto gameState = result["gameState"];
-  return gameState["turn"] == "PLAYERONE" && _player.isPlayerOne() ||
-         gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne();
+  return (gameState["turn"] == "PLAYERONE" && _player.isPlayerOne()) ||
+         (gameState["turn"] == "PLAYERTWO" && !_player.isPlayerOne());
 }
 
 Cell LocalBoardCommander::get(bool my_side, BoardCoordinates position) const {
