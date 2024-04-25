@@ -381,25 +381,26 @@ void Game::setupLosing() {
 }
 
 Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int selected_faction, bool commander_mode) : _game_client(gameClient), _session_id{session_id}, _commander_mode(commander_mode) {
+  Player player = Player();
   Faction faction;
   if (commander_mode) {
     switch (selected_faction) {
       case 0:
-        faction = FactionBombardement();
+        player.setFaction(FactionBombardement());
         break;
       case 1:
-        faction = FactionSonar();
+        player.setFaction(FactionSonar());
         break;
       case 2:
-        faction = FactionMines();
+        player.setFaction(FactionMines());
         break;
     }
   } else {
-    faction = FactionClassique();
+    player.setFaction(FactionClassique());
   }
 
   _board= std::make_shared<LocalBoardCommander>(
-      _game_client, Player(faction), (commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC), _session_id);
+      _game_client, player, (commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC), _session_id);
   _game_controller = std::make_shared<GameController>(_board);
 
   setWindowTitle(QString::fromStdString("Battleship: " + _board->getMyUsername() + " vs " + _board->getTheirUsername()));
