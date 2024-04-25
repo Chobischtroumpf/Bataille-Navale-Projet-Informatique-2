@@ -16,8 +16,22 @@ ReviewGameController::ReviewGameController(std::shared_ptr<GameClient> client, s
     }
 
 void ReviewGameController::requestMovesList(){
-    const std::string session = _board->getSessionId();
-    //_move_list = _client->GetGameHistory(session);
+    std::ifstream file("/home/manon/Desktop/pannee2/group-9/src/Client/Controllers/game_history.json");
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file." << std::endl;
+    }
+    nlohmann::json jsonData;
+    file >> jsonData;
+    file.close();
+
+    if (jsonData.contains("states")) {
+        nlohmann::json membersArray = jsonData["states"];
+        for (const auto& member : membersArray) {
+            _move_list.push_back(member);
+        }
+    }
+    //const std::string session = _board->getSessionId();
+    //nlohmann::json jsonData =_client->GetGameHistory(session);
 }
 
 void ReviewGameController::initLocalBoard(){

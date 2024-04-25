@@ -4,11 +4,12 @@ LocalBoardReview::LocalBoardReview(const std::string &session_id)
     : _session_id{session_id},
       _my_board{10, {10, Cell()}}, _their_board{10, {10, Cell()}}
 {
-        std::cout << "local board review constr." << std::endl;
+  std::clog << "local board review constr." << std::endl;
 }
 
 
 void LocalBoardReview::update_board(const nlohmann::json &new_board) {
+    std::clog << "local board review update_board." << std::endl;
     std::vector<std::string> fleet_names = {"fleetA", "fleetB"};
     for(auto fname: fleet_names){
         auto fleet = new_board[fname];
@@ -25,6 +26,7 @@ void LocalBoardReview::update_board(const nlohmann::json &new_board) {
 
 
 CellType LocalBoardReview::string_to_celltype(const std::string &type) {
+  std::clog << "LocalBoardReview: string to cell type." << std::endl;
   if (type == "WATER") {
     return WATER;
   } else if (type == "OCEAN") {
@@ -44,6 +46,7 @@ CellType LocalBoardReview::string_to_celltype(const std::string &type) {
   } else if (type == "SUNK_SHIP") {
     return SUNK_SHIP;
   } else {
+    std::clog << "LocalBoardReview:FAILED string to cell type." << std::endl;
     throw std::runtime_error("Unknown CellType: " + type);
   }
 }
@@ -70,3 +73,11 @@ CellType LocalBoardReview::best(CellType lhs, CellType rhs) {
   }
   return lhs <= rhs ? lhs : rhs;
 }
+
+Cell LocalBoardReview::get(bool my_side, BoardCoordinates position) const {
+  return my_side ? _my_board.at(position.y()).at(position.x())
+                 : _their_board.at(position.y()).at(position.x());
+}
+
+CellType LocalBoardReview::cellType(bool my_side, BoardCoordinates coordinates) const
+{return get(my_side, coordinates).type();}

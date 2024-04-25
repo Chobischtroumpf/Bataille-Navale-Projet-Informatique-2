@@ -3,6 +3,7 @@
 #include "local_board_commander.hh"
 #include "not_implemented_error.hh"
 #include "cell_type.hh"
+#include <bitset>
 
 using std::string;
 
@@ -16,12 +17,14 @@ ReviewGameConsole::ReviewGameConsole(std::ostream &out, std::istream &in,
         static_cast<uint8_t>(length(BoardCoordinates(_board->width() - 1, _board->height() - 1).yToString())),
         "   ", 0, 0, createMapKey()}
     {
+        std::clog << "REVIEWGAMECONSOLE: constructor" << std::endl;
         _print_info.grid_width = _print_info.number_width + 1 + (1 + _print_info.letter_width) * _board->width() + 1;
         _print_info.width = _print_info.grid_width * 2 + _print_info.gap.size();
     }
 
 
 inline string operator*(const string &lhs, size_t rhs) {
+    std::clog << "REVIEWGAMECONSOLE: operator." << std::endl;
     string result;
     result.reserve(lhs.size() * rhs);
     for (size_t i = 0; i < rhs; ++i) {
@@ -32,6 +35,7 @@ inline string operator*(const string &lhs, size_t rhs) {
 
 
 ReturnInput ReviewGameConsole::handleInput(){
+    std::clog << "REVIEWGAMECONSOLE: handle input." << std::endl;
     std::cout << "Type P for PREVIOUS, N for NEXT or './exit' to quit: \n";
     std::string input;
     int number;
@@ -56,6 +60,7 @@ ReturnInput ReviewGameConsole::handleInput(){
 
 
 void ReviewGameConsole::display(){
+    std::clog << "REVIEWGAMECONSOLE: display." << std::endl;
     system("clear");
     displayHeader();
     displayGameReview();
@@ -68,8 +73,8 @@ void ReviewGameConsole::display(){
 ****************/
 
 std::vector<string> ReviewGameConsole::createMapKey() const {
+    std::clog << "REVIEWGAMECONSOLE: create map key." << std::endl;
     std::vector<string> map_key;
-    std::cout << "here MAP KEY" << std::endl;
     map_key.emplace_back(" > " + toString(OCEAN) + " Ocean          <");
     map_key.emplace_back(" > " + toString(UNDAMAGED_SHIP) + " UNDAMAGED ship <");
     map_key.emplace_back(" > " + toString(UNDAMAGED_MINE) + " UNDAMAGED mine <");
@@ -83,6 +88,9 @@ std::vector<string> ReviewGameConsole::createMapKey() const {
 
 
 string ReviewGameConsole::toString(CellType type) {
+    std::bitset<8> x(static_cast<unsigned char>(type));
+    std::clog << x << std::endl;
+    std::clog << "REVIEWGAMECONSOLE: to string." << std::endl;
     switch (type) {
     case WATER:
       return " ";
@@ -119,6 +127,7 @@ constexpr size_t ReviewGameConsole::length(const string &s) {
 
 
 void ReviewGameConsole::displayHeader(){
+    std::clog << "REVIEWGAMECONSOLE: displayHeader." << std::endl;
     std::cout << "┌────────────────────────────────────────────────────────────────────────────────┐\n";
     std::cout << "│ Review game: " << _board->getSessionId() << "\n";
     std::cout << "└────────────────────────────────────────────────────────────────────────────────┘\n";
@@ -126,14 +135,15 @@ void ReviewGameConsole::displayHeader(){
 
 
 void ReviewGameConsole::displayGameReview(){
+    std::clog << "REVIEWGAMECONSOLE: displayGameReview." << std::endl;
     printSideBySide({createGrid(true)}, {createGrid(false)});
 }
 
 void ReviewGameConsole::displayMapKey(){
+    std::cout << std::endl;
+    std::clog << "REVIEWGAMECONSOLE: displayMapKey." << std::endl;
     for(auto line: _print_info.map_key){
-        for(auto key: line){
-            std::cout << key;
-        }
+        std::cout << line << std::endl;
     }
 }
 
@@ -147,6 +157,7 @@ void ReviewGameConsole::displayActions(){
 
 void ReviewGameConsole::printSideBySide(std::vector<string> left,
                                   std::vector<string> right) {
+    std::clog << "REVIEWGAMECONSOLE: printSideBySide." << std::endl;
     size_t left_width = std::max(_print_info.grid_width,
                        std::ranges::max(left, {}, [](const string &s) noexcept {return length(s);}).size());
     size_t idx{0};
@@ -176,6 +187,7 @@ void ReviewGameConsole::printSideBySide(std::vector<string> left,
 
 
 std::vector<string> ReviewGameConsole::createGrid(bool my_side) {
+    std::clog << "REVIEWGAMECONSOLE: createGrid." << std::endl;
     std::vector<string> grid;
     std::ostringstream oss("    ", std::ios_base::ate); 
     createLetters(oss);
@@ -194,6 +206,7 @@ std::vector<string> ReviewGameConsole::createGrid(bool my_side) {
 
 
 void ReviewGameConsole::createLetters(std::ostringstream& oss){
+    std::clog << "REVIEWGAMECONSOLE: createLetters." << std::endl;
     for (size_t i = 0; i < _board->width(); ++i) {
     oss << std::setw(_print_info.letter_width) << BoardCoordinates{i, 0}.xToString()
         << ' ';
@@ -202,6 +215,7 @@ void ReviewGameConsole::createLetters(std::ostringstream& oss){
 
 
 void ReviewGameConsole::createFirstLine(std::ostringstream& oss){
+    std::clog << "REVIEWGAMECONSOLE: createFirstLine." << std::endl;
     oss.str("   ┌");
     oss << (((string("─") * _print_info.letter_width) + "┬") * (_board->width() - 1));
     oss << "─┐";
@@ -209,6 +223,7 @@ void ReviewGameConsole::createFirstLine(std::ostringstream& oss){
 
 
 void ReviewGameConsole::createBody(std::ostringstream& oss, int i, bool my_side){
+    std::clog << "REVIEWGAMECONSOLE: createBody." << std::endl;
     oss.str("");
     oss << std::setw(_print_info.number_width) << i + 1 << " ";
     for (unsigned j = 0; j < _board->width(); ++j) {
@@ -229,6 +244,7 @@ void ReviewGameConsole::createBody(std::ostringstream& oss, int i, bool my_side)
 
 
 void ReviewGameConsole::createLastLine(std::ostringstream& oss){
+    std::clog << "REVIEWGAMECONSOLE: createLastLine." << std::endl;
     oss.str("   └");
     oss << (((string("─") * _print_info.letter_width) + "┴") * (_board->width() - 1));
     oss << "─┘";

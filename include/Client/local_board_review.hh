@@ -23,7 +23,7 @@
 */
 class LocalBoardReview : public GameView {
     private:
-        const std::string &_session_id;
+        const std::string _session_id;
         std::vector<std::vector<Cell>> _my_board;
         std::vector<std::vector<Cell>> _their_board;
 
@@ -64,10 +64,13 @@ class LocalBoardReview : public GameView {
 
         CellType best(CellType lhs, CellType rhs);
 
+        CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
+
+        Cell get(bool my_side, BoardCoordinates position) const;
+
 
         bool isFinished() const override{return false;}
         bool isVictory() const override{return false;}
-        CellType cellType(bool my_side, BoardCoordinates coordinates) const override{CellType a; return a;}
         bool isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const override{return false;}
         bool myTurn() const {return false;}
 
