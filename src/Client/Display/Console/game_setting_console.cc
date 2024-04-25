@@ -28,6 +28,18 @@ void GameSettingConsole::displayParameter() {
                 << "\033[0m" << std::endl;
     }
   } else std::cout << "\033[0m" << std::endl;
+  std::cout << "╠═══════════════════════════════════════════════════════════╪"
+            << std::endl;
+  std::cout << "║ Timer mode : " << "\033[0;33m";
+  if (_timer_mode.has_value()) {
+    if (_timer_mode.value()) {
+      std::cout << "Classic"
+                << "\033[0m" << std::endl;
+    } else {
+      std::cout << "Pendulum"
+                << "\033[0m" << std::endl;
+    }
+  } else std::cout << "\033[0m" << std::endl;
   
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
@@ -35,9 +47,6 @@ void GameSettingConsole::displayParameter() {
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
   std::cout << "║ Time per game of the player : " << "\033[0;33m" << (_time_per_game.has_value() ? (std::to_string(_time_per_game.value()) + " seconds") : "") << "\033[0m" << std::endl;
-  std::cout << "╠═══════════════════════════════════════════════════════════╪"
-            << std::endl;
-  std::cout << "║ Time of the game : " << "\033[0;33m" << (_time_game.has_value() ? (std::to_string(_time_game.value()) + " seconds") : "") << "\033[0m" << std::endl;
   std::cout << "╠═══════════════════════════════════════════════════════════╪"
             << std::endl;
   std::cout << "║ Spectator allowed : " << "\033[0;33m";
@@ -67,22 +76,22 @@ void GameSettingConsole::displayOptions(int mode) {
         std::cout << "║ (2) Commander" << std::endl;
         break;
       case 2:
+        std::cout << "║ Choose the timer mode                  ║" << std::endl;
+        std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
+        std::cout << "║ (1) Classic" << std::endl;
+        std::cout << "║ (2) Pendulum" << std::endl;
+        break;
+      case 3:
         std::cout << "║ Choose the time per turn of the player ║" << std::endl;
         std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
         std::cout << "║" << std::endl;
-        std::cout << "║ (5 - 100) seconds" << std::endl;
+        std::cout << "║ (5 - 30) seconds" << std::endl;
         break;
-      case 3:
+      case 4:
         std::cout << "║ Choose the time per game of the player ║" << std::endl;
         std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
         std::cout << "║" << std::endl;
         std::cout << "║ (30 - 1000) seconds" << std::endl;
-        break;
-      case 4:
-        std::cout << "║ Choose the time of the game            ║" << std::endl;
-        std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
-        std::cout << "║" << std::endl;
-        std::cout << "║ (60 - 2000)" << std::endl;
         break;
       case 5:
         std::cout << "║ Choose if spectator are allowed        ║" << std::endl;
@@ -129,13 +138,17 @@ ReturnInput GameSettingConsole::handleInput() {
       }
       break;
     case 2:
-      _time_per_turn = std::stoi(input);
+      if (input == "1"){
+        _timer_mode =true;
+      }else{
+        _timer_mode =false;
+      }
       break;
     case 3:
-      _time_per_game = std::stoi(input);
+      _time_per_turn = std::stoi(input);
       break;
     case 4:
-      _time_game = std::stoi(input);
+      _time_per_game = std::stoi(input);
       break;
     case 5:
       if (input == "1") {
@@ -148,10 +161,10 @@ ReturnInput GameSettingConsole::handleInput() {
       if (input == "1") {
         njson gameDetails = {{"name", _game_name},
                              {"gamemode", (_commander_mode.value() ? "Commander" : "Classic")},
-                             {"gameTimeLimit", _time_game.value()},
                              {"playerTimeLimit", _time_per_game.value()},
                              {"turnTimeLimit", _time_per_turn.value()},
-                             {"maxPlayers", (_spectator_allowed.value() ? 8 : 2)}
+                             {"maxPlayers", (_spectator_allowed.value() ? 8 : 2)},
+                             {"classicTimer", _timer_mode.value()}
                              };
 
         auto resultFuture = gameClient->CreateGame(gameDetails);
@@ -180,6 +193,10 @@ bool GameSettingConsole::isCommanderMode() const {
   return _commander_mode.value();
 }
 
+bool GameSettingConsole::isClassicTimer() const {
+  return _timer_mode.value();
+}
+
 bool GameSettingConsole::isSpectatorAllowed() const {
   return _spectator_allowed.value();
 }
@@ -196,6 +213,3 @@ int GameSettingConsole::getTimePerGame() const {
   return _time_per_game.value();
 }
 
-int GameSettingConsole::getTimeGame() const {
-  return _time_game.value();
-}

@@ -6,7 +6,7 @@
 
 
 void Game::startTimer() {
-  _game_timer.startTimer();
+  _game_timer->startTimer();
   // _game_timer.start(std::bind(&Game::_game_timer_finished, this));
   // player_timer.start(std::bind(&Game::player_timer_finished, this));
 }
@@ -19,13 +19,22 @@ void Game::setGame(const nlohmann::json &game_details) {
       game_details.at("turnTimeLimit").get<int>();
   int player_time =
       game_details.at("playerTimeLimit").get<int>();
-  _game_timer.set(game_time, player_time);
+  bool classic_timer = true;
+  //bool classic_timer = game_details.at("classicTimer").get<bool>();
+  if (classic_timer){
+    _game_timer = std::make_unique<ClassicTimer>();
+    _game_timer->set(game_time, player_time);
+  }else{
+    _game_timer = std::make_unique<PendulumTimer>();
+    _game_timer->set(game_time, player_time, [this]() { changeTurn(); });
+  }
+  _game_timer->set(game_time, player_time);
 
 }
 
 void Game::changeTurn(){
   _board->changeTurn();
-  _game_timer.switchTurn();
+  _game_timer->switchTurn();
 }
 
 Game::Game(const nlohmann::json &game_details)
@@ -35,7 +44,7 @@ Game::Game(const nlohmann::json &game_details)
 }
  
 bool Game::isFinished() const {
-  return _board->isFinished() || _game_timer.isFinished();
+  return _board->isFinished() || _game_timer->isFinished();
 }
 
 bool Game::shipPlacementsFinished() const {
@@ -83,8 +92,7 @@ bool Game::handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinat
       if (!_board->fire(ability, board_coordinates)) {
         changeTurn();
       } else {
-        _game_timer.switchTurn();
-        _game_timer.switchTurn();
+        _game_timer->turnReset();
       }
       return true;
     }
@@ -110,17 +118,17 @@ nlohmann::json Game::getState(PlayerRole player) {
 
   if (isFinished()) {
       game_json["Finished"] = "true";
-      if (!_game_timer.isFinished()){
+      if (!_game_timer->isFinished()){
         if (_board->isVictory()){
           game_json["Winner"] = "PLAYERONE";
         } else{
           game_json["Winner"] = "PLAYERTWO";
         }
       }else{
-        if (_game_timer.getWinner() == 0){
+        if (_game_timer->getWinner() == 0){
           game_json["Winner"] = "DRAW";
         }
-        if (_game_timer.getWinner() == 1) {
+        if (_game_timer->getWinner() == 1) {
           game_json["Winner"] = "PLAYERONE";
         } else {
           game_json["Winner"] = "PLAYERTWO";
@@ -139,10 +147,10 @@ nlohmann::json Game::getState(PlayerRole player) {
     game_json["ship_placements_finished"] = "false";
   }
 
-  game_json["player1_timer"] = std::to_string(_game_timer.getPlayer1Timer());
-  game_json["player2_timer"] = std::to_string(_game_timer.getPlayer2Timer());
-  game_json["game_timer"] = std::to_string(_game_timer.getGameTimer());
-
+  game_json["player1_timer"] = _game_timer->getPlayer1Timer();
+  game_json["player2_timer"] = _game_timer->getPlayer2Timer();
+  game_json["game_timer"] = _game_timer->getGameTimer();
+  
   if (_board->whoseTurn() == PLAYERONE){
     game_json["turn"] = "PLAYERONE";
   }else{

@@ -8,6 +8,9 @@
 
 #include "gui_Game.hh"
 #include "faction_bombardement.hh"
+#include "faction_classique.hh"
+#include "faction_mines.hh"
+#include "faction_sonar.hh"
 #include <QHBoxLayout>
 #include <QString>
 #include <QVBoxLayout>
@@ -64,6 +67,24 @@ void BoardFrame::drawCell(QPainter &painter, int x, int y, CellType cell) {
 void BoardFrame::paintEvent(QPaintEvent *event) {
   Q_UNUSED(event); // To avoid unused parameter warning
   QPainter painter(this);
+  std::vector<BoardCoordinates> coords;
+  if (_parent->isAbilitySelected()) {
+    if (_parent->getSelectedAbility()->getType() == AERIAL_STRIKE) {
+      for (auto it = _parent->beginAerialStrike(_last_hovered); it != _parent->endAerialStrike(_last_hovered); ++it) {
+        coords.push_back(*it);
+      }
+    } else if (_parent->getSelectedAbility()->getType() == PIERCING_TORPEDO) {
+      for (auto it = _parent->beginPiercingTorpedo(_last_hovered); it != _parent->endPiercingTorpedo(_last_hovered); ++it) {
+        coords.push_back(*it);
+      }
+    } else if (_parent->getSelectedAbility()->getType() == BIG_TORPEDO) {
+      for (auto it = _parent->beginBigTorpedo(_last_hovered); it != _parent->endBigTorpedo(_last_hovered); ++it) {
+        coords.push_back(*it);
+      }
+    } else {
+      coords.push_back(_last_hovered);
+    }
+  }
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
       if (_my_side && _parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected()){
@@ -75,8 +96,18 @@ void BoardFrame::paintEvent(QPaintEvent *event) {
           drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
         }
       } 
-      else if (!_my_side && _parent->getPhase() == PLAYING && _parent->isAbilitySelected() && _last_hovered == BoardCoordinates(i, j)) {
-        drawCell(painter, i, j, CellType::HIT_SHIP);
+      else if (!_my_side && _parent->getPhase() == PLAYING && _parent->isAbilitySelected()) {
+        bool painted = false;
+        for (auto &coord : coords) {
+          if (coord == BoardCoordinates(i, j)) {
+            painted = true;
+            drawCell(painter, i, j, CellType::HIT_SHIP);
+            break;
+          }
+        }
+        if (!painted) {
+          drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
+        }
       }
       else {
         drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
@@ -203,11 +234,26 @@ void Game::setupShipPlacement() {
   _footer_layout->addLayout(sizes);
   _footer_layout->addLayout(controls);
 
+  // Putting times over the boards
+  QVBoxLayout *my_layout = new QVBoxLayout();
+  _my_label = new QLabel(QString::fromStdString(_board->getMyUsername() + "'s board - " + std::to_string(_board->getPlayerTime()) + "s"));
+  my_layout->addWidget(_my_label);
+  my_layout->addWidget(_my_frame);
+
+  QVBoxLayout *their_layout = new QVBoxLayout();
+  _their_label = new QLabel(QString::fromStdString(_board->getTheirUsername() + "'s board - " + std::to_string(_board->getOpponentTime()) + "s"));
+  their_layout->addWidget(_their_label);
+  their_layout->addWidget(_their_frame);
+
+  _game_label = new QLabel("Game time: " + QString::number(_board->getGameTime()) + "s");
+  _game_label->setAlignment(Qt::AlignCenter);
+
   _boards_layout = new QHBoxLayout();
-  _boards_layout->addWidget(_my_frame);
-  _boards_layout->addWidget(_their_frame);
+  _boards_layout->addLayout(my_layout);
+  _boards_layout->addLayout(their_layout);
   QVBoxLayout *main_layout = new QVBoxLayout();
   setLayout(main_layout);
+  main_layout->addWidget(_game_label);
   main_layout->addLayout(_boards_layout);
   main_layout->addLayout(_footer_layout);
 }
@@ -334,13 +380,30 @@ void Game::setupLosing() {
   _footer_layout->addLayout(layout);
 }
 
-Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, bool commander_mode) : _game_client(gameClient), _session_id{session_id}, _commander_mode(commander_mode) {
+Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int selected_faction, bool commander_mode) : _game_client(gameClient), _session_id{session_id}, _commander_mode(commander_mode) {
+  Player player = Player();
+  Faction faction;
+  if (commander_mode) {
+    switch (selected_faction) {
+      case 0:
+        player.setFaction(FactionBombardement());
+        break;
+      case 1:
+        player.setFaction(FactionSonar());
+        break;
+      case 2:
+        player.setFaction(FactionMines());
+        break;
+    }
+  } else {
+    player.setFaction(FactionClassique());
+  }
+
   _board= std::make_shared<LocalBoardCommander>(
-      _game_client, Player(), GameMode::COMMANDER, _session_id);
+      _game_client, player, (commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC), _session_id);
   _game_controller = std::make_shared<GameController>(_board);
 
-  _board->setPlayerFaction(FactionBombardement());
-  setWindowTitle("Game");
+  setWindowTitle(QString::fromStdString("Battleship: " + _board->getMyUsername() + " vs " + _board->getTheirUsername()));
 
   resize(1200, 800);
 
@@ -356,6 +419,15 @@ Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, bool 
   _their_frame->setFixedSize(500, 500);
 
   setupShipPlacement();
+}
+
+Game::~Game() {
+  delete _timer;
+  delete _my_frame;
+  delete _their_frame;
+  delete _game_label;
+  delete _my_label;
+  delete _their_label;
 }
 
 void Game::refreshButtons() {
@@ -404,6 +476,18 @@ void Game::update() {
       setupGame();
     }
   }
+
+  // Update Timers
+  if (_phase == PLAYING || _phase == WAITING_TURN) {
+    _board->updateBoard();
+    updateLabels();
+  }
+}
+
+void Game::updateLabels() {
+  _game_label->setText("Game time: " + QString::number(_board->getGameTime()) + "s");
+  _my_label->setText(QString::fromStdString(_board->getMyUsername() + "'s board - " + std::to_string(_board->getPlayerTime()) + "s"));
+  _their_label->setText(QString::fromStdString(_board->getTheirUsername() + "'s board - " + std::to_string(_board->getOpponentTime()) + "s"));
 }
 
 void Game::updateAbilityInformations() {
@@ -444,15 +528,17 @@ void Game::placeShip(Ship& ship) {
 }
 
 void Game::nextShip() {
-  if (_possible_ships)
+  if (_possible_ships) {
     _possible_ships->next();
     _selected_ship = _possible_ships->getShip();
+  }
 }
 
 void Game::previousShip() {
-  if (_possible_ships)
+  if (_possible_ships) {
     _possible_ships->previous();
     _selected_ship = _possible_ships->getShip();
+  }
 }
 
 bool Game::isShipSelected() const {
@@ -485,7 +571,6 @@ void Game::fire(BoardCoordinates coord) {
   if (_selected_ability) {
     if (_game_controller->fire(*_selected_ability, coord)) {
       energy -= _selected_ability->getEnergyCost();
-      updateAbilityInformations();
       _selected_ability = nullptr;
       updateAbilityInformations();
       if (_board->isFinished()) {
@@ -499,4 +584,32 @@ void Game::fire(BoardCoordinates coord) {
       }
     }
   }
+}
+
+const SpecialAbility* Game::getSelectedAbility() {
+  return _selected_ability;
+}
+
+AerialStrikeIterator Game::beginAerialStrike(BoardCoordinates coords) {
+  return AerialStrikeIterator(coords);
+}
+
+AerialStrikeIterator Game::endAerialStrike(BoardCoordinates coords) {
+  return AerialStrikeIterator(coords + BoardCoordinates(4,3));
+}
+
+PiercingTorpedoIterator Game::beginPiercingTorpedo(BoardCoordinates coords) {
+  return PiercingTorpedoIterator(coords);
+}
+
+PiercingTorpedoIterator Game::endPiercingTorpedo(BoardCoordinates coords) {
+  return PiercingTorpedoIterator(coords + BoardCoordinates(0,4));
+}
+
+BigTorpedoIterator Game::beginBigTorpedo(BoardCoordinates coords) {
+  return BigTorpedoIterator(coords);
+}
+
+BigTorpedoIterator Game::endBigTorpedo(BoardCoordinates coords) {
+  return BigTorpedoIterator(coords + BoardCoordinates(2,0));
 }
