@@ -67,6 +67,24 @@ void BoardFrame::drawCell(QPainter &painter, int x, int y, CellType cell) {
 void BoardFrame::paintEvent(QPaintEvent *event) {
   Q_UNUSED(event); // To avoid unused parameter warning
   QPainter painter(this);
+  std::vector<BoardCoordinates> coords;
+  if (_parent->isAbilitySelected()) {
+    if (_parent->getSelectedAbility()->getType() == AERIAL_STRIKE) {
+      for (auto it = _parent->beginAerialStrike(_last_hovered); it != _parent->endAerialStrike(_last_hovered); ++it) {
+        coords.push_back(*it);
+      }
+    } else if (_parent->getSelectedAbility()->getType() == PIERCING_TORPEDO) {
+      for (auto it = _parent->beginPiercingTorpedo(_last_hovered); it != _parent->endPiercingTorpedo(_last_hovered); ++it) {
+        coords.push_back(*it);
+      }
+    } else if (_parent->getSelectedAbility()->getType() == BIG_TORPEDO) {
+      for (auto it = _parent->beginBigTorpedo(_last_hovered); it != _parent->endBigTorpedo(_last_hovered); ++it) {
+        coords.push_back(*it);
+      }
+    } else {
+      coords.push_back(_last_hovered);
+    }
+  }
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
       if (_my_side && _parent->getPhase() == PLACING_SHIPS && _parent->isShipSelected()){
@@ -78,8 +96,18 @@ void BoardFrame::paintEvent(QPaintEvent *event) {
           drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
         }
       } 
-      else if (!_my_side && _parent->getPhase() == PLAYING && _parent->isAbilitySelected() && _last_hovered == BoardCoordinates(i, j)) {
-        drawCell(painter, i, j, CellType::HIT_SHIP);
+      else if (!_my_side && _parent->getPhase() == PLAYING && _parent->isAbilitySelected()) {
+        bool painted = false;
+        for (auto &coord : coords) {
+          if (coord == BoardCoordinates(i, j)) {
+            painted = true;
+            drawCell(painter, i, j, CellType::HIT_SHIP);
+            break;
+          }
+        }
+        if (!painted) {
+          drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
+        }
       }
       else {
         drawCell(painter, i, j, _board->cellType(_my_side, BoardCoordinates(i, j)));
@@ -390,6 +418,15 @@ Game::Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int s
   setupShipPlacement();
 }
 
+void Game::~Game() {
+  delete _timer;
+  delete _my_frame;
+  delete _their_frame;
+  delete _game_label;
+  delete _my_label;
+  delete _their_label;
+}
+
 void Game::refreshButtons() {
   for (auto &button : _ships_buttons) {
     int size = std::stoi(button->text().toStdString().substr(0, 1));
@@ -544,4 +581,32 @@ void Game::fire(BoardCoordinates coord) {
       }
     }
   }
+}
+
+const SpecialAbility* Game::getSelectedAbility() {
+  return _selected_ability;
+}
+
+AerialStrikeIterator Game::beginAerialStrike(BoardCoordinates coords) {
+  return AerialStrikeIterator(coords);
+}
+
+AerialStrikeIterator Game::endAerialStrike(BoardCoordinates coords) {
+  return AerialStrikeIterator(coords + BoardCoordinates(4,3));
+}
+
+PiercingTorpedoIterator Game::beginPiercingTorpedo(BoardCoordinates coords) {
+  return PiercingTorpedoIterator(coords);
+}
+
+PiercingTorpedoIterator Game::endPiercingTorpedo(BoardCoordinates coords) {
+  return PiercingTorpedoIterator(coords + BoardCoordinates(0,4));
+}
+
+BigTorpedoIterator Game::beginBigTorpedo(BoardCoordinates coords) {
+  return BigTorpedoIterator(coords);
+}
+
+BigTorpedoIterator Game::endBigTorpedo(BoardCoordinates coords) {
+  return BigTorpedoIterator(coords + BoardCoordinates(2,0));
 }
