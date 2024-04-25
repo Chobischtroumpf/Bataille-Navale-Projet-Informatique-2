@@ -16,6 +16,7 @@ bool GameController::fire(SpecialAbility ability,
     if (_board->mode() == GameMode::CLASSIC) {
       std::clog << "GameController::fire: CLASSIC" << std::endl;
       _board->fire(ability, coord);
+      return true;
     } else if (_board->mode() == GameMode::COMMANDER) {
       std::clog << "GameController::fire: COMMANDER" << std::endl;
       if (ability.getEnergyCost() == 0) {
@@ -26,6 +27,7 @@ bool GameController::fire(SpecialAbility ability,
       if (_board->player().getEnergyPoints() >= ability.getEnergyCost()) {
         std::clog << "GameController::fire: COMMANDER: energyCost <= energyPoints" << std::endl;
         _board->fire(ability, coord);
+        return true;
       }
     }
   }

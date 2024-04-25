@@ -269,6 +269,15 @@ void LocalBoardCommander::updateBoard() {
   }else{
     _is_finished = false;
   }
+  if (new_board.count("game_timer") > 0 &&
+      new_board.count("player1_timer") > 0 &&
+      new_board.count("player2_timer") > 0) {
+    _game_time = new_board.at("game_timer");
+    _player_time = _player.isPlayerOne() ? new_board.at("player1_timer")
+                                         : new_board.at("player2_timer");
+    _opponent_time = _player.isPlayerOne() ? new_board.at("player2_timer")
+                                           : new_board.at("player1_timer");
+  }
 }
 
 bool LocalBoardCommander::isInBoard(BoardCoordinates coord) const {
@@ -298,3 +307,9 @@ std::string LocalBoardCommander::getMyUsername() const { return _my_username; }
 std::string LocalBoardCommander::getTheirUsername() const {
   return _their_username;
 }
+
+uint16_t LocalBoardCommander::getGameTime() const { return _game_time; }
+
+uint16_t LocalBoardCommander::getPlayerTime() const { return _player_time; }
+
+uint16_t LocalBoardCommander::getOpponentTime() const { return _opponent_time; }

@@ -150,9 +150,35 @@ void GameServer::handleGet(http_request request) {
 }
 
 void GameServer::handleGetGames(const string& path, http_request& request, njson response, SessionManager& sessionManager){
-   // Placeholder session IDs for demonstration
-    std::vector<std::string> sessionIds = {"session1", "session2", "session3"};
+
+    // Protected route - verify the AuthToken and retrieve the userId
+    auto userId = verifyAuthToken(request);
+
+    // If userId is empty, the token is invalid or missing
+    if (userId.empty()) {
+        response["error"] = "Invalid or missing AuthToken";
+        request.reply(status_codes::Unauthorized, response.dump(), "application/json");
+        return; // Stop further processing
+    }
+
+    // Placeholder session IDs for demonstration
+    auto query = dbManager.getSessionId(userId);
+
+    if ( !query.isOk()) {
+              std::cout << query.getError() << std::endl;
+              return;
+    }
+
+    if ( query.data.size() < 1 ) {
+      std::cout << "No games found" << std::endl;
+      response["sessions"] = njson{};
+      request.reply(status_codes::OK, response.dump(), "application/json");
+      return;
+    }
+
+    std::vector<std::string> sessionIds = query.data[0];
     response["sessions"] = njson(sessionIds);
+   
     request.reply(status_codes::OK, response.dump(), "application/json");
 }
 
@@ -233,8 +259,20 @@ void GameServer::handleGetHistory(const string& path, http_request& request, njs
             // Check if session exists ?
 
             // Retrieve game history from the database using dbManager
+            std::cout << "trying to get the query" << std::endl;
+            auto query = dbManager.getGameStates(to_utf8(sessionId));
+            std::cout << "getting firtst item" << std::endl;
+            if ( !query.isOk()) {
+              std::cout << query.getError() << std::endl;
+              return;
+            }
+            std::cout << "query successful : " << query.isOk() << "size: " << query.data.size() << std::endl;
+            auto statestr = query.getFirst();
+            std::cout << "trying to get the gamestate from : " << statestr << std::endl;
+
             
-            njson gameHistory = njson::parse(dbManager.getGameStates(to_utf8(sessionId)).getFirst());
+            njson gameHistory = njson::parse(statestr);
+            std::cout << "Sending history" << std::endl;
 
             // Add the game history to the response
             response["gameHistory"] = gameHistory;
@@ -602,17 +640,19 @@ void GameServer::handleMoveRequest(web::json::value& requestBody, const string& 
                   "application/json");
     return; // Stop further processing
   }
-
-  // Extract sessionId and move details from request body
-  auto sessionId = requestBody[U("session_id")].as_string();
+  std::string sessionId;
+  try {
+    // Extract sessionId and move details from request body
+    sessionId = requestBody[U("session_id")].as_string();
+  } catch ( std::exception& e ) {
+    std::cerr << e.what() << std::endl;
+  }
+  
   njson move = njson::parse(requestBody[U("move")].serialize());
-
   // Retrieve the session and make the move
   auto gameSession = sessionManager.getSession(to_utf8(sessionId));
-
   if (gameSession) {
     bool moveResult = gameSession->makeMove(userId, move);
-
     // Respond based on the result of the move
     if (moveResult) {
       response["status"] = "Move successful";

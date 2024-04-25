@@ -139,9 +139,9 @@ nlohmann::json Game::getState(PlayerRole player) {
     game_json["ship_placements_finished"] = "false";
   }
 
-  game_json["player1_timer"] = std::to_string(_game_timer.getPlayer1Timer());
-  game_json["player2_timer"] = std::to_string(_game_timer.getPlayer2Timer());
-  game_json["game_timer"] = std::to_string(_game_timer.getGameTimer());
+  game_json["player1_timer"] = _game_timer.getPlayer1Timer();
+  game_json["player2_timer"] = _game_timer.getPlayer2Timer();
+  game_json["game_timer"] = _game_timer.getGameTimer();
 
   if (_board->whoseTurn() == PLAYERONE){
     game_json["turn"] = "PLAYERONE";

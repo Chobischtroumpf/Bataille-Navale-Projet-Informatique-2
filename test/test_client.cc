@@ -49,11 +49,6 @@ int main() {
     auto sessionId = createGameFuture.get();
     cout << "Game created with session ID: " << sessionId << "\n";
 
-    // Get Games Information
-    waitForEnter("Ready to get game list. ");
-    auto getGamesFuture = gameClient.GetGames();
-    cout << "Games information received: " << getGamesFuture.get() << "\n";
-
     // Query Game State
     waitForEnter("Ready to query game state. ");
     auto queryGameStateFuture = gameClient.QueryGameState(sessionId);
@@ -94,7 +89,26 @@ int main() {
     cout << "All requests were processed. Check your server for the responses.\n";
 
 
-    njson startGameMove = {
+   
+
+    njson endGameMove = {
+        {"moveType", "EndGame"},
+    };
+    waitForEnter("Ready to test the JoinGame. ");
+    GameClient gameClient2("http://localhost:8080");
+    auto registerFuture2 = gameClient2.Register("newUser2", "newPassword2");
+    if (registerFuture2.get()) {
+        cout << "Register request success.\n";
+    } else {
+        cout << "Register request failed.\n";
+    }
+    auto loginFuture2 = gameClient2.Login("newUser2", "newPassword2");
+    cout << "Login request success: " << loginFuture2.get() << "\n";
+    auto joinGamefuture = gameClient2.JoinGame(sessionId);
+    cout << "Join game result: " << joinGamefuture.get().dump() << "\n";
+
+
+     njson startGameMove = {
         {"moveType", "StartGame"},
     };
 
@@ -102,20 +116,20 @@ int main() {
     waitForEnter("Ready to test the StartGame move. ");
     auto makeMoveFuture = gameClient.MakeMove(sessionId, startGameMove);
     cout << "Move result: " << makeMoveFuture.get() << "\n";
-
-    njson endGameMove = {
-        {"moveType", "EndGame"},
-    };
-
+    
     // Call the MakeMove method
     waitForEnter("Ready to test the EndGame move. ");
     auto endMoveFuture = gameClient.MakeMove(sessionId, endGameMove);
     cout << "Move result: " << endMoveFuture.get() << "\n";
 
+    // Get Games Information
+    waitForEnter("Ready to get game list. ");
+    auto getGamesFuture = gameClient.GetGames();
+    cout << "Games information received: " << getGamesFuture.get() << "\n";
 
     // Get the game history
     waitForEnter("Ready to test the game history retrieval ");
-    auto historyFuture = gameClient.GetGameHistory();
+    auto historyFuture = gameClient.GetGameHistory(sessionId);
     cout << "game history: " << historyFuture.get() << "\n";
     return 0;
 }

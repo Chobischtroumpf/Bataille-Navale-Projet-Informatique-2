@@ -140,23 +140,23 @@ future<njson> GameClient::QueryGameState(const string& session_id) {
 }
 
 // Simple function to send a GET request to api/games
-future<string> GameClient::GetGames() {
-        std::clog << "Sending GET request to api/games" <<std::endl;
+future<njson> GameClient::GetGames() {
+        std::clog << "Sending GET request to api/games" << std::endl;
 
         // Use a promise to return the result asynchronously
-        auto promise = std::make_shared<std::promise<string>>();
+        auto promise = std::make_shared<std::promise<njson>>();
         auto resultFuture = promise->get_future();
 
         GetRequest("/api/games").then([promise](njson jsonResponse) {
             // Check if the response contains a 'games' key
             if (!jsonResponse.empty() && jsonResponse.find("games") != jsonResponse.end()) {
                 // Success path: Extract session Ids from jsonResponse
-                auto gameSessions = jsonResponse["games"].get<string>();
-                std::clog << "Game sessions retrieved " <<std::endl;
+                auto gameSessions = jsonResponse["games"].get<njson>();
+                std::clog << "Game sessions retrieved " << std::endl;
                 promise->set_value(gameSessions);
             } else {
                 // Error or sessions not provided, set a default error value (empty string)
-                promise->set_value("");
+                promise->set_value(njson{});
             }
         }).then([promise](pplx::task<void> errorHandler) {
             try {
@@ -165,7 +165,7 @@ future<string> GameClient::GetGames() {
             } catch (const exception& e) {
                 // In case of exception, indicate failure
                 std::clog << "Exception caught while fetching game sessions: " << e.what() <<std::endl;
-                promise->set_value(""); // Indicate failure due to exception
+                promise->set_value(njson{}); // Indicate failure due to exception
             }
         });
 
@@ -181,7 +181,7 @@ future<njson> GameClient::GetGameHistory( string sessionId ) {
   auto resultFuture = promise->get_future();
 
   // Construct the request path with the sessionId
-  string requestPath = "/api/games/history?sessionId=" + sessionId;
+  string requestPath = "/api/games/history?session_id=" + sessionId;
 
   // Make the GET request to  retrieve the game history 
   GetRequest(requestPath)
