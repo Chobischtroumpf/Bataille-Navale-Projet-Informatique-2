@@ -35,7 +35,7 @@ string GameConsole::createGameHeader() const {
   //                   ╚════════════╝
 
   // 2de line:
-  string who = _board->myTurn() ? "Player 1's " : "Player 2's";
+  string who = _board->myTurn() ? "Your" : "Opponent's";
   string turn = "║ " + who + " Turn ║";
 
   // margin:
@@ -205,8 +205,8 @@ std::vector<string> GameConsole::createBoatsKey() const {
 
 std::vector<string> GameConsole::createGamePrompt(InputStatus status) const {
   std::vector<string> prompt(_map_key.size() - 7, ""); // Add padding
-  prompt.emplace_back(">> Round Time remaining: " + _round_time);
-  prompt.emplace_back(">> Game Time remaining:" + _game_time);
+  prompt.emplace_back(">> Round Time remaining: " + std::to_string(_board->getPlayerTime()));//_board->getPlayerTime());
+  prompt.emplace_back(">> Game Time remaining:" + std::to_string(_board->getGameTime()));//_board->getGameTime());
   prompt.emplace_back("");
   prompt.emplace_back(
       ">> Put first the ability and then the coordinate (ex: 4 F2) <<");
