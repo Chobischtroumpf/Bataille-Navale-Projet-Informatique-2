@@ -21,15 +21,20 @@ void GameSession::endSession() {
     
 }
 
-void GameSession::addParticipant(const std::string& participantId) {
+bool GameSession::addParticipant(const std::string& participantId) {
     //Assign the role of the participant
     if (_opponent_id.empty()) {
         _opponent_id = participantId;
         _participant_roles[participantId] = PlayerRole::Opponent;
     } else {
+        if ( spectators.size() >= _game_details.at("maxPlayers") - 2 || spectators.size() >= 6 ) {
+            std::cout << "Reached player limit in game session " << _session_id << " ... joining game not allowed" << std::endl;
+            return false;
+        }
         spectators.push_back(participantId);
         _participant_roles[participantId] = PlayerRole::Spectator;
     }
+    return true;
 }
 
 void GameSession::removeParticipant(const std::string& participantId) {

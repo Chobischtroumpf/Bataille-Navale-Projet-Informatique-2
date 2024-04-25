@@ -49,7 +49,7 @@ class GameSession {
     void endSession();
 
     // Session Participants Management
-    void addParticipant(const std::string& participant_id);
+    bool addParticipant(const std::string& participant_id);
     void removeParticipant(const std::string& participant_id);
     PlayerRole getParticipantRole(const std::string& participant_id) const;
     std::vector<std::string> getParticipants() const;

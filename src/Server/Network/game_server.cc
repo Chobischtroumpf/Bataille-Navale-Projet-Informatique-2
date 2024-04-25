@@ -342,9 +342,9 @@ void GameServer::handleJoinGame(const string& path, http_request& request, njson
 
         // Use sessionId and userId to add player to the game 
         auto gameSession = sessionManager.getSession(to_utf8(sessionId));
-        gameSession->addParticipant(userId);
+        auto result = gameSession->addParticipant(userId);
 
-        response["isSuccessful"] = true; 
+        response["isSuccessful"] = result; 
         request.reply(status_codes::OK, response.dump(), "application/json");
     } else {
         // Handle missing parameters
