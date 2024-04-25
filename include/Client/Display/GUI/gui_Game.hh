@@ -56,6 +56,7 @@ class Game : public QWidget {
 
 public:
   Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int selected_faction, bool commander_mode = true);
+  ~Game();
   void display();
   void display_error();
   void update();
