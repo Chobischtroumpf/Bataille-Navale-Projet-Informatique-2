@@ -48,7 +48,7 @@ ReturnInput ReviewConsole::handleInput(){
         } 
         else if(input != ""){
             std::cout << "Wrong input, must be an number in the list, try angain:" << std::endl;
-            return {ReturnInput::REVIEW_GAME, "session.session_id"};
+            //return {ReturnInput::REVIEW_GAME, "session.session_id"};
         }
     }
 }

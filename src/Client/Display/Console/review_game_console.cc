@@ -36,7 +36,6 @@ inline string operator*(const string &lhs, size_t rhs) {
 
 ReturnInput ReviewGameConsole::handleInput(){
     std::clog << "REVIEWGAMECONSOLE: handle input." << std::endl;
-    std::cout << "Type P for PREVIOUS, N for NEXT or './exit' to quit: \n";
     std::string input;
     int number;
     while (true) {
@@ -152,6 +151,7 @@ void ReviewGameConsole::displayActions(){
     std::cout << "┌────────────────────────────────────────────────────────────────────────────────┐\n";
     std::cout << "│        Previous        ││          Exit            ││           Next           │\n";
     std::cout << "└────────────────────────────────────────────────────────────────────────────────┘\n";
+    std::cout << "Type P for PREVIOUS, N for NEXT or './exit' to quit: \n";
 }
 
 
