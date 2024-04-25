@@ -16,6 +16,7 @@
 #include <QVBoxLayout>
 #include <QStackedWidget>
 #include <QTimer>
+#include <QClipboard>
 #include <QPushButton>
 #include <qt6/QtWidgets/qpushbutton.h>
 #include <QRegularExpression>
@@ -49,6 +50,8 @@ private slots: // en ref à Qt6
     void onBackToMenuButtonClicked();
     void onLaunchGameButtonClicked();
 
+    void onCopyToClipboardButtonClicked();
+
     void onFactionBombardementClicked();
     void onFactionSonarClicked();
     void onFactionMinesClicked();
@@ -73,10 +76,11 @@ private:
     QTimer *timerGameStart;
     QLabel *warning;
     QVBoxLayout *scrollLayoutPlayer;
+    QPushButton *copyToClipboard;
     QLineEdit *addPlayerName;
-    QPushButton *FactionBombardement;
-    QPushButton *FactionSonar;
-    QPushButton *FactionMines;
+    QPushButton *factionBombardement;
+    QPushButton *factionSonar;
+    QPushButton *factionMines;
 
     QPushButton *backToMenu;
     QPushButton *toGame;

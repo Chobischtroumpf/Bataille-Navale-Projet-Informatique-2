@@ -20,6 +20,8 @@ Lobby::Lobby(const std::string &session_id,
     setLayout(mainLayout);
 
     QFont font("Arial", 14);
+    QFont smallfont("Arial", 8);
+
 
     timerPlayer = new QTimer(this);
     connect(timerPlayer, &QTimer::timeout, this, &Lobby::updatePlayer);
@@ -33,26 +35,38 @@ Lobby::Lobby(const std::string &session_id,
     scrollAreaPlayer->setWidgetResizable(true);
     scrollAreaPlayer->setWidget(scrollWidgetPlayer);
     scrollAreaPlayer->setFixedWidth(780);
-    mainLayout->addWidget(scrollAreaPlayer, 0, 0, 4, 3, Qt::AlignHCenter);
+    mainLayout->addWidget(scrollAreaPlayer, 0, 0, 3, 3, Qt::AlignHCenter);
+
+    QLabel *gameIDLabel = new QLabel(QString::fromStdString("Game ID : " + _session_id), this);
+    gameIDLabel->setFont(smallfont);
+    gameIDLabel->setFixedSize(520, 40);
+    mainLayout->addWidget(gameIDLabel, 4, 0, 1, 2);
+
+    copyToClipboard = new QPushButton("Copy to Clipboard", this);
+    copyToClipboard->setFont(font);
+    copyToClipboard->setFixedSize(260, 30);
+    connect(copyToClipboard, &QPushButton::clicked, this, &Lobby::onCopyToClipboardButtonClicked);
+    mainLayout->addWidget(copyToClipboard, 4, 2, 1, 1, Qt::AlignRight);
+
 
     if (_commander_mode) {
-        FactionBombardement = new QPushButton("Faction Bombardement", this);
-        FactionBombardement->setFont(font);
-        FactionBombardement->setFixedSize(260, 50);
-        connect(FactionBombardement, &QPushButton::clicked, this, &Lobby::onFactionBombardementClicked);
-        mainLayout->addWidget(FactionBombardement, 5, 0, 1, 1);
+        factionBombardement = new QPushButton("Faction Bombardement", this);
+        factionBombardement->setFont(font);
+        factionBombardement->setFixedSize(260, 50);
+        connect(factionBombardement, &QPushButton::clicked, this, &Lobby::onFactionBombardementClicked);
+        mainLayout->addWidget(factionBombardement, 5, 0, 1, 1);
 
-        FactionSonar = new QPushButton("Faction Sonar", this);
-        FactionSonar->setFont(font);
-        FactionSonar->setFixedSize(260, 50);
-        connect(FactionSonar, &QPushButton::clicked, this, &Lobby::onFactionSonarClicked);
-        mainLayout->addWidget(FactionSonar, 5, 1, 1, 1, Qt::AlignHCenter);
+        factionSonar = new QPushButton("Faction Sonar", this);
+        factionSonar->setFont(font);
+        factionSonar->setFixedSize(260, 50);
+        connect(factionSonar, &QPushButton::clicked, this, &Lobby::onFactionSonarClicked);
+        mainLayout->addWidget(factionSonar, 5, 1, 1, 1, Qt::AlignHCenter);
 
-        FactionMines = new QPushButton("Faction Mines", this);
-        FactionMines->setFont(font);
-        FactionMines->setFixedSize(260, 50);
-        connect(FactionMines, &QPushButton::clicked, this, &Lobby::onFactionMinesClicked);
-        mainLayout->addWidget(FactionMines, 5, 2, 1, 1, Qt::AlignRight);
+        factionMines = new QPushButton("Faction Mines", this);
+        factionMines->setFont(font);
+        factionMines->setFixedSize(260, 50);
+        connect(factionMines, &QPushButton::clicked, this, &Lobby::onFactionMinesClicked);
+        mainLayout->addWidget(factionMines, 5, 2, 1, 1, Qt::AlignRight);
     } else if (!_admin) {
         timerGameStart = new QTimer(this);
         connect(timerGameStart, &QTimer::timeout, this, &Lobby::checkGameStart);
@@ -72,7 +86,7 @@ Lobby::Lobby(const std::string &session_id,
         addPlayerName->setFont(font);
         addPlayerName->setPlaceholderText(QString("Username of the player to add"));
         connect(addPlayerName, &QLineEdit::returnPressed, this, &Lobby::invitePlayer);
-        mainLayout->addWidget(addPlayerName, 4, 0, 1, 3, Qt::AlignHCenter);
+        mainLayout->addWidget(addPlayerName, 3, 0, 1, 3, Qt::AlignHCenter);
 
         warning = new QLabel("", this);
         warning->setFont(font);
@@ -95,12 +109,13 @@ Lobby::~Lobby() {
     delete timerPlayer;
     clearPlayerLayout();
     delete scrollLayoutPlayer;
+    delete copyToClipboard;
     delete backToMenu;
 
     if (_commander_mode) {
-        delete FactionBombardement;
-        delete FactionSonar;
-        delete FactionMines;
+        delete factionBombardement;
+        delete factionSonar;
+        delete factionMines;
     }
 
     if (_admin) {
@@ -112,10 +127,16 @@ Lobby::~Lobby() {
     }
 }
 
+void Lobby::onCopyToClipboardButtonClicked() {
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    QString text_to_be_copied = QString::fromStdString(_session_id);
+    clipboard->setText(text_to_be_copied);
+}
+
 void Lobby::onFactionBombardementClicked() {
     _selected_faction = 0;
     _controller->sendFaction(_session_id, _selected_faction);
-    FactionBombardement->setEnabled(false);
+    factionBombardement->setEnabled(false);
 
     if (!_faction_chosen) {
         _faction_chosen = true;
@@ -127,15 +148,15 @@ void Lobby::onFactionBombardementClicked() {
         }
     }
     else {
-        FactionSonar->setEnabled(true);
-        FactionMines->setEnabled(true);
+        factionSonar->setEnabled(true);
+        factionMines->setEnabled(true);
     }
 }
 
 void Lobby::onFactionSonarClicked() {
     _selected_faction = 1;
     _controller->sendFaction(_session_id, _selected_faction);
-    FactionSonar->setEnabled(false);
+    factionSonar->setEnabled(false);
 
     if (!_faction_chosen) {
         _faction_chosen = true;
@@ -147,15 +168,15 @@ void Lobby::onFactionSonarClicked() {
         }
     }
     else {
-        FactionBombardement->setEnabled(true);
-        FactionMines->setEnabled(true);
+        factionBombardement->setEnabled(true);
+        factionMines->setEnabled(true);
     }
 }
 
 void Lobby::onFactionMinesClicked() {
     _selected_faction = 2;
     _controller->sendFaction(_session_id, _selected_faction);
-    FactionMines->setEnabled(false);
+    factionMines->setEnabled(false);
 
     if (!_faction_chosen) {
         _faction_chosen = true;
@@ -167,8 +188,8 @@ void Lobby::onFactionMinesClicked() {
         }
     }
     else {
-        FactionBombardement->setEnabled(true);
-        FactionSonar->setEnabled(true);
+        factionBombardement->setEnabled(true);
+        factionSonar->setEnabled(true);
     }
 }
 
