@@ -21,9 +21,6 @@
 #include "local_board_commander.hh"
 #include "ship_classic.hh"
 #include "ship_commander.hh"
-#include "piercing_torpedo_iterator.hh"
-#include "big_torpedo_iterator.hh"
-#include "aerial_strike_iterator.hh"
 
 enum Phase { PLACING_SHIPS, WAITING_GAME, PLAYING, WAITING_TURN, FINISHED };
 
@@ -56,7 +53,6 @@ class Game : public QWidget {
 
 public:
   Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int selected_faction, bool commander_mode = true);
-  ~Game();
   void display();
   void display_error();
   void update();
@@ -67,7 +63,6 @@ public:
   std::optional<Ship> getSelectedShip() const;
   std::shared_ptr<ShipClassic> getPossibleShips() const;
   Phase getPhase() const;
-  const SpecialAbility* getSelectedAbility();
   void placeShip(Ship& ship);
   void refreshButtons();
   void rotateShip();
@@ -77,15 +72,6 @@ public:
   void updateAbilityInformations();
   void updateLabels();
   void fire(BoardCoordinates coord);
-
-  AerialStrikeIterator beginAerialStrike(BoardCoordinates coords);
-  AerialStrikeIterator endAerialStrike(BoardCoordinates coords);
-
-  PiercingTorpedoIterator beginPiercingTorpedo(BoardCoordinates coords);
-  PiercingTorpedoIterator endPiercingTorpedo(BoardCoordinates coords);
-
-  BigTorpedoIterator beginBigTorpedo(BoardCoordinates coords);
-  BigTorpedoIterator endBigTorpedo(BoardCoordinates coords);
 
 protected:
   void setupShipPlacement();

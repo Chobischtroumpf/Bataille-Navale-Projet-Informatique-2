@@ -1,19 +1,14 @@
 #pragma once
 
-#include <atomic>
 #include <chrono>
 #include <functional>
 #include <iostream>
 #include <thread>
+#include <atomic>
 
 class Timer {
-private:
-  int _limit_seconds;
-  std::atomic<int> _current_time;
-  std::atomic<bool> _is_running;
-  std::function<void()> _callback;
-
 public:
+
   Timer();
 
   Timer(int limit_seconds, std::function<void()> callback);
@@ -27,10 +22,15 @@ public:
 
   void stop();
 
-  int getTime() const;
+  int get_time() const;
 
-  int getOriginalTime() const;
+  int get_original_time() const;
 
   void set(int new_limit_seconds, std::function<void()> callback_function);
-};
 
+private:
+  int limit_seconds;
+  std::atomic<int> current_time;
+  std::atomic<bool> is_running;
+  std::function<void()> callback;
+};
