@@ -27,7 +27,7 @@ bool GameSession::addParticipant(const std::string& participantId) {
         _opponent_id = participantId;
         _participant_roles[participantId] = PlayerRole::Opponent;
     } else {
-        if ( spectators.size() >= _game_details.at("maxPlayers") - 2 || spectators.size() >= 6 ) {
+        if ( (int)spectators.size() >= (int)_game_details.at("maxPlayers") - 2 || spectators.size() >= 6 ) {
             std::cout << "Reached player limit in game session " << _session_id << " ... joining game not allowed" << std::endl;
             return false;
         }
