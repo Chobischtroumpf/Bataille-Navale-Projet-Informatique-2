@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <optional>
 
 class GameSettingConsole : public Console {
 private:
@@ -18,7 +19,7 @@ private:
   std::string _game_name = "";
   std::optional<int> _time_per_turn = std::nullopt;
   std::optional<int> _time_per_game = std::nullopt;
-  std::optional<int> _time_game = std::nullopt;
+  std::optional<bool> _timer_mode = std::nullopt;
   int _option_counter = 0;
   bool _valid_input = true;
 
@@ -35,22 +36,19 @@ private:
         return input.size() == 1 && (input[0] == '1' || input[0] == '2');
       },
       [](std::string input) -> bool {
-        return input.size() > 0 &&
-               std::find_if(input.begin(), input.end(),
-                            [](unsigned char c) { return !std::isdigit(c); }) == input.end() &&
-               std::stoi(input) > 5 && std::stoi(input) <= 100;
+        return input.size() == 1 && (input[0] == '1' || input[0] == '2');
       },
       [](std::string input) -> bool {
         return input.size() > 0 &&
-               std::find_if(input.begin(), input.end(),
+                std::find_if(input.begin(), input.end(),
                             [](unsigned char c) { return !std::isdigit(c); }) == input.end() &&
-               std::stoi(input) > 30 && std::stoi(input) < 1000;
+                std::stoi(input) >= 5 && std::stoi(input) < 31;
       },
       [](std::string input) -> bool {
-        return input.size() > 0 &&
-               std::find_if(input.begin(), input.end(),
-                            [](unsigned char c) { return !std::isdigit(c); }) == input.end() &&
-               std::stoi(input) > 60 && std::stoi(input) < 2000;
+          return input.size() > 0 &&
+                  std::find_if(input.begin(), input.end(),
+                              [](unsigned char c) { return !std::isdigit(c); }) == input.end() &&
+                  std::stoi(input) > 30 && std::stoi(input) < 1001;
       },
       [](std::string input) -> bool { return input.size() == 1 && (input[0] == '1' || input[0] == '2');},
       [](std::string input) -> bool { return input.size() == 1 && (input[0] == '1' || input[0] == '2');}
@@ -65,9 +63,9 @@ public:
 
   // Getters
   bool isCommanderMode() const;
+  bool isClassicTimer() const;
   bool isSpectatorAllowed() const;
   std::string getGameName() const;
   int getTimePerTurn() const;
   int getTimePerGame() const;
-  int getTimeGame() const;
 };
