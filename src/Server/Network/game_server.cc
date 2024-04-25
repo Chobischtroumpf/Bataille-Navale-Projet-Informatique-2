@@ -165,8 +165,8 @@ void GameServer::handleGetGames(const string& path, http_request& request, njson
     auto query = dbManager.getSessionId(userId);
 
     if ( !query.isOk()) {
-              std::cout << query.getError() << std::endl;
-              return;
+      std::cout << query.getError() << std::endl;
+      return;
     }
 
     if ( query.data.size() < 1 ) {
@@ -176,8 +176,24 @@ void GameServer::handleGetGames(const string& path, http_request& request, njson
       return;
     }
 
-    std::vector<std::string> sessionIds = query.data[0];
-    response["sessions"] = njson(sessionIds);
+    std::vector<std::vector<std::string>> sessionsData = query.data;
+
+    // Initialize the sessions array in the JSON response
+    response["sessions"] = nlohmann::json::array();
+
+    // Iterate over all sessions
+    for (const auto& session : sessionsData) {
+        if (session.size() >= 3) {  // Check if the session vector has at least 3 elements
+            nlohmann::json sessionDetails;
+            sessionDetails["sessionId"] = session[0];
+            sessionDetails["player1Id"] = session[1];
+            sessionDetails["player2Id"] = session[2];
+
+            response["sessions"].push_back(sessionDetails);
+        } else {
+            std::cerr << "Error: Session data is incomplete." << std::endl;
+        }
+    }
    
     request.reply(status_codes::OK, response.dump(), "application/json");
 }
@@ -259,20 +275,25 @@ void GameServer::handleGetHistory(const string& path, http_request& request, njs
             // Check if session exists ?
 
             // Retrieve game history from the database using dbManager
-            std::cout << "trying to get the query" << std::endl;
             auto query = dbManager.getGameStates(to_utf8(sessionId));
-            std::cout << "getting firtst item" << std::endl;
+
             if ( !query.isOk()) {
               std::cout << query.getError() << std::endl;
               return;
             }
-            std::cout << "query successful : " << query.isOk() << "size: " << query.data.size() << std::endl;
-            auto statestr = query.getFirst();
-            std::cout << "trying to get the gamestate from : " << statestr << std::endl;
-
             
-            njson gameHistory = njson::parse(statestr);
-            std::cout << "Sending history" << std::endl;
+            std::cout << "query successful : " << query.isOk() << "size: " << query.data.size() << std::endl;
+            auto states = query.data[0];
+
+            njson gameHistory;
+            gameHistory["states"] = njson::array();
+
+            // Loop through each state string in the vector
+            for (const auto& statestr : states) {
+                // Parse each state string into an njson object and append to the 'states' array
+                njson stateJson = njson::parse(statestr);
+                gameHistory["states"].push_back(stateJson);
+            }
 
             // Add the game history to the response
             response["gameHistory"] = gameHistory;
