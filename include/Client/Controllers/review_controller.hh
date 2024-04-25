@@ -30,7 +30,7 @@ public:
     /**
      * Request to the server the sessions ids of the game played by a user.
      */
-    void requestSessionsIds(const std::string &player_id);
+    void requestSessionsIds();
 
     /**
      * Get the session id list.

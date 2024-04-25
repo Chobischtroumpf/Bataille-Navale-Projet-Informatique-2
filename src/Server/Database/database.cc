@@ -74,6 +74,7 @@ QueryResult DataBase::executeQuery(std::string& sql_query) {
 
 
 DbError DataBase::parseError(const std::string& errorMsg) {
+    std::cout << "Error: " << errorMsg << std::endl;
     if (errorMsg.find("UNIQUE constraint failed") != std::string::npos) {
         return DbError::UNIQUE_CONSTRAINT_FAILED;
     } 

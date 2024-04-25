@@ -53,6 +53,7 @@ signals:
     void userDisconnection();
     void startChat(const std::string& destination);
     void startGameSetting();
+    void startReview();
 
 private slots: // en ref à Qt6
     void onCreatGameButtonClicked();

@@ -6,9 +6,13 @@
 
 ReviewGameController::ReviewGameController(std::shared_ptr<GameClient> client, std::shared_ptr<LocalBoardReview> board)
     : _client{client},_board{std::move(board)} {
+        std::cout << "controller game review constr." << std::endl;
         _current_move = 0;
         requestMovesList();
-        initLocalBoard();
+        std::cout << "1." << std::endl;
+        //initLocalBoard();
+        std::cout << "2." << std::endl;
+
     }
 
 void ReviewGameController::requestMovesList(){

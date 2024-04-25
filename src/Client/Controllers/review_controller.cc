@@ -4,11 +4,13 @@
 
 
 ReviewController::ReviewController(std::shared_ptr<GameClient> client)
-    : _client{client}{}
+    : _client{client}{
+        requestSessionsIds();
+    }
 
-void ReviewController::requestSessionsIds(const std::string &player_id){
+void ReviewController::requestSessionsIds(){
     // Watch format, need to init a Session_info instance
-    //_session_id_list = _client->GetSessionId(player_id);
+    //_session_id_list = _client->GetGames();
 }
 
 const std::vector<Session_info>& ReviewController::getSessionIdList(){

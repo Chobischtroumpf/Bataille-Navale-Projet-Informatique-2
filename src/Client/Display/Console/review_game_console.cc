@@ -2,6 +2,7 @@
 #include "review_game_controller.hh"
 #include "local_board_commander.hh"
 #include "not_implemented_error.hh"
+#include "cell_type.hh"
 
 using std::string;
 
@@ -13,7 +14,7 @@ ReviewGameConsole::ReviewGameConsole(std::ostream &out, std::istream &in,
     _print_info{
         static_cast<uint8_t>(length(BoardCoordinates(_board->width() - 1, _board->height() - 1).xToString())),
         static_cast<uint8_t>(length(BoardCoordinates(_board->width() - 1, _board->height() - 1).yToString())),
-        "   ", 0, 0,createMapKey()}
+        "   ", 0, 0, createMapKey()}
     {
         _print_info.grid_width = _print_info.number_width + 1 + (1 + _print_info.letter_width) * _board->width() + 1;
         _print_info.width = _print_info.grid_width * 2 + _print_info.gap.size();
@@ -68,6 +69,7 @@ void ReviewGameConsole::display(){
 
 std::vector<string> ReviewGameConsole::createMapKey() const {
     std::vector<string> map_key;
+    std::cout << "here MAP KEY" << std::endl;
     map_key.emplace_back(" > " + toString(OCEAN) + " Ocean          <");
     map_key.emplace_back(" > " + toString(UNDAMAGED_SHIP) + " UNDAMAGED ship <");
     map_key.emplace_back(" > " + toString(UNDAMAGED_MINE) + " UNDAMAGED mine <");

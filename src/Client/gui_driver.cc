@@ -1,4 +1,9 @@
 #include "gui_driver.hh"
+#include "review_controller.hh"
+#include "local_board_review.hh"
+#include "gui_review.hh"
+#include "gui_review_game.hh"
+
 #include <qt6/QtCore/qobject.h>
 
 DriverGui::DriverGui()
@@ -19,6 +24,7 @@ void DriverGui::showMainMenu() {
     QObject::connect(_mainMenuWindow.get(), &MainMenu::userDisconnection, this, &DriverGui::showLoginWindow);
     QObject::connect(_mainMenuWindow.get(), &MainMenu::startGameSetting, this, &DriverGui::showGameSettingWindow);
     QObject::connect(_mainMenuWindow.get(), &MainMenu::startChat, this, [this](const std::string &destination) { showChatOutWindow(destination); });
+    QObject::connect(_mainMenuWindow.get(), &MainMenu::startReview, this, &DriverGui::showReviewMenu);
     _mainMenuWindow->show();
 }
 
@@ -51,4 +57,20 @@ void DriverGui::showLobbyWindow(std::string gameId, bool admin = false) {
     QObject::connect(_lobbyWindow.get(), &Lobby::goBackToMenu, this, &DriverGui::showMainMenu);
     QObject::connect(_lobbyWindow.get(), &Lobby::launchGame, this, &DriverGui::showGameWindow);
     _lobbyWindow->show();
+}
+
+void DriverGui::showReviewMenu(){
+    std::shared_ptr<ReviewController> review_controller = std::make_shared<ReviewController>(_game_client);
+    _review_menu = std::make_unique<Review>(review_controller);
+    QObject::connect(_review_menu.get(), &Review::goToMainMenu, this, &DriverGui::showMainMenu);
+    QObject::connect(_review_menu.get(), &Review::goToGameReview, this, &DriverGui::showReviewGame);
+    _review_menu->show();
+}
+
+void DriverGui::showReviewGame(std::string gameId){
+    std::shared_ptr<LocalBoardReview> board = std::make_shared<LocalBoardReview>(gameId);
+    std::shared_ptr<ReviewGameController> reviewg_controller = std::make_shared<ReviewGameController>(_game_client, board);
+    _review_game = std::make_unique<ReviewGame>(board, reviewg_controller);
+    QObject::connect(_review_game.get(), &ReviewGame::goToMainMenu, this, &DriverGui::showMainMenu);
+    _review_game->show();
 }

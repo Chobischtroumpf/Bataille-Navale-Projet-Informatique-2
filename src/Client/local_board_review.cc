@@ -2,9 +2,10 @@
 
 LocalBoardReview::LocalBoardReview(const std::string &session_id)
     : _session_id{session_id},
-      _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
-      _their_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))}
-      {}
+      _my_board{10, {10, Cell()}}, _their_board{10, {10, Cell()}}
+{
+        std::cout << "local board review constr." << std::endl;
+}
 
 
 void LocalBoardReview::update_board(const nlohmann::json &new_board) {
