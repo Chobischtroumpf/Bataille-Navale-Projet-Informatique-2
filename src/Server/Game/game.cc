@@ -64,8 +64,8 @@ bool Game::shipPlacementsFinished() const {
   return false;
 }
 
-bool Game::handlePlaceShip(Turn turn, Ship &ship) {
-  if (!shipPlacementsFinished()) {
+bool Game::handlePlaceShip(Turn turn, Ship &ship, Phase phase) {
+  if (phase == Phase::PLACING_SHIPS && !shipPlacementsFinished()) {
     ship.setBoard(_board.get());
     if (turn == PLAYERONE) {
       _board->placeShip(ship, true);
@@ -73,7 +73,7 @@ bool Game::handlePlaceShip(Turn turn, Ship &ship) {
       _board->placeShip(ship, false);
     }
     // if the ship placements finished then start the timer
-    if (shipPlacementsFinished()){
+    if (phase == Phase::PLACING_SHIPS && shipPlacementsFinished()){
         startTimer();
     }
     return true;
@@ -89,10 +89,14 @@ bool Game::handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinat
     std::clog << "Checking ability: " << ability.getType() << std::endl;
     std::clog << "Is it the same : " << (ability.getType() == ability_type) << std::endl;
     if (ability.getType() == ability_type) {
-      if (!_board->fire(ability, board_coordinates)) {
-        changeTurn();
-      } else {
+      std::clog << "Firing ability: " << ability.getName() << std::endl;
+      if (_board->fire(ability, board_coordinates)) {
         _game_timer->turnReset();
+        if (_mode_commandant){
+          player.addEnergyPoints(1);
+        }
+      } else {
+        changeTurn();
       }
       return true;
     }

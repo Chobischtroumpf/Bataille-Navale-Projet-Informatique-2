@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <iostream>
 #include <nlohmann/json.hpp>
 
 #include "board_coordinates.hh"

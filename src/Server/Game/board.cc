@@ -2,6 +2,7 @@
 #include <iostream>
 
 bool Board::setHit(BoardCoordinates coords) {
+  std::clog << "BOARD::SETHIT" << std::endl;
   Cell &cell = _my_turn ? _player2_side[coords.y()][coords.x()]
                       : _player1_side[coords.y()][coords.x()];
   Player &current_player = _my_turn ? _player1 : _player2;
@@ -26,6 +27,7 @@ bool Board::setHit(BoardCoordinates coords) {
 }
 
 bool Board::fireBigTorpedo(BoardCoordinates coords) {
+  std::clog << "BOARD::FIREBIGTORPEDO" << std::endl;
   bool is_hit = false;
 
   for (BigTorpedoIterator it = beginBigTorpedo(coords);
@@ -38,6 +40,7 @@ bool Board::fireBigTorpedo(BoardCoordinates coords) {
 }
 
 bool Board::firePiercingTorpedo(BoardCoordinates coords) {
+  std::clog << "BOARD::FIREPIERCINGTORPEDO" << std::endl;
   bool is_hit = false;
 
   for (PiercingTorpedoIterator it = beginPiercingTorpedo(coords); it != endPiercingTorpedo(coords); ++it) {
@@ -50,6 +53,7 @@ bool Board::firePiercingTorpedo(BoardCoordinates coords) {
 }
 
 bool Board::fireAerialStrike(BoardCoordinates coords) {
+  std::clog << "BOARD::FIREAERIALSTRIKE" << std::endl;
   bool is_hit = false;
 
   for (AerialStrikeIterator it = beginAerialStrike(coords); it != endAerialStrike(coords); ++it) {
@@ -62,6 +66,7 @@ bool Board::fireAerialStrike(BoardCoordinates coords) {
 }
 
 bool Board::dispatchTorpedo(SpecialAbilityType ability_type, BoardCoordinates coords) {
+  std::clog << "BOARD::DISPATCHTORPEDO" << std::endl;
   bool is_hit = false;
   
   if (ability_type == TORPEDO)
@@ -179,15 +184,21 @@ void Board::placeShip(Ship &ship, bool side) {
 }
 
 void Board::notify(const BoardCoordinates &coords) {
+  std::clog << "BOARD::NOTIFY" << std::endl;
   // Iterate over the targeted player's ships
-  Player& current_player = _my_turn ? _player2 : _player1;
+  Player& opponent = _my_turn ? _player2 : _player1;
+  std::clog << "opponent : " << (myTurn() ? "player2" : "player1") << std::endl;
 
-  for (Ship &ship : current_player.getFleet()) {
+  for (Ship &ship : opponent.getFleet()) {
+
     std::clog << "isPartOfShip: " << ship.isPartOfShip(coords) << std::endl;
     std::clog << "isSunk: " << ship.isSunk() << std::endl;
+
     if (ship.isPartOfShip(coords) && !ship.isSunk()) {
       ship.notify();
+
       std::clog << "Ship is sunk: " << ship.isSunk() << std::endl;
+
       if (ship.isSunk() && !(ship.getType() & IS_MINE)) {
         std::vector<BoardCoordinates> ship_coords = ship.getCoordinates();
         BoardCoordinates top_left = ship.getTopLeft();
@@ -208,7 +219,8 @@ void Board::notify(const BoardCoordinates &coords) {
 }
 
 bool Board::fire(SpecialAbility ability, BoardCoordinates coords) {
-  Player& current_player = _my_turn ? _player1 : _player2;
+  std::clog << "BOARD::FIRE\n" << std::endl;
+  Player& current_player = myTurn() ? _player1 : _player2;
   bool is_hit = false;
 
   current_player.removeEnergyPoints(ability.getEnergyCost());
@@ -221,6 +233,7 @@ bool Board::fire(SpecialAbility ability, BoardCoordinates coords) {
     setMine(coords);  
   }
   notify(coords);
+  std::clog << "is_hit: " << is_hit << std::endl;
   return is_hit;
 }
 

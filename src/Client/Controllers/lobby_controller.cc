@@ -19,12 +19,12 @@ void LobbyController::sendFaction(const std::string& session_id, int faction) {
     nlohmann::json req;
     req["moveType"] = "chooseFaction";
     req["faction"] = faction;
-    _game_client->MakeMove(session_id, req);
+    _game_client->MakeMove(session_id, req).get();
 }
 
 
 void LobbyController::launchGame(const std::string& sessionId) {
   nlohmann::json req;
   req["moveType"] = "StartGame";
-  _game_client->MakeMove(sessionId, req);
+  _game_client->MakeMove(sessionId, req).get();
 }

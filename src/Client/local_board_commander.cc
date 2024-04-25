@@ -135,7 +135,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
       move_request["ships"].push_back(ship.to_json());
     }
     std::clog << move_request.dump() << std::endl;
-    _client->MakeMove(_session_id, move_request);
+    _client->MakeMove(_session_id, move_request).get();
   }
 }
 
@@ -170,7 +170,7 @@ bool LocalBoardCommander::waitGame() {
   bool shipPlacementsFinished = false;
   std::string turn;
   while (!shipPlacementsFinished) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
     shipPlacementsFinished = isGameStarted();
   }
   return fetchMyTurn();
@@ -186,7 +186,7 @@ bool LocalBoardCommander::isGameStarted() {
 void LocalBoardCommander::waitTurn() {
   bool my_turn = false;
   while (!_player.isTurn()) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));;
+    std::this_thread::sleep_for(std::chrono::seconds(5));;
     updateBoard();
   }
 
@@ -304,7 +304,7 @@ void LocalBoardCommander::fire(SpecialAbility ability,
   
   std::clog << "fire_request: " << fire_request.dump() << std::endl;
 
-  _client->MakeMove(_session_id, move_request);
+  _client->MakeMove(_session_id, move_request).get();
 }
 
 std::string LocalBoardCommander::getMyUsername() const { return _my_username; }

@@ -165,6 +165,7 @@ bool Ship::translate(int x, int y) {
 }
 
 void Ship::notify() {
+    std::clog << "SHIP::NOTIFY" << std::endl;
     // Check if ship is sunk
     for (auto &c: _coordinates) {
         if (_board->cellType( _side, _top_left+c) != HIT_SHIP) {
