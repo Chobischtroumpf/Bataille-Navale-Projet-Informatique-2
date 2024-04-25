@@ -17,13 +17,7 @@ void GameSession::startSession() {
 
 void GameSession::endSession() {
     // Cleanup or end game logic
-
-    _game_history["gamemode"] = gamemode;
-
-    //Here's the game history saved to database
-    if (!_opponent_id.empty()) {
-       dbManager.addGameState(_leader_id, _opponent_id, _session_id, _game_history.dump());
-    }
+    std::cout << "Saving game history: " << _session_id << std::endl << _game_history.dump() << std::endl;
     
 }
 
@@ -133,8 +127,13 @@ nlohmann::json GameSession::getHistory() const {
 // Updates the game history by appending the current game state
 void GameSession::updateHistory() {
     // Get the current game state
-    auto state = _game_state.getGameState(PlayerRole::Spectator);
+    nlohmann::json state = _game_state.getGameState(PlayerRole::Spectator);
 
     // Append the current game state to the game history
     _game_history["states"].push_back(state);
+
+    if ( !dbManager.addGameState(_leader_id, _opponent_id, _session_id, state.dump())) {
+                std::cerr << "Error saving game history" << std::endl;
+    }
+    
 }

@@ -33,6 +33,7 @@
 battleship
 server
 tests
+client
 
 # Other
 # Makefile

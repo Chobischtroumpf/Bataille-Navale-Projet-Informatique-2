@@ -181,7 +181,7 @@ bool Queries::addGameState(const std::string &id_player1, const std::string &id_
     std::string columns = "id_player1, id_player2, id_session, game_state, state_date_time";
     std::string values = "'" + id_player1 + "', '" + id_player2 + "', '" + id_session + "', '" + game_state + "', '" + time + "'";
     QueryResult result = db->insertEntry("GameStates", columns, values);
-    if(result.isOk()){return true;}
+    if(result.isOk()){return true;}else{std::cout << result.getError() << std::endl;}
     return false;
 }
 
