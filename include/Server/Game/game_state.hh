@@ -4,18 +4,13 @@
 
 #include "game.hh"
 #include "player_role.hh"
+#include "game_phase.hh"
 
 class GameState {
   private:
 
     std::shared_ptr<Game> _game;
 
-    enum Phase {
-        NOT_STARTED=0,
-        PLACING_SHIPS=1,
-        PLAYING=2,
-        FINISHED=3
-    };
 
     Phase _phase = Phase::NOT_STARTED;
     bool handlePlaceShip(PlayerRole player, const nlohmann::json& move);

@@ -152,7 +152,7 @@ void GameSetting::onGoToLobbyButtonClicked() {
           nlohmann::json req;
           req["moveType"] = "chooseFaction";
           req["faction"] = 0;
-          gameClient->MakeMove(gameID, req);
+          gameClient->MakeMove(gameID, req).get();
         }
         emit goToLobby(gameID, true);
         this->close();

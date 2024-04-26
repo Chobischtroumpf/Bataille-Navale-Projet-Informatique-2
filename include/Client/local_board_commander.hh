@@ -68,7 +68,7 @@ public:
    */
   CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
 
-  std::optional<Ship> shipId(bool my_side, BoardCoordinates position) const;
+  std::shared_ptr<Ship> shipId(bool my_side, BoardCoordinates position) const;
 
   /* Check if two cells are part of the same ship */
   bool isSameShip(bool my_side, BoardCoordinates first,
@@ -87,7 +87,7 @@ public:
   bool isShipAvailable(int size) const;
 
   /* Returns the ships that have been placed */
-  std::vector<Ship> getPlacedShips() const;
+  std::vector<std::shared_ptr<Ship>> getPlacedShips() const;
 
   /* places a ship */
   void placeShip(Ship ship);

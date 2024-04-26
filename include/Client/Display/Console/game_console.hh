@@ -22,7 +22,7 @@
 
 enum InputStatus { OK, ERR };
 
-enum GamePhase { PLACE_SHIP, WAIT_GAME, GAME, WAIT_TURN };
+enum GamePhase { PLACE_SHIP, WAIT_GAME, GAME, WAIT_TURN, END_GAME };
 
 /** BoardDisplay using text.
  *
@@ -180,11 +180,13 @@ public:
   void updateGame(InputStatus);
   void displayWaitGame();
   void displayWaitTurn();
+  void displayEndGame();
 
   /** Parse coordinates provided by user, check boundaries and call
    * BoardControl::fire. */
   ReturnInput handleFire();
   ReturnInput handlePlaceShip();
+  ReturnInput handleQuit();
 
   // Console methods
   void display() override;

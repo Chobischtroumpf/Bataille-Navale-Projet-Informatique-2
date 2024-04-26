@@ -7,6 +7,7 @@
 #include "classic_timer.hh"
 #include "pendulum_timer.hh"
 #include "player_role.hh"
+#include "game_phase.hh"
 
 // Class that handles the game between 2 players
 class Game {
@@ -29,7 +30,7 @@ class Game {
 
     bool shipPlacementsFinished() const;
 
-    bool handlePlaceShip(Turn turn, Ship &ship);
+    bool handlePlaceShip(Turn turn, Ship &ship, Phase phase);
 
     bool handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinates board_coordinates);
 

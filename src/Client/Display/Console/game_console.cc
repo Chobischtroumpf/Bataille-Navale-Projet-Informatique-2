@@ -622,6 +622,13 @@ ReturnInput GameConsole::handlePlaceShip() {
   return {ReturnInput::Screen::GAME, ""};
 }
 
+ReturnInput GameConsole::handleQuit() {
+  std::clog << "GameConsole::handleQuit" << std::endl;
+  std::string buf;
+  getline(_in, buf);
+  return {ReturnInput::Screen::MAIN_MENU, ""};
+}
+
 void GameConsole::updateGame(InputStatus status) {
   // methode d'affichage d'ecran temporaire pour le changement de tour
   std::system("clear"); // Do not use std::system in other contexts
@@ -658,6 +665,19 @@ void GameConsole::displayWaitTurn() {
   _out << std::flush;
 }
 
+void GameConsole::displayEndGame() {
+  std::system("clear");
+  _out << createGameHeader();
+  printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
+  _out << '\n';
+  printSideBySide(createGrid(true), createGrid(false));
+  _out << '\n';
+  _out << "\x1b[34;1m End of the game\x1b[0m" << '\n';
+  _board->isVictory() ? _out << "\x1b[32;1m You won! \x1b[0m"
+      : _out << "\x1b[31;1m" << _board->getTheirUsername() << " Won!\x1b[0m\n";
+  _out << std::flush;
+}
+
 void GameConsole::display() {
   std::clog << "GameConsole::display" << std::endl;
   if (_phase == PLACE_SHIP) {
@@ -672,6 +692,9 @@ void GameConsole::display() {
   } else if (_phase == WAIT_TURN) {
     std::clog << "GameConsole::display: WAIT_TURN" << std::endl;
     displayWaitTurn();
+  } else if (_phase == END_GAME) {
+    std::clog << "GameConsole::display: END_GAME" << std::endl;
+    displayEndGame();
   }
 }
 
@@ -686,7 +709,9 @@ ReturnInput GameConsole::handleInput()
   } else if (_phase == GAME) {
     std::clog << "GameConsole::handleInput: GAME" << std::endl;
     handleFire();
-    if (!_board->myTurn()) {
+    if (_board->isFinished()) {
+      _phase = END_GAME;
+    } else if (!_board->myTurn()) {
       _phase = WAIT_TURN;
     }
   } else if (_phase == WAIT_GAME) {
@@ -695,7 +720,14 @@ ReturnInput GameConsole::handleInput()
   } else if (_phase == WAIT_TURN) {
     std::clog << "GameConsole::handleInput: WAIT_TURN" << std::endl;
     _board->waitTurn();
-    _phase = GAME;
+    if (_board->isFinished()) {
+      _phase = END_GAME;
+    } else {
+      _phase = GAME;
+    }
+  } else if (_phase == END_GAME) {
+    std::clog << "GameConsole::handleInput: END_GAME" << std::endl;
+    return handleQuit();
   }
 
   return {ReturnInput::Screen::GAME, ""};

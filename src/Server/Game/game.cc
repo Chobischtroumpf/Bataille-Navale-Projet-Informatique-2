@@ -52,10 +52,10 @@ bool Game::shipPlacementsFinished() const {
   Player player1 = _board->getPlayer1();
   Player player2 = _board->getPlayer2();
 
-  std::clog << "Player 1 fleet size : " << player1.getFleet().size() << std::endl;
-  std::clog << "Player 2 fleet size: " << player2.getFleet().size() << std::endl;
-  std::clog << "Player 1 faction amount of ships: " << player1.getFaction().getAmountOfShips() << std::endl;
-  std::clog << "Player 2 faction amount of ships: " << player2.getFaction().getAmountOfShips() << std::endl;
+  // std::clog << "Player 1 fleet size : " << player1.getFleet().size() << std::endl;
+  // std::clog << "Player 2 fleet size: " << player2.getFleet().size() << std::endl;
+  // std::clog << "Player 1 faction amount of ships: " << player1.getFaction().getAmountOfShips() << std::endl;
+  // std::clog << "Player 2 faction amount of ships: " << player2.getFaction().getAmountOfShips() << std::endl;
 
   if (player1.getFleet().size() >= (size_t)player1.getFaction().getAmountOfShips() &&
       player2.getFleet().size() >= (size_t)player2.getFaction().getAmountOfShips()) {
@@ -64,16 +64,18 @@ bool Game::shipPlacementsFinished() const {
   return false;
 }
 
-bool Game::handlePlaceShip(Turn turn, Ship &ship) {
-  if (!shipPlacementsFinished()) {
+bool Game::handlePlaceShip(Turn turn, Ship &ship, Phase phase) {
+  std::clog << "GAME::HANDLEPLACESHIP" << std::endl;
+  std::clog << "ship.top_left : " << ship.getTopLeft() << std::endl;
+  if (phase == Phase::PLACING_SHIPS && !shipPlacementsFinished()) {
     ship.setBoard(_board.get());
     if (turn == PLAYERONE) {
-      _board->placeShip(ship, true);
+      _board->placeShip(std::make_shared<Ship>(ship), true);
     } else {
-      _board->placeShip(ship, false);
+      _board->placeShip(std::make_shared<Ship>(ship), false);
     }
     // if the ship placements finished then start the timer
-    if (shipPlacementsFinished()){
+    if (phase == Phase::PLACING_SHIPS && shipPlacementsFinished()){
         startTimer();
     }
     return true;
@@ -89,10 +91,14 @@ bool Game::handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinat
     std::clog << "Checking ability: " << ability.getType() << std::endl;
     std::clog << "Is it the same : " << (ability.getType() == ability_type) << std::endl;
     if (ability.getType() == ability_type) {
-      if (!_board->fire(ability, board_coordinates)) {
-        changeTurn();
-      } else {
+      std::clog << "Firing ability: " << ability.getName() << std::endl;
+      if (_board->fire(ability, board_coordinates)) {
         _game_timer->turnReset();
+        if (_mode_commandant){
+          player.addEnergyPoints(1);
+        }
+      } else {
+        changeTurn();
       }
       return true;
     }
