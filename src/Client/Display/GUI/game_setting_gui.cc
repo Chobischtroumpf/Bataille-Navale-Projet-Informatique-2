@@ -15,10 +15,13 @@ GameSetting::GameSetting(std::shared_ptr<GameClient> gameClient): gameClient(gam
     QLabel *gameModeLabel = new QLabel("Game Mode", this);
     gameModeLabel->setFont(font);
     mainLayout->addWidget(gameModeLabel, 1, 0, 1, 1);
-    QLabel *timePerTurnLabel = new QLabel("Time Per Turn", this);
+    QLabel *timerModeLabel = new QLabel("Time Mode", this);
+    timerModeLabel->setFont(font);
+    mainLayout->addWidget(timerModeLabel, 2, 0, 1, 1);
+    /*QLabel *timePerTurnLabel = new QLabel("Time Per Turn", this);
     timePerTurnLabel->setFont(font);
-    mainLayout->addWidget(timePerTurnLabel, 2, 0, 1, 1);
-    QLabel *timePerGameLabel = new QLabel("Time Per Game", this);
+    mainLayout->addWidget(timePerTurnLabel, 2, 0, 1, 1);*/
+    QLabel *timePerGameLabel = new QLabel("Time Per Turn", this);
     timePerGameLabel->setFont(font);
     mainLayout->addWidget(timePerGameLabel, 3, 0, 1, 1);
     QLabel *timeGameLabel = new QLabel("Time Game", this);
@@ -47,13 +50,26 @@ GameSetting::GameSetting(std::shared_ptr<GameClient> gameClient): gameClient(gam
     connect(commanderMode, &QPushButton::clicked, this, &GameSetting::commanderModeButtonClicked);
     mainLayout->addWidget(commanderMode, 1, 2, 1, 1, Qt::AlignHCenter);
 
-    timePerTurn = new QSlider(Qt::Horizontal, this);
+    classicTimer = new QPushButton("Classic", this);
+    classicTimer->setFont(font);
+    classicTimer->setFixedSize(180, 50);
+    connect(classicTimer, &QPushButton::clicked, this, &GameSetting::classicTimerButtonClicked);
+    classicTimer->setEnabled(false);
+    mainLayout->addWidget(classicTimer, 2, 1, 1, 1, Qt::AlignHCenter);
+
+    pendulumTimer = new QPushButton("Pendulum", this);
+    pendulumTimer->setFont(font);
+    pendulumTimer->setFixedSize(180, 50);
+    connect(pendulumTimer, &QPushButton::clicked, this, &GameSetting::pendulumTimerButtonClicked);
+    mainLayout->addWidget(pendulumTimer, 2, 2, 1, 1, Qt::AlignHCenter);
+
+    /*timePerTurn = new QSlider(Qt::Horizontal, this);
     timePerTurn->setFixedSize(400, 30);
     timePerTurn->setMinimum(1);
     timePerTurn->setMaximum(20);
     timePerTurn->setValue(6);
     connect(timePerTurn, &QSlider::valueChanged, this, &GameSetting::changeValueTimePerTurn);
-    mainLayout->addWidget(timePerTurn, 2, 1, 1, 2, Qt::AlignHCenter);
+    mainLayout->addWidget(timePerTurn, 2, 1, 1, 2, Qt::AlignHCenter);*/
 
     timePerGame = new QSlider(Qt::Horizontal, this);
     timePerGame->setFixedSize(400, 30);
@@ -84,9 +100,9 @@ GameSetting::GameSetting(std::shared_ptr<GameClient> gameClient): gameClient(gam
     connect(notAllowSpectator, &QPushButton::clicked, this, &GameSetting::notAllowSpectatorButtonClicked);
     mainLayout->addWidget(notAllowSpectator, 5, 2, 1, 1, Qt::AlignHCenter);
 
-    timePerTurnValue = new QLabel("30 second      ", this);
+    /*timePerTurnValue = new QLabel("30 second      ", this);
     timePerTurnValue->setFont(font);
-    mainLayout->addWidget(timePerTurnValue, 2, 3, 1, 1, Qt::AlignRight);
+    mainLayout->addWidget(timePerTurnValue, 2, 3, 1, 1, Qt::AlignRight);*/
     timePerGameValue = new QLabel("300 second      ", this);
     timePerGameValue->setFont(font);
     mainLayout->addWidget(timePerGameValue, 3, 3, 1, 1, Qt::AlignRight);
@@ -116,16 +132,18 @@ GameSetting::~GameSetting() {
     delete noGameNameWarning;
     delete classicMode;
     delete commanderMode;
-    delete timePerTurn;
+    //delete timePerTurn;
     delete timePerGame;
     delete timeGame;
-    delete timePerTurnValue;
+    //delete timePerTurnValue;
     delete timePerGameValue;
     delete timeGameValue;
     delete allowSpectator;
     delete notAllowSpectator;
     delete backToMenu;
     delete toLobby;
+    delete classicTimer;
+    delete pendulumTimer;
 }
 
 void GameSetting::onBackToMenuButtonClicked() {
@@ -141,7 +159,8 @@ void GameSetting::onGoToLobbyButtonClicked() {
     } else {
         njson gameDetails = {{"name", gameNameString},
                              {"gamemode", gameMode},
-                             {"gameTimeLimit", timePerTurn->value() * 5},
+                             //{"gameTimeLimit", timePerTurn->value() * 5},
+                             {"classicTimer", timerMode},
                              {"playerTimeLimit", timePerGame->value() * 10},
                              {"turnTimeLimit", timeGame->value() * 10},
                              {"maxPlayers", (spectatorAllowed ? 8 : 2)}
@@ -152,7 +171,7 @@ void GameSetting::onGoToLobbyButtonClicked() {
           nlohmann::json req;
           req["moveType"] = "chooseFaction";
           req["faction"] = 0;
-          gameClient->MakeMove(gameID, req).get();
+          gameClient->MakeMove(gameID, req);
         }
         emit goToLobby(gameID, true);
         this->close();
@@ -171,9 +190,21 @@ void GameSetting::commanderModeButtonClicked() {
     gameMode = "Commander";
 }
 
+void GameSetting::classicTimerButtonClicked() {
+    classicTimer->setEnabled(false);
+    pendulumTimer->setEnabled(true);
+    timerMode = "Classic";
+}
+
+void GameSetting::pendulumTimerButtonClicked() {
+    pendulumTimer->setEnabled(false);
+    classicTimer->setEnabled(true);
+    timerMode = "Pendulum";
+}
+
 void GameSetting::changeValueTimePerTurn() {
-    int value = timePerTurn->value() * 5;
-    timePerTurnValue->setText(QString::number(value) + " second      ");
+    //int value = timePerTurn->value() * 5;
+    //timePerTurnValue->setText(QString::number(value) + " second      ");
 }
 
 void GameSetting::changeValueTimePerGame() {

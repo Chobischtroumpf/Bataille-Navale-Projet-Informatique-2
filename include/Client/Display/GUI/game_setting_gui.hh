@@ -38,6 +38,8 @@ private slots: // en ref à Qt6
     void onGoToLobbyButtonClicked();
     void classicModeButtonClicked();
     void commanderModeButtonClicked();
+    void classicTimerButtonClicked();
+    void pendulumTimerButtonClicked();
     void changeValueTimePerTurn();
     void changeValueTimePerGame();
     void changeValueTimeGame();
@@ -48,16 +50,19 @@ private:
     std::shared_ptr<GameClient> gameClient;
     std::string gameNameString;
     std::string gameMode = "Classic";
+    std::string timerMode = "Classic";
     bool spectatorAllowed = true;
 
     QLineEdit *gameName;
     QLabel *noGameNameWarning;
     QPushButton *classicMode;
     QPushButton *commanderMode;
-    QSlider *timePerTurn;
+    QPushButton *classicTimer;
+    QPushButton *pendulumTimer;
+    //QSlider *timePerTurn;
     QSlider *timePerGame;
     QSlider *timeGame;
-    QLabel *timePerTurnValue;
+    //QLabel *timePerTurnValue;
     QLabel *timePerGameValue;
     QLabel *timeGameValue;
     QPushButton *allowSpectator;
