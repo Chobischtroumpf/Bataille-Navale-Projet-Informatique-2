@@ -73,7 +73,7 @@ private:
     int _max_players;
     std::string _game_name;
     bool _commander_mode;
-    bool _spectator_mode;
+    bool _spectator_mode = false;
     bool _game_started = false;
 
     QTimer *timerPlayer;
