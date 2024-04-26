@@ -230,19 +230,35 @@ void MainMenu::onFriendNameButtonClicked(const QString &destination){
 void MainMenu::onNotificationButtonClicked(const QString &info) {
     std::string std_info = info.toStdString();
 
-    size_t pos = std_info.find("sessionID: ");
+    size_t pos_id = std_info.find("sessionID: ");
+    size_t pos_new_friend_added = std_info.find("You've just added ");
+
 
     // Notification d'invitation à une partie
-    if (pos != std::string::npos) {
-        pos += 11; // Longueur de "sessionID: "
-        std::string sessionId = std_info.substr(pos, std_info.length()); // Longueur d'un sessionID
+    if (pos_id != std::string::npos) {
+        pos_id += 11; // Longueur de "sessionID: "
+        std::string sessionId = std_info.substr(pos_id, std_info.length()); // Longueur d'un sessionID
         std::cout << sessionId << std::endl;
         if (_controller->joinGame(sessionId)) {
             this->close();
             emit startLobby(sessionId);
         }
-
     }
+
+    // Notification d'ajout en ami
+    else if (pos_new_friend_added != std::string::npos) {
+        pos_new_friend_added += std::string("You've just added ").length();
+
+        // Recherche de la position de " as a friend"
+        size_t endPos = std_info.find(" as a friend", pos_new_friend_added);
+
+        if (endPos != std::string::npos) {
+            // Récupération de l'username et démarrage du chat
+            std::string username = std_info.substr(pos_new_friend_added, endPos - pos_new_friend_added);
+            emit startChat(username);
+        }
+    }
+
 }
 
 void MainMenu::onJoinGameButtonClicked() {
