@@ -283,15 +283,15 @@ void GameServer::handleGetHistory(const string& path, http_request& request, njs
             }
             
             std::cout << "query successful : " << query.isOk() << "size: " << query.data.size() << std::endl;
-            auto states = query.data[0];
+            auto states = query.data;
 
             njson gameHistory;
             gameHistory["states"] = njson::array();
 
             // Loop through each state string in the vector
-            for (const auto& statestr : states) {
+            for (const auto& state : states) {
                 // Parse each state string into an njson object and append to the 'states' array
-                njson stateJson = njson::parse(statestr);
+                njson stateJson = njson::parse(state[0]);
                 gameHistory["states"].push_back(stateJson);
             }
 
@@ -342,9 +342,9 @@ void GameServer::handleJoinGame(const string& path, http_request& request, njson
 
         // Use sessionId and userId to add player to the game 
         auto gameSession = sessionManager.getSession(to_utf8(sessionId));
-        gameSession->addParticipant(userId);
+        auto result = gameSession->addParticipant(userId);
 
-        response["isSuccessful"] = true; 
+        response["isSuccessful"] = result; 
         request.reply(status_codes::OK, response.dump(), "application/json");
     } else {
         // Handle missing parameters
