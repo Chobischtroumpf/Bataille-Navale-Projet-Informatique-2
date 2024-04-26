@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2023.11.27)  26 APR 2024 15:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2023.11.27)  26 APR 2024 23:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -428,7 +428,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.40 ...4.2.7}Boucle de jeu}{23}{subsection.4.2.7}
+l.43 ...4.2.7}Boucle de jeu}{26}{subsection.4.2.7}
                                                   % [1
 
 ])
@@ -757,20 +757,36 @@ Overfull \hbox (30.61325pt too wide) in paragraph at lines 143--145
  [][] 
  []
 
-) (./design_fonctionnement_sys/fonctionnement_sys.tex
+<design_fonctionnement_sys//img_design/FonctionnementReview.png, id=321, 903.37
+5pt x 803.0pt>
+File: design_fonctionnement_sys//img_design/FonctionnementReview.png Graphic fi
+le (type png)
+<use design_fonctionnement_sys//img_design/FonctionnementReview.png>
+Package pdftex.def Info: design_fonctionnement_sys//img_design/FonctionnementRe
+view.png  used on input line 151.
+(pdftex.def)             Requested size: 225.8432pt x 200.74951pt.
+) (./design_fonctionnement_sys/fonctionnement_sys.tex [20
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.10})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7 \subsection
+               {Architecture de la communication client-serveur}
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.11})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7 \subsection
+               {Architecture de la communication client-serveur} <./design_fonc
+tionnement_sys//img_design/dia_db.png (PNG copy)> <./design_fonctionnement_sys/
+/img_design/FonctionnementReview.png (PNG copy)>]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 8
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2022/07/10 v2.5l Standard LaTeX font definitions
-) [20
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.10})
- has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.22 
-      <./design_fonctionnement_sys//img_design/dia_db.png (PNG copy)>]
-<design_fonctionnement_sys//img_design/inscription_fonctionnement.png, id=328, 
+) [21]
+<design_fonctionnement_sys//img_design/inscription_fonctionnement.png, id=336, 
 1184.425pt x 692.5875pt>
 File: design_fonctionnement_sys//img_design/inscription_fonctionnement.png Grap
 hic file (type png)
@@ -783,15 +799,15 @@ Overfull \hbox (40.14162pt too wide) in paragraph at lines 45--47
  [][] 
  []
 
-[21] [22
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.11})
+[22
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.12})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.49 \newpage
               <./design_fonctionnement_sys//img_design/inscription_fonctionneme
 nt.png (PNG copy)>]
-<design_fonctionnement_sys//img_design/login_fonctionnement.png, id=339, 702.62
+<design_fonctionnement_sys//img_design/login_fonctionnement.png, id=342, 702.62
 5pt x 311.1625pt>
 File: design_fonctionnement_sys//img_design/login_fonctionnement.png Graphic fi
 le (type png)
@@ -799,7 +815,7 @@ le (type png)
 Package pdftex.def Info: design_fonctionnement_sys//img_design/login_fonctionne
 ment.png  used on input line 58.
 (pdftex.def)             Requested size: 281.04501pt x 124.46278pt.
-<design_fonctionnement_sys//img_design/Chat_DS.png, id=340, 534.19576pt x 151.7
+<design_fonctionnement_sys//img_design/Chat_DS.png, id=343, 534.19576pt x 151.7
 67pt>
 File: design_fonctionnement_sys//img_design/Chat_DS.png Graphic file (type png)
 
@@ -807,7 +823,7 @@ File: design_fonctionnement_sys//img_design/Chat_DS.png Graphic file (type png)
 Package pdftex.def Info: design_fonctionnement_sys//img_design/Chat_DS.png  use
 d on input line 74.
 (pdftex.def)             Requested size: 160.25996pt x 45.53044pt.
-<design_fonctionnement_sys//img_design/PreLoby.jpg, id=342, 1409.265pt x 1023.8
+<design_fonctionnement_sys//img_design/PreLoby.jpg, id=345, 1409.265pt x 1023.8
 25pt>
 File: design_fonctionnement_sys//img_design/PreLoby.jpg Graphic file (type jpg)
 
@@ -816,26 +832,26 @@ Package pdftex.def Info: design_fonctionnement_sys//img_design/PreLoby.jpg  use
 d on input line 84.
 (pdftex.def)             Requested size: 422.78276pt x 307.14987pt.
  [23
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.12})
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.13})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.88 
      
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.13})
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.14})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.88 
       <./design_fonctionnement_sys//img_design/login_fonctionnement.png (PNG co
 py)> <./design_fonctionnement_sys//img_design/Chat_DS.png>] [24
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.14})
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.15})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.89 \newpage
               <./design_fonctionnement_sys//img_design/PreLoby.jpg>]
-<design_fonctionnement_sys//img_design/PreGame.jpg, id=356, 1150.2975pt x 896.3
+<design_fonctionnement_sys//img_design/PreGame.jpg, id=359, 1150.2975pt x 896.3
 4875pt>
 File: design_fonctionnement_sys//img_design/PreGame.jpg Graphic file (type jpg)
 
@@ -849,13 +865,13 @@ Overfull \hbox (26.49086pt too wide) in paragraph at lines 98--100
  []
 
 [25
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.15})
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.16})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.102 \newpage
                <./design_fonctionnement_sys//img_design/PreGame.jpg>]
-<design_fonctionnement_sys//img_design/Game.jpg, id=362, 1021.8175pt x 920.4387
+<design_fonctionnement_sys//img_design/Game.jpg, id=365, 1021.8175pt x 920.4387
 5pt>
 File: design_fonctionnement_sys//img_design/Game.jpg Graphic file (type jpg)
 <use design_fonctionnement_sys//img_design/Game.jpg>
@@ -864,7 +880,7 @@ n input line 115.
 (pdftex.def)             Requested size: 306.54762pt x 276.13376pt.
 ))
 [26
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4.16})
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.17})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
@@ -880,14 +896,14 @@ Package rerunfilecheck Warning: File `master.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `master.out':
-(rerunfilecheck)             Before: D8BAD8C7CC59EE7C896AA0634FA3E9CA;4870
-(rerunfilecheck)             After:  FB8B41458E870CAC5B497310A67E9D56;4911.
+(rerunfilecheck)             Before: FB8B41458E870CAC5B497310A67E9D56;4911
+(rerunfilecheck)             After:  3363B4D6DCE7F7F61F15C376382BCC73;5069.
  ) 
 Here is how much of TeX's memory you used:
- 11378 strings out of 478022
- 190049 string characters out of 5839673
+ 11388 strings out of 478022
+ 190561 string characters out of 5839673
  1863330 words of memory out of 5000000
- 31207 multiletter control sequences out of 15000+600000
+ 31214 multiletter control sequences out of 15000+600000
  523132 words of font info for 47 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,8n,76p,402b,676s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -904,10 +920,10 @@ pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.60
 m1200.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/ec
 ti1728.600pk> </home/romek/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/e
 crm1728.600pk>
-Output written on master.pdf (27 pages, 1800059 bytes).
+Output written on master.pdf (27 pages, 1894422 bytes).
 PDF statistics:
- 826 PDF objects out of 1000 (max. 8388607)
- 375 compressed objects within 4 object streams
- 93 named destinations out of 1000 (max. 500000)
- 402 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 830 PDF objects out of 1000 (max. 8388607)
+ 377 compressed objects within 4 object streams
+ 95 named destinations out of 1000 (max. 500000)
+ 407 words of extra memory for PDF output out of 10000 (max. 10000000)
 
