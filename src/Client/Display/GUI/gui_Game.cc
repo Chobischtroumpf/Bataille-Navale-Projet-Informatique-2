@@ -380,6 +380,7 @@ void Game::setupWinning() {
 
   connect(quitButton, &QPushButton::clicked, [this] {
     emit gameFinished();
+    this->close();
   });
 
   phase2Label->setAlignment(Qt::AlignCenter);
@@ -401,6 +402,7 @@ void Game::setupLosing() {
 
   connect(quitButton, &QPushButton::clicked, [this] {
     emit gameFinished();
+    this->close();
   });
 
   phase2Label->setAlignment(Qt::AlignCenter);
@@ -422,6 +424,7 @@ void Game::setupFinished() {
 
   connect(quitButton, &QPushButton::clicked, [this] {
     emit gameFinished();
+    this->close();
   });
 
   phase2Label->setAlignment(Qt::AlignCenter);
