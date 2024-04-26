@@ -82,32 +82,40 @@ ReviewGame::ReviewGame(std::shared_ptr<LocalBoardReview> board, std::shared_ptr<
     setWindowTitle("Game Review");
     resize(1200, 800);
     _my_frame = new BoardReviewFrame(this, _board, true);
+    _their_frame = new BoardReviewFrame(this, _board, false);
     _my_frame->setFixedSize(500, 500);
+    _their_frame->setFixedSize(500, 500);
     setButtons();
     setLayout();
 }
 
 void ReviewGame::setButtons(){
-    next_button = new QPushButton("Next");
+    next_button = new QPushButton("Suivant");
     connect(next_button, &QPushButton::clicked, this, &ReviewGame::onNextButtonClicked);
-    previous_button = new QPushButton("Next");
+    previous_button = new QPushButton("Précédant");
     connect(previous_button, &QPushButton::clicked, this, &ReviewGame::onPreviousButtonClicked);
-    back_main_button = new QPushButton("Retour");
+    back_main_button = new QPushButton("Quiter");
     connect(back_main_button, &QPushButton::clicked, this, &ReviewGame::onBackMainButtonClicked);
 }
 
 void ReviewGame::setLayout(){
     layout = new QVBoxLayout(this);
+    label_layout = new QHBoxLayout(this);
     boards_layout = new QHBoxLayout(this);
     button_layout = new QHBoxLayout(this);
-    layout->addWidget(new QLabel("Review:"));
+    std::string game_label = "Revoir la partie: " + _board->getSessionId();
+    layout->addWidget(new QLabel(QString::fromStdString(game_label)));
+    label_layout->addWidget(new QLabel("Joueur 1:"));
+    label_layout->addWidget(new QLabel("Joueur 2"));
+    layout->addLayout(label_layout);
     boards_layout->addWidget(_my_frame);
+    boards_layout->addWidget(_their_frame);
     layout->addLayout(boards_layout);
     button_layout = new QHBoxLayout();
-    button_layout->addWidget(next_button);
     button_layout->addWidget(previous_button);
-    button_layout->addWidget(back_main_button);
+    button_layout->addWidget(next_button);
     layout->addLayout(button_layout);
+    layout->addWidget(back_main_button);
 }
 
 

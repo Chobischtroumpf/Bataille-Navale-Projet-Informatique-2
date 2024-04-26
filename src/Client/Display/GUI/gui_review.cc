@@ -17,18 +17,14 @@ void Review::setButtons(){
 }
 
 void Review::setListView(){
-    QStringList game_titles;
+    game_list_view = new QListWidget(this);
     for(auto game: _review_controller->getSessionIdList()){
         QString line = QString("Player1: %1, Player2: %2, Session: %3")
                       .arg(QString::fromStdString(game.id_player1))
                       .arg(QString::fromStdString(game.id_player2))
                       .arg(QString::fromStdString(game.session_id));
-        game_titles << line;
+        game_list_view->addItem(line);
     }
-    list_model = new QStringListModel(game_titles);    
-    //list_model->setStringList(QStringList() << "Player 1" << "Player 2" << "Game type" << "Session ID");    
-    game_list_view = new QListWidget(this);
-    game_list_view->setModel(list_model);
 }
 
 void Review::setLayout(){

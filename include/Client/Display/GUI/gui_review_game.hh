@@ -91,8 +91,9 @@ class ReviewGame : public QWidget{
         std::shared_ptr<ReviewGameController> _controller;
         bool _commander_mode;
         BoardReviewFrame *_my_frame;
-        //BoardReviewFrame *_their_frame;
+        BoardReviewFrame *_their_frame;
         QVBoxLayout *layout;
+        QHBoxLayout *label_layout;
         QHBoxLayout *boards_layout;
         QHBoxLayout *footer_layout;
         QHBoxLayout *button_layout;
