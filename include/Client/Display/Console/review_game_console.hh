@@ -128,7 +128,7 @@ class ReviewGameConsole: public Console{
          * @param i: the line to print
          * @param my_side: user side or not
          */
-        void createBody(std::ostringstream& oss, int i, bool my_side);
+        void createBody(std::ostringstream& oss, unsigned i, bool my_side);
 
         /**
          * Create the last line of the board.

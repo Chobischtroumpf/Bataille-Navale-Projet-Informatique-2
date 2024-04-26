@@ -37,7 +37,6 @@ inline string operator*(const string &lhs, size_t rhs) {
 ReturnInput ReviewGameConsole::handleInput(){
     std::clog << "REVIEWGAMECONSOLE: handle input." << std::endl;
     std::string input;
-    int number;
     while (true) {
         std::getline(std::cin, input);
         if (input == "./exit") {
@@ -219,7 +218,7 @@ void ReviewGameConsole::createFirstLine(std::ostringstream& oss){
 }
 
 
-void ReviewGameConsole::createBody(std::ostringstream& oss, int i, bool my_side){
+void ReviewGameConsole::createBody(std::ostringstream& oss, unsigned i, bool my_side){
     std::clog << "REVIEWGAMECONSOLE: createBody." << std::endl;
     oss.str("");
     oss << std::setw(_print_info.number_width) << i + 1 << " ";

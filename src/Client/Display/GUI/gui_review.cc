@@ -55,4 +55,10 @@ void Review::onBackMainButtonClicked(){
     this->close();
 }
 
-Review::~Review(){}
+Review::~Review(){
+    delete game_list_view;
+    delete r_game_button;
+    delete back_main_button;
+    delete button_layout;
+    delete layout;
+}

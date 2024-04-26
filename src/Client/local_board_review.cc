@@ -11,12 +11,14 @@ LocalBoardReview::LocalBoardReview(const std::string &session_id)
 void LocalBoardReview::update_board(const nlohmann::json &new_board) {
     std::clog << "local board review update_board." << std::endl;
     std::vector<std::string> fleet_names = {"fleetA", "fleetB"};
+    _finished = new_board["Finished"];
+    _winner = new_board["Winner"];
     for(auto fname: fleet_names){
         auto fleet = new_board[fname];
         auto& board = (fname == "fleetA") ? _my_board : _their_board;
         if (!(fleet.is_string() && fleet.get<std::string>() == "None")) {
-            for (int i = 0; i < height(); i++) {
-                for (int j = 0; j < width(); j++) {
+            for (size_t i = 0; i < height(); i++) {
+                for (size_t j = 0; j < width(); j++) {
                     board[i][j].setType(string_to_celltype(fleet[i][j]["type"]));
                 }
             }
@@ -79,3 +81,7 @@ Cell LocalBoardReview::get(bool my_side, BoardCoordinates position) const {
 
 CellType LocalBoardReview::cellType(bool my_side, BoardCoordinates coordinates) const
 {return get(my_side, coordinates).type();}
+
+bool LocalBoardReview::isFinished() const{return _finished != "false";}
+
+bool LocalBoardReview::isVictory() const{return _winner != "None";}

@@ -31,8 +31,6 @@ class Review : public QWidget{
     Q_OBJECT 
 private:
     std::shared_ptr<ReviewController> _review_controller;
-    //QListView *game_list_view;
-    //QStringListModel *list_model;
     QListWidget *game_list_view;
     QPushButton *r_game_button;
     QPushButton *back_main_button;

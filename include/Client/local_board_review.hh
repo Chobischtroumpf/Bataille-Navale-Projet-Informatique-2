@@ -26,6 +26,8 @@ class LocalBoardReview : public GameView {
         const std::string _session_id;
         std::vector<std::vector<Cell>> _my_board;
         std::vector<std::vector<Cell>> _their_board;
+        std::string _finished;
+        std::string _winner;
 
     public:
 
@@ -69,10 +71,17 @@ class LocalBoardReview : public GameView {
         Cell get(bool my_side, BoardCoordinates position) const;
 
 
-        bool isFinished() const override{return false;}
-        bool isVictory() const override{return false;}
-        bool isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const override{return false;}
-        bool myTurn() const {return false;}
+        bool isFinished() const override;
 
+        bool isVictory() const override;
+
+        bool isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const override{
+                (void)my_side;
+                (void)first;
+                (void)second;
+                return false;
+        }
+        
+        bool myTurn() const {return false;}
 
 };

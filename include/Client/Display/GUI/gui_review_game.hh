@@ -24,10 +24,9 @@ class BoardReviewFrame: public QFrame{
     Q_OBJECT
 
     private:
+        ReviewGame *_parent;
         std::shared_ptr<LocalBoardReview> _board;
         bool _my_side;
-        BoardCoordinates _last_hovered = BoardCoordinates(0, 0);
-        ReviewGame *_parent;
 
     protected:
         /**

@@ -6,7 +6,6 @@
 
 BoardReviewFrame::BoardReviewFrame(ReviewGame *parent, std::shared_ptr<LocalBoardReview>& board, bool my_side):
    _parent(parent), _board(board), _my_side(my_side){
-    setMouseTracking(true);
 }
 
 QBrush BoardReviewFrame::getTileColor(CellType cell) {
@@ -66,11 +65,11 @@ void BoardReviewFrame::paintEvent(QPaintEvent *event) {
 }
 
 
-void BoardReviewFrame::mousePressEvent(QMouseEvent *event) {}
+void BoardReviewFrame::mousePressEvent(QMouseEvent *event) {Q_UNUSED(event);}
 
-void BoardReviewFrame::mouseMoveEvent(QMouseEvent *event) {}
+void BoardReviewFrame::mouseMoveEvent(QMouseEvent *event) {Q_UNUSED(event);}
 
-void BoardReviewFrame::keyPressEvent(QKeyEvent *event) {}
+void BoardReviewFrame::keyPressEvent(QKeyEvent *event) {Q_UNUSED(event);}
 
 /***************
 * BOARD REVIEW *
@@ -79,7 +78,7 @@ void BoardReviewFrame::keyPressEvent(QKeyEvent *event) {}
 
 ReviewGame::ReviewGame(std::shared_ptr<LocalBoardReview>& board, std::shared_ptr<ReviewGameController>& controller, bool my_side):
     _board(board), _controller(controller), _commander_mode(my_side){
-    setWindowTitle("Game Review");
+    setWindowTitle("Review Game");
     resize(1200, 800);
     _my_frame = new BoardReviewFrame(this, _board, true);
     _their_frame = new BoardReviewFrame(this, _board, false);
@@ -165,5 +164,4 @@ ReviewGame::~ReviewGame(){
 }
 
 BoardReviewFrame::~BoardReviewFrame(){
-
 }
