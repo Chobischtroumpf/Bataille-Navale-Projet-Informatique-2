@@ -34,7 +34,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     // Gui components initialization
 	setWindowTitle("Main Menu");
     //setAttribute(Qt::WA_TranslucentBackground); // Funny thing to do ;)
-    resize(800, 600);
+    resize(800, 650);
 
     // QScrollArea pour la liste d'amis
     QScrollArea *scrollAreaFriends = new QScrollArea(this);
