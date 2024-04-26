@@ -39,5 +39,5 @@ void ClassicTimer::switchTurn() {
       _player1_timer.start();
     }
   }
-}  _turn = (_turn == PLAYERONE) ? PLAYERTWO : PLAYERONE;
+  _turn = (_turn == PLAYERONE) ? PLAYERTWO : PLAYERONE;
 }

@@ -1,15 +1,16 @@
 #include "player.hh"
+#include <iostream>
 
 Player::Player(): _faction{FactionClassique()}, _is_turn{false}, _energy_points{0} {}
 
 Player::Player(Faction faction): _faction{faction}, _is_turn{false}, _energy_points{0} {}
 
-Player::Player(const Player& other): _faction{other._faction}, _fleet{other._fleet}, _is_turn{other._is_turn}, _energy_points{other._energy_points} {}
+Player::Player(const Player& other): _faction{other._faction}, _fleet{std::move(other._fleet)}, _is_turn{other._is_turn}, _energy_points{other._energy_points} {}
 
 Player& Player::operator=(const Player& other) {
   if (this != &other) {
     _faction = other._faction;
-    _fleet = other._fleet;
+    _fleet = std::move(other._fleet);
     _is_turn = other._is_turn;
     _energy_points = other._energy_points;
   }
@@ -40,7 +41,8 @@ void Player::setFleet(Fleet fleet) {
   _fleet = fleet;
 }
 
-void Player::addShip(Ship ship) {
+void Player::addShip(std::shared_ptr<Ship> ship) {
+  std::clog << "PLAYER::ADD_SHIP" << std::endl;
   _fleet.push_back(ship);
 }
 

@@ -6,7 +6,7 @@
 #include "faction.hh"
 #include "faction_classique.hh"
 
-typedef std::vector<Ship> Fleet;
+typedef std::vector<std::shared_ptr<Ship>> Fleet;
 
 class Player {
   private:
@@ -32,7 +32,7 @@ class Player {
 
     void setFaction(Faction faction);
     void setFleet(Fleet fleet); // Cette méthode est peut etre inutile ?
-    void addShip(Ship ship);
+    void addShip(std::shared_ptr<Ship> ship);
     void setTurn(bool is_turn);
     void swapTurn();
     void setEnergyPoints(int energy_points);
