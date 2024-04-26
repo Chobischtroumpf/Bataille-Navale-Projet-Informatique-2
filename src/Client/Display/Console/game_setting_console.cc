@@ -82,16 +82,16 @@ void GameSettingConsole::displayOptions(int mode) {
         std::cout << "║ (2) Pendulum" << std::endl;
         break;
       case 3:
-        std::cout << "║ Choose the time per turn of the player ║" << std::endl;
+        std::cout << "║ Choose the time per turn               ║" << std::endl;
         std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
         std::cout << "║" << std::endl;
-        std::cout << "║ (5 - 30) seconds" << std::endl;
+        std::cout << "║ (30 - 60) seconds" << std::endl;
         break;
       case 4:
         std::cout << "║ Choose the time per game of the player ║" << std::endl;
         std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
         std::cout << "║" << std::endl;
-        std::cout << "║ (30 - 1000) seconds" << std::endl;
+        std::cout << "║ (60 - 1000) seconds" << std::endl;
         break;
       case 5:
         std::cout << "║ Choose if spectator are allowed        ║" << std::endl;

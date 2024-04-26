@@ -42,13 +42,13 @@ private:
         return input.size() > 0 &&
                 std::find_if(input.begin(), input.end(),
                             [](unsigned char c) { return !std::isdigit(c); }) == input.end() &&
-                std::stoi(input) >= 5 && std::stoi(input) < 31;
+                std::stoi(input) >= 30 && std::stoi(input) < 61;
       },
       [](std::string input) -> bool {
           return input.size() > 0 &&
                   std::find_if(input.begin(), input.end(),
                               [](unsigned char c) { return !std::isdigit(c); }) == input.end() &&
-                  std::stoi(input) > 30 && std::stoi(input) < 1001;
+                  std::stoi(input) > 60 && std::stoi(input) < 1001;
       },
       [](std::string input) -> bool { return input.size() == 1 && (input[0] == '1' || input[0] == '2');},
       [](std::string input) -> bool { return input.size() == 1 && (input[0] == '1' || input[0] == '2');}
