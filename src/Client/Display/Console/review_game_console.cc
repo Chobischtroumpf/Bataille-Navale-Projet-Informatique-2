@@ -53,6 +53,9 @@ ReturnInput ReviewGameConsole::handleInput(){
             _controller->setPreviousMove();
             display();
         }
+        else{
+            std::cout << "Wrong input, must be 'P', 'N' or './exit'.\nTry again: ";
+        }
     }
 }
 
