@@ -232,6 +232,7 @@ void MainMenu::onNotificationButtonClicked(const QString &info) {
 
     size_t pos_id = std_info.find("sessionID: ");
     size_t pos_new_friend_added = std_info.find("You've just added ");
+    size_t pos_just_been_added = std_info.find(" added you as a friend!");
 
 
     // Notification d'invitation à une partie
@@ -259,6 +260,16 @@ void MainMenu::onNotificationButtonClicked(const QString &info) {
         }
     }
 
+    // Notification when you've just been added
+    else if (pos_just_been_added != std::string::npos) {
+        size_t startPos = std_info.find(" added you as a friend!");
+
+        if (startPos != std::string::npos) {
+            std::string username = std_info.substr(0, startPos);
+            username = username.substr(4, username.length());
+            emit startChat(username);
+        }
+    }
 }
 
 void MainMenu::onJoinGameButtonClicked() {
