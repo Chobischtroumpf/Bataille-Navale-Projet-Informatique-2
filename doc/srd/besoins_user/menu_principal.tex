@@ -21,30 +21,31 @@ Elle reprend les informations suivantes:
 Lors du lancement d'une partie le joueur doit simplement fixer les règles en choisissant :
 \begin{itemize}
 	\item[-] Le type de partie : \textbf{classique} ou \textbf{commandant}
+    \item[-] Le type de chrono: \textbf{classique} ou \textbf{pendule}
 	\item[-] Le temps d'une partie : au maximum \textbf{15 minutes}
 	\item[-] Le temps par tour d'un joueur : au maximum \textbf{30 secondes}
 \end{itemize}
 
-Après quoi il sera redirigé vers un lobby, auquel il pourra inviter des joueurs, qui seront tous en mode spectateur s'ils acceptent l'invitation.
-Un joueur peut aussi rejoindre le lobby sans recevoir d'invitation.
-Si au moins un joueur à rejoint la partie, le joueur principale peut le fixer en tant que second joueur et lancer la partie.
+Après quoi il sera redirigé vers un lobby, auquel il pourra inviter des joueurs. Le rôle d'un joueur est déterminé par l'ordre d'arrivée dans le lobby. 
+Le premier joueur est le joueur principal, le second joueur est le joueur secondaire, et tous les autres joueurs sont des spectateurs.
+Un joueur peut aussi rejoindre le lobby sans recevoir d'invitation directement, en entrant le code de la partie.
+Si au moins un joueur à rejoint la partie, le joueur principale peut lancer la partie.
 Mais avant que la partie ne puisse commencer, il faudra placer tous les bateaux disponibles sur le board, après quoi la partie se lance.
 
 \subsection{Rejoindre une partie}
 Afin de rejoindre une partie, l'utilisateur doit simplement entrer un code de partie qu'il aura reçu de la part du joueur principal.
 Notons que le code peut être envoyé par le biais du chat, ou tout autre moyen de communication.
+Si le joueur joue depuis l'interface graphique, il peut simplement rejoindre la partie en cliquant sur la notification qui apparaitra lorsqu'il recevra le code de partie.
+
 
 \subsection{Gérer sa liste d'ami}
-Chaque utilisateur possède une liste d'amis qu'il peut modifier. Il a la possibilité de:
-\begin{itemize}
-    \item ajouter un ami a sa liste
-    \item retirer un ami de sa liste
-\end{itemize}
+Chaque utilisateur possède une liste d'amis. Chaque joueur peut ajouter autant d'ami qu'il le souhaite, mais ne peut pas supprimer un ami.
 La liste d'ami permet d'initier chat avec l'ami, ce qui permet de notamment communiquer avec lui, mais également de lui envoyer des codes de partie.
+Notons que deux joueurs ne doivent pas forcément être amis pour jouer ensemble, il suffit qu'un joueur envoie un code de partie à un autre joueur pour qu'il puisse rejoindre la partie.
 
 \subsection{Chat}
-Si le joueur a des amis en ligne dans sa liste d'amis, il a la possibilité de communiquer avec eux via un chat. 
-Si le joueur n'est pas en ligne, il peut tout de même envoyer un message, qui sera reçu par l'ami lorsqu'il se connectera.
-Cependant, nous ne pouvons pas assurer le système de notification lorsque l'ami n'est pas en ligne.
+Un joueur peut communiquer avec ses amis via le chat. Si l'utilisateur n'est pas en ligne, il peut tout de même envoyer un message, 
+qui sera reçu par l'ami lorsqu'il se connectera.
+Le joueur recoit une nouvelle notification lorsqu'il reçoit un message.
 
 \end{document}
