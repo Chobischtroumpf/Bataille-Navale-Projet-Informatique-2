@@ -194,7 +194,6 @@ void MainMenu::onFriendNameButtonClicked(const QString &destination){
 }
 
 void MainMenu::onJoinGameButtonClicked() {
-    emit startReview();
 }
 
 void MainMenu::onLogOutButtonClicked() {
