@@ -100,7 +100,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
 
 
     review = new HighlightButton("Visualiser une partie", this); review->setFixedWidth(400);
-    review->setStyleSheet("QPushButton { color : gray; padding: 10px; background-color: #333333;}");
+    review->setStyleSheet("QPushButton { color : white; padding: 10px; background-color: #333333;}");
     connect(dynamic_cast<HighlightButton*>(review), &HighlightButton::clicked, this, &MainMenu::onReviewButtonClicked);
     connect(dynamic_cast<HighlightButton*>(review), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(review), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
