@@ -23,11 +23,6 @@ private:
 
   std::string authToken; // Stores the authToken if the user is logged in
 
-  // Test requests to be deleted later
-  void TestRequest();
-  std::future<void> TestRequest2();
-  std::future<void> TestRequest3();
-
   // Helper method to add Authorization header to requests
   void AddAuthHeader(web::http::http_request &request);
 
@@ -49,8 +44,7 @@ public:
   std::future<std::string> GetUsername(const std::string &userId);
   std::future<njson> GetGames();
   std::future<njson> QueryGameState(const std::string &session_id);
-  std::future<bool> SendMessage(const std::string &targetId,
-                                const std::string &message);
+  std::future<bool> SendMessage(const std::string &targetId, const std::string &message);
   std::future<njson> GetMessages(const std::string &recipientId);
   std::future<bool> AddFriend(const std::string &username);
   std::future<bool> AddNotification(const std::string &username, const std::string &message);
