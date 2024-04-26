@@ -27,6 +27,9 @@ const std::vector<Session_info>& ReviewController::getSessionIdList(){
 }
 
 const Session_info ReviewController::getSessionInfo(int index){
-    return _session_id_list[index-1];
+    return _session_id_list[index];
 }
 
+const size_t ReviewController::getSessionsSize(){
+    return _session_id_list.size();
+}

@@ -141,7 +141,5 @@ class ReviewGameConsole: public Console{
          * @param my_side: user side or not
          */
         std::vector<string> createGrid(bool my_side);
-
-
 };
 

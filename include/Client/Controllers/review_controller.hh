@@ -41,5 +41,7 @@ public:
      */
     const Session_info getSessionInfo(int index);
 
+    const size_t getSessionsSize();
+
 };
 

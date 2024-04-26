@@ -21,7 +21,6 @@ void ReviewConsole::displayGameList(){
     int i=0;
     for (const auto &session : session_id_list) {
         i += 1;
-        if(i==6){break;}
         std::cout << "│ " << i << ") "
                   << "\033[1m" << "PLAYER 1: " << session.id_player1 << ", "
                   << "\033[1m" << "PLAYER 2: " << session.id_player2 << "\n";
@@ -42,8 +41,8 @@ ReturnInput ReviewConsole::handleInput(){
         } 
         std::istringstream iss(input);
         iss >> number;
-        if (iss.eof() && number >= 1 && number <= 5) {
-                const Session_info session = _controller->getSessionInfo(number);
+        if (_controller->getSessionsSize()>0 && iss.eof() && ((number-1) >= 0 && (number) <= (_controller->getSessionsSize()))) {
+                const Session_info session = _controller->getSessionInfo(number-1);
                 return {ReturnInput::REVIEW_GAME, session.session_id};
         } 
         else if(input != ""){

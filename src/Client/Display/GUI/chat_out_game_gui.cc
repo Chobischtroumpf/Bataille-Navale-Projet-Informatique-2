@@ -48,12 +48,16 @@ void ChatOut::onBackToMenuButtonClicked() {
 }
 
 void ChatOut::updateMessagesDisplay() {
+    static size_t lastMessageCount = 0;
     std::vector<Message> messages = _view->getMsgFromServer(_destination);
-    messageDisplay->clear();  //sinn recharge +fois les mm msg 
-    for (const auto& message : messages) {
-        messageDisplay->append(QString::fromStdString(message.getSender() + ": " + message.getText()));
+    if (messages.size() > lastMessageCount) {
+        for (size_t i = lastMessageCount; i < messages.size(); ++i) {
+            messageDisplay->append(QString::fromStdString(messages[i].getSender() + ": " + messages[i].getText()));
+        }
+        lastMessageCount = messages.size();
     }
 }
+
 
 void ChatOut::sendMessage() {
     std::string messageText = messageInput->text().toStdString();
