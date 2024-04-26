@@ -95,7 +95,6 @@ class ReviewGame : public QWidget{
         QVBoxLayout *layout;
         QHBoxLayout *label_layout;
         QHBoxLayout *boards_layout;
-        QHBoxLayout *footer_layout;
         QHBoxLayout *button_layout;
         QPushButton *next_button;
         QPushButton *previous_button;

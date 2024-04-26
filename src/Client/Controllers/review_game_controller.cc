@@ -28,11 +28,13 @@ void ReviewGameController::requestMovesList(){
 }
 
 void ReviewGameController::initLocalBoard(){
+    std::clog << "!!init!!!  " << _move_list[0] << std::endl;
     _board->update_board(_move_list[0]);
 }
 
 void ReviewGameController::setNextMove(){
     if (_current_move < _move_list.size()-1){
+        std::clog << "!!next!!!  " << _move_list[_current_move] << std::endl;
         _current_move += 1;
         _board->update_board(_move_list[_current_move]);
     }
@@ -40,6 +42,7 @@ void ReviewGameController::setNextMove(){
 
 void ReviewGameController::setPreviousMove(){
     if (_current_move >= 1){
+        std::clog << "!!previous!!!  " << _move_list[0] << std::endl;
         _current_move -= 1;
         _board->update_board(_move_list[_current_move]);
     }

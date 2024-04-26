@@ -26,7 +26,6 @@ void LocalBoardReview::update_board(const nlohmann::json &new_board) {
 
 
 CellType LocalBoardReview::string_to_celltype(const std::string &type) {
-  std::clog << "LocalBoardReview: string to cell type." << std::endl;
   if (type == "WATER") {
     return WATER;
   } else if (type == "OCEAN") {

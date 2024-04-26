@@ -100,9 +100,9 @@ void ReviewGame::setButtons(){
 
 void ReviewGame::setLayout(){
     layout = new QVBoxLayout(this);
-    label_layout = new QHBoxLayout(this);
-    boards_layout = new QHBoxLayout(this);
-    button_layout = new QHBoxLayout(this);
+    label_layout = new QHBoxLayout();
+    boards_layout = new QHBoxLayout();
+    button_layout = new QHBoxLayout();
     std::string game_label = "Revoir la partie: " + _board->getSessionId();
     layout->addWidget(new QLabel(QString::fromStdString(game_label)));
     label_layout->addWidget(new QLabel("Joueur 1:"));
@@ -111,7 +111,6 @@ void ReviewGame::setLayout(){
     boards_layout->addWidget(_my_frame);
     boards_layout->addWidget(_their_frame);
     layout->addLayout(boards_layout);
-    button_layout = new QHBoxLayout();
     button_layout->addWidget(previous_button);
     button_layout->addWidget(next_button);
     layout->addLayout(button_layout);
@@ -120,10 +119,12 @@ void ReviewGame::setLayout(){
 
 
 void ReviewGame::onNextButtonClicked(){
+  std::clog << "clicked next" << std::endl;
     _controller->setNextMove();
 }
 
 void ReviewGame::onPreviousButtonClicked(){
+  std::clog << "clicked previous" << std::endl;
     _controller->setPreviousMove();
 }
 
@@ -131,6 +132,19 @@ void ReviewGame::onBackMainButtonClicked(){
     emit goToMainMenu();
 }
 
-ReviewGame::~ReviewGame(){}
+ReviewGame::~ReviewGame(){
+    delete _my_frame;
+    delete _their_frame;
+    delete next_button;
+    delete previous_button;
+    delete back_main_button;
+    delete label_layout;
+    delete boards_layout;
+    delete button_layout;
+    delete layout;
 
-BoardReviewFrame::~BoardReviewFrame(){}
+}
+
+BoardReviewFrame::~BoardReviewFrame(){
+
+}
