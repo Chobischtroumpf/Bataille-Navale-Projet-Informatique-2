@@ -25,7 +25,7 @@ void Timer::start() {
           start_time = end_time;
         }
       }
-
+      launched = false;
       if (isFinished() && _callback) {
         _callback();
       }

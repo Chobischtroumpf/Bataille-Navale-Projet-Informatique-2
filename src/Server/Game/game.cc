@@ -19,8 +19,8 @@ void Game::setGame(const nlohmann::json &game_details) {
       game_details.at("turnTimeLimit").get<int>();
   int player_time =
       game_details.at("playerTimeLimit").get<int>();
-  bool classic_timer = true;
-  //bool classic_timer = game_details.at("classicTimer").get<bool>();
+  //bool classic_timer = true;
+  bool classic_timer = game_details.at("classicTimer").get<std::string>() == "Classic";
   if (classic_timer){
     _game_timer = std::make_unique<ClassicTimer>();
     _game_timer->set(game_time, player_time);
