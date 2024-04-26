@@ -52,11 +52,6 @@ bool Game::shipPlacementsFinished() const {
   Player player1 = _board->getPlayer1();
   Player player2 = _board->getPlayer2();
 
-  // std::clog << "Player 1 fleet size : " << player1.getFleet().size() << std::endl;
-  // std::clog << "Player 2 fleet size: " << player2.getFleet().size() << std::endl;
-  // std::clog << "Player 1 faction amount of ships: " << player1.getFaction().getAmountOfShips() << std::endl;
-  // std::clog << "Player 2 faction amount of ships: " << player2.getFaction().getAmountOfShips() << std::endl;
-
   if (player1.getFleet().size() >= (size_t)player1.getFaction().getAmountOfShips() &&
       player2.getFleet().size() >= (size_t)player2.getFaction().getAmountOfShips()) {
     return true;
@@ -66,7 +61,6 @@ bool Game::shipPlacementsFinished() const {
 
 bool Game::handlePlaceShip(Turn turn, Ship &ship, Phase phase) {
   std::clog << "GAME::HANDLEPLACESHIP" << std::endl;
-  std::clog << "ship.top_left : " << ship.getTopLeft() << std::endl;
   if (phase == Phase::PLACING_SHIPS && !shipPlacementsFinished()) {
     ship.setBoard(_board.get());
     if (turn == PLAYERONE) {
@@ -86,12 +80,8 @@ bool Game::handlePlaceShip(Turn turn, Ship &ship, Phase phase) {
 bool Game::handleFire(Turn turn, SpecialAbilityType ability_type, BoardCoordinates board_coordinates) {
   Player &player = (turn == PLAYERONE) ? _board->getPlayer1() : _board->getPlayer2();
 
-  std::clog << "Firing ability: " << ability_type << std::endl;
   for (auto &ability : player.getFaction().getSpecialAbilities()) {
-    std::clog << "Checking ability: " << ability.getType() << std::endl;
-    std::clog << "Is it the same : " << (ability.getType() == ability_type) << std::endl;
     if (ability.getType() == ability_type) {
-      std::clog << "Firing ability: " << ability.getName() << std::endl;
       if (_board->fire(ability, board_coordinates)) {
         _game_timer->turnReset();
         if (_mode_commandant){

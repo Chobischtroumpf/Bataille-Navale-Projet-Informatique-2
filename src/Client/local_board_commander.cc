@@ -146,7 +146,6 @@ void LocalBoardCommander::placeShip(Ship ship) {
     for (auto &ship : _player.getFleet()) {
       move_request["ships"].push_back(ship->to_json());
     }
-    std::clog << move_request.dump() << std::endl;
     _client->MakeMove(_session_id, move_request).get();
   }
 }
@@ -312,8 +311,6 @@ void LocalBoardCommander::fire(SpecialAbility ability,
 
   move_request["moveType"] = "fire";
   move_request["fire"] = fire_request;
-  
-  std::clog << "fire_request: " << fire_request.dump() << std::endl;
 
   _client->MakeMove(_session_id, move_request).get();
 }

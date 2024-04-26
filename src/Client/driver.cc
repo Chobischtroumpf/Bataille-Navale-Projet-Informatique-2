@@ -69,10 +69,8 @@ void Driver::displayGameScreen(std::string gameId) {
   std::clog << "displayGameScreen" << std::endl;
   if (_display_type == CONSOLE) {
     Player player1 = Player();
-    std::clog << "commander_mode" << std::endl;
     bool commander_mode = std::static_pointer_cast<LobbyConsole>(_display)->isCommanderMode();
     bool isSpectator = std::static_pointer_cast<LobbyConsole>(_display)->isSpectatorMode();
-    std::clog << "faction" << std::endl;
     int faction =
         std::static_pointer_cast<LobbyConsole>(_display)->getFaction();
     if (commander_mode) {

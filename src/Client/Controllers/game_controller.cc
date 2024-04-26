@@ -10,22 +10,17 @@ GameController::GameController(std::shared_ptr<LocalBoardCommander> board)
 bool GameController::fire(SpecialAbility ability,
                           BoardCoordinates coord) const {
   // Sends POST request to fire to the gameServer
-  std::clog << "GameController::fire" << std::endl;
   if (!(_board->cellType(false, coord) & CellType::IS_HIT)) {
-    std::clog << "GameController::fire: not IS_HIT" << std::endl;
     if (_board->mode() == GameMode::CLASSIC) {
-      std::clog << "GameController::fire: CLASSIC" << std::endl;
       _board->fire(ability, coord);
       return true;
     } else if (_board->mode() == GameMode::COMMANDER) {
-      std::clog << "GameController::fire: COMMANDER" << std::endl;
       if (ability.getEnergyCost() == 0) {
-        std::clog << "GameController::fire: COMMANDER: energyCost == 0" << std::endl;
         _board->fire(ability, coord);
         return true;
       }
+      
       if (_board->player().getEnergyPoints() >= ability.getEnergyCost()) {
-        std::clog << "GameController::fire: COMMANDER: energyCost <= energyPoints" << std::endl;
         _board->fire(ability, coord);
         return true;
       }
