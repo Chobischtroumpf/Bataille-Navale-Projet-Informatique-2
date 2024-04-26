@@ -29,7 +29,7 @@ void Review::setListView(){
 
 void Review::setLayout(){
     layout = new QVBoxLayout(this);
-    layout->addWidget(new QLabel("Selectioner une partie a revoir:"));
+    layout->addWidget(new QLabel("Sélectionner une partie à revoir:"));
     layout->addWidget(game_list_view);
     button_layout = new QHBoxLayout();
     button_layout->addWidget(back_main_button);
