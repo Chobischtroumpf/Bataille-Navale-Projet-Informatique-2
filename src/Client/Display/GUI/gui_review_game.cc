@@ -4,7 +4,7 @@
  * BOARD REVIEW FRAME*
 **********************/
 
-BoardReviewFrame::BoardReviewFrame(ReviewGame *parent, std::shared_ptr<LocalBoardReview> board, bool my_side):
+BoardReviewFrame::BoardReviewFrame(ReviewGame *parent, std::shared_ptr<LocalBoardReview>& board, bool my_side):
    _parent(parent), _board(board), _my_side(my_side){
     setMouseTracking(true);
 }
@@ -77,7 +77,7 @@ void BoardReviewFrame::keyPressEvent(QKeyEvent *event) {}
 ****************/
 
 
-ReviewGame::ReviewGame(std::shared_ptr<LocalBoardReview> board, std::shared_ptr<ReviewGameController> controller, bool my_side):
+ReviewGame::ReviewGame(std::shared_ptr<LocalBoardReview>& board, std::shared_ptr<ReviewGameController>& controller, bool my_side):
     _board(board), _controller(controller), _commander_mode(my_side){
     setWindowTitle("Game Review");
     resize(1200, 800);
@@ -121,11 +121,15 @@ void ReviewGame::setLayout(){
 void ReviewGame::onNextButtonClicked(){
   std::clog << "clicked next" << std::endl;
     _controller->setNextMove();
+    _my_frame->update();
+    _their_frame->update();
 }
 
 void ReviewGame::onPreviousButtonClicked(){
   std::clog << "clicked previous" << std::endl;
     _controller->setPreviousMove();
+    _my_frame->update();
+    _their_frame->update();
 }
 
 void ReviewGame::onBackMainButtonClicked(){

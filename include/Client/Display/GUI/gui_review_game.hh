@@ -70,7 +70,7 @@ class BoardReviewFrame: public QFrame{
 
     public:
         /** Constructor, Destructor */
-        BoardReviewFrame(ReviewGame *parent,std::shared_ptr<LocalBoardReview> board, bool my_side=true);
+        BoardReviewFrame(ReviewGame *parent,std::shared_ptr<LocalBoardReview>& board, bool my_side=true);
         ~BoardReviewFrame();
 
         /**
@@ -112,7 +112,7 @@ class ReviewGame : public QWidget{
 
     public:
         /** Constructor, Destructor */
-        ReviewGame(std::shared_ptr<LocalBoardReview> board, std::shared_ptr<ReviewGameController> controller, bool my_side=true);
+        ReviewGame(std::shared_ptr<LocalBoardReview>& board, std::shared_ptr<ReviewGameController>& controller, bool my_side=true);
         ~ReviewGame();
 
     private slots:
