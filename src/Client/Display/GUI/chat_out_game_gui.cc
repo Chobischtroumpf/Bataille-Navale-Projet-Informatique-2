@@ -23,7 +23,7 @@ ChatOut::ChatOut(const std::string &destination, std::shared_ptr<GameClient> gam
     messageDisplay->setReadOnly(true);
 
     // Bouton et connexion pour le retour au menu
-    backToMenu = new QPushButton("Go back to the main menu", this);
+    backToMenu = new QPushButton("Leave the chat", this);
     connect(backToMenu, &QPushButton::clicked, this, &ChatOut::onBackToMenuButtonClicked);
 
     // Mise en place du timer pour actualiser les messages

@@ -175,7 +175,7 @@ ReturnInput GameSettingConsole::handleInput() {
           nlohmann::json req;
           req["moveType"] = "chooseFaction";
           req["faction"] = 0;
-          gameClient->MakeMove(gameID, req);
+          gameClient->MakeMove(gameID, req).get();
         }
         return ReturnInput(ReturnInput::Screen::LOBBY, gameID);
       } else {

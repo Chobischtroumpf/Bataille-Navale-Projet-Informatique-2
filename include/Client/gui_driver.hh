@@ -15,7 +15,7 @@
 class DriverGui : public QObject {
     Q_OBJECT 
 public:
-    DriverGui();
+    DriverGui(std::string server_address = "http://localhost:8080");
     void run();
 
 private:

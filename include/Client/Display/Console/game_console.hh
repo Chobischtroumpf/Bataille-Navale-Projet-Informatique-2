@@ -22,7 +22,7 @@
 
 enum InputStatus { OK, ERR };
 
-enum GamePhase { PLACE_SHIP, WAIT_GAME, GAME, WAIT_TURN };
+enum GamePhase { PLACE_SHIP, WAIT_GAME, GAME, WAIT_TURN, END_GAME, SPECTATE };
 
 /** BoardDisplay using text.
  *
@@ -42,13 +42,15 @@ private:
   uint8_t const _letter_width; //< Number of character in a column name
   uint8_t const _number_width; //< Number of character in a row name
 
+  bool _spectating; //< True if the player is spectating
+
   std::string const _gap;   //< The string used as grid separator
   size_t const _grid_width; //< The number of character in a line of a grid
   size_t const _width; //< The number of character in a line with two grids and a gap
   std::vector<string> _map_key;  //< The map key, each string is a line without the ending '\n'
   bool _my_turn; //< True if it's the player's turn
   InputStatus _last_input = OK;  //< True if the last input was valid
-  GamePhase _phase = PLACE_SHIP; //< The current phase of the game
+  GamePhase _phase; //< The current phase of the game
   bool _ship_selected = false; //< True if a boat has been selected
   std::unique_ptr<ShipClassic> _possible_ships = nullptr;                 //< The ships that can be placed
 
@@ -152,7 +154,8 @@ public:
   GameConsole(std::ostream &out, std::istream &in,
               std::shared_ptr<LocalBoardCommander> board,
               std::shared_ptr<GameController> control,
-              std::shared_ptr<GameClient> client);
+              std::shared_ptr<GameClient> client,
+              bool spectating = false);
 
   GameConsole(const GameConsole &) = default;
   GameConsole() = delete;
@@ -180,11 +183,14 @@ public:
   void updateGame(InputStatus);
   void displayWaitGame();
   void displayWaitTurn();
+  void displayEndGame();
+  void displaySpectating();
 
   /** Parse coordinates provided by user, check boundaries and call
    * BoardControl::fire. */
   ReturnInput handleFire();
   ReturnInput handlePlaceShip();
+  ReturnInput handleQuit();
 
   // Console methods
   void display() override;

@@ -10,15 +10,21 @@ using std::string;
 GameConsole::GameConsole(std::ostream &out, std::istream &in,
                          std::shared_ptr<LocalBoardCommander> board,
                          std::shared_ptr<GameController> control,
-                         std::shared_ptr<GameClient> client)
-    : _board{std::move(board)}, _control{std::move(control)}, _game_client(std::move(client)),
-      _out{out}, _in{in}, _letter_width{static_cast<uint8_t>(length(BoardCoordinates(
-                                                                        _board->width() - 1, _board->height() - 1)
-                                                                        .xToString()))},
+                         std::shared_ptr<GameClient> client, bool spectating)
+    : _board{std::move(board)}, _control{std::move(control)},
+      _game_client(std::move(client)), _out{out}, _in{in},
+      _letter_width{static_cast<uint8_t>(
+          length(BoardCoordinates(_board->width() - 1, _board->height() - 1)
+                     .xToString()))},
       _number_width{static_cast<uint8_t>(
-          length(BoardCoordinates(_board->width() - 1, _board->height() - 1).yToString()))},
-      _gap{"   "}, _grid_width{_number_width + (1 + _letter_width) * _board->width() + 2},
-      _width{_grid_width * 2 + _gap.size()}, _map_key{createMapKey()} {}
+          length(BoardCoordinates(_board->width() - 1, _board->height() - 1)
+                     .yToString()))},
+      _gap{"   "}, _grid_width{_number_width +
+                               (1 + _letter_width) * _board->width() + 2},
+      _width{_grid_width * 2 + _gap.size()}, _map_key{createMapKey()},
+      _spectating{spectating} {
+  _phase = spectating ? SPECTATE : PLACE_SHIP;
+}
 
 inline string operator*(const string &lhs, size_t rhs) {
   string result;
@@ -622,6 +628,13 @@ ReturnInput GameConsole::handlePlaceShip() {
   return {ReturnInput::Screen::GAME, ""};
 }
 
+ReturnInput GameConsole::handleQuit() {
+  std::clog << "GameConsole::handleQuit" << std::endl;
+  std::string buf;
+  getline(_in, buf);
+  return {ReturnInput::Screen::MAIN_MENU, ""};
+}
+
 void GameConsole::updateGame(InputStatus status) {
   // methode d'affichage d'ecran temporaire pour le changement de tour
   std::system("clear"); // Do not use std::system in other contexts
@@ -658,6 +671,30 @@ void GameConsole::displayWaitTurn() {
   _out << std::flush;
 }
 
+void GameConsole::displayEndGame() {
+  std::system("clear");
+  _out << createGameHeader();
+  printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
+  _out << '\n';
+  printSideBySide(createGrid(true), createGrid(false));
+  _out << '\n';
+  _out << "\x1b[34;1m End of the game\x1b[0m" << '\n';
+  _board->isVictory() ? _out << "\x1b[32;1m You won! \x1b[0m"
+      : _out << "\x1b[31;1m" << _board->getTheirUsername() << " Won!\x1b[0m\n";
+  _out << std::flush;
+}
+
+void GameConsole::displaySpectating() {
+  std::system("clear");
+  _out << createGameHeader();
+  printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
+  _out << '\n';
+  printSideBySide(createGrid(true), createGrid(false));
+  _out << '\n';
+  _out << "\x1b[34;1m Spectating " + _board->getMyUsername() + " vs " + _board->getTheirUsername() + "\x1b[0m";
+  _out << std::flush;
+}
+
 void GameConsole::display() {
   std::clog << "GameConsole::display" << std::endl;
   if (_phase == PLACE_SHIP) {
@@ -672,6 +709,12 @@ void GameConsole::display() {
   } else if (_phase == WAIT_TURN) {
     std::clog << "GameConsole::display: WAIT_TURN" << std::endl;
     displayWaitTurn();
+  } else if (_phase == END_GAME) {
+    std::clog << "GameConsole::display: END_GAME" << std::endl;
+    displayEndGame();
+  } else if (_phase == SPECTATE) {
+    std::clog << "GameConsole::display: SPECTATING" << std::endl;
+    displaySpectating();
   }
 }
 
@@ -686,7 +729,9 @@ ReturnInput GameConsole::handleInput()
   } else if (_phase == GAME) {
     std::clog << "GameConsole::handleInput: GAME" << std::endl;
     handleFire();
-    if (!_board->myTurn()) {
+    if (_board->isFinished()) {
+      _phase = END_GAME;
+    } else if (!_board->myTurn()) {
       _phase = WAIT_TURN;
     }
   } else if (_phase == WAIT_GAME) {
@@ -695,7 +740,21 @@ ReturnInput GameConsole::handleInput()
   } else if (_phase == WAIT_TURN) {
     std::clog << "GameConsole::handleInput: WAIT_TURN" << std::endl;
     _board->waitTurn();
-    _phase = GAME;
+    if (_board->isFinished()) {
+      _phase = END_GAME;
+    } else {
+      _phase = GAME;
+    }
+  } else if (_phase == END_GAME) {
+    std::clog << "GameConsole::handleInput: END_GAME" << std::endl;
+    return handleQuit();
+  } else if (_phase == SPECTATE) {
+    std::clog << "GameConsole::handleInput: SPECTATING" << std::endl;
+    sleep(1);
+    _board->updateBoard();
+    if (_board->isFinished()) {
+      _phase = END_GAME;
+    }
   }
 
   return {ReturnInput::Screen::GAME, ""};

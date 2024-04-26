@@ -50,15 +50,15 @@ bool GameState::makeMove(PlayerRole player, const nlohmann::json& move) {
     }
   }
   else if (_phase == Phase::PLAYING) {
-    std::clog << "playing phase ";
+    std::clog << "playing phase: ";
     if (str_move == "fire") {
       std::clog << "fire move" << std::endl;
       result = handleFire(player, move.at("fire"));
     }
-    else if (str_move == "placeShips") {
-      std::clog << "placeShips move" << std::endl;
-      result = handlePlaceShip(player, move.at("ships"));
-    }
+    // else if (str_move == "placeShips") {
+    //   std::clog << "placeShips move" << std::endl;
+    //   result = handlePlaceShip(player, move.at("ships"));
+    // }
   }
 
   std::clog << "result: " << result << std::endl;
@@ -110,7 +110,7 @@ bool GameState::handlePlaceShip(PlayerRole player, const nlohmann::json& ships) 
     std::clog << "set Ship type" << std::endl;
     ship.setType(obj_ship.at("type")); // a mon avis ca ca va pas marcher, on a pas de conversion int -> CellType
 
-    bool result = _game->handlePlaceShip(role_to_turn(player), ship);
+    bool result = _game->handlePlaceShip(role_to_turn(player), ship, _phase);
     if (!result) {
       //error in placing ship gotta be handeled
       return false;
@@ -157,7 +157,7 @@ nlohmann::json GameState::getGameState(PlayerRole player) const {
   return _game->getState(player);
 }
 
-GameState::Phase GameState::getPhase() const {
+Phase GameState::getPhase() const {
   return _phase;
 }
 

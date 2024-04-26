@@ -21,16 +21,23 @@ void ClassicTimer::turnReset() {
   if (!_finished) {
     if (_turn == PLAYERONE) {
       _player1_timer.reset();
+      _player1_timer.start();
+    } else {
+      _player2_timer.reset();
+      _player2_timer.start();
+    }
+  }
+}
+
+void ClassicTimer::switchTurn() {
+  if (!_finished) {
+    if (_turn == PLAYERONE) {
+      _player1_timer.reset();
       _player2_timer.start();
     } else {
       _player2_timer.reset();
       _player1_timer.start();
     }
-    
   }
-}
-
-void ClassicTimer::switchTurn() {
-  turnReset();
   _turn = (_turn == PLAYERONE) ? PLAYERTWO : PLAYERONE;
 }

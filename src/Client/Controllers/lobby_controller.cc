@@ -11,7 +11,7 @@ void LobbyController::sendIDGame(const std::string& destination, const std::stri
         std::cout << "pseudo invalide!" << std::endl;
     else {
         std::future<bool> resultFuture = _game_client->SendMessage(userId, message);
-        _game_client->AddNotification(destination, "N/A sent you a game request, "  + message.substr(0, message.length()-1));
+        _game_client->AddNotification(destination, "N/A sent you a game request, "  + message.substr(0, message.length()));
     }
 }
 
@@ -19,12 +19,12 @@ void LobbyController::sendFaction(const std::string& session_id, int faction) {
     nlohmann::json req;
     req["moveType"] = "chooseFaction";
     req["faction"] = faction;
-    _game_client->MakeMove(session_id, req);
+    _game_client->MakeMove(session_id, req).get();
 }
 
 
 void LobbyController::launchGame(const std::string& sessionId) {
   nlohmann::json req;
   req["moveType"] = "StartGame";
-  _game_client->MakeMove(sessionId, req);
+  _game_client->MakeMove(sessionId, req).get();
 }

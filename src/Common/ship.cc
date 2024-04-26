@@ -1,6 +1,6 @@
 #include "ship.hh"
 
-Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates(coordinates) {
+Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates{coordinates} {
     for (auto &c: coordinates) {
         _length++;
         if (c.x() >= _size_x) { _size_x = c.x()+1; }
@@ -10,7 +10,7 @@ Ship::Ship(std::vector<BoardCoordinates> coordinates): _coordinates(coordinates)
     // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
 }
 Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, bool _side):
-                        _coordinates(coordinates), _top_left(top_left), _side(_side) {
+                        _coordinates{coordinates}, _top_left{top_left}, _side{_side} {
     for (auto &c: coordinates) {
         _length++;
         if (c.x() >= _size_x) { _size_x = c.x()+1; }
@@ -20,7 +20,7 @@ Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates,
     // _ship_cells(vector<vector<Cell>>(_size_y, vector<Cell>(_size_x))
 }
 
-Ship::Ship(std::vector<BoardCoordinates> coordinates, GameView *board): _coordinates(coordinates), _board(board) {
+Ship::Ship(std::vector<BoardCoordinates> coordinates, GameView *board): _coordinates{coordinates}, _board{board} {
     for (auto &c: coordinates) {
         _length++;
         if (c.x() >= _size_x) { _size_x = c.x()+1; }
@@ -31,7 +31,7 @@ Ship::Ship(std::vector<BoardCoordinates> coordinates, GameView *board): _coordin
 }
 
 Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates, GameView *board, bool _side):
-                                _coordinates(coordinates), _top_left(top_left), _board(board), _side(_side) {
+                                _coordinates{coordinates}, _top_left{top_left}, _board{board}, _side{_side} {
     for (auto &c: coordinates) {
         _length++;
         if (c.x() >= _size_x) { _size_x = c.x()+1; }
@@ -40,7 +40,12 @@ Ship::Ship(BoardCoordinates top_left, std::vector<BoardCoordinates> coordinates,
     if (_length == 1) setType(UNDAMAGED_MINE);
 }
 
-Ship::Ship(const Ship &other): _coordinates(other.getCoordinates()), _top_left(other.getTopLeft()), _type(other.getType()), _board(other.getBoard()), _length(other.getLength()), _size_x(other.getSizeX()), _size_y(other.getSizeY()), _is_sunk(other.isSunk()), _side(other.getSide()) {}
+Ship::Ship(const Ship &other): _coordinates(other.getCoordinates()),
+            _top_left{other.getTopLeft()}, _type{other.getType()},
+            _board{other.getBoard()}, _length{other.getLength()},
+            _size_x{other.getSizeX()}, _size_y{other.getSizeY()},
+            _is_sunk{other.isSunk()}, _side{other.getSide()} {
+}
 
 Ship &Ship::operator=(const Ship &other) {
     if (this != &other) {
@@ -57,7 +62,17 @@ Ship &Ship::operator=(const Ship &other) {
 }
 
 bool Ship::operator==(const Ship &other) const {
+    // if (this && &other == nullptr) return false;
+    // if (this == nullptr && &other) return false;
+    // if (this == nullptr && other == nullptr) return true;
     return _coordinates == other._coordinates && _top_left == other._top_left && _type == other._type && _length == other._length && _size_x == other._size_x && _size_y == other._size_y && _is_sunk == other._is_sunk;
+}
+
+bool Ship::operator==(const Ship *other) const {
+    if (this && other == nullptr) return false;
+    if (this == nullptr && other) return false;
+    if (this == nullptr && other == nullptr) return true;
+    return _coordinates == other->_coordinates && _top_left == other->_top_left && _type == other->_type && _length == other->_length && _size_x == other->_size_x && _size_y == other->_size_y && _is_sunk == other->_is_sunk;
 }
 
 void Ship::rotate() {
@@ -125,15 +140,15 @@ GameView *Ship::getBoard() const {
 
 }
 
-int Ship::getLength() const {
+size_t Ship::getLength() const {
     return _length;
 }
 
-int Ship::getSizeX() const {
+size_t Ship::getSizeX() const {
     return _size_x;
 }
 
-int Ship::getSizeY() const {
+size_t Ship::getSizeY() const {
     return _size_y;
 }
 
@@ -165,12 +180,15 @@ bool Ship::translate(int x, int y) {
 }
 
 void Ship::notify() {
+    std::clog << "SHIP::NOTIFY" << std::endl;
     // Check if ship is sunk
     for (auto &c: _coordinates) {
         if (_board->cellType( _side, _top_left+c) != HIT_SHIP) {
+            std::clog << "SHIP::NOTIFY::RETURN" << std::endl;
             return;
         }
     }
+    std::clog << "SHIP::NOTIFY::SUNK" << std::endl;
     setSunk(true);
 }
 

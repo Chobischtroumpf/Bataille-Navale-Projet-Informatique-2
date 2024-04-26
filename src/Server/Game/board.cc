@@ -2,6 +2,7 @@
 #include <iostream>
 
 bool Board::setHit(BoardCoordinates coords) {
+  std::clog << "BOARD::SETHIT" << std::endl;
   Cell &cell = _my_turn ? _player2_side[coords.y()][coords.x()]
                       : _player1_side[coords.y()][coords.x()];
   Player &current_player = _my_turn ? _player1 : _player2;
@@ -26,6 +27,7 @@ bool Board::setHit(BoardCoordinates coords) {
 }
 
 bool Board::fireBigTorpedo(BoardCoordinates coords) {
+  std::clog << "BOARD::FIREBIGTORPEDO" << std::endl;
   bool is_hit = false;
 
   for (BigTorpedoIterator it = beginBigTorpedo(coords);
@@ -38,6 +40,7 @@ bool Board::fireBigTorpedo(BoardCoordinates coords) {
 }
 
 bool Board::firePiercingTorpedo(BoardCoordinates coords) {
+  std::clog << "BOARD::FIREPIERCINGTORPEDO" << std::endl;
   bool is_hit = false;
 
   for (PiercingTorpedoIterator it = beginPiercingTorpedo(coords); it != endPiercingTorpedo(coords); ++it) {
@@ -50,6 +53,7 @@ bool Board::firePiercingTorpedo(BoardCoordinates coords) {
 }
 
 bool Board::fireAerialStrike(BoardCoordinates coords) {
+  std::clog << "BOARD::FIREAERIALSTRIKE" << std::endl;
   bool is_hit = false;
 
   for (AerialStrikeIterator it = beginAerialStrike(coords); it != endAerialStrike(coords); ++it) {
@@ -62,6 +66,7 @@ bool Board::fireAerialStrike(BoardCoordinates coords) {
 }
 
 bool Board::dispatchTorpedo(SpecialAbilityType ability_type, BoardCoordinates coords) {
+  std::clog << "BOARD::DISPATCHTORPEDO" << std::endl;
   bool is_hit = false;
   
   if (ability_type == TORPEDO)
@@ -103,7 +108,7 @@ void Board::fireProbe(BoardCoordinates coords) {
 
 void Board::setMine(BoardCoordinates coords) {
   Player& current_player = _my_turn ? _player1 : _player2;
-  current_player.addShip(Ship(coords, {{0,0}}, this, _my_turn));
+  current_player.addShip(std::make_shared<Ship>(Ship(coords, {{0,0}}, this, _my_turn)));
 }
 
 void Board::dispatchSonar(SpecialAbilityType ability_type, BoardCoordinates coords) {
@@ -143,6 +148,7 @@ Player& Board::getPlayer2() {
 }
 
 void Board::changeTurn() {
+  std::clog << "BOARD::CHANGETURN" << std::endl;
   _my_turn = !_my_turn;
   _player1.swapTurn();
   _player2.swapTurn();
@@ -162,6 +168,7 @@ bool Board::isVictory() const {
 }
 
 Turn Board::whoseTurn() const {
+  std::clog << "BOARD::WHOSETURN" << std::endl;
   if (_my_turn){
     return PLAYERONE;
   }else{
@@ -169,34 +176,53 @@ Turn Board::whoseTurn() const {
   }
 }
 
-void Board::placeShip(Ship &ship, bool side) {
+void Board::placeShip(std::shared_ptr<Ship> ship, bool side) {
+  std::clog << "BOARD::PLACESHIP" << std::endl;
+  std::clog << "ship top left: " << ship->getTopLeft() << std::endl;
   std::vector<std::vector<Cell>> &board = side ? _player1_side : _player2_side;
   Player &player = side ? _player1 : _player2;
-  for (auto& board_coordinates : ship.getCoordinates()){
-    board[ship.getTopLeft().y() + board_coordinates.y()][ship.getTopLeft().x() + board_coordinates.x()].setType(ship.getType());
+  for (auto& board_coordinates : ship->getCoordinates()){
+    board[ship->getTopLeft().y() + board_coordinates.y()][ship->getTopLeft().x() + board_coordinates.x()].setType(ship->getType());
+    board[ship->getTopLeft().y() + board_coordinates.y()][ship->getTopLeft().x() + board_coordinates.x()].setShip(ship);
   }
   player.addShip(ship);
 }
 
 void Board::notify(const BoardCoordinates &coords) {
+  std::clog << "BOARD::NOTIFY" << std::endl;
   // Iterate over the targeted player's ships
-  Player& current_player = _my_turn ? _player2 : _player1;
+  Player& opponent = _my_turn ? _player2 : _player1;
+  std::vector<std::vector<Cell>> &board = _my_turn ? _player2_side : _player1_side;
 
-  for (Ship &ship : current_player.getFleet()) {
-    std::clog << "isPartOfShip: " << ship.isPartOfShip(coords) << std::endl;
-    std::clog << "isSunk: " << ship.isSunk() << std::endl;
-    if (ship.isPartOfShip(coords) && !ship.isSunk()) {
-      ship.notify();
-      std::clog << "Ship is sunk: " << ship.isSunk() << std::endl;
-      if (ship.isSunk() && !(ship.getType() & IS_MINE)) {
-        std::vector<BoardCoordinates> ship_coords = ship.getCoordinates();
-        BoardCoordinates top_left = ship.getTopLeft();
+  std::clog << "opponent : " << (myTurn() ? "player2" : "player1") << std::endl;
+
+
+  board[coords.y()][coords.x()].ship()->notify();
+
+  std::clog << "Ship is sunk: " << board[coords.y()][coords.x()].ship()->isSunk() << std::endl;
+  std::clog << opponent.getFleet().size() << std::endl;
+  for (auto ship : opponent.getFleet()) {
+
+    // std::clog << "coords isPartOfShip: " << ship.isPartOfShip(coords) << std::endl;
+    // std::clog << "ship isSunk: " << ship.isSunk() << std::endl;
+
+    // if (ship->isPartOfShip(coords) && !ship->isSunk()) {
+    //   ship->notify();
+
+      std::clog << "Ship is sunk: " << ship->isSunk() << std::endl;
+      std::clog << "Ship type: " << ship->getType() << std::endl;
+      std::clog << "Ship top left: " << ship->getTopLeft() << std::endl;
+
+      if (ship->isSunk() && !(ship->getType() & IS_MINE)) {
+        std::vector<BoardCoordinates> ship_coords = ship->getCoordinates();
+        BoardCoordinates top_left = ship->getTopLeft();
         for (auto &coord : ship_coords) {
-          _player1_side[top_left.y() + coord.y()][top_left.x() + coord.x()].setType(SUNK_SHIP);
+          board[top_left.y() + coord.y()][top_left.x() + coord.x()].setType(SUNK_SHIP);
         }
       }
-    }
-    if (!(ship.getType() & IS_MINE) && !ship.isSunk()) {
+    // }
+    if (!(ship->getType() & IS_MINE) && !ship->isSunk()) {
+      std::clog << "at least one Ship is not sunk" << std::endl;
       return;
     }
   }
@@ -208,7 +234,8 @@ void Board::notify(const BoardCoordinates &coords) {
 }
 
 bool Board::fire(SpecialAbility ability, BoardCoordinates coords) {
-  Player& current_player = _my_turn ? _player1 : _player2;
+  std::clog << "BOARD::FIRE\n" << std::endl;
+  Player& current_player = myTurn() ? _player1 : _player2;
   bool is_hit = false;
 
   current_player.removeEnergyPoints(ability.getEnergyCost());
@@ -220,7 +247,9 @@ bool Board::fire(SpecialAbility ability, BoardCoordinates coords) {
   } else if (ability.getType() & MINE) {
     setMine(coords);  
   }
-  notify(coords);
+  if (is_hit)
+    notify(coords);
+  std::clog << "is_hit: " << is_hit << std::endl;
   return is_hit;
 }
 
@@ -294,14 +323,14 @@ CellType Board::cellType(bool my_side, BoardCoordinates position) const {
 }
 
 // returns the ship at the given position
-std::optional<Ship> Board::shipId(bool my_side, BoardCoordinates position) const {
+std::shared_ptr<Ship> Board::shipId(bool my_side, BoardCoordinates position) const {
   return get(my_side, position).ship();
 }
 
 // returns true if the two given positions are part of the same ship
 bool Board::isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const {
-  return shipId(my_side, first).has_value() &&
-        shipId(my_side, first) == shipId(my_side, second);
+  return shipId(my_side, first) &&
+        *shipId(my_side, first) == *shipId(my_side, second);
 }
 
 bool Board::isInBoard(BoardCoordinates coord) const {

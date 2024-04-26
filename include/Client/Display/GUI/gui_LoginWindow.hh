@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cctype>
 #include <QApplication> 
 #include <QWidget>
 #include <QLineEdit>
@@ -8,6 +9,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QStackedWidget>
+#include <QMessageBox>
 #include <qt6/QtWidgets/qpushbutton.h>
 
 #include "login_controller.hh"
@@ -33,5 +35,6 @@ private:
     QLineEdit *passwordLineEdit;
     QPushButton *loginButton;
     QPushButton *registerButton; 
-
+    bool isPasswordValid(std::string password);
+    bool contientMajuscule(const std::string &str);
 };

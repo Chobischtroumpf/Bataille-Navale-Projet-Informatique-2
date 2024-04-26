@@ -3,14 +3,17 @@
 \section{En partie}
 Le jeu doit être conçu pour offrir une interface intuitive, facilitant ainsi les actions du joueur.
 Dans un premier temps, les deux joueurs sont invités à placer les bateaux sur le board.
-Les bateaux qui sont disponibles varient du mode de jeu qui a été choisi.
-Un message d'erreur est affiché lorsque le bateau est placé sur une mauvaise case et auquel cas le joueur est invité à 
-essayer une autre position. Le même procédé sera utilisé pour les tirs.
+Les bateaux qui sont disponibles varient du mode de jeu qui a été choisi, et dans le cas du mode commandant, de la faction qui a été choisie.
+Un message d'erreur est affiché lorsque le bateau est placé sur une mauvaise case et auquel cas le joueur est invité à en placer un qui est valide.
 
-Une fois tout les bateaux placés sur le board, le timer commence et la game débute.
+Une petit spécificité du placement des bateaux, en mode commandant, est qu'il est aussi possible de placer des mines durant cette phase.
+Les mines sont des objets qui sont placés sur une case, et qui retire de l'énergie à un joueur qui touche cette case.
+
+Une fois tout les bateaux placés sur le board, le timer commence et la partie débute.
 Chacun des joueurs doit alors tirer sur une case du board de l'adversaire, et le jeu continue jusqu'à ce que l'un des joueurs ait coulé tous les bateaux de l'autre joueur.
 Si un joueur touche un bateau, il a le droit de tirer une autre fois, sinon c'est au tour de l'autre joueur.
 Pour rendre l'expérience en jeu plus agréable et plus interactive, le temps de jeu ne doit pas être trop long.
+Tous les tours, les joueurs gagnent un point d'énergie, qui leur permet d'utiliser des compétences spéciales.
 
 \begin{figure}[h]
     \centering

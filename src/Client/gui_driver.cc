@@ -6,8 +6,8 @@
 
 #include <qt6/QtCore/qobject.h>
 
-DriverGui::DriverGui()
-    : _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
+DriverGui::DriverGui(std::string server_address)
+    : _game_client{std::make_shared<GameClient>(server_address)} {}
 
 void DriverGui::run() {
     showLoginWindow();
@@ -25,6 +25,7 @@ void DriverGui::showMainMenu() {
     QObject::connect(_mainMenuWindow.get(), &MainMenu::startGameSetting, this, &DriverGui::showGameSettingWindow);
     QObject::connect(_mainMenuWindow.get(), &MainMenu::startChat, this, [this](const std::string &destination) { showChatOutWindow(destination); });
     QObject::connect(_mainMenuWindow.get(), &MainMenu::startReview, this, &DriverGui::showReviewMenu);
+    QObject::connect(_mainMenuWindow.get(), &MainMenu::startLobby, this, [this] (std::string gameId) { showLobbyWindow(gameId, false); });
     _mainMenuWindow->show();
 }
 
@@ -41,7 +42,8 @@ void DriverGui::showGameWindow(std::string gameId) {
     bool is_commander = _lobbyWindow->isCommanderMode();
     std::string session_id = _lobbyWindow->getSessionId();
     int selected_faction = _lobbyWindow->getSelectedFaction();
-    _gameWindow = std::make_unique<Game>(_game_client, session_id, selected_faction, is_commander);
+    bool is_spectator = _lobbyWindow->isSpectatorMode();
+    _gameWindow = std::make_unique<Game>(_game_client, session_id, selected_faction, is_commander, is_spectator);
     connect(_gameWindow.get(), &Game::gameFinished, this, &DriverGui::showMainMenu);
     _gameWindow->show();
 }

@@ -15,6 +15,22 @@ void PendulumTimer::turnReset() {
       _player1_timer.stop();
       _game_timer.reset();
       _game_timer.start();
+      _player1_timer.start();
+    } else {
+      _player2_timer.stop();
+      _game_timer.reset();
+      _game_timer.start();
+      _player2_timer.start();
+    }
+  }
+}
+
+void PendulumTimer::switchTurn() {
+    if (!_finished) {
+    if (_turn == PLAYERONE) {
+      _player1_timer.stop();
+      _game_timer.reset();
+      _game_timer.start();
       _player2_timer.start();
     } else {
       _player2_timer.stop();
@@ -23,10 +39,6 @@ void PendulumTimer::turnReset() {
       _player1_timer.start();
     }
   }
-}
-
-void PendulumTimer::switchTurn() {
-  turnReset();
   _turn = (_turn == PLAYERONE) ? PLAYERTWO : PLAYERONE;
   
 }

@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
   } else if (std::strcmp(argv[1], "gui") == 0) {
     QApplication qtApp(argc, argv);
 
-    DriverGui app;
+    DriverGui app  = argc == 3 ? DriverGui(argv[2]) : DriverGui();
     // Lancement de l'application
     app.run();
 

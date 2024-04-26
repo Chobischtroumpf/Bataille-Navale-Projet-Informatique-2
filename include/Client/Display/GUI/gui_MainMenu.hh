@@ -21,6 +21,7 @@
 #include <QEnterEvent> // for QEnterEvent
 #include <QFocusEvent> // for QFocusEvent
 #include <QPainter>
+#include <QMessageBox>
 #include <QMovie>
 
 #include "main_menu_controller.hh"
@@ -54,17 +55,20 @@ signals:
     void startChat(const std::string& destination);
     void startGameSetting();
     void startReview();
+    void startLobby(std::string gameID);
 
 private slots: // en ref à Qt6
     void onCreatGameButtonClicked();
     void onAddFriendButtonClicked();
 	void onChatWithAFriendButtonClicked();
     void onFriendNameButtonClicked(const QString &destination);
+    void onNotificationButtonClicked(const QString &info);
 	void onJoinGameButtonClicked();
 	void onLogOutButtonClicked();
 
     void onFriendLineEditReturnPressed();
     void onChatFriendLineEditReturnPressed();
+    void onJoinGameLineEditReturnPressed();
 
     void updateFriends();
     void clearFriendsLayout();
@@ -90,6 +94,7 @@ private:
     QVBoxLayout *scrollLayoutFriends; // Layout pour contenir les amis
     QLineEdit *friendNameLineEdit;
     QLineEdit *chatFriendLineEdit;
+    QLineEdit *joinGameLineEdit;
     QVBoxLayout *scrollLayoutNotifications;
 
     int frameCounter;

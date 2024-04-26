@@ -16,6 +16,7 @@ ReturnInput LoginConsole::handleInput() {
         return {ReturnInput::MAIN_MENU, ""};
       } else {
         system("clear");
+        std::cout << "Choix invalide. Veuillez réessayer.\n";
         choice = makeChoice();
       }
     } else if (choice == 2) {
@@ -26,6 +27,7 @@ ReturnInput LoginConsole::handleInput() {
         return {ReturnInput::MAIN_MENU, ""};
       } else {
           system("clear");
+          std::cout << "Choix invalide. Veuillez réessayer.\n";
           choice = makeChoice();
       }
     } else {
@@ -37,6 +39,10 @@ ReturnInput LoginConsole::handleInput() {
 
 int LoginConsole::makeChoice(){
   int choice;
+    std::cout << "1. Se connecter\n";
+    std::cout << "2. S'enregistrer\n";
+    std::cout << "Entrez votre choice: ";
+    std::cin >> choice;
   while (!validCin(choice)) {
     std::cout << "1. Se connecter\n";
     std::cout << "2. S'enregistrer\n";
@@ -47,7 +53,7 @@ int LoginConsole::makeChoice(){
 }
 
 bool LoginConsole::seConnecter(LoginController &_login_controller) {
-  // system("clear");
+  system("clear");
   std::cout << "Se connecter\n";
   std::cout << "Type ./exit to back in the menu\n";
   std::string username = demanderNomUtilisateur();
@@ -58,7 +64,7 @@ bool LoginConsole::seConnecter(LoginController &_login_controller) {
 }
 
 bool LoginConsole::sEnregistrer(LoginController &_login_controller) {
-  // system("clear");
+  system("clear");
   std::cout << "Enregistrement\n";
   std::cout << "Type ./exit to back in the menu\n";
   std::string username = demanderNomUtilisateur();
