@@ -10,15 +10,21 @@ using std::string;
 GameConsole::GameConsole(std::ostream &out, std::istream &in,
                          std::shared_ptr<LocalBoardCommander> board,
                          std::shared_ptr<GameController> control,
-                         std::shared_ptr<GameClient> client)
-    : _board{std::move(board)}, _control{std::move(control)}, _game_client(std::move(client)),
-      _out{out}, _in{in}, _letter_width{static_cast<uint8_t>(length(BoardCoordinates(
-                                                                        _board->width() - 1, _board->height() - 1)
-                                                                        .xToString()))},
+                         std::shared_ptr<GameClient> client, bool spectating)
+    : _board{std::move(board)}, _control{std::move(control)},
+      _game_client(std::move(client)), _out{out}, _in{in},
+      _letter_width{static_cast<uint8_t>(
+          length(BoardCoordinates(_board->width() - 1, _board->height() - 1)
+                     .xToString()))},
       _number_width{static_cast<uint8_t>(
-          length(BoardCoordinates(_board->width() - 1, _board->height() - 1).yToString()))},
-      _gap{"   "}, _grid_width{_number_width + (1 + _letter_width) * _board->width() + 2},
-      _width{_grid_width * 2 + _gap.size()}, _map_key{createMapKey()} {}
+          length(BoardCoordinates(_board->width() - 1, _board->height() - 1)
+                     .yToString()))},
+      _gap{"   "}, _grid_width{_number_width +
+                               (1 + _letter_width) * _board->width() + 2},
+      _width{_grid_width * 2 + _gap.size()}, _map_key{createMapKey()},
+      _spectating{spectating} {
+  _phase = spectating ? SPECTATE : PLACE_SHIP;
+}
 
 inline string operator*(const string &lhs, size_t rhs) {
   string result;
@@ -678,6 +684,17 @@ void GameConsole::displayEndGame() {
   _out << std::flush;
 }
 
+void GameConsole::displaySpectating() {
+  std::system("clear");
+  _out << createGameHeader();
+  printSideBySide({createGridLabel(true)}, {createGridLabel(false)});
+  _out << '\n';
+  printSideBySide(createGrid(true), createGrid(false));
+  _out << '\n';
+  _out << "\x1b[34;1m Spectating " + _board->getMyUsername() + " vs " + _board->getTheirUsername() + "\x1b[0m";
+  _out << std::flush;
+}
+
 void GameConsole::display() {
   std::clog << "GameConsole::display" << std::endl;
   if (_phase == PLACE_SHIP) {
@@ -695,6 +712,9 @@ void GameConsole::display() {
   } else if (_phase == END_GAME) {
     std::clog << "GameConsole::display: END_GAME" << std::endl;
     displayEndGame();
+  } else if (_phase == SPECTATE) {
+    std::clog << "GameConsole::display: SPECTATING" << std::endl;
+    displaySpectating();
   }
 }
 
@@ -728,6 +748,13 @@ ReturnInput GameConsole::handleInput()
   } else if (_phase == END_GAME) {
     std::clog << "GameConsole::handleInput: END_GAME" << std::endl;
     return handleQuit();
+  } else if (_phase == SPECTATE) {
+    std::clog << "GameConsole::handleInput: SPECTATING" << std::endl;
+    sleep(1);
+    _board->updateBoard();
+    if (_board->isFinished()) {
+      _phase = END_GAME;
+    }
   }
 
   return {ReturnInput::Screen::GAME, ""};

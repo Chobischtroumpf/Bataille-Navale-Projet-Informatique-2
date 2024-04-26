@@ -33,6 +33,9 @@ private:
   int _max_players;
   std::string _game_name;
   bool _commander_mode;
+  bool _spectator_mode;
+
+  std::string _my_username;
 
   void displayOptions(int mode);
   // void startGame();
@@ -60,5 +63,6 @@ public:
   void loadParameters(const std::string &session_id);
   ReturnInput handleInput() override;
   bool isCommanderMode() const;
+  bool isSpectatorMode() const;
   int getFaction() const;
 };

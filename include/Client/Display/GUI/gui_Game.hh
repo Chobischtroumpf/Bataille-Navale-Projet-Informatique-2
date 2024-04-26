@@ -25,7 +25,7 @@
 #include "big_torpedo_iterator.hh"
 #include "aerial_strike_iterator.hh"
 
-enum Phase { PLACING_SHIPS, WAITING_GAME, PLAYING, WAITING_TURN, FINISHED };
+enum Phase { PLACING_SHIPS, WAITING_GAME, PLAYING, WAITING_TURN, FINISHED, SPECTATING };
 
 class Game;
 
@@ -55,7 +55,7 @@ class Game : public QWidget {
   Q_OBJECT
 
 public:
-  Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int selected_faction, bool commander_mode = true);
+  Game(std::shared_ptr<GameClient> gameClient, std::string session_id, int selected_faction, bool commander_mode = true, bool spectating = false);
   ~Game();
   void display();
   void display_error();
@@ -89,11 +89,13 @@ public:
 
 protected:
   void setupShipPlacement();
+  void setupSpectating();
   void setupGame();
   void setupWaitingGame();
   void setupWaitingTurn();
   void setupWinning();
   void setupLosing();
+  void setupFinished();
 
 signals:
   void gameFinished();
@@ -117,6 +119,7 @@ private:
   Phase _phase = PLACING_SHIPS;
   std::vector<QPushButton *> _ships_buttons;
   bool _commander_mode;
+  bool _spectating;
   QThread *_polling_thread;
   QTimer *_timer;
   const SpecialAbility* _selected_ability = nullptr;

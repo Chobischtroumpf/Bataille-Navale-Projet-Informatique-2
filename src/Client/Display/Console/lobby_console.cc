@@ -6,6 +6,7 @@ LobbyConsole::LobbyConsole(const std::string &session_id,
     : _session_id(session_id) , _admin(admin) {
   _view = std::make_shared<LobbyView>(client);
   _controller = std::make_shared<LobbyController>(client);
+  _my_username = client->getClientUsername();
   if (gameSettingConsole != nullptr) {
     loadParameters(gameSettingConsole);
   } else {
@@ -16,13 +17,13 @@ LobbyConsole::LobbyConsole(const std::string &session_id,
 void LobbyConsole::display() {
   std::system("clear");
   displayFriends();
-  if (_commander_mode) {
+  if (_commander_mode && !_spectator_mode) {
     displayFactions();
   }
   if (_admin) {
     displayOptions(_current_option);
   } else {
-    if (!_faction_chosen && _commander_mode) {
+    if (!_faction_chosen && _commander_mode && !_spectator_mode) {
       displayOptions(2);
     } else {
       std::cout << "║ Please wait the game to start                            "
@@ -41,9 +42,22 @@ void LobbyConsole::displayFriends() {
   std::cout << "╔════════════╗\n║Player List ║\n╠════"
                "════════╩══════════════════════════════════════════════════════"
                "═══╗" << std::endl;
+  int counter = 0;
   for (auto user : _view->getUserInGame(_session_id)) {
-    std::cout << "║ ";
-    std::cout << "🔺 " << user << std::string(_width - user.size() - 4, ' ') << "║" << std::endl;
+    if (counter == 0) {
+      std::cout << "║ ";
+      std::cout << "👑 " << user << std::string(_width - user.size() - 4, ' ') << "║" << std::endl;
+    } else if (counter == 1) {
+      std::cout << "║ ";
+      std::cout << "🔺 " << user << std::string(_width - user.size() - 4, ' ') << "║" << std::endl;
+    } else {
+      std::cout << "║ ";
+      std::cout << "🎥 " << user << std::string(_width - user.size() - 4, ' ') << "║" << std::endl;
+      if (_my_username == user) {
+        _spectator_mode = true;
+      }
+    }
+    counter++;
   }
   std::cout << "║" << std::string(_width, ' ') << "║" << std::endl;
   std::cout << "║ " << "\033[1m" << "Your invite link:" << std::string(_width - 18, ' ') << "\033[0m" << "║" << std::endl;
@@ -199,7 +213,7 @@ ReturnInput LobbyConsole::handleInput() {
     }
 
   } else {
-    if (!_faction_chosen && _commander_mode) {
+    if (!_faction_chosen && _commander_mode && !_spectator_mode) {
       int input;
       std::cin >> input;
       if (std::cin.fail()) {
@@ -243,4 +257,8 @@ bool LobbyConsole::isCommanderMode() const {
 
 int LobbyConsole::getFaction() const {
   return _selected_faction;
+}
+
+bool LobbyConsole::isSpectatorMode() const {
+  return _spectator_mode;
 }

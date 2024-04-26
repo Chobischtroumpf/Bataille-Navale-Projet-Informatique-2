@@ -13,6 +13,8 @@ Lobby::Lobby(const std::string &session_id,
         loadParameters(session_id);
     }
 
+    _my_username = client->getClientUsername();
+
     setWindowTitle(QString::fromStdString("Lobby (" + _game_name + ")"));
     resize(800, 600);
 
@@ -195,14 +197,21 @@ void Lobby::onFactionMinesClicked() {
 
 void Lobby::updatePlayer() {
     clearPlayerLayout();
+
     QFont font("Arial", 14);
 
+    int counter = 0;
     for (auto playerName : _view->getUserInGame(_session_id)) {
-        QLabel *playerNameLabel = new QLabel(QString::fromStdString(playerName));
+        QLabel *playerNameLabel = new QLabel(QString::fromStdString(playerName + (counter > 1 ? " (Spectator)" : "")));
         playerNameLabel->setFont(font);
         playerNameLabel->setStyleSheet("color: blue;");
         scrollLayoutPlayer->addWidget(playerNameLabel);
         scrollLayoutPlayer->addSpacing(20);
+
+        if (playerName == _my_username && counter > 1) {
+            _spectator_mode = true;
+        }
+        counter++;
     }
 }
 
@@ -271,4 +280,8 @@ std::string Lobby::getSessionId() const {
 
 int Lobby::getSelectedFaction() const {
     return _selected_faction;
+}
+
+bool Lobby::isSpectatorMode() const {
+    return _spectator_mode;
 }

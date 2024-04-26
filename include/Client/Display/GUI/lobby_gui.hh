@@ -40,6 +40,7 @@ public:
     bool isCommanderMode() const;
     std::string getSessionId() const;
     int getSelectedFaction() const;
+    bool isSpectatorMode() const;
 
 signals:
     // insérer les signaux ici
@@ -63,6 +64,7 @@ private slots: // en ref à Qt6
 
 private:
     std::string _session_id;
+    std::string _my_username;
     std::shared_ptr<LobbyView> _view;
     std::shared_ptr<LobbyController> _controller;
     bool _admin;
@@ -71,6 +73,7 @@ private:
     int _max_players;
     std::string _game_name;
     bool _commander_mode;
+    bool _spectator_mode;
 
     QTimer *timerPlayer;
     QTimer *timerGameStart;

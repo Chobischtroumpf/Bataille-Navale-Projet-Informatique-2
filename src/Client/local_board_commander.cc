@@ -7,18 +7,27 @@ AJOUTER SESSIONID DANS LE CONSTRUCTEUR
 
 */
 LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
-    Player player, GameMode mode, const std::string &session_id) :
-      _player{player}, _mode{mode}, _is_finished{false}, _is_victory{false},
-      _my_board{10, {10, Cell()}}, _their_board{10, {10, Cell()}},
-      _session_id{session_id}, _client{client} {
+                                         Player player, GameMode mode,
+                                         const std::string &session_id)
+    : _player{player}, _mode{mode}, _is_finished{false},
+      _is_victory{false}, _my_board{10, {10, Cell()}},
+      _their_board{10, {10, Cell()}}, _session_id{session_id}, _client{client} {
 
   auto futureMessages = _client->QueryGameState(session_id);
   auto messagesJson = futureMessages.get();
   auto usersID = messagesJson["participants"];
   _my_username = _client->getClientUsername();
   std::string my_id = _client->GetUserId(_my_username).get();
-  _player.setPlayerOne(usersID.at(0) == my_id);
-  _their_username = _player.isPlayerOne() ? _client->GetUsername(usersID.at(1)).get() : _client->GetUsername(usersID.at(0)).get();
+  if (usersID.size() > 2 && usersID.at(0) != my_id && usersID.at(1) != my_id) {
+    _player.setPlayerOne(true);
+    _their_username = _client->GetUsername(usersID.at(1)).get();
+    _my_username = _client->GetUsername(usersID.at(0)).get();
+  } else {
+    _player.setPlayerOne(usersID.at(0) == my_id);
+    _their_username = _player.isPlayerOne()
+                          ? _client->GetUsername(usersID.at(1)).get()
+                          : _client->GetUsername(usersID.at(0)).get();
+  }
 }
 
 bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }

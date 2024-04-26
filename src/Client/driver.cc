@@ -71,6 +71,7 @@ void Driver::displayGameScreen(std::string gameId) {
     Player player1 = Player();
     std::clog << "commander_mode" << std::endl;
     bool commander_mode = std::static_pointer_cast<LobbyConsole>(_display)->isCommanderMode();
+    bool isSpectator = std::static_pointer_cast<LobbyConsole>(_display)->isSpectatorMode();
     std::clog << "faction" << std::endl;
     int faction =
         std::static_pointer_cast<LobbyConsole>(_display)->getFaction();
@@ -92,7 +93,7 @@ void Driver::displayGameScreen(std::string gameId) {
 
     std::shared_ptr<LocalBoardCommander> board = std::make_shared<LocalBoardCommander>(getClient(), player1, commander_mode ? GameMode::COMMANDER : GameMode::CLASSIC, gameId);
     std::shared_ptr<GameController> game_controller = std::make_shared<GameController>(board);
-    _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient());
+    _display = std::make_shared<GameConsole>(std::cout, std::cin, board, game_controller, getClient(), isSpectator);
     _current_screen = ReturnInput::Screen::GAME;
   } else {
     throw NotImplementedError("GUI not implemented yet");
