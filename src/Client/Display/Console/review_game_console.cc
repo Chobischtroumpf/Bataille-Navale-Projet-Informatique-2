@@ -63,7 +63,6 @@ void ReviewGameConsole::display(){
     system("clear");
     displayHeader();
     displayGameReview();
-    displayMapKey();
     displayActions();
 }
 
@@ -130,6 +129,9 @@ void ReviewGameConsole::displayHeader(){
     std::cout << "┌────────────────────────────────────────────────────────────────────────────────┐\n";
     std::cout << "│ Review game: " << _board->getSessionId() << "\n";
     std::cout << "└────────────────────────────────────────────────────────────────────────────────┘\n";
+    std::cout << "   ┌──────────────────┐       ┌──────────────────┐\n";
+    std::cout << "   │     Player 1     │       │     Player 2     │\n";
+    std::cout << "   └──────────────────┘       └──────────────────┘\n";
 }
 
 
@@ -138,16 +140,8 @@ void ReviewGameConsole::displayGameReview(){
     printSideBySide({createGrid(true)}, {createGrid(false)});
 }
 
-void ReviewGameConsole::displayMapKey(){
-    std::cout << std::endl;
-    std::clog << "REVIEWGAMECONSOLE: displayMapKey." << std::endl;
-    for(auto line: _print_info.map_key){
-        std::cout << line << std::endl;
-    }
-}
-
-
 void ReviewGameConsole::displayActions(){
+    std::cout << std::endl;
     std::cout << "┌────────────────────────────────────────────────────────────────────────────────┐\n";
     std::cout << "│        Previous        ││          Exit            ││           Next           │\n";
     std::cout << "└────────────────────────────────────────────────────────────────────────────────┘\n";
@@ -175,6 +169,9 @@ void ReviewGameConsole::printSideBySide(std::vector<string> left,
         if (idx < right.size()) {
             _out << _print_info.gap << right.at(idx);
         }
+        if (idx < _print_info.map_key.size()){
+            _out << _print_info.gap << _print_info.map_key.at(idx);
+        }
         // New line
         if (idx < last_line - 1) {_out << '\n';}
     }
@@ -189,7 +186,7 @@ void ReviewGameConsole::printSideBySide(std::vector<string> left,
 std::vector<string> ReviewGameConsole::createGrid(bool my_side) {
     std::clog << "REVIEWGAMECONSOLE: createGrid." << std::endl;
     std::vector<string> grid;
-    std::ostringstream oss("    ", std::ios_base::ate); 
+    std::ostringstream oss("    ", std::ios_base::ate);
     createLetters(oss);
     grid.emplace_back(oss.str());   
     createFirstLine(oss);

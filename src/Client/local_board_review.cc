@@ -46,7 +46,6 @@ CellType LocalBoardReview::string_to_celltype(const std::string &type) {
   } else if (type == "SUNK_SHIP") {
     return SUNK_SHIP;
   } else {
-    std::clog << "LocalBoardReview:FAILED string to cell type." << std::endl;
     throw std::runtime_error("Unknown CellType: " + type);
   }
 }

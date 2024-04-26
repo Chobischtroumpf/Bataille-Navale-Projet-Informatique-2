@@ -94,12 +94,6 @@ class ReviewGameConsole: public Console{
         void displayGameReview();
 
         /**
-        * Display the descrition of the icones 
-        * used for the cell types.
-        */
-        void displayMapKey();
-
-        /**
         * Display the possible actions of user input.
         */
         void displayActions();
@@ -110,6 +104,7 @@ class ReviewGameConsole: public Console{
          * @param right: Right board. 
          */
         void printSideBySide(std::vector<string> left, std::vector<string> right);
+
 
         /*******************
         **Pre_print Methods**

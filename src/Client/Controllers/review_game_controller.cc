@@ -9,23 +9,14 @@ ReviewGameController::ReviewGameController(std::shared_ptr<GameClient> client, s
         std::cout << "controller game review constr." << std::endl;
         _current_move = 0;
         requestMovesList();
-        //initLocalBoard();
-
+        initLocalBoard();
     }
 
 void ReviewGameController::requestMovesList(){
-    //std::ifstream file("/home/manon/Desktop/pannee2/group-9/src/Client/Controllers/game_history.json");
-    //if (!file.is_open()) {
-    //    std::cerr << "Failed to open file." << std::endl;
-    //}
-    //nlohmann::json jsonData;
-    //file >> jsonData;
-    //file.close();
-
     const std::string session = _board->getSessionId();
     std::future<nlohmann::json> future_json = _client->GetGameHistory(session);
     nlohmann::json json_data = future_json.get();
-    //std::clog << json_data << std::endl;
+    std::clog << "BBBBBBBBBBB  " << json_data << std::endl;
 
     if (json_data.contains("states")) {
         nlohmann::json membersArray = json_data["states"];
@@ -41,11 +32,10 @@ void ReviewGameController::initLocalBoard(){
 }
 
 void ReviewGameController::setNextMove(){
-    _current_move += 1;
-    if (_current_move <= _move_list.size()-1){
+    if (_current_move < _move_list.size()-1){
+        _current_move += 1;
         _board->update_board(_move_list[_current_move]);
     }
-    else{_current_move -= 1;}
 }
 
 void ReviewGameController::setPreviousMove(){

@@ -13,9 +13,11 @@ void ReviewController::requestSessionsIds(){
     nlohmann::json json_data = future_json.get();
     for (const auto& session : json_data) {
         Session_info session_info;
+        const std::string name1 = _client->GetUsername(session["player1Id"].get<std::string>()).get();
+        const std::string name2 = _client->GetUsername(session["player2Id"].get<std::string>()).get();
         session_info.session_id = session["sessionId"].get<std::string>();
-        session_info.id_player1 = session["player1Id"].get<std::string>();
-        session_info.id_player2 = session["player2Id"].get<std::string>();
+        session_info.id_player1 = name1;
+        session_info.id_player2 = name2;
         _session_id_list.push_back(session_info);
        }
 }
