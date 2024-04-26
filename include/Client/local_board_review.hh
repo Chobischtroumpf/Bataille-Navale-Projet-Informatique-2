@@ -23,11 +23,9 @@
 */
 class LocalBoardReview : public GameView {
     private:
-        const std::string _session_id;
+        const std::string &_session_id;
         std::vector<std::vector<Cell>> _my_board;
         std::vector<std::vector<Cell>> _their_board;
-        std::string _finished;
-        std::string _winner;
 
     public:
 
@@ -62,19 +60,16 @@ class LocalBoardReview : public GameView {
          */
         std::size_t height() const override;
 
-
         const std::string getSessionId();
+
         CellType best(CellType lhs, CellType rhs);
-        CellType cellType(bool my_side, BoardCoordinates coordinates) const override;
-        Cell get(bool my_side, BoardCoordinates position) const;
-        bool isFinished() const override;
-        bool isVictory() const override;
-        bool isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const override{
-                (void)my_side;
-                (void)first;
-                (void)second;
-                return false;
-        }
+
+
+        bool isFinished() const override{return false;}
+        bool isVictory() const override{return false;}
+        CellType cellType(bool my_side, BoardCoordinates coordinates) const override{CellType a; return a;}
+        bool isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const override{return false;}
         bool myTurn() const {return false;}
+
 
 };

@@ -186,6 +186,7 @@ public:
      */
     QueryResult deleteGameStates(const std::string &id_session);
 
+
     // for test only
     void printSelectUsers();
     void printSelectRelations();

@@ -149,9 +149,9 @@ future<njson> GameClient::GetGames() {
 
         GetRequest("/api/games").then([promise](njson jsonResponse) {
             // Check if the response contains a 'games' key
-            if (!jsonResponse.empty() && jsonResponse.find("sessions") != jsonResponse.end()) {
+            if (!jsonResponse.empty() && jsonResponse.find("games") != jsonResponse.end()) {
                 // Success path: Extract session Ids from jsonResponse
-                auto gameSessions = jsonResponse["sessions"].get<njson>();
+                auto gameSessions = jsonResponse["games"].get<njson>();
                 std::clog << "Game sessions retrieved " << std::endl;
                 promise->set_value(gameSessions);
             } else {

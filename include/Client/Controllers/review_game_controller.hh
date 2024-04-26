@@ -12,7 +12,7 @@ private:
     std::shared_ptr<GameClient> const _client;
     std::shared_ptr<LocalBoardReview> _board;
     std::vector<nlohmann::json> _move_list;
-    size_t _current_move;
+    int _current_move;
 
 public:
     ReviewGameController(std::shared_ptr<GameClient> client, std::shared_ptr<LocalBoardReview> board);

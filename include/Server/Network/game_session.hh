@@ -7,10 +7,9 @@
 #include "database.hh"
 #include "queries.hh"
 #include "game_state.hh"
-#include <mutex>
+
 class GameSession {
   private:
-    mutable std::mutex sessionMutex; // Mutex to protect access to the GameSession
     // Unique identifier for the session
     std::string _session_id;
     std::string _session_name;
@@ -50,7 +49,7 @@ class GameSession {
     void endSession();
 
     // Session Participants Management
-    bool addParticipant(const std::string& participant_id);
+    void addParticipant(const std::string& participant_id);
     void removeParticipant(const std::string& participant_id);
     PlayerRole getParticipantRole(const std::string& participant_id) const;
     std::vector<std::string> getParticipants() const;

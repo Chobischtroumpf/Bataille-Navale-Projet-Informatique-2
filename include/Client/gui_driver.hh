@@ -9,8 +9,6 @@
 #include "game_setting_gui.hh"
 #include "lobby_gui.hh"
 #include "game_client.hh"
-#include "gui_review.hh"
-#include "gui_review_game.hh"
 
 class DriverGui : public QObject {
     Q_OBJECT 
@@ -26,8 +24,6 @@ private:
     std::unique_ptr<Game> _gameWindow;
     std::shared_ptr<GameSetting> _gameSettingWindow;
     std::unique_ptr<Lobby> _lobbyWindow;
-    std::unique_ptr<Review> _review_menu;
-    std::unique_ptr<ReviewGame> _review_game;
 
     const std::string _destination{""}; // Needs to be adapted, dummy value for now
 
@@ -37,6 +33,4 @@ private:
     void showGameWindow(std::string gameId);
     void showGameSettingWindow();
     void showLobbyWindow(std::string gameId, bool admin);
-    void showReviewMenu();
-    void showReviewGame(std::string gameId);
 };
