@@ -94,12 +94,6 @@ class ReviewGameConsole: public Console{
         void displayGameReview();
 
         /**
-        * Display the descrition of the icones 
-        * used for the cell types.
-        */
-        void displayMapKey();
-
-        /**
         * Display the possible actions of user input.
         */
         void displayActions();
@@ -110,6 +104,7 @@ class ReviewGameConsole: public Console{
          * @param right: Right board. 
          */
         void printSideBySide(std::vector<string> left, std::vector<string> right);
+
 
         /*******************
         **Pre_print Methods**
@@ -133,7 +128,7 @@ class ReviewGameConsole: public Console{
          * @param i: the line to print
          * @param my_side: user side or not
          */
-        void createBody(std::ostringstream& oss, int i, bool my_side);
+        void createBody(std::ostringstream& oss, unsigned i, bool my_side);
 
         /**
          * Create the last line of the board.
@@ -146,7 +141,5 @@ class ReviewGameConsole: public Console{
          * @param my_side: user side or not
          */
         std::vector<string> createGrid(bool my_side);
-
-
 };
 

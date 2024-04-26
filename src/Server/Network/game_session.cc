@@ -21,18 +21,26 @@ void GameSession::endSession() {
     
 }
 
-void GameSession::addParticipant(const std::string& participantId) {
+bool GameSession::addParticipant(const std::string& participantId) {
+    std::lock_guard<std::mutex> guard(sessionMutex);
+
     //Assign the role of the participant
     if (_opponent_id.empty()) {
         _opponent_id = participantId;
         _participant_roles[participantId] = PlayerRole::Opponent;
     } else {
+        if ( (int)spectators.size() >= (int)_game_details.at("maxPlayers") - 2 || spectators.size() >= 6 ) {
+            std::cout << "Reached player limit in game session " << _session_id << " ... joining game not allowed" << std::endl;
+            return false;
+        }
         spectators.push_back(participantId);
         _participant_roles[participantId] = PlayerRole::Spectator;
     }
+    return true;
 }
 
 void GameSession::removeParticipant(const std::string& participantId) {
+    std::lock_guard<std::mutex> guard(sessionMutex);
     // Remove participant from their respective list and role mapping
     _participant_roles.erase(participantId);
     if (participantId == _opponent_id) {
@@ -44,6 +52,7 @@ void GameSession::removeParticipant(const std::string& participantId) {
 }
 
 vector<std::string> GameSession::getParticipants() const {
+    
     vector<std::string> participants;
     participants.emplace_back(_leader_id);
 
@@ -69,12 +78,14 @@ PlayerRole GameSession::getParticipantRole(const std::string& participantId) con
 
 // Retrieves the game state
 nlohmann::json GameSession::getGameState(const std::string& userId) const {
+    std::lock_guard<std::mutex> guard(sessionMutex);
     auto playerRole= getParticipantRole(userId);
 
     return _game_state.getGameState(playerRole);
 }
 
 bool GameSession::makeMove(const std::string& userId, const nlohmann::json& move) {
+    std::lock_guard<std::mutex> guard(sessionMutex);
     auto playerRole = getParticipantRole(userId);
 
     // Check if the move object contains "moveType" 
