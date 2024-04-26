@@ -46,11 +46,13 @@ void Review::onRGameButtonClicked(){
         QString session_id = session_part.split(":").last().trimmed();
         std::string selected_game = session_id.toStdString();
         emit goToGameReview(selected_game);
+        this->close();
     }
 }
 
 void Review::onBackMainButtonClicked(){
     emit goToMainMenu();
+    this->close();
 }
 
 Review::~Review(){}

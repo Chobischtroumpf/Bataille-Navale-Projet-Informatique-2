@@ -134,6 +134,7 @@ void ReviewGame::onPreviousButtonClicked(){
 
 void ReviewGame::onBackMainButtonClicked(){
     emit goToMainMenu();
+    this->close();
 }
 
 ReviewGame::~ReviewGame(){
