@@ -74,6 +74,7 @@ private:
     std::string _game_name;
     bool _commander_mode;
     bool _spectator_mode;
+    bool _game_started = false;
 
     QTimer *timerPlayer;
     QTimer *timerGameStart;

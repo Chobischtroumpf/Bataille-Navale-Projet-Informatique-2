@@ -233,8 +233,12 @@ void Lobby::invitePlayer() {
 }
 
 void Lobby::checkGameStart() {
+    if (_game_started) {
+        return;
+    }
     auto messagesJson = _view->getGameState(_session_id);
     if (messagesJson.at("hasStarted") == true) {
+        _game_started = true;
         emit launchGame(_session_id);
         this->close();
     }

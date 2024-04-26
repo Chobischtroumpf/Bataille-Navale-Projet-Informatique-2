@@ -1,8 +1,6 @@
 /**
  * @file gui_Game.cc
  * @brief Implementation of the GUI Game class
- 
- * TODO: Change Turn
 */
 
 
