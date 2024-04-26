@@ -12,6 +12,7 @@ private:
   std::atomic<int> _current_time;
   std::atomic<bool> _is_running;
   std::function<void()> _callback;
+  std::atomic<bool> launched;
 
 public:
   Timer();

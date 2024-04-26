@@ -161,6 +161,7 @@ ReturnInput GameSettingConsole::handleInput() {
       if (input == "1") {
         njson gameDetails = {{"name", _game_name},
                              {"gamemode", (_commander_mode.value() ? "Commander" : "Classic")},
+                             {"classicTimer", (_timer_mode.value() ? "Classic" : "Commander")},
                              {"playerTimeLimit", _time_per_game.value()},
                              {"turnTimeLimit", _time_per_turn.value()},
                              {"maxPlayers", (_spectator_allowed.value() ? 8 : 2)},
@@ -175,7 +176,7 @@ ReturnInput GameSettingConsole::handleInput() {
           nlohmann::json req;
           req["moveType"] = "chooseFaction";
           req["faction"] = 0;
-          gameClient->MakeMove(gameID, req).get();
+          gameClient->MakeMove(gameID, req);
         }
         return ReturnInput(ReturnInput::Screen::LOBBY, gameID);
       } else {
