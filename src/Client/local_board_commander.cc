@@ -187,7 +187,7 @@ bool LocalBoardCommander::isGameStarted() {
 
 void LocalBoardCommander::waitTurn() {
   bool my_turn = false;
-  while (!_player.isTurn()) {
+  while (!_player.isTurn() || isFinished()) {
     std::this_thread::sleep_for(std::chrono::seconds(5));;
     updateBoard();
   }
@@ -259,7 +259,6 @@ void LocalBoardCommander::updateBoard() {
   } else {
     _player.setTurn(false);
   }
-
 
   if (new_board.at("Finished") == "true"){
     _is_finished = true;

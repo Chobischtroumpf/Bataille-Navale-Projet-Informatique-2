@@ -66,4 +66,7 @@ bool GameController::placeShip(Ship ship) const {
   }
 }
 
-void GameController::quit() {}
+void GameController::quit() {
+  // Sends a request to quit the game to the gameServer
+  std::clog << "GameController::quit" << std::endl;
+}
