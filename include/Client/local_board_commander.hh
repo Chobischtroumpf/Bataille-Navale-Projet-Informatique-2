@@ -35,6 +35,7 @@ private:
   uint16_t _game_time = 0;
   uint16_t _player_time = 0;
   uint16_t _opponent_time = 0;
+  bool _is_pendulum = false;
 
   // bool _my_turn;
   bool _is_finished;
@@ -120,4 +121,5 @@ public:
   uint16_t getGameTime() const;
   uint16_t getPlayerTime() const;
   uint16_t getOpponentTime() const;
+  bool isPendulum() const;
 };

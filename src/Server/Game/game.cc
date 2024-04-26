@@ -20,8 +20,8 @@ void Game::setGame(const nlohmann::json &game_details) {
   int player_time =
       game_details.at("playerTimeLimit").get<int>();
   //bool classic_timer = true;
-  bool classic_timer = game_details.at("classicTimer").get<std::string>() == "Classic";
-  if (classic_timer){
+  _is_pendulum = game_details.at("classicTimer").get<std::string>() != "Classic";
+  if (_is_pendulum) {
     _game_timer = std::make_unique<ClassicTimer>();
     _game_timer->set(game_time, player_time);
   }else{
@@ -146,6 +146,7 @@ nlohmann::json Game::getState(PlayerRole player) {
       game_json["Winner"] = "None";
   }
 
+  game_json["is_pendulum"] = _is_pendulum;
 
   if (shipPlacementsFinished()){
     game_json["ship_placements_finished"] = "true";

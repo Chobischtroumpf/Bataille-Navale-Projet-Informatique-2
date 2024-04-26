@@ -15,6 +15,7 @@ class Game {
     std::shared_ptr<Board> _board;
     bool _game_started;
     bool _mode_commandant;
+    bool _is_pendulum;
     std::unique_ptr<GameTimer> _game_timer;
 
     void startTimer();
