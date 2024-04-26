@@ -53,6 +53,7 @@ signals:
     void userDisconnection();
     void startChat(const std::string& destination);
     void startGameSetting();
+    void startLobby(std::string gameID);
 
 private slots: // en ref à Qt6
     void onCreatGameButtonClicked();
@@ -64,6 +65,7 @@ private slots: // en ref à Qt6
 
     void onFriendLineEditReturnPressed();
     void onChatFriendLineEditReturnPressed();
+    void onJoinGameLineEditReturnPressed();
 
     void updateFriends();
     void clearFriendsLayout();
@@ -89,6 +91,7 @@ private:
     QVBoxLayout *scrollLayoutFriends; // Layout pour contenir les amis
     QLineEdit *friendNameLineEdit;
     QLineEdit *chatFriendLineEdit;
+    QLineEdit *joinGameLineEdit;
     QVBoxLayout *scrollLayoutNotifications;
 
     int frameCounter;

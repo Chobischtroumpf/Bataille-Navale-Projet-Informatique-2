@@ -19,6 +19,7 @@ void DriverGui::showMainMenu() {
     QObject::connect(_mainMenuWindow.get(), &MainMenu::userDisconnection, this, &DriverGui::showLoginWindow);
     QObject::connect(_mainMenuWindow.get(), &MainMenu::startGameSetting, this, &DriverGui::showGameSettingWindow);
     QObject::connect(_mainMenuWindow.get(), &MainMenu::startChat, this, [this](const std::string &destination) { showChatOutWindow(destination); });
+    QObject::connect(_mainMenuWindow.get(), &MainMenu::startLobby, this, [this] (std::string gameId) { showLobbyWindow(gameId, false); });
     _mainMenuWindow->show();
 }
 

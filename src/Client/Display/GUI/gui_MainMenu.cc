@@ -106,6 +106,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     connect(friendNameLineEdit, &QLineEdit::returnPressed, [this] {
         onFriendLineEditReturnPressed();
     });
+    friendNameLineEdit->setPlaceholderText("Entrez un nom d'utilisateur");
     friendNameLineEdit->hide(); // Caché par défaut
 
 
@@ -113,7 +114,16 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     connect(chatFriendLineEdit, &QLineEdit::returnPressed, [this] {
     onChatFriendLineEditReturnPressed();
     });
-    chatFriendLineEdit->hide(); 
+    chatFriendLineEdit->setPlaceholderText("Entrez un nom d'ami");
+    chatFriendLineEdit->hide();
+
+
+    joinGameLineEdit = new QLineEdit(); joinGameLineEdit->setFixedWidth(400);
+    connect(joinGameLineEdit, &QLineEdit::returnPressed, [this] {
+        onJoinGameLineEditReturnPressed();
+    });
+    joinGameLineEdit->setPlaceholderText("Entrez un gameID");
+    joinGameLineEdit->hide();
 
     // Disposition des objets dans le buttonLayout
     buttonLayout->setAlignment(Qt::AlignCenter);
@@ -122,6 +132,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     buttonLayout->addWidget(friendNameLineEdit);
     buttonLayout->addWidget(chatFriendLineEdit);
     buttonLayout->addWidget(chatWithAFriend);
+    buttonLayout->addWidget(joinGameLineEdit);
     buttonLayout->addWidget(joinGame);
     buttonLayout->addWidget(logOut);
 
@@ -188,12 +199,30 @@ void MainMenu::onChatFriendLineEditReturnPressed() {
     std::string str_friendName = friendName.toStdString();
     emit startChat(str_friendName);
 }
+
+void MainMenu::onJoinGameLineEditReturnPressed() {
+    joinGameLineEdit->show();
+    QString gameID = joinGameLineEdit->text();
+    qDebug() << "Tentative de connexion avec gameID :" << gameID; // Debug
+
+    // Nettoyage et widget caché
+    joinGameLineEdit->clear();
+    joinGameLineEdit->hide();
+
+    joinGame->show();
+
+    std::string str_gameID = gameID.toStdString();
+    emit startLobby(str_gameID);
+}
+
 void MainMenu::onFriendNameButtonClicked(const QString &destination){
     std::string destinationStd = destination.toStdString();
     emit startChat(destinationStd);
 }
 
 void MainMenu::onJoinGameButtonClicked() {
+    joinGame->hide();
+    joinGameLineEdit->show();
 }
 
 void MainMenu::onLogOutButtonClicked() {
