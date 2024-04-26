@@ -2,19 +2,23 @@
 
 LocalBoardReview::LocalBoardReview(const std::string &session_id)
     : _session_id{session_id},
-      _my_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))},
-      _their_board{std::vector<std::vector<Cell>>(10, std::vector<Cell>(10, Cell()))}
-      {}
+      _my_board{10, {10, Cell()}}, _their_board{10, {10, Cell()}}
+{
+  std::clog << "local board review constr." << std::endl;
+}
 
 
 void LocalBoardReview::update_board(const nlohmann::json &new_board) {
+    std::clog << "local board review update_board." << std::endl;
     std::vector<std::string> fleet_names = {"fleetA", "fleetB"};
+    _finished = new_board["Finished"];
+    _winner = new_board["Winner"];
     for(auto fname: fleet_names){
         auto fleet = new_board[fname];
         auto& board = (fname == "fleetA") ? _my_board : _their_board;
         if (!(fleet.is_string() && fleet.get<std::string>() == "None")) {
-            for (int i = 0; i < height(); i++) {
-                for (int j = 0; j < width(); j++) {
+            for (size_t i = 0; i < height(); i++) {
+                for (size_t j = 0; j < width(); j++) {
                     board[i][j].setType(string_to_celltype(fleet[i][j]["type"]));
                 }
             }
@@ -69,3 +73,15 @@ CellType LocalBoardReview::best(CellType lhs, CellType rhs) {
   }
   return lhs <= rhs ? lhs : rhs;
 }
+
+Cell LocalBoardReview::get(bool my_side, BoardCoordinates position) const {
+  return my_side ? _my_board.at(position.y()).at(position.x())
+                 : _their_board.at(position.y()).at(position.x());
+}
+
+CellType LocalBoardReview::cellType(bool my_side, BoardCoordinates coordinates) const
+{return get(my_side, coordinates).type();}
+
+bool LocalBoardReview::isFinished() const{return _finished != "false";}
+
+bool LocalBoardReview::isVictory() const{return _winner != "None";}
