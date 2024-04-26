@@ -60,6 +60,7 @@ private slots: // en ref à Qt6
     void onAddFriendButtonClicked();
 	void onChatWithAFriendButtonClicked();
     void onFriendNameButtonClicked(const QString &destination);
+    void onNotificationButtonClicked(const QString &info);
 	void onJoinGameButtonClicked();
 	void onLogOutButtonClicked();
 

@@ -45,6 +45,8 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     scrollAreaFriends->setWidget(scrollWidgetFriends);
     scrollAreaFriends->setFixedWidth(200);
     scrollAreaFriends->setFixedHeight(300);
+    scrollAreaFriends->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; }");
+
 
     // QScrollArea pour les notifications
     QScrollArea *scrollAreaNotifications = new QScrollArea(this);
@@ -55,6 +57,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     scrollAreaNotifications->setWidget(scrollWidgetNotifications);
     scrollAreaNotifications->setFixedWidth(600);
     scrollAreaNotifications->setFixedHeight(300);
+    scrollAreaNotifications->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; }");
 
     // Layout principal (dispose ses layouts enfants à la verticale)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -212,14 +215,34 @@ void MainMenu::onJoinGameLineEditReturnPressed() {
     joinGame->show();
 
     std::string str_gameID = gameID.toStdString();
-    emit startLobby(str_gameID);
 
-    if (_controller->joinGame(str_gameID)) this->close();
+    if (_controller->joinGame(str_gameID)) {
+        this->close();
+        emit startLobby(str_gameID);
+    }
 }
 
 void MainMenu::onFriendNameButtonClicked(const QString &destination){
     std::string destinationStd = destination.toStdString();
     emit startChat(destinationStd);
+}
+
+void MainMenu::onNotificationButtonClicked(const QString &info) {
+    std::string std_info = info.toStdString();
+
+    size_t pos = std_info.find("sessionID: ");
+
+    // Notification d'invitation à une partie
+    if (pos != std::string::npos) {
+        pos += 11; // Longueur de "sessionID: "
+        std::string sessionId = std_info.substr(pos, std_info.length()); // Longueur d'un sessionID
+        std::cout << sessionId << std::endl;
+        if (_controller->joinGame(sessionId)) {
+            this->close();
+            emit startLobby(sessionId);
+        }
+
+    }
 }
 
 void MainMenu::onJoinGameButtonClicked() {
@@ -269,7 +292,10 @@ void MainMenu::updateNotifications() {
         NotificationButton->setCursor(Qt::PointingHandCursor); // Change le curseur lorsqu'il passe au-dessus du QPushButton
         scrollLayoutNotifications->addWidget(NotificationButton);
         scrollLayoutNotifications->addSpacing(20);
-        //connect(friendButton, &QPushButton::clicked, this, &MainMenu::onChatWithAFriendButtonClicked);
+
+        connect(NotificationButton, &QPushButton::clicked, [this, notification_content]() {
+            this->onNotificationButtonClicked(notification_content);
+        });
     }
 }
 
