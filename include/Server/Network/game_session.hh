@@ -10,7 +10,7 @@
 #include <mutex>
 class GameSession {
   private:
-    std::mutex sessionMutex; // Mutex to protect access to the GameSession
+    mutable std::mutex sessionMutex; // Mutex to protect access to the GameSession
     // Unique identifier for the session
     std::string _session_id;
     std::string _session_name;
