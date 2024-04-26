@@ -45,7 +45,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     scrollAreaFriends->setWidget(scrollWidgetFriends);
     scrollAreaFriends->setFixedWidth(200);
     scrollAreaFriends->setFixedHeight(300);
-    scrollAreaFriends->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; background-color: #333333;}");
+    scrollAreaFriends->setStyleSheet("QScrollArea {background-color: white; border: 2px solid black; border-radius: 5px;}");
 
 
     // QScrollArea pour les notifications
@@ -57,7 +57,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     scrollAreaNotifications->setWidget(scrollWidgetNotifications);
     scrollAreaNotifications->setFixedWidth(600);
     scrollAreaNotifications->setFixedHeight(300);
-    scrollAreaNotifications->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; background-color: #333333;}");
+    scrollAreaNotifications->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px;}");
 
     // Layout principal (dispose ses layouts enfants à la verticale)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -92,11 +92,18 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
 
-    joinGame = new HighlightButton("Rejoindre une partie", this);
+    joinGame = new HighlightButton("Rejoindre une partie", this); joinGame->setFixedWidth(400);
     joinGame->setStyleSheet("QPushButton { color : white; padding: 10px;  background-color: #333333;}");
     connect(dynamic_cast<HighlightButton*>(joinGame), &HighlightButton::clicked, this, &MainMenu::onJoinGameButtonClicked);
     connect(dynamic_cast<HighlightButton*>(joinGame), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(joinGame), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
+
+
+    review = new HighlightButton("Visualiser une partie", this); review->setFixedWidth(400);
+    review->setStyleSheet("QPushButton { color : gray; padding: 10px; background-color: #333333;}");
+    connect(dynamic_cast<HighlightButton*>(review), &HighlightButton::clicked, this, &MainMenu::onReviewButtonClicked);
+    connect(dynamic_cast<HighlightButton*>(review), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
+    connect(dynamic_cast<HighlightButton*>(review), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
 
     logOut = new HighlightButton("Se déconnecter", this); logOut->setFixedWidth(400);
     logOut->setStyleSheet("QPushButton { color : gray; padding: 10px; background-color: #333333;}");
@@ -137,6 +144,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     buttonLayout->addWidget(chatWithAFriend);
     buttonLayout->addWidget(joinGameLineEdit);
     buttonLayout->addWidget(joinGame);
+    buttonLayout->addWidget(review);
     buttonLayout->addWidget(logOut);
 
     // Disposition des objets dans le friendsLayout
@@ -151,6 +159,11 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
 
 void MainMenu::onCreatGameButtonClicked() {
     emit startGameSetting();
+    this->close();
+}
+
+void MainMenu::onReviewButtonClicked() {
+    emit startReview();
     this->close();
 }
 

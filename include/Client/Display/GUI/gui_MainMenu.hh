@@ -65,6 +65,7 @@ private slots: // en ref à Qt6
     void onNotificationButtonClicked(const QString &info);
 	void onJoinGameButtonClicked();
 	void onLogOutButtonClicked();
+    void onReviewButtonClicked();
 
     void onFriendLineEditReturnPressed();
     void onChatFriendLineEditReturnPressed();
@@ -89,7 +90,9 @@ private:
     QPushButton *addFriend;
 	QPushButton *chatWithAFriend;
 	QPushButton *joinGame;
+    QPushButton *review;
 	QPushButton *logOut;
+
 
     QVBoxLayout *scrollLayoutFriends; // Layout pour contenir les amis
     QLineEdit *friendNameLineEdit;
