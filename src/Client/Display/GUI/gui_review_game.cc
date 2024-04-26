@@ -86,6 +86,7 @@ ReviewGame::ReviewGame(std::shared_ptr<LocalBoardReview>& board, std::shared_ptr
     _my_frame->setFixedSize(500, 500);
     _their_frame->setFixedSize(500, 500);
     setButtons();
+    setLabels();
     setLayout();
 }
 
@@ -98,15 +99,28 @@ void ReviewGame::setButtons(){
     connect(back_main_button, &QPushButton::clicked, this, &ReviewGame::onBackMainButtonClicked);
 }
 
+void ReviewGame::setLabels(){
+    std::string game_label = "Revoir la partie: " + _board->getSessionId();
+    g_label = new QLabel(QString::fromStdString(game_label));
+    p1_label = new QLabel("Joueur 1");
+    p2_label = new QLabel("Joueur 2");
+    QFont f("Arial", 20, QFont::Bold);
+    g_label->setFont(f);
+    p1_label->setFont(f);
+    p2_label->setFont(f);
+    g_label->setAlignment(Qt::AlignCenter);
+    p1_label->setAlignment(Qt::AlignCenter);
+    p2_label->setAlignment(Qt::AlignCenter);
+}
+
 void ReviewGame::setLayout(){
     layout = new QVBoxLayout(this);
     label_layout = new QHBoxLayout();
     boards_layout = new QHBoxLayout();
     button_layout = new QHBoxLayout();
-    std::string game_label = "Revoir la partie: " + _board->getSessionId();
-    layout->addWidget(new QLabel(QString::fromStdString(game_label)));
-    label_layout->addWidget(new QLabel("Joueur 1:"));
-    label_layout->addWidget(new QLabel("Joueur 2"));
+    layout->addWidget(g_label);
+    label_layout->addWidget(p1_label);
+    label_layout->addWidget(p2_label);
     layout->addLayout(label_layout);
     boards_layout->addWidget(_my_frame);
     boards_layout->addWidget(_their_frame);

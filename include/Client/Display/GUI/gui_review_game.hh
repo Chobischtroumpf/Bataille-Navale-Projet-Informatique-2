@@ -99,6 +99,9 @@ class ReviewGame : public QWidget{
         QPushButton *next_button;
         QPushButton *previous_button;
         QPushButton *back_main_button;
+        QLabel *g_label;
+        QLabel *p1_label;
+        QLabel *p2_label;
 
         /**
          * @brief Set up buttons for the user interface.
@@ -109,6 +112,11 @@ class ReviewGame : public QWidget{
          * @brief Set up the layout for the user interface.
          */
         void setLayout();
+
+        /**
+         * @brief Set the label size, alignement and font.
+         */
+        void setLabels();
 
     public:
         /** Constructor, Destructor */
@@ -129,9 +137,9 @@ class ReviewGame : public QWidget{
 
         /**
          * @brief Handle the click event of the "Back to Main" button.
+         * 
          */
         void onBackMainButtonClicked();
-
     
     signals:
         /**
