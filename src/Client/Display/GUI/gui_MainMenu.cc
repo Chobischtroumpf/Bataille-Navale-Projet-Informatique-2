@@ -45,6 +45,8 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     scrollAreaFriends->setWidget(scrollWidgetFriends);
     scrollAreaFriends->setFixedWidth(200);
     scrollAreaFriends->setFixedHeight(300);
+    scrollAreaFriends->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; }");
+
 
     // QScrollArea pour les notifications
     QScrollArea *scrollAreaNotifications = new QScrollArea(this);
@@ -55,6 +57,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     scrollAreaNotifications->setWidget(scrollWidgetNotifications);
     scrollAreaNotifications->setFixedWidth(600);
     scrollAreaNotifications->setFixedHeight(300);
+    scrollAreaNotifications->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; }");
 
     // Layout principal (dispose ses layouts enfants à la verticale)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -185,7 +188,6 @@ void MainMenu::onChatWithAFriendButtonClicked() {
     //std::string destinationStd = destination.toStdString();
     //emit startChat(destinationStd);
 }
-
 void MainMenu::onChatFriendLineEditReturnPressed() {
     chatFriendLineEdit->show();
     QString friendName = chatFriendLineEdit->text();
@@ -200,6 +202,7 @@ void MainMenu::onChatFriendLineEditReturnPressed() {
     std::string str_friendName = friendName.toStdString();
     emit startChat(str_friendName);
 }
+
 void MainMenu::onJoinGameLineEditReturnPressed() {
     joinGameLineEdit->show();
     QString gameID = joinGameLineEdit->text();
@@ -209,22 +212,53 @@ void MainMenu::onJoinGameLineEditReturnPressed() {
     joinGameLineEdit->clear();
     joinGameLineEdit->hide();
 
+    joinGame->show();
+
     std::string str_gameID = gameID.toStdString();
 
-    // Tentative de rejoindre le jeu avec l'ID fourni
     if (_controller->joinGame(str_gameID)) {
-        emit startLobby(str_gameID);
         this->close();
-    } else {
-        QMessageBox::warning(this, "Erreur de connexion", "Wrong GameID");
-        joinGame->show();
+        emit startLobby(str_gameID);
     }
 }
-
 
 void MainMenu::onFriendNameButtonClicked(const QString &destination){
     std::string destinationStd = destination.toStdString();
     emit startChat(destinationStd);
+}
+
+void MainMenu::onNotificationButtonClicked(const QString &info) {
+    std::string std_info = info.toStdString();
+
+    size_t pos_id = std_info.find("sessionID: ");
+    size_t pos_new_friend_added = std_info.find("You've just added ");
+
+
+    // Notification d'invitation à une partie
+    if (pos_id != std::string::npos) {
+        pos_id += 11; // Longueur de "sessionID: "
+        std::string sessionId = std_info.substr(pos_id, std_info.length()); // Longueur d'un sessionID
+        std::cout << sessionId << std::endl;
+        if (_controller->joinGame(sessionId)) {
+            this->close();
+            emit startLobby(sessionId);
+        }
+    }
+
+    // Notification d'ajout en ami
+    else if (pos_new_friend_added != std::string::npos) {
+        pos_new_friend_added += std::string("You've just added ").length();
+
+        // Recherche de la position de " as a friend"
+        size_t endPos = std_info.find(" as a friend", pos_new_friend_added);
+
+        if (endPos != std::string::npos) {
+            // Récupération de l'username et démarrage du chat
+            std::string username = std_info.substr(pos_new_friend_added, endPos - pos_new_friend_added);
+            emit startChat(username);
+        }
+    }
+
 }
 
 void MainMenu::onJoinGameButtonClicked() {
@@ -274,7 +308,10 @@ void MainMenu::updateNotifications() {
         NotificationButton->setCursor(Qt::PointingHandCursor); // Change le curseur lorsqu'il passe au-dessus du QPushButton
         scrollLayoutNotifications->addWidget(NotificationButton);
         scrollLayoutNotifications->addSpacing(20);
-        //connect(friendButton, &QPushButton::clicked, this, &MainMenu::onChatWithAFriendButtonClicked);
+
+        connect(NotificationButton, &QPushButton::clicked, [this, notification_content]() {
+            this->onNotificationButtonClicked(notification_content);
+        });
     }
 }
 
