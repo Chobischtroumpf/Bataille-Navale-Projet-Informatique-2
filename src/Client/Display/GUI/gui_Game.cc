@@ -537,6 +537,11 @@ void Game::update() {
         setupWaitingTurn();
       }
     }
+  } else if (_phase == PLAYING) {
+    _board->updateBoard();
+    if (!_board->myTurn()) {
+      setupWaitingGame();
+    }
   } else if (_phase == WAITING_TURN) {
     if (_board->fetchMyTurn()) {
       _board->updateBoard();

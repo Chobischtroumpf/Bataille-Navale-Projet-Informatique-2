@@ -21,7 +21,7 @@ void Game::setGame(const nlohmann::json &game_details) {
       game_details.at("playerTimeLimit").get<int>();
   //bool classic_timer = true;
   _is_pendulum = game_details.at("classicTimer").get<std::string>() != "Classic";
-  if (_is_pendulum) {
+  if (!_is_pendulum) {
     _game_timer = std::make_unique<ClassicTimer>();
     _game_timer->set(game_time, player_time);
   }else{
