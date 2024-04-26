@@ -172,7 +172,7 @@ bool LocalBoardCommander::waitGame() {
   bool shipPlacementsFinished = false;
   std::string turn;
   while (!shipPlacementsFinished) {
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
     shipPlacementsFinished = isGameStarted();
   }
   return fetchMyTurn();
@@ -188,7 +188,7 @@ bool LocalBoardCommander::isGameStarted() {
 void LocalBoardCommander::waitTurn() {
   bool my_turn = false;
   while (!_player.isTurn() || isFinished()) {
-    std::this_thread::sleep_for(std::chrono::seconds(5));;
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));;
     updateBoard();
   }
 
