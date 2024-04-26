@@ -185,6 +185,7 @@ void MainMenu::onChatWithAFriendButtonClicked() {
     //std::string destinationStd = destination.toStdString();
     //emit startChat(destinationStd);
 }
+
 void MainMenu::onChatFriendLineEditReturnPressed() {
     chatFriendLineEdit->show();
     QString friendName = chatFriendLineEdit->text();
@@ -199,7 +200,6 @@ void MainMenu::onChatFriendLineEditReturnPressed() {
     std::string str_friendName = friendName.toStdString();
     emit startChat(str_friendName);
 }
-
 void MainMenu::onJoinGameLineEditReturnPressed() {
     joinGameLineEdit->show();
     QString gameID = joinGameLineEdit->text();
@@ -209,13 +209,18 @@ void MainMenu::onJoinGameLineEditReturnPressed() {
     joinGameLineEdit->clear();
     joinGameLineEdit->hide();
 
-    joinGame->show();
-
     std::string str_gameID = gameID.toStdString();
-    emit startLobby(str_gameID);
 
-    if (_controller->joinGame(str_gameID)) this->close();
+    // Tentative de rejoindre le jeu avec l'ID fourni
+    if (_controller->joinGame(str_gameID)) {
+        emit startLobby(str_gameID);
+        this->close();
+    } else {
+        QMessageBox::warning(this, "Erreur de connexion", "Wrong GameID");
+        joinGame->show();
+    }
 }
+
 
 void MainMenu::onFriendNameButtonClicked(const QString &destination){
     std::string destinationStd = destination.toStdString();

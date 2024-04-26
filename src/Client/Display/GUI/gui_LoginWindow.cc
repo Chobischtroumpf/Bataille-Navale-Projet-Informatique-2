@@ -33,31 +33,60 @@ LoginWindow::LoginWindow(std::shared_ptr<GameClient> gameClient) : login_control
 
 
 void LoginWindow::onLoginButtonClicked() {
-    QString username = usernameLineEdit->text(); //on recup la ligne de texte que l'utilisateur a tapé
+    QString username = usernameLineEdit->text();
     QString password = passwordLineEdit->text(); 
     std::string str_username = username.toStdString();
     std::string str_password = password.toStdString();
 
-    auto registerFuture = login_controller.attemptLogin(str_username, str_password);
-    if (registerFuture.get()){
+    auto loginFuture = login_controller.attemptLogin(str_username, str_password);
+    if (loginFuture.get()){
         emit loginSuccessful();
         this->close();
+        login_controller.addNotification(str_username, "Connexion réussie.");
     }
-    else
-        std::cout<< "échec de la connexion" << std::endl;
+    else {
+        std::cout << "Échec de la connexion" << std::endl;
+        QMessageBox::warning(this, "Connexion", "Échec de la connexion. Veuillez réessayer.");
+        login_controller.addNotification(str_username, "Échec de la connexion. Veuillez réessayer.");
+    }
 }
 
+
+bool LoginWindow::isPasswordValid(std::string password) {
+    if (password.length() >= 6 && contientMajuscule(password)) {
+      return true;
+    } else {
+      return false;
+    }
+}
 void LoginWindow::onRegisterButtonClicked() {
-    QString username = usernameLineEdit->text(); // stock dans username ce qui a été écrit dans usernameLine
-    QString password = passwordLineEdit->text(); // same ici pr le mdp
+    QString username = usernameLineEdit->text();
+    QString password = passwordLineEdit->text();
+
+
     std::string str_username = username.toStdString();
     std::string str_password = password.toStdString();
 
+    if (!isPasswordValid(str_password)) {
+        QMessageBox::warning(this, "Enregistrement", "Mot de passe invalide. Minimum 6 caractères dont une majuscule.");
+        return;
+    }
     auto registerFuture = login_controller.attemptRegister(str_username, str_password);
-    if (registerFuture.get()){
+    if (registerFuture.get()) {
         emit registrationSuccessful();
         this->close();
+        login_controller.addNotification(str_username, "Enregistrement réussi.");
+    } else {
+        QMessageBox::warning(this, "Enregistrement", "Échec de l'enregistrement. Veuillez réessayer.");
+        login_controller.addNotification(str_username, "Échec de l'enregistrement. Veuillez réessayer.");
     }
-    else
-        std::cout<< "échec de la connexion" << std::endl;
+}
+
+bool LoginWindow::contientMajuscule(const std::string &str) {
+  for (char c : str) {
+    if (std::isupper(c)) {
+      return true;
+    }
+  }
+  return false;
 }

@@ -21,6 +21,7 @@
 #include <QEnterEvent> // for QEnterEvent
 #include <QFocusEvent> // for QFocusEvent
 #include <QPainter>
+#include <QMessageBox>
 #include <QMovie>
 
 #include "main_menu_controller.hh"
