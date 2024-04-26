@@ -155,7 +155,7 @@ ReturnInput GameSettingConsole::handleInput() {
         _spectator_allowed = true;
       } else {
         _spectator_allowed = false;
-      }
+      } 
       break;
     case 6:
       if (input == "1") {
@@ -164,8 +164,7 @@ ReturnInput GameSettingConsole::handleInput() {
                              {"classicTimer", (_timer_mode.value() ? "Classic" : "Commander")},
                              {"playerTimeLimit", _time_per_game.value()},
                              {"turnTimeLimit", _time_per_turn.value()},
-                             {"maxPlayers", (_spectator_allowed.value() ? 8 : 2)},
-                             {"classicTimer", _timer_mode.value()}
+                             {"maxPlayers", (_spectator_allowed.value() ? 8 : 2)}
                              };
 
         auto resultFuture = gameClient->CreateGame(gameDetails);
