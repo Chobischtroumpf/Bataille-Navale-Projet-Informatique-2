@@ -213,6 +213,8 @@ void MainMenu::onJoinGameLineEditReturnPressed() {
 
     std::string str_gameID = gameID.toStdString();
     emit startLobby(str_gameID);
+
+    if (_controller->joinGame(str_gameID)) this->close();
 }
 
 void MainMenu::onFriendNameButtonClicked(const QString &destination){
