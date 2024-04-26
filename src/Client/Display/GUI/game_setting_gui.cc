@@ -21,7 +21,7 @@ GameSetting::GameSetting(std::shared_ptr<GameClient> gameClient): gameClient(gam
     /*QLabel *timePerTurnLabel = new QLabel("Time Per Turn", this);
     timePerTurnLabel->setFont(font);
     mainLayout->addWidget(timePerTurnLabel, 2, 0, 1, 1);*/
-    QLabel *timePerGameLabel = new QLabel("Time Per Game", this);
+    QLabel *timePerGameLabel = new QLabel("Time Per Turn", this);
     timePerGameLabel->setFont(font);
     mainLayout->addWidget(timePerGameLabel, 3, 0, 1, 1);
     QLabel *timeGameLabel = new QLabel("Time Game", this);

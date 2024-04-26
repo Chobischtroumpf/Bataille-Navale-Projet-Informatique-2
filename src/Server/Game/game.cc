@@ -26,9 +26,9 @@ void Game::setGame(const nlohmann::json &game_details) {
     _game_timer->set(game_time, player_time);
   }else{
     _game_timer = std::make_unique<PendulumTimer>();
-    _game_timer->set(game_time, player_time, [this]() { changeTurn(); });
+    _game_timer->set(player_time, game_time, [this]() { changeTurn(); });
   }
-  _game_timer->set(game_time, player_time);
+  //_game_timer->set(game_time, player_time);
 
 }
 
