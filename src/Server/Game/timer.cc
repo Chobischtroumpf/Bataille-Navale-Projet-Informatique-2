@@ -1,34 +1,37 @@
 #include "timer.hh"
 
-Timer::Timer() : _limit_seconds{0}, _current_time{0}, _is_running{false} {}
+Timer::Timer() : _limit_seconds{0}, _current_time{0}, _is_running{false}, launched{false} {}
 
 Timer::Timer(int limit_seconds, std::function<void()> callback)
     : _limit_seconds{limit_seconds}, _current_time{limit_seconds},
-      _is_running{false}, _callback{std::move(callback)} {}
+      _is_running{false}, _callback{std::move(callback)}, launched{false} {}
 
 bool Timer::isFinished() const { return _current_time <= 0; }
 
 void Timer::start() {
-  if (!_is_running) {
+  if (!launched) {
+    launched = true;
     _is_running = true;
     std::thread([this]() {
       auto start_time = std::chrono::steady_clock::now();
-      while (!isFinished() && _is_running) {
+      while (!isFinished()) {
         auto end_time = std::chrono::steady_clock::now();
         auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(
                                    end_time - start_time)
                                    .count();
 
-        if (elapsed_seconds >= 1) {
+        if (elapsed_seconds >= 1 && _is_running) {
           --_current_time;
           start_time = end_time;
         }
       }
-
+      launched = false;
       if (isFinished() && _callback) {
         _callback();
       }
     }).detach();
+  }else{
+    _is_running = true;
   }
 }
 

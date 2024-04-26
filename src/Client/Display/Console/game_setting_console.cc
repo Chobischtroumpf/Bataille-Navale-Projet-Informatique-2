@@ -82,16 +82,16 @@ void GameSettingConsole::displayOptions(int mode) {
         std::cout << "║ (2) Pendulum" << std::endl;
         break;
       case 3:
-        std::cout << "║ Choose the time per turn of the player ║" << std::endl;
+        std::cout << "║ Choose the time per turn               ║" << std::endl;
         std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
         std::cout << "║" << std::endl;
-        std::cout << "║ (5 - 30) seconds" << std::endl;
+        std::cout << "║ (30 - 60) seconds" << std::endl;
         break;
       case 4:
         std::cout << "║ Choose the time per game of the player ║" << std::endl;
         std::cout << "╠════════════════════════════════════════╩══════════════════╪" << std::endl;
         std::cout << "║" << std::endl;
-        std::cout << "║ (30 - 1000) seconds" << std::endl;
+        std::cout << "║ (60 - 1000) seconds" << std::endl;
         break;
       case 5:
         std::cout << "║ Choose if spectator are allowed        ║" << std::endl;
@@ -161,6 +161,7 @@ ReturnInput GameSettingConsole::handleInput() {
       if (input == "1") {
         njson gameDetails = {{"name", _game_name},
                              {"gamemode", (_commander_mode.value() ? "Commander" : "Classic")},
+                             {"classicTimer", (_timer_mode.value() ? "Classic" : "Commander")},
                              {"playerTimeLimit", _time_per_game.value()},
                              {"turnTimeLimit", _time_per_turn.value()},
                              {"maxPlayers", (_spectator_allowed.value() ? 8 : 2)},
@@ -175,7 +176,7 @@ ReturnInput GameSettingConsole::handleInput() {
           nlohmann::json req;
           req["moveType"] = "chooseFaction";
           req["faction"] = 0;
-          gameClient->MakeMove(gameID, req).get();
+          gameClient->MakeMove(gameID, req);
         }
         return ReturnInput(ReturnInput::Screen::LOBBY, gameID);
       } else {

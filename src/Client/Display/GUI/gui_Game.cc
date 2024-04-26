@@ -243,7 +243,13 @@ void Game::setupShipPlacement() {
   their_layout->addWidget(_their_label);
   their_layout->addWidget(_their_frame);
 
-  _game_label = new QLabel("Game time: " + QString::number(_board->getGameTime()) + "s");
+  if (!_board->isPendulum()) {
+    _game_label = new QLabel(
+        "Game time: " + QString::number(_board->getGameTime()) + "s");
+  } else {
+    _game_label = new QLabel(
+        "Remaining time to fire: " + QString::number(_board->getGameTime()) + "s");
+  }
   _game_label->setAlignment(Qt::AlignCenter);
 
   _boards_layout = new QHBoxLayout();

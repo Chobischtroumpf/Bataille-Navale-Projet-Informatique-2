@@ -45,7 +45,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     scrollAreaFriends->setWidget(scrollWidgetFriends);
     scrollAreaFriends->setFixedWidth(200);
     scrollAreaFriends->setFixedHeight(300);
-    scrollAreaFriends->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; }");
+    scrollAreaFriends->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; background-color: #333333;}");
 
 
     // QScrollArea pour les notifications
@@ -57,7 +57,7 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
     scrollAreaNotifications->setWidget(scrollWidgetNotifications);
     scrollAreaNotifications->setFixedWidth(600);
     scrollAreaNotifications->setFixedHeight(300);
-    scrollAreaNotifications->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; }");
+    scrollAreaNotifications->setStyleSheet("QScrollArea { border: 2px solid black; border-radius: 5px; background-color: #333333;}");
 
     // Layout principal (dispose ses layouts enfants à la verticale)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -75,31 +75,31 @@ MainMenu::MainMenu(std::shared_ptr<GameClient> gameClient) {
 
     // QPushButton pour appuyer sur un bouton
     creatGame = new HighlightButton("Jouer", this); creatGame->setFixedWidth(400);
-    creatGame->setStyleSheet("HighlightButton { color : red; padding: 10px; border-image: url(src/Common/Images/submarine.png);}");
+    creatGame->setStyleSheet("HighlightButton { color : white; padding: 10px; border-image: url(src/Common/Images/submarine.png); font-weight: bold;}");
     connect(dynamic_cast<HighlightButton*>(creatGame), &HighlightButton::clicked, this, &MainMenu::onCreatGameButtonClicked);
     connect(dynamic_cast<HighlightButton*>(creatGame), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(creatGame), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
 
     addFriend = new HighlightButton("Ajouter un ami", this); addFriend->setFixedWidth(400);
-    addFriend->setStyleSheet("QPushButton { color : blue; padding: 10px;}");
+    addFriend->setStyleSheet("QPushButton { color : white; padding: 10px; background-color: #333333;}");
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::clicked, this, &MainMenu::onAddFriendButtonClicked); // Le bouton se cache une fois cliqué
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(addFriend), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
 
     chatWithAFriend = new HighlightButton("Chat avec un ami", this); chatWithAFriend->setFixedWidth(400);
-    chatWithAFriend->setStyleSheet("QPushButton { color : yellow; padding: 10px;}");
+    chatWithAFriend->setStyleSheet("QPushButton { color : white; padding: 10px; background-color: #333333;}");
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::clicked, this, &MainMenu::onChatWithAFriendButtonClicked);
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(chatWithAFriend), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
 
     joinGame = new HighlightButton("Rejoindre une partie", this);
-    joinGame->setStyleSheet("QPushButton { color : green; padding: 10px;}");
+    joinGame->setStyleSheet("QPushButton { color : white; padding: 10px;  background-color: #333333;}");
     connect(dynamic_cast<HighlightButton*>(joinGame), &HighlightButton::clicked, this, &MainMenu::onJoinGameButtonClicked);
     connect(dynamic_cast<HighlightButton*>(joinGame), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(joinGame), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);
 
     logOut = new HighlightButton("Se déconnecter", this); logOut->setFixedWidth(400);
-    logOut->setStyleSheet("QPushButton { color : gray; padding: 10px;}");
+    logOut->setStyleSheet("QPushButton { color : gray; padding: 10px; background-color: #333333;}");
     connect(dynamic_cast<HighlightButton*>(logOut), &HighlightButton::clicked, this, &MainMenu::onLogOutButtonClicked);
     connect(dynamic_cast<HighlightButton*>(logOut), &HighlightButton::mouseEntered, this, &MainMenu::mouseOnButton);
     connect(dynamic_cast<HighlightButton*>(logOut), &HighlightButton::mouseLeft, this, &MainMenu::mouseLeftButton);

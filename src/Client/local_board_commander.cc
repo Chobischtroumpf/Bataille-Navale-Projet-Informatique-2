@@ -28,6 +28,7 @@ LocalBoardCommander::LocalBoardCommander(std::shared_ptr<GameClient> client,
                           ? _client->GetUsername(usersID.at(1)).get()
                           : _client->GetUsername(usersID.at(0)).get();
   }
+  _is_pendulum = messagesJson.at("gameState").at("is_pendulum");
 }
 
 bool LocalBoardCommander::myTurn() const { return _player.isTurn(); }
@@ -328,3 +329,5 @@ uint16_t LocalBoardCommander::getGameTime() const { return _game_time; }
 uint16_t LocalBoardCommander::getPlayerTime() const { return _player_time; }
 
 uint16_t LocalBoardCommander::getOpponentTime() const { return _opponent_time; }
+
+bool LocalBoardCommander::isPendulum() const { return _is_pendulum; }
