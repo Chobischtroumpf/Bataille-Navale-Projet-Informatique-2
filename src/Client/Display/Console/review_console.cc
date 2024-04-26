@@ -45,5 +45,8 @@ ReturnInput ReviewConsole::handleInput(){
                 const Session_info session = _controller->getSessionInfo(number-1);
                 return {ReturnInput::REVIEW_GAME, session.session_id};
         } 
+        else if(input != ""){
+            std::cout << "Wrong input, must be an number in the list.\nTry angain: ";
+        }
     }
 }

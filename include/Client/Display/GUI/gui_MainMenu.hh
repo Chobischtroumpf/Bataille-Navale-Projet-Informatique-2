@@ -54,6 +54,7 @@ signals:
     void userDisconnection();
     void startChat(const std::string& destination);
     void startGameSetting();
+    void startReview();
     void startLobby(std::string gameID);
 
 private slots: // en ref à Qt6
