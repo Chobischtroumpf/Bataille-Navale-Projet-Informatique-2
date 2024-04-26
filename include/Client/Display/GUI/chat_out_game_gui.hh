@@ -15,7 +15,7 @@
 #include <QTimer> // Peut servir pour ajouter un refresh automatisé tout les x temps
 #include <QTextEdit>
 #include <qt6/QtWidgets/qpushbutton.h>
-
+#include <QScrollBar>
 #include "chat_controller.hh"
 #include "chat_view.hh"
 #include "message.hh"
