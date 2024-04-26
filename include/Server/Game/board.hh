@@ -91,7 +91,7 @@ class Board: public virtual GameView {
     Turn whoseTurn() const;
 
     // adds a ship to the board
-    void placeShip(Ship &ship, bool side);
+    void placeShip(std::shared_ptr<Ship> ship, bool side);
 
     // notifies the opponent's board that the cell in coord has been hit
     void notify(const BoardCoordinates &coords);
@@ -135,7 +135,7 @@ class Board: public virtual GameView {
     CellType cellType(bool my_side, BoardCoordinates position) const;
 
     // returns the ship at the given position
-    std::optional<Ship> shipId(bool my_side, BoardCoordinates position) const;
+    std::shared_ptr<Ship> shipId(bool my_side, BoardCoordinates position) const;
 
     // returns true if the two given positions are part of the same ship
     bool isSameShip(bool my_side, BoardCoordinates first, BoardCoordinates second) const  override;

@@ -15,15 +15,15 @@
 
 class Ship {
   private:
-    std::vector<BoardCoordinates> _coordinates;
-    BoardCoordinates _top_left;
-    CellType _type = UNDAMAGED_SHIP;
+    std::vector<BoardCoordinates> _coordinates{};
+    BoardCoordinates _top_left{};
+    CellType _type{UNDAMAGED_SHIP};
     GameView *_board;
-    size_t _length = 0;
-    size_t _size_x = 0;
-    size_t _size_y = 0;
-    bool _is_sunk = false; // peut être juste changer le celltype ?
-    bool _side = PLAYER1;
+    size_t _length{0};
+    size_t _size_x{0};
+    size_t _size_y{0};
+    bool _is_sunk{false}; // peut être juste changer le celltype ?
+    bool _side{PLAYER1};
 
     void setSunk(bool is_sunk);
 
@@ -38,6 +38,7 @@ class Ship {
     // Operators
     Ship &operator=(const Ship &other);
     bool operator==(const Ship &other) const;
+    bool operator==(const Ship *other) const;
 
 
     // Getters
@@ -47,9 +48,9 @@ class Ship {
     // const std::vector<std::vector<Cell>> getShipCells() const;
     CellType getType() const;
     GameView *getBoard() const;
-    int getLength() const;
-    int getSizeX() const;
-    int getSizeY() const;
+    size_t getLength() const;
+    size_t getSizeX() const;
+    size_t getSizeY() const;
     bool isSunk() const;
     bool getSide() const;
 

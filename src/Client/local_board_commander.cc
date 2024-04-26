@@ -44,14 +44,15 @@ CellType LocalBoardCommander::cellType(bool my_side,
 }
 
 // returns the ship at the given position
-std::optional<Ship> LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) const {
+std::shared_ptr<Ship> LocalBoardCommander::shipId(bool my_side, BoardCoordinates position) const {
   return get(my_side, position).ship();
 }
 
 bool LocalBoardCommander::isSameShip(bool my_side, BoardCoordinates first,
                                      BoardCoordinates second) const {
-  return shipId(my_side, first).has_value() &&
-        shipId(my_side, first) == shipId(my_side, second);
+  if(shipId(my_side, first))
+        return shipId(my_side, first) == shipId(my_side, second);
+  return false;
 }
 
 std::vector<Cell>
@@ -88,7 +89,7 @@ LocalBoardCommander::getNeighbors(BoardCoordinates coord) const {
   return neighbors;
 }
 
-std::vector<Ship> LocalBoardCommander::getPlacedShips() const {
+std::vector<std::shared_ptr<Ship>> LocalBoardCommander::getPlacedShips() const {
   return _player.getFleet();
 }
 
@@ -98,7 +99,7 @@ bool LocalBoardCommander::isShipAvailable(int size) const {
 
   for (auto &ship : _player.getFleet()) { // counts how many ships of the given
                                           // size are already placed
-    if (ship.getLength() == size) {
+    if (ship->getLength() == size) {
       count++;
     }
   }
@@ -114,6 +115,7 @@ bool LocalBoardCommander::isShipAvailable(int size) const {
 
 void LocalBoardCommander::placeShip(Ship ship) {
   BoardCoordinates top_left = ship.getTopLeft();
+  std::shared_ptr<Ship> shared_ship = std::make_shared<Ship>(ship);
 
   for (auto &coord : ship.getCoordinates()) {
     _my_board.at(top_left.y() + coord.y())
@@ -121,9 +123,9 @@ void LocalBoardCommander::placeShip(Ship ship) {
         .setType(ship.getType());
     _my_board.at(top_left.y() + coord.y())
         .at(top_left.x() + coord.x())
-        .setShip(ship);
+        .setShip(shared_ship);
   }
-  _player.addShip(ship);
+  _player.addShip(shared_ship);
 
   // if all ships are placed, send the ships to the server
   if (allShipsPlaced()) {
@@ -132,7 +134,7 @@ void LocalBoardCommander::placeShip(Ship ship) {
     move_request["moveType"] = "placeShips"; //< should be "move" ?
     move_request["ships"] = nlohmann::json::array();
     for (auto &ship : _player.getFleet()) {
-      move_request["ships"].push_back(ship.to_json());
+      move_request["ships"].push_back(ship->to_json());
     }
     std::clog << move_request.dump() << std::endl;
     _client->MakeMove(_session_id, move_request).get();
@@ -151,7 +153,7 @@ bool LocalBoardCommander::allShipsPlaced() const {
 PossibleShips LocalBoardCommander::shipsToPlace() const {
   PossibleShips placed_ships = _player.getFaction().getPossibleShips();
   for (auto &ship : _player.getFleet()) {
-    placed_ships[ship.getLength()]--;
+    placed_ships[ship->getLength()]--;
   }
   return placed_ships;
 }
@@ -251,8 +253,8 @@ void LocalBoardCommander::updateBoard() {
   }
 
   _player.setEnergyPoints(new_board.at("energy_points"));
-  if (new_board.at("turn") == "PLAYERONE" && _player.isPlayerOne() ||
-      new_board.at("turn") == "PLAYERTWO" && !_player.isPlayerOne()) {
+  if ((new_board.at("turn") == "PLAYERONE" && _player.isPlayerOne()) ||
+      (new_board.at("turn") == "PLAYERTWO" && !_player.isPlayerOne())) {
     _player.setTurn(true);
   } else {
     _player.setTurn(false);

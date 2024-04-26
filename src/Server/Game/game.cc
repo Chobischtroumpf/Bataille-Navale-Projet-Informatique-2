@@ -52,10 +52,10 @@ bool Game::shipPlacementsFinished() const {
   Player player1 = _board->getPlayer1();
   Player player2 = _board->getPlayer2();
 
-  std::clog << "Player 1 fleet size : " << player1.getFleet().size() << std::endl;
-  std::clog << "Player 2 fleet size: " << player2.getFleet().size() << std::endl;
-  std::clog << "Player 1 faction amount of ships: " << player1.getFaction().getAmountOfShips() << std::endl;
-  std::clog << "Player 2 faction amount of ships: " << player2.getFaction().getAmountOfShips() << std::endl;
+  // std::clog << "Player 1 fleet size : " << player1.getFleet().size() << std::endl;
+  // std::clog << "Player 2 fleet size: " << player2.getFleet().size() << std::endl;
+  // std::clog << "Player 1 faction amount of ships: " << player1.getFaction().getAmountOfShips() << std::endl;
+  // std::clog << "Player 2 faction amount of ships: " << player2.getFaction().getAmountOfShips() << std::endl;
 
   if (player1.getFleet().size() >= (size_t)player1.getFaction().getAmountOfShips() &&
       player2.getFleet().size() >= (size_t)player2.getFaction().getAmountOfShips()) {
@@ -65,12 +65,14 @@ bool Game::shipPlacementsFinished() const {
 }
 
 bool Game::handlePlaceShip(Turn turn, Ship &ship, Phase phase) {
+  std::clog << "GAME::HANDLEPLACESHIP" << std::endl;
+  std::clog << "ship.top_left : " << ship.getTopLeft() << std::endl;
   if (phase == Phase::PLACING_SHIPS && !shipPlacementsFinished()) {
     ship.setBoard(_board.get());
     if (turn == PLAYERONE) {
-      _board->placeShip(ship, true);
+      _board->placeShip(std::make_shared<Ship>(ship), true);
     } else {
-      _board->placeShip(ship, false);
+      _board->placeShip(std::make_shared<Ship>(ship), false);
     }
     // if the ship placements finished then start the timer
     if (phase == Phase::PLACING_SHIPS && shipPlacementsFinished()){
