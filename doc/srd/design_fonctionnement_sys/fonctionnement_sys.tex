@@ -16,6 +16,13 @@ De plus, bien que tout le code soit écrit en C++, nous avons décidé de nous i
 C'est pour cela que nous avons décidé que toutes les requêtes seraient envoyées en format JSON, et les réponses sont également envoyées avec ce format.
 Afin de pouvoir traiter le format JSON, nous utilisons la bibliotèque de Niels Lohmann, \href{https://github.com/nlohmann/json}{nlohmann/json}.
 
+\subsubsection*{Communication en jeu}
+Afin d'envoyer les informations de jeu, nous avons décidé d'utiliser un format de message particulier.
+Il y a un endpoint pour envoyer un coup, et chaque coup est représenté par un moveType, et une coordonnée.
+
+En ce qui concerne le placement des bateaux, nous avons utilisons le meme endpoint, mais avec un moveType différent.
+Tous les bateaux sont envoyés en une seule requête, et le serveur va alors les placer sur le plateau.
+
 \subsection{Inscription}
 Si le joueur possède déjà un compte, il a la possibilité de se connecter directement.
 Le gestionnaire d'inscription (registerController) effectuera une première vérification des données saisies par l'utilisateur, 
