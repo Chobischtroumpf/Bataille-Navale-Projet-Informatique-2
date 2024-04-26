@@ -189,40 +189,25 @@ void Board::placeShip(std::shared_ptr<Ship> ship, bool side) {
 }
 
 void Board::notify(const BoardCoordinates &coords) {
-  std::clog << "BOARD::NOTIFY" << std::endl;
   // Iterate over the targeted player's ships
   Player& opponent = _my_turn ? _player2 : _player1;
   std::vector<std::vector<Cell>> &board = _my_turn ? _player2_side : _player1_side;
 
-  std::clog << "opponent : " << (myTurn() ? "player2" : "player1") << std::endl;
-
-
-  board[coords.y()][coords.x()].ship()->notify();
-
-  std::clog << "Ship is sunk: " << board[coords.y()][coords.x()].ship()->isSunk() << std::endl;
-  std::clog << opponent.getFleet().size() << std::endl;
+  for (int i =0; i < height(); i++){
+    for (int j = 0; j < width(); j++){
+      if (board[i][j].ship())
+        board[i][j].ship()->notify();
+    }
+  }
   for (auto ship : opponent.getFleet()) {
-
-    // std::clog << "coords isPartOfShip: " << ship.isPartOfShip(coords) << std::endl;
-    // std::clog << "ship isSunk: " << ship.isSunk() << std::endl;
-
-    // if (ship->isPartOfShip(coords) && !ship->isSunk()) {
-    //   ship->notify();
-
-      std::clog << "Ship is sunk: " << ship->isSunk() << std::endl;
-      std::clog << "Ship type: " << ship->getType() << std::endl;
-      std::clog << "Ship top left: " << ship->getTopLeft() << std::endl;
-
-      if (ship->isSunk() && !(ship->getType() & IS_MINE)) {
-        std::vector<BoardCoordinates> ship_coords = ship->getCoordinates();
-        BoardCoordinates top_left = ship->getTopLeft();
-        for (auto &coord : ship_coords) {
-          board[top_left.y() + coord.y()][top_left.x() + coord.x()].setType(SUNK_SHIP);
-        }
+    if (ship->isSunk() && !(ship->getType() & IS_MINE)) {
+      std::vector<BoardCoordinates> ship_coords = ship->getCoordinates();
+      BoardCoordinates top_left = ship->getTopLeft();
+      for (auto &coord : ship_coords) {
+        board[top_left.y() + coord.y()][top_left.x() + coord.x()].setType(SUNK_SHIP);
       }
-    // }
+    }
     if (!(ship->getType() & IS_MINE) && !ship->isSunk()) {
-      std::clog << "at least one Ship is not sunk" << std::endl;
       return;
     }
   }
@@ -249,7 +234,6 @@ bool Board::fire(SpecialAbility ability, BoardCoordinates coords) {
   }
   if (is_hit)
     notify(coords);
-  std::clog << "is_hit: " << is_hit << std::endl;
   return is_hit;
 }
 
@@ -301,10 +285,6 @@ nlohmann::json Board::to_json(PlayerRole role) const {
   } else {
     boardJson["energy_points"] = 0;
   }
-
-//  boardJson[""]
-  
-
   return boardJson;
 }
 

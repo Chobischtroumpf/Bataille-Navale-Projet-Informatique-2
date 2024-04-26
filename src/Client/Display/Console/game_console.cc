@@ -453,7 +453,6 @@ ReturnInput GameConsole::handleFire() {
   getline(_in, buf);
   _out << "\x1b[0m";
 
-  std::clog << "GameConsole::handleFire: input: " << buf << std::endl;
 
   if (std::cin.eof())
   {

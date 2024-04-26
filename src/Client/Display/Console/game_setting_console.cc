@@ -169,7 +169,6 @@ ReturnInput GameSettingConsole::handleInput() {
 
         auto resultFuture = gameClient->CreateGame(gameDetails);
         auto gameID = resultFuture.get();
-        std::clog << "Game ID: " << gameID << std::endl;
         // send the default faction
         if (_commander_mode.value()) {
           nlohmann::json req;
