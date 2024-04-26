@@ -1,8 +1,8 @@
 #include "gui_driver.hh"
 #include <qt6/QtCore/qobject.h>
 
-DriverGui::DriverGui()
-    : _game_client{std::make_shared<GameClient>("http://localhost:8080")} {}
+DriverGui::DriverGui(std::string server_address)
+    : _game_client{std::make_shared<GameClient>(server_address)} {}
 
 void DriverGui::run() {
     showLoginWindow();
