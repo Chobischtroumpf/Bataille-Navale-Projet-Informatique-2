@@ -545,11 +545,11 @@ void Game::update() {
   // Update Timers
   if (_phase == PLAYING || _phase == WAITING_TURN) {
     _board->updateBoard();
-    updateLabels();
+    updateTimerLabels();
   }
 }
 
-void Game::updateLabels() {
+void Game::updateTimerLabels() {
   _game_label->setText("Game time: " + QString::number(_board->getGameTime()) + "s");
   _my_label->setText(QString::fromStdString(_board->getMyUsername() + "'s board - " + std::to_string(_board->getPlayerTime()) + "s"));
   _their_label->setText(QString::fromStdString(_board->getTheirUsername() + "'s board - " + std::to_string(_board->getOpponentTime()) + "s"));
