@@ -1,4 +1,18 @@
 # Battleship - Groupe 9
+Ceci est le repo publique pour le projet du groupe 9 pour le projet d'informatique 2 de l'ULB.
+
+Le groupe 9 etait composé de :
+[@rcroughs](https://github.com/rcroughs)
+[@ibenaims](https://github.com/ibenaims)
+[@lucasvnprg](https://github.com/lucasvnprg)
+[@Luigidelavega](https://github.com/Luigidelavega)
+[@Man102](https://github.com/Man102)
+[pjadczuk](https://github.com/pjadczuk)
+[gabgolds](https://github.com/Gabgolds)
+[xierno](https://github.com/Xierno)
+Et moi-meme.
+
+#### Note obtenue : 19/20 🎉🎉🎉
 
 ## Build le projet
 
